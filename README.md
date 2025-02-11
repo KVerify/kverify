@@ -9,121 +9,72 @@
 <p align="center">
   <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin--multiplatform-2.0.0-blue.svg?logo=kotlin" alt="Kotlin 2.0.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/Version-1.7.1-blue" alt="Version 1.7.1">
+  <img src="https://img.shields.io/badge/Version-2.0.0--rc--1-blue" alt="Version 2.0.0-rc-1">
 </p>
 
 ---
 
-## 🚀 Overview
+## 🔎 Overview
 
-KVerify is a modern Kotlin Multiplatform validation library that provides a concise and powerful DSL for defining and executing validation rules.  
-Whether you're validating simple values or complex object hierarchies, KVerify makes it easy while maintaining type safety and flexibility.
+KVerify is a modern Kotlin Multiplatform validation library that provides a concise and powerful DSL for defining and
+executing validation rules. Whether you're validating simple values or complex object hierarchies, KVerify makes it easy
+while maintaining type safety and flexibility.
+
 
 ## ✨ Key Features
 
-- 🌟 Intuitive DSL for defining validation rules  
-- 🔧 Multiple validation strategies (immediate, aggregate, lazy)  
-- 🎯 Type-safe validation rules  
-- 🌍 Kotlin Multiplatform support  
-- 📦 Modular architecture with core and rules packages  
-- 🔄 Composable validation rules  
-- 🏷️ Named value support for better error messages  
-- 🎨 Flexible API for custom validation logic  
-- 🌐 Built-in localization framework for standard rule sets  
+- ✅ Concise and expressive validation DSL
+- 🔄 Supports multiple validation strategies (`validateAll`, `validateFirst`, `validateOrThrow`)
+- 📦 Built-in rule sets for common validation cases
+- 🛠️ Easy-to-extend API for custom rules
+- 🌍 Fully compatible with Kotlin Multiplatform
 
-## 🛠 Installation
+## 📦 Installation
 
-### Groovy
-```groovy
+Add KVerify to your project using Gradle:
+
+```kotlin
 dependencies {
-    implementation "io.github.kverify:kverify-core:${version}"
-    implementation "io.github.kverify:kverify-rules:${version}" // Optional: standard rule sets
+    implementation("io.github.kverify:kverify-core:$version")
+    implementation("io.github.kverify:rule-set:$version") // optional
 }
 ```
 
-### Kotlin
-```kotlin
-dependencies {
-    implementation("io.github.kverify:kverify-core:${version}")
-    implementation("io.github.kverify:kverify-rules:${version}")  // Optional: standard rule sets
-}
-```
-
-## 📝 Quick Start
+## 📜 DSL Example
 
 ```kotlin
-import io.github.kverify.dsl.extension.toNamed
-import io.github.kverify.dsl.model.createNamedRule
-import io.github.kverify.dsl.model.unwrapOrNull
-import io.github.kverify.dsl.model.withName
-import io.github.kverify.dsl.validator.validateAll
-import io.github.kverify.rule.localization.DefaultRuleLocalization
-import io.github.kverify.rule.named.NamedStringRules
+val kotlinIsTheBestLanguage = true
+val kverifyMakesLifeEasier = true
 
-// 1. Define your data class
-data class User(
-    val name: String,
-    val email: String?,
-    val age: Int,
-)
+val emailPattern = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$".toRegex()
 
-// 2. Create standard rule sets
-val stringRules = NamedStringRules(DefaultRuleLocalization())
-
-// 3. Define validation rules
 val emailRule =
-    createNamedRule<String> { (name, value) ->
-        validate("$name has invalid email format") { value.contains("@") }
-    }
-
-val userRules =
-    createNamedRule<User> { (name, user) ->
-        user.run {
-            // Validate name
-            ::name.toNamed().validate(
-                stringRules.notBlank(),
-                stringRules.lengthBetween(2..50),
-            )
-
-            // Validate optional email
-            ::email.toNamed().unwrapOrNull()?.validate(emailRule)
+    Rule<String> { email: String ->
+        validate(email.matches(emailPattern)) {
+            "Hey, this doesn't look like a proper email!".asViolation()
         }
     }
 
-// 4. Validate an instance
-val user =
-    User(
-        name = "John",
-        email = "john@example.com",
-        age = 25,
+validateAll {
+    "john.doe@example.com".applyRules(
+        StringRules.notBlank(),
+        StringRules.lengthBetween(3..255),
+        ComparableRules.notEqualTo("not-an-email"),
+        emailRule,
     )
 
-val result =
-    validateAll {
-        user.withName("user").validate(userRules)
+    validate(kotlinIsTheBestLanguage && kverifyMakesLifeEasier) {
+        "No violations, just truth here!".asViolation()
     }
-
-// 5. Handle the results
-fun main() {
-    result
-        .onValid {
-            println("User is valid!")
-        }.onInvalid { errors ->
-            println("Validation failed:")
-            errors.forEach { println(it) }
-        }
-}
+}.onValid {
+    println("Woo-hoo! Everything checks out!")
+}.onInvalid { violations: List<Violation> ->
+    println("Oops! Something went wrong. You've got ${violations.size} issues to fix!")
+}.throwOnFailure()
 ```
 
-## 📖 Documentation
-
-The [KVerify Wiki](https://github.com/KVerify/kverify/wiki) is available to guide you through installation, usage, and advanced features.
-⚠️ Please note that the wiki is still a work in progress — some pages might be incomplete or missing.
+For more examples and advanced usage, check out the [documentation](https://github.com/KVerify/kverify/wiki)
 
 ## 📄 License
 
-KVerify is released under the [Apache 2.0 License](LICENSE).
-
----
-
-<p align="center"> Made with ❤️ by <a href="https://github.com/mrkekovich">MrKekovich</a> </p>
+KVerify is licensed under the [Apache 2.0 License](LICENSE).
