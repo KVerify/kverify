@@ -1,7 +1,6 @@
-package io.github.kverify.core.jvm.model
+package io.github.kverify.core.model
 
-import io.github.kverify.core.jvm.exception.PropertyAccessException
-import io.github.kverify.core.model.NamedValue
+import io.github.kverify.core.exception.PropertyAccessException
 import kotlin.reflect.KProperty
 import kotlin.reflect.jvm.isAccessible
 
