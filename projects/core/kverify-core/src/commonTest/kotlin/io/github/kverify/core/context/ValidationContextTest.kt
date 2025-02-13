@@ -32,7 +32,7 @@ class ValidationContextTest :
             42.applyRules(context, rule1, rule2)
 
             violations.size shouldBe 1
-            assertContains(violations, rule2.violation)
+            assertContains(violations, rule1.violation)
         }
 
         test("validate triggers onFailure when condition is false") {
