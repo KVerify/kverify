@@ -22,6 +22,7 @@ fun interface Rule<T> {
 /**
  * Runs this [Rule] within the given [context] for the specified [value].
  */
+@Suppress("NOTHING_TO_INLINE")
 inline fun <T> Rule<T>.runValidation(
     context: ValidationContext,
     value: T,
