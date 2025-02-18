@@ -85,6 +85,14 @@ inline fun ValidationResult(vararg violations: Violation): ValidationResult =
 fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult = this + results.flatMap { it.violations }
 
 /**
+ * Merges all results in this list, combining all violations.
+ */
+fun List<ValidationResult>.merge(): ValidationResult =
+    ValidationResult(
+        this.flatMap { it.violations },
+    )
+
+/**
  * Executes [block] if this result is valid.
  *
  * @return the original result.
