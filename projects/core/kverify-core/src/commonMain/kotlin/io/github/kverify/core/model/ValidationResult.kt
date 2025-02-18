@@ -25,6 +25,30 @@ value class ValidationResult(
     inline val isInvalid: Boolean
         get() = violations.isNotEmpty()
 
+    /**
+     * Returns a new result with [violation] added.
+     */
+    operator fun plus(violation: Violation): ValidationResult =
+        ValidationResult(
+            this.violations + violation,
+        )
+
+    /**
+     * Returns a new result with [violations] added.
+     */
+    operator fun <C : Collection<Violation>> plus(violations: C): ValidationResult =
+        ValidationResult(
+            this.violations + violations,
+        )
+
+    /**
+     * Combines this result with [other], merging their violations.
+     */
+    operator fun plus(other: ValidationResult): ValidationResult =
+        ValidationResult(
+            this.violations + other.violations,
+        )
+
     override fun toString(): String =
         if (isValid) {
             "ValidationResult(valid=true)"
@@ -56,36 +80,9 @@ inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     )
 
 /**
- * Combines this result with [other], merging their violations.
- */
-operator fun ValidationResult.plus(other: ValidationResult): ValidationResult =
-    ValidationResult(
-        this.violations + other.violations,
-    )
-
-/**
- * Returns a new result with [violation] added.
- */
-fun ValidationResult.add(violation: Violation): ValidationResult =
-    ValidationResult(
-        this.violations + violation,
-    )
-
-/**
- * Returns a new result with [violations] added.
- */
-fun <C : Collection<Violation>> ValidationResult.addAll(violations: C): ValidationResult =
-    ValidationResult(
-        this.violations + violations,
-    )
-
-/**
  * Merges this result with [results], combining all violations.
  */
-fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult =
-    this.addAll(
-        results.flatMap { it.violations },
-    )
+fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult = this + results.flatMap { it.violations }
 
 /**
  * Executes [block] if this result is valid.
