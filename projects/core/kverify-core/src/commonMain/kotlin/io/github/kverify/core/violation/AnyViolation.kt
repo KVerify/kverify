@@ -19,4 +19,5 @@ value class AnyViolation(
  *
  * @return an [AnyViolation] with the provided [String] as its message.
  */
+@Suppress("NOTHING_TO_INLINE")
 inline fun String.asViolation(): AnyViolation = AnyViolation(this)

@@ -74,6 +74,7 @@ value class ValidationResult(
 /**
  * Creates a [ValidationResult] from [violations].
  */
+@Suppress("NOTHING_TO_INLINE")
 inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
         violations.asList(),
