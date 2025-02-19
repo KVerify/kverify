@@ -163,37 +163,3 @@ fun ValidationResult.throwOnFailure(
         cause = cause,
     )
 }
-
-/**
- * @return a [ValidationException] if this result is invalid, otherwise returns `null`.
- * @see ValidationResult.isInvalid
- */
-inline fun ValidationResult.asExceptionOrNull(
-    message: String? = null,
-    cause: Throwable? = null,
-): ValidationException? =
-    fold(
-        onValid = { null },
-        onInvalid = {
-            ValidationException(
-                message = message,
-                violations = it,
-                cause = cause,
-            )
-        },
-    )
-
-/**
- * @return a [ValidationException] if this result is invalid, otherwise returns `null`.
- * @see ValidationResult.isInvalid
- */
-inline fun ValidationResult.asExceptionOrNull(cause: Throwable? = null): ValidationException? =
-    fold(
-        onValid = { null },
-        onInvalid = {
-            ValidationException(
-                violations = it,
-                cause = cause,
-            )
-        },
-    )
