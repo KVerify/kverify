@@ -18,7 +18,7 @@ class ThrowingValidator : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     /**
-     * Converts [message] into [io.github.kverify.core.violation.AnyViolation]
+     * Converts [message] into [io.github.kverify.core.violation.StringViolation]
      * and handles a validation failure.
      */
     fun onFailure(message: String): Nothing = onFailure(message.asViolation())

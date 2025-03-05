@@ -29,7 +29,7 @@ fun interface ValidationContext {
 }
 
 /**
- * Converts [message] into [io.github.kverify.core.violation.AnyViolation]
+ * Converts [message] into [io.github.kverify.core.violation.StringViolation]
  * and handles a validation failure.
  */
 fun ValidationContext.onFailure(message: String): Unit =

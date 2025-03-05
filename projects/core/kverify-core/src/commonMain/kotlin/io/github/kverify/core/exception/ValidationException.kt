@@ -59,7 +59,7 @@ fun ValidationException(
 
 /**
  * Creates a [ValidationException] with the given [message] and [violationMessages],
- * mapping the [violationMessages] to [io.github.kverify.core.violation.AnyViolation] objects.
+ * mapping the [violationMessages] to [io.github.kverify.core.violation.StringViolation] objects.
  */
 fun ValidationException(
     message: String? = null,
@@ -74,7 +74,7 @@ fun ValidationException(
 
 /**
  * Creates a [ValidationException] from the given [violationMessages],
- * mapping them to [io.github.kverify.core.violation.AnyViolation] objects.
+ * mapping them to [io.github.kverify.core.violation.StringViolation] objects.
  */
 @JvmName("ValidationExceptionFromMessages")
 fun ValidationException(

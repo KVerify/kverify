@@ -1,7 +1,7 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.model.Rule
-import io.github.kverify.core.violation.AnyViolation
+import io.github.kverify.core.violation.StringViolation
 import io.github.kverify.core.violation.Violation
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -15,7 +15,7 @@ class ValidationContextTest :
             val violations = mutableListOf<Violation>()
             val context = ValidationContext { violations.add(it) }
 
-            val testViolation = AnyViolation("Test Error")
+            val testViolation = StringViolation("Test Error")
             context.onFailure(testViolation)
 
             violations.size shouldBe 1
@@ -26,8 +26,8 @@ class ValidationContextTest :
             val violations = mutableListOf<Violation>()
             val context = ValidationContext { violations.add(it) }
 
-            val rule1 = DummyRule<Int>(true, AnyViolation("Rule 1 failed"))
-            val rule2 = DummyRule<Int>(false, AnyViolation("Rule 2 failed"))
+            val rule1 = DummyRule<Int>(true, StringViolation("Rule 1 failed"))
+            val rule2 = DummyRule<Int>(false, StringViolation("Rule 2 failed"))
 
             42.applyRules(context, rule1, rule2)
 
@@ -38,7 +38,7 @@ class ValidationContextTest :
         test("validate triggers onFailure when condition is false") {
             val violations = mutableListOf<Violation>()
             val context = ValidationContext { violations.add(it) }
-            val testViolation = AnyViolation("Condition failed")
+            val testViolation = StringViolation("Condition failed")
 
             context.validate(false) { testViolation }
 
@@ -48,7 +48,7 @@ class ValidationContextTest :
         test("validate does not trigger onFailure when condition is true") {
             val context = ValidationContext { fail("onFailure was triggered") }
 
-            context.validate(true) { AnyViolation("Condition failed") }
+            context.validate(true) { StringViolation("Condition failed") }
         }
 
         test("validate does not trigger violationGenerator lambda when condition is true") {

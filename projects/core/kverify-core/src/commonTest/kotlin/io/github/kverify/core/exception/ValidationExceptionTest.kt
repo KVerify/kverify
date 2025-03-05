@@ -1,7 +1,7 @@
 package io.github.kverify.core.exception
 
 import io.github.kverify.core.util.shouldContain
-import io.github.kverify.core.violation.AnyViolation
+import io.github.kverify.core.violation.StringViolation
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 import io.kotest.assertions.throwables.shouldThrow
@@ -11,8 +11,8 @@ import io.kotest.matchers.shouldBe
 class ValidationExceptionTest :
     FunSpec({
         test("ValidationException creates exception with given violations") {
-            val violation1 = AnyViolation("Violation 1")
-            val violation2 = AnyViolation("Violation 2")
+            val violation1 = StringViolation("Violation 1")
+            val violation2 = StringViolation("Violation 2")
 
             val exception = ValidationException(listOf(violation1, violation2))
             val exceptionMessage = exception.message!!
@@ -32,7 +32,7 @@ class ValidationExceptionTest :
 
         test("ValidationException includes the cause if provided") {
             val cause = Throwable("Some cause")
-            val violation = AnyViolation("Violation with cause")
+            val violation = StringViolation("Violation with cause")
 
             val exception = ValidationException(listOf(violation), cause = cause)
             val exceptionMessage = exception.message!!
@@ -42,8 +42,8 @@ class ValidationExceptionTest :
         }
 
         test("ValidationException handles vararg violations") {
-            val violation1 = AnyViolation("Violation 1")
-            val violation2 = AnyViolation("Violation 2")
+            val violation1 = StringViolation("Violation 1")
+            val violation2 = StringViolation("Violation 2")
 
             val exception = ValidationException(violation1, violation2)
             val exceptionMessage = exception.message!!
@@ -78,7 +78,7 @@ class ValidationExceptionTest :
         }
 
         test("ValidationException can be thrown") {
-            val violation = AnyViolation("Sample Violation")
+            val violation = StringViolation("Sample Violation")
 
             val exception =
                 shouldThrow<ValidationException> {
