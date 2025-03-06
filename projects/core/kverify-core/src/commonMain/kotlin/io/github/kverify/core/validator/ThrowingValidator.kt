@@ -43,6 +43,21 @@ class ThrowingValidator : ValidationContext {
 }
 
 /**
+ * Using a global variable instead of an `object`
+ * to avoid exposing [ThrowingValidator.validate] and [ThrowingValidator.onFailure] globally.
+ * These functions should only be used within the context of validation, and exposing them globally via an `object`
+ * would lead to confusing IDE suggestions.
+ *
+ * By using a global variable,
+ * we ensure that only a single instance of [ThrowingValidator] is used throughout the codebase,
+ * preventing unnecessary object instantiation while keeping the intended context-specific usage clear.
+ *
+ * This approach avoids the global scope of an `object` while still providing a shared, reusable instance.
+ */
+@PublishedApi
+internal val ThrowingValidatorObject = ThrowingValidator()
+
+/**
  * Executes the given [block] within a [ThrowingValidator] context.
  *
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
@@ -52,7 +67,7 @@ inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
-    ThrowingValidator().apply(block)
+    ThrowingValidatorObject.apply(block)
 }
 
 /**
@@ -123,7 +138,7 @@ fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
 inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> =
     try {
         Result.success(
-            ThrowingValidator().run(block),
+            ThrowingValidatorObject.run(block),
         )
     } catch (e: ValidationException) {
         Result.failure(e)
