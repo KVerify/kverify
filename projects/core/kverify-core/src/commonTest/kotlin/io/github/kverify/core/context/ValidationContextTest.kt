@@ -58,8 +58,7 @@ class ValidationContextTest :
         }
     })
 
-// DummyRule class to simulate validation rules
-class DummyRule<T>(
+private class DummyRule<T>(
     val shouldFail: Boolean,
     val violation: Violation,
 ) : Rule<T> {
