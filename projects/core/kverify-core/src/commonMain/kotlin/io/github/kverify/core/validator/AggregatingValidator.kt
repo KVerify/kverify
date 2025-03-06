@@ -66,7 +66,7 @@ fun <T> T.validateAll(
     }
 
 /**
- * Runs the given [block] within an [AggregatingValidator] context,
+ * Runs given [block] within an [AggregatingValidator] context,
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
  *

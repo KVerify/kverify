@@ -132,8 +132,8 @@ inline fun <T> ValidationResult.fold(
     }
 
 /**
- * If this result is invalid, uses [joinToString] to generate message from [ValidationResult.violations]
- * and throws [ValidationException], containing generated message.
+ * If this result is invalid, uses [joinToString] to generate a message from [ValidationResult.violations]
+ * and throws [ValidationException], containing the generated message.
  *
  * @see joinToString
  * @see ValidationResult.isInvalid
