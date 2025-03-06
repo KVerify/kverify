@@ -24,7 +24,7 @@ class ThrowingValidator : ValidationContext {
     fun onFailure(message: String): Nothing = onFailure(message.asViolation())
 
     /**
-     * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
+     * Uses Kotlin contracts to indicate that a successful return implies [condition] was `true`.
      *
      * @throws ValidationException with the result of calling [violationGenerator]
      * if [condition] is `false`.
