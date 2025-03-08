@@ -216,19 +216,19 @@ open class StringRules(
                 violationGenerator(value)
             }
         }
+    }
 
-        inner class NamedLengthBetween(
-            val range: IntRange,
-            val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
-                stringViolations.lengthBetween(range, value, name)
-            },
-        ) : NamedRule<String> {
-            override fun ValidationContext.runValidation(value: NamedValue<String>) {
-                validate(
-                    value.value.length in range,
-                ) {
-                    violationGenerator(value)
-                }
+    inner class NamedLengthBetween(
+        val range: IntRange,
+        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+            stringViolations.lengthBetween(range, value, name)
+        },
+    ) : NamedRule<String> {
+        override fun ValidationContext.runValidation(value: NamedValue<String>) {
+            validate(
+                value.value.length in range,
+            ) {
+                violationGenerator(value)
             }
         }
     }
