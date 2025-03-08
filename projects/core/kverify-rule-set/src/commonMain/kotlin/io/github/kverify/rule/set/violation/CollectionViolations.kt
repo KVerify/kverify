@@ -47,6 +47,7 @@ interface CollectionViolations {
         name: String = "collection",
     ): Violation {
         val missingElements = elements.filterNot { it in value }.joinToString(", ")
+
         return if (missingElements.isNotEmpty()) {
             "'$name' must contain all of the following elements: [$missingElements], but some are missing."
                 .asViolation()
@@ -61,6 +62,7 @@ interface CollectionViolations {
         name: String = "collection",
     ): Violation {
         val forbiddenElements = elements.filter { it in value }.joinToString(", ")
+
         return if (forbiddenElements.isNotEmpty()) {
             "'$name' must not contain these elements: [$forbiddenElements], but they are present.".asViolation()
         } else {
@@ -91,14 +93,12 @@ interface CollectionViolations {
         value: C,
         name: String = "collection",
     ): Violation {
-        val unexpectedElements = value.filterNot { it in elements }.joinToString(", ")
-        val missingElements = elements.filterNot { it in value }.joinToString(", ")
-        return if (unexpectedElements.isNotEmpty() || missingElements.isNotEmpty()) {
-            "'$name' must contain only the elements: [${
-                elements.joinToString(
-                    ", ",
-                )
-            }], but it also contains: [$unexpectedElements] and is missing: [$missingElements].".asViolation()
+        val unexpectedElements = value.filter { it !in elements }.joinToString(", ")
+        val elementsAsString = elements.joinToString(", ")
+
+        return if (unexpectedElements.isNotEmpty()) {
+            "'$name' must contain only the elements: [$elementsAsString], but it also contains: [$unexpectedElements]."
+                .asViolation()
         } else {
             "'$name' must only contain the specified elements.".asViolation()
         }
@@ -120,6 +120,7 @@ interface CollectionViolations {
                 .filter { it.value > 1 }
                 .keys
                 .joinToString(", ")
+
         return if (duplicates.isNotEmpty()) {
             "'$name' must contain only distinct elements, but it has duplicates: [$duplicates].".asViolation()
         } else {
