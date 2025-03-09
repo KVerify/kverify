@@ -11,7 +11,6 @@ import io.github.kverify.rule.set.violation.CollectionViolations
 open class CollectionRules(
     val collectionViolations: CollectionViolations = CollectionViolations.Default,
 ) {
-    // Simple value rules with generator
     inner class OfSize<C : Collection<*>>(
         val size: Int,
         val violationGenerator: (C) -> Violation = { value ->
