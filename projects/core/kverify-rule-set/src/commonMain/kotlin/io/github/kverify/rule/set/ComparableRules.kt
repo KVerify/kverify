@@ -8,7 +8,6 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.ComparableViolations
 
-@Suppress("TooManyFunctions")
 open class ComparableRules(
     val comparableViolations: ComparableViolations = ComparableViolations.Default,
 ) {
