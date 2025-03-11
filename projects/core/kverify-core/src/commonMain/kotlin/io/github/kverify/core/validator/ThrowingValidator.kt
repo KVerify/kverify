@@ -112,7 +112,7 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
  *
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
  */
-fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
+fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
     validateOrThrow {
         applyRules(*rules)
     }
@@ -123,7 +123,7 @@ fun <T> T.validateOrThrow(vararg rules: Rule<T>): Unit =
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
  */
-fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult =
+fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
         applyRules(*rules)
     }

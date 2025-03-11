@@ -57,12 +57,12 @@ inline fun validateAll(
  *
  * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
  */
-fun <T> T.validateAll(
+fun <T> T.validateAllWithRules(
     vararg rules: Rule<T>,
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
 ): ValidationResult =
     validateAll(violationsStorage) lambda@{
-        this@validateAll.applyRules(*rules)
+        this@validateAllWithRules.applyRules(*rules)
     }
 
 /**
