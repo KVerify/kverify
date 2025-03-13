@@ -58,26 +58,13 @@ class ThrowingValidator : ValidationContext {
 internal val ThrowingValidatorObject = ThrowingValidator()
 
 /**
- * Executes the given [block] within a [ThrowingValidator] context.
- *
- * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
- */
-@OptIn(ExperimentalContracts::class)
-inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-    ThrowingValidatorObject.apply(block)
-}
-
-/**
  * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
  *
  * @throws ValidationException with the result of calling [violationGenerator]
  * if [condition] is `false`.
  */
 @OptIn(ExperimentalContracts::class)
-inline fun validateOrThrow(
+inline fun validateThatOrThrow(
     condition: Boolean,
     violationGenerator: () -> Violation,
 ) {
@@ -91,6 +78,19 @@ inline fun validateOrThrow(
             violationGenerator,
         )
     }
+}
+
+/**
+ * Executes the given [block] within a [ThrowingValidator] context.
+ *
+ * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
+ */
+@OptIn(ExperimentalContracts::class)
+inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+    ThrowingValidatorObject.apply(block)
 }
 
 /**
