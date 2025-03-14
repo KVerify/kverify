@@ -13,7 +13,7 @@ import kotlin.contracts.contract
  * Implementation of [ValidationContext] that throws a [ValidationException]
  * containing the first [Violation] reported via [ValidationContext.onFailure].
  */
-class ThrowingValidationContext : ValidationContext {
+open class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     /**
@@ -39,22 +39,9 @@ class ThrowingValidationContext : ValidationContext {
 
         if (!condition) onFailure(violationGenerator())
     }
-}
 
-/**
- * Using a global variable instead of an `object`
- * to avoid exposing [ThrowingValidationContext.validate] and [ThrowingValidationContext.onFailure] globally.
- * These functions should only be used within the context of validation, and exposing them globally via an `object`
- * would lead to confusing IDE suggestions.
- *
- * By using a global variable,
- * we ensure that only a single instance of [ThrowingValidationContext] is used throughout the codebase,
- * preventing unnecessary object instantiation while keeping the intended context-specific usage clear.
- *
- * This approach avoids the global scope of an `object` while still providing a shared, reusable instance.
- */
-@PublishedApi
-internal val ThrowingValidationContextObject = ThrowingValidationContext()
+    companion object : ThrowingValidationContext()
+}
 
 /**
  * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
@@ -89,7 +76,7 @@ inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
-    ThrowingValidationContextObject.apply(block)
+    ThrowingValidationContext.apply(block)
 }
 
 /**
@@ -137,7 +124,7 @@ fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
 inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     try {
         Result.success(
-            ThrowingValidationContextObject.run(block),
+            ThrowingValidationContext.run(block),
         )
     } catch (e: ValidationException) {
         Result.failure(e)
