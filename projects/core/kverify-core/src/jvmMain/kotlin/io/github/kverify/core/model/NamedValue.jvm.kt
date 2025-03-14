@@ -17,19 +17,19 @@ fun <T> KProperty<T>.toNamed(): NamedValue<T> =
     try {
         val name = name
 
-        val original = getter.isAccessible
+        val originalIsAccessible = getter.isAccessible
 
         getter.isAccessible = true
 
-        val named =
+        val namedValue =
             NamedValue(
                 name,
                 getter.call(),
             )
 
-        getter.isAccessible = original
+        getter.isAccessible = originalIsAccessible
 
-        named
+        namedValue
     } catch (e: IllegalArgumentException) {
         throw PropertyAccessException(
             """
