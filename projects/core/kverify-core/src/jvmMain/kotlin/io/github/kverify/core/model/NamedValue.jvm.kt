@@ -15,16 +15,14 @@ import kotlin.reflect.jvm.isAccessible
  */
 fun <T> KProperty<T>.toNamed(): NamedValue<T> =
     try {
-        val name = name
-
         val originalIsAccessible = getter.isAccessible
 
         getter.isAccessible = true
 
         val namedValue =
             NamedValue(
-                name,
-                getter.call(),
+                name = name,
+                value = getter.call(),
             )
 
         getter.isAccessible = originalIsAccessible
