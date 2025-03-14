@@ -1,6 +1,5 @@
-package io.github.kverify.core.validator
+package io.github.kverify.core.context
 
-import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
@@ -14,7 +13,7 @@ import kotlin.contracts.contract
  * collects [Violation]s reported via [ValidationContext.onFailure]
  * and stores them in [violationsStorage].
  */
-class AggregatingValidator(
+class AggregatingValidationContext(
     val violationsStorage: MutableCollection<Violation> = mutableListOf(),
 ) : ValidationContext {
     override fun onFailure(violation: Violation) {
@@ -23,7 +22,7 @@ class AggregatingValidator(
 }
 
 /**
- * Executes the given [block] within an [AggregatingValidator] context,
+ * Executes the given [block] within an [AggregatingValidationContext] context,
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
  *
@@ -34,14 +33,14 @@ class AggregatingValidator(
 @OptIn(ExperimentalContracts::class)
 inline fun validateAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
-    block: AggregatingValidator.() -> Unit,
+    block: AggregatingValidationContext.() -> Unit,
 ): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
     return ValidationResult(
-        AggregatingValidator(violationsStorage)
+        AggregatingValidationContext(violationsStorage)
             .apply(block)
             .violationsStorage
             .toList(),
@@ -49,7 +48,7 @@ inline fun validateAll(
 }
 
 /**
- * Applies all [rules] to this value within an [AggregatingValidator] context,
+ * Applies all [rules] to this value within an [AggregatingValidationContext] context,
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
  *
@@ -66,7 +65,7 @@ fun <T> T.validateAllWithRules(
     }
 
 /**
- * Runs given [block] within an [AggregatingValidator] context,
+ * Runs given [block] within an [AggregatingValidationContext] context,
  * collecting [Violation]s reported via [ValidationContext.onFailure]
  * and storing them in [violationsStorage].
  *
@@ -79,16 +78,16 @@ fun <T> T.validateAllWithRules(
 @OptIn(ExperimentalContracts::class)
 inline fun <T> runValidatingAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
-    block: AggregatingValidator.() -> T,
+    block: AggregatingValidationContext.() -> T,
 ): Result<T> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val aggregatingValidator = AggregatingValidator(violationsStorage)
-    val result = aggregatingValidator.run(block)
+    val aggregatingValidationContext = AggregatingValidationContext(violationsStorage)
+    val result = aggregatingValidationContext.run(block)
 
-    val violations = aggregatingValidator.violationsStorage.toList()
+    val violations = aggregatingValidationContext.violationsStorage.toList()
 
     return if (violations.isEmpty()) {
         Result.success(result)

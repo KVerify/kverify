@@ -1,6 +1,5 @@
-package io.github.kverify.core.validator
+package io.github.kverify.core.context
 
-import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
@@ -14,7 +13,7 @@ import kotlin.contracts.contract
  * Implementation of [ValidationContext] that throws a [ValidationException]
  * containing the first [Violation] reported via [ValidationContext.onFailure].
  */
-class ThrowingValidator : ValidationContext {
+class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     /**
@@ -44,18 +43,18 @@ class ThrowingValidator : ValidationContext {
 
 /**
  * Using a global variable instead of an `object`
- * to avoid exposing [ThrowingValidator.validate] and [ThrowingValidator.onFailure] globally.
+ * to avoid exposing [ThrowingValidationContext.validate] and [ThrowingValidationContext.onFailure] globally.
  * These functions should only be used within the context of validation, and exposing them globally via an `object`
  * would lead to confusing IDE suggestions.
  *
  * By using a global variable,
- * we ensure that only a single instance of [ThrowingValidator] is used throughout the codebase,
+ * we ensure that only a single instance of [ThrowingValidationContext] is used throughout the codebase,
  * preventing unnecessary object instantiation while keeping the intended context-specific usage clear.
  *
  * This approach avoids the global scope of an `object` while still providing a shared, reusable instance.
  */
 @PublishedApi
-internal val ThrowingValidatorObject = ThrowingValidator()
+internal val ThrowingValidationContextObject = ThrowingValidationContext()
 
 /**
  * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
@@ -81,25 +80,25 @@ inline fun validateThatOrThrow(
 }
 
 /**
- * Executes the given [block] within a [ThrowingValidator] context.
+ * Executes the given [block] within a [ThrowingValidationContext] context.
  *
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
  */
 @OptIn(ExperimentalContracts::class)
-inline fun validateOrThrow(block: ThrowingValidator.() -> Unit) {
+inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
-    ThrowingValidatorObject.apply(block)
+    ThrowingValidationContextObject.apply(block)
 }
 
 /**
- * Executes the given [block] within a [ThrowingValidator] context.
+ * Executes the given [block] within a [ThrowingValidationContext] context.
  *
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
  */
-inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult =
+inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
         ValidationResult.VALID
@@ -108,7 +107,7 @@ inline fun validateFirst(block: ThrowingValidator.() -> Unit): ValidationResult 
     }
 
 /**
- * Applies the given [rules] to this value within a [ThrowingValidator] context.
+ * Applies the given [rules] to this value within a [ThrowingValidationContext] context.
  *
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
  */
@@ -118,7 +117,7 @@ fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
     }
 
 /**
- * Applies the given [rules] to this value within a [ThrowingValidator] context.
+ * Applies the given [rules] to this value within a [ThrowingValidationContext] context.
  *
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
@@ -129,16 +128,16 @@ fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
     }
 
 /**
- * Runs [block] within a [ThrowingValidator] context,
+ * Runs [block] within a [ThrowingValidationContext] context,
  * stopping if any [Violation] is reported via [ValidationContext.onFailure].
  *
  * @return [Result.success], wrapping result of running [block] if no [Violation]s were reported.
  * [Result.failure], wrapping [ValidationException] with the first reported [Violation] otherwise.
  */
-inline fun <T> runValidatingFirst(block: ThrowingValidator.() -> T): Result<T> =
+inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     try {
         Result.success(
-            ThrowingValidatorObject.run(block),
+            ThrowingValidationContextObject.run(block),
         )
     } catch (e: ValidationException) {
         Result.failure(e)
