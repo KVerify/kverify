@@ -13,7 +13,7 @@ import kotlin.contracts.contract
  * collects [Violation]s reported via [ValidationContext.onFailure]
  * and stores them in [violationsStorage].
  */
-class AggregatingValidationContext(
+open class AggregatingValidationContext(
     val violationsStorage: MutableCollection<Violation> = mutableListOf(),
 ) : ValidationContext {
     override fun onFailure(violation: Violation) {
