@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
  * @property name The name of the value.
  * @property value The actual value of type [T].
  */
-data class NamedValue<T>(
+data class NamedValue<out T>(
     val name: String,
     val value: T,
 )
