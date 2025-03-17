@@ -88,7 +88,7 @@ fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult = 
 /**
  * Merges all results in this list, combining all violations.
  */
-fun List<ValidationResult>.merge(): ValidationResult =
+fun List<ValidationResult>.mergeResults(): ValidationResult =
     ValidationResult(
         this.flatMap { it.violations },
     )
