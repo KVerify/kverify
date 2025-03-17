@@ -143,7 +143,7 @@ fun ValidationResult.throwOnFailure(
     separator: CharSequence = ", ",
     prefix: CharSequence = "Validation failed: [",
     postfix: CharSequence = "]",
-    limit: Int = -1,
+    limit: Int = 10,
     truncated: CharSequence = "...",
     cause: Throwable? = null,
     transform: (Violation) -> String = { it.message },
