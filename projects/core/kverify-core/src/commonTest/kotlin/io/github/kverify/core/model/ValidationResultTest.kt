@@ -54,12 +54,19 @@ class ValidationResultTest :
         }
 
         test("toString") {
-            val violationList = List(3) { violation }
+            val violationList = List(11) { violation }
             val validResultString = ValidationResult(emptyList()).toString()
             val otherResultString = ValidationResult(violationList).toString()
 
             validResultString shouldBe "ValidationResult(valid=true)"
-            otherResultString shouldBe "ValidationResult(valid=false, violations=[message, message, message])"
+            otherResultString shouldBe "ValidationResult(valid=false, violations=${
+                violationList.joinToString(
+                    separator = ", ",
+                    prefix = "[",
+                    postfix = "]",
+                    limit = 10,
+                )
+            })"
         }
 
         test("Companion.VALID") {
@@ -131,7 +138,7 @@ class ValidationResultTest :
             val exception = Exception()
 
             val validResult = ValidationResult(emptyList())
-            val invalidResult = ValidationResult(listOf(violation))
+            val invalidResult = ValidationResult(violationList)
 
             val expectedMessage =
                 violationList.joinToString(
