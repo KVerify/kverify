@@ -1,120 +1,91 @@
 package io.github.kverify.core.model
 
-import io.github.kverify.core.model.ifValueNotNull
+import io.github.kverify.core.util.executionCountCheck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
-import kotlin.test.fail
 
 class NamedValueTest :
     FunSpec({
         val name = "name"
-        val value = "value"
-        val anyValue: Any = Unit
+        val value = 1
 
-        test("NamedValue primary constructor") {
+        test("constructor") {
             val namedValue = NamedValue(name, value)
-            val anyNamedValue = NamedValue<Any>(name, anyValue)
+            val namedValue2 =
+                NamedValue(
+                    name = name,
+                    value = value,
+                )
 
-            // Parameters
-            NamedValue(
-                name = name,
-                value = value,
-            )
-
-            namedValue.check(
-                name = name,
-                value = value,
-            )
-
-            anyNamedValue.check(
-                name = name,
-                value = anyValue,
-            )
+            namedValue shouldBe namedValue2
+            namedValue.name shouldBe name
+            namedValue.value shouldBe value
         }
 
         test("withName") {
             val namedValue = value withName name
-
-            namedValue.check(
-                name = name,
-                value = value,
-            )
+            namedValue.name shouldBe name
+            namedValue.value shouldBe value
         }
 
         test("withValue") {
             val namedValue = name withValue value
-
-            namedValue.check(
-                name = name,
-                value = value,
-            )
+            namedValue.name shouldBe name
+            namedValue.value shouldBe value
         }
 
         test("KProperty.toNamed") {
-            val exampleInstance = ExampleClass(value)
-            val namedValue =
-                exampleInstance::value.toNamed(
-                    value = exampleInstance.value,
-                )
+            val namedValue = TestClass::property.toNamed(value)
 
-            namedValue.check(
-                name = exampleInstance::value.name,
-                value = exampleInstance.value,
-            )
+            namedValue.name shouldBe TestClass::property.name
+            namedValue.value shouldBe value
         }
 
         test("Pair.toNamed") {
-            val pair = name to value
-            val anyPair = name to anyValue
+            val namedValue = Pair(name, value).toNamed()
 
-            val namedValue = pair.toNamed()
-            val anyNamedValue = anyPair.toNamed()
-
-            namedValue.check(
-                name = pair.first,
-                value = pair.second,
-            )
-
-            anyNamedValue.check(
-                name = anyPair.first,
-                value = anyPair.second,
-            )
+            namedValue.name shouldBe name
+            namedValue.value shouldBe value
         }
 
         test("ifValueNotNull") {
-            val namedValue: NamedValue<String?> = NamedValue(name, value)
-            val nullNamedValue: NamedValue<Any?> = NamedValue(name, null)
-            var isExecuted = false
+            val notNullNamedValue: NamedValue<Int?> =
+                NamedValue(
+                    name = name,
+                    value = value,
+                )
+            val nullNamedValue: NamedValue<Int?> =
+                NamedValue(
+                    name = name,
+                    value = null,
+                )
 
-            namedValue.ifValueNotNull {
-                isExecuted = true
+            executionCountCheck(
+                expectedCount = 1,
+                message = "Only notNullNamedValue.ifValueNotNull should be executed",
+            ) {
+                notNullNamedValue.ifValueNotNull { execute() }
+                nullNamedValue.ifValueNotNull { execute() }
             }
-
-            nullNamedValue.ifValueNotNull {
-                fail("ifValueNotNull lambda should not be executed if the value is null")
-            }
-
-            isExecuted shouldBe true
         }
 
         test("unwrapOrNull") {
-            val namedValue: NamedValue<String?> = NamedValue(name, value)
-            val nullNamedValue: NamedValue<Any?> = NamedValue(name, null)
+            val notNullNamedValue: NamedValue<Int?> =
+                NamedValue(
+                    name = name,
+                    value = value,
+                )
+            val nullNamedValue: NamedValue<Int?> =
+                NamedValue(
+                    name = name,
+                    value = null,
+                )
 
-            namedValue.unwrapOrNull() shouldNotBe null
+            notNullNamedValue.unwrapOrNull() shouldBe notNullNamedValue
             nullNamedValue.unwrapOrNull() shouldBe null
         }
     })
 
-private class ExampleClass(
-    val value: String,
+private class TestClass(
+    val property: Int,
 )
-
-private fun <T> NamedValue<T>.check(
-    name: String,
-    value: T,
-) {
-    this.name shouldBe name
-    this.value shouldBe value
-}

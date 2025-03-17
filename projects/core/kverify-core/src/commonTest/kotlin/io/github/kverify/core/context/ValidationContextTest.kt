@@ -1,68 +1,51 @@
 package io.github.kverify.core.context
 
-import io.github.kverify.core.model.Rule
+import io.github.kverify.core.util.DummyRule
 import io.github.kverify.core.violation.StringViolation
-import io.github.kverify.core.violation.Violation
+import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import kotlin.test.assertContains
 import kotlin.test.fail
 
 class ValidationContextTest :
     FunSpec({
+        val failingContext = ValidationContext { fail(it.message) }
+        val message = "test"
+        val violation = StringViolation(message)
 
-        test("onFailure captures the violation") {
-            val violations = mutableListOf<Violation>()
-            val context = ValidationContext { violations.add(it) }
+        val successfulRule = DummyRule<Unit>(shouldFail = false, StringViolation("Rule 1 should not fail"))
+        val failingRule = DummyRule<Unit>(shouldFail = true, StringViolation("Rule 2 should fail"))
 
-            val testViolation = StringViolation("Test Error")
-            context.onFailure(testViolation)
+        test("onFailure") {
+            shouldFail {
+                failingContext.onFailure(violation)
+            }.message shouldBe violation.message
 
-            violations.size shouldBe 1
-            assertContains(violations, testViolation)
+            shouldFail {
+                failingContext.onFailure(message)
+            }.message shouldBe message
         }
 
-        test("applyRules executes rules and records failures") {
-            val violations = mutableListOf<Violation>()
-            val context = ValidationContext { violations.add(it) }
+        test("applyRules") {
+            shouldFail {
+                failingContext.run { Unit.applyRules(successfulRule, failingRule) }
+            }.message shouldBe failingRule.violation.message
 
-            val rule1 = DummyRule<Int>(true, StringViolation("Rule 1 failed"))
-            val rule2 = DummyRule<Int>(false, StringViolation("Rule 2 failed"))
+            shouldFail {
+                Unit.applyRules(failingContext, successfulRule, failingRule)
+            }.message shouldBe failingRule.violation.message
 
-            42.applyRules(context, rule1, rule2)
-
-            violations.size shouldBe 1
-            assertContains(violations, rule1.violation)
+            shouldFail {
+                failingContext.applyUnitRules(successfulRule, failingRule)
+            }.message shouldBe failingRule.violation.message
         }
 
-        test("validate triggers onFailure when condition is false") {
-            val violations = mutableListOf<Violation>()
-            val context = ValidationContext { violations.add(it) }
-            val testViolation = StringViolation("Condition failed")
-
-            context.validate(false) { testViolation }
-
-            assertContains(violations, testViolation)
-        }
-
-        test("validate does not trigger onFailure when condition is true") {
-            val context = ValidationContext { fail("onFailure was triggered") }
-
-            context.validate(true) { StringViolation("Condition failed") }
-        }
-
-        test("validate does not trigger violationGenerator lambda when condition is true") {
-            val context = ValidationContext { }
-
-            context.validate(true) { fail("violationGenerator was triggered") }
+        test("validate") {
+            shouldFail {
+                failingContext.run {
+                    validate(successfulRule.shouldFail) { successfulRule.violation }
+                    validate(failingRule.shouldFail) { failingRule.violation }
+                }
+            }.message shouldBe failingRule.violation.message
         }
     })
-
-private class DummyRule<T>(
-    val shouldFail: Boolean,
-    val violation: Violation,
-) : Rule<T> {
-    override fun ValidationContext.runValidation(value: T) {
-        if (shouldFail) onFailure(violation)
-    }
-}

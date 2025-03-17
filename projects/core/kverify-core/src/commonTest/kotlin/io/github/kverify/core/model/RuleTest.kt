@@ -1,66 +1,76 @@
 package io.github.kverify.core.model
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.applyRules
-import io.github.kverify.core.violation.Violation
+import io.github.kverify.core.util.executionCountCheck
 import io.github.kverify.core.violation.asViolation
-import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.shouldBe
-import kotlin.test.fail
 
 class RuleTest :
     FunSpec({
-        val failContext = ValidationContext { fail(it.message) }
+        test("runValidation") {
+            executionCountCheck(
+                expectedCount = 2,
+            ) {
+                val context = ValidationContext { execute() }
 
-        test("Rule fun interface creation") {
-            val message = "Failure"
-            val rule =
-                Rule<String> { string ->
-                    onFailure(string.asViolation())
-                }
+                val rule = Rule<Any> { onFailure("".asViolation()) }
 
-            shouldFail {
-                message.applyRules(failContext, rule)
-            }.message shouldBe message
+                rule.runValidation(context, Unit)
+
+                rule.run { context.runValidation(Unit) }
+            }
         }
 
-        test("Rule(predicate, violationGenerator) factory function") {
-            val message = "Failure"
+        test("plus") {
+            executionCountCheck(
+                expectedCount = 2,
+            ) {
+                val context = ValidationContext { execute() }
 
-            val passingRule =
-                Rule<String>(
-                    { true },
-                    {
-                        fail("violationShould not be called if the predicate returns true")
-                    },
-                )
-            val failingRule =
-                Rule<String>(
-                    { false },
-                    { message.asViolation() },
-                )
+                val rule = Rule<Any> { onFailure("".asViolation()) }
 
-            message.applyRules(failContext, passingRule)
-            shouldFail {
-                message.applyRules(failContext, failingRule)
-            }.message shouldBe message
+                (rule + rule).runValidation(context, Unit)
+            }
         }
 
-        test("Rule.plus") {
-            val collectedViolations = mutableListOf<Violation>()
-            val collectingContext = ValidationContext { collectedViolations.add(it) }
+        test("factory function Rule((T) -> Boolean, (T) -> Violation)") {
+            val context = ValidationContext {}
 
-            val violation1 = "1".asViolation()
-            val violation2 = "2".asViolation()
+            executionCountCheck(
+                expectedCount = 2,
+            ) {
+                val rule =
+                    Rule<Any>(
+                        predicate = {
+                            execute()
+                            false
+                        },
+                        violationGenerator = {
+                            execute()
+                            "".asViolation()
+                        },
+                    )
 
-            val rule1 = Rule<String> { onFailure(violation1) }
-            val rule2 = Rule<String> { onFailure(violation2) }
-            val ruleSum = rule1 + rule2
+                rule.runValidation(context, Unit)
+            }
 
-            "".applyRules(collectingContext, ruleSum)
+            executionCountCheck(
+                expectedCount = 1,
+                message = "violationGenerator was executed with predicate==true",
+            ) {
+                val rule =
+                    Rule<Any>(
+                        predicate = {
+                            execute()
+                            true
+                        },
+                        violationGenerator = {
+                            execute()
+                            "".asViolation()
+                        },
+                    )
 
-            collectedViolations[0] shouldBe violation1
-            collectedViolations[1] shouldBe violation2
+                rule.runValidation(context, Unit)
+            }
         }
     })
