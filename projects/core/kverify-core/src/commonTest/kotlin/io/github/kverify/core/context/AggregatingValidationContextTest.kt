@@ -1,7 +1,7 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ValidationException
-import io.github.kverify.core.util.DummyRule
+import io.github.kverify.core.util.StubRule
 import io.github.kverify.core.util.shouldContainExactly
 import io.github.kverify.core.violation.StringViolation
 import io.github.kverify.core.violation.Violation
@@ -13,7 +13,7 @@ class AggregatingValidationContextTest :
     FunSpec({
         val message = "test"
         val violation = StringViolation(message)
-        val failingRule = DummyRule<Any>(shouldFail = true, violation)
+        val failingRule = StubRule<Any>(shouldFail = true, violation)
 
         test("Adds violations to violationsStorage") {
             val violationsStorage: MutableCollection<Violation> = mutableListOf(violation)

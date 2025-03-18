@@ -4,7 +4,7 @@ import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
 
-data class DummyRule<T>(
+data class StubRule<T>(
     val shouldFail: Boolean,
     val violation: Violation,
 ) : Rule<T> {
