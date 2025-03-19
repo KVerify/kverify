@@ -47,14 +47,12 @@ class AggregatingValidationContextTest :
         test("validateAllWithRules") {
             val violationsStorage: MutableCollection<Violation> = mutableListOf(violation)
 
-            val defaultStoreResult =
-                validateAll {
-                    Unit.applyRules(failingRule)
-                }
+            val defaultStoreResult = Unit.validateAllWithRules(failingRule)
             val customStoreResult =
-                validateAll(violationsStorage) {
-                    Unit.applyRules(failingRule)
-                }
+                Unit.validateAllWithRules(
+                    violationsStorage = violationsStorage,
+                    failingRule,
+                )
 
             // validateAll must create a copy of violationsStorage on return
             violationsStorage.add(violation)
