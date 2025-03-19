@@ -45,7 +45,7 @@ fun <T> T.applyRules(
     vararg rules: Rule<T>,
 ): T =
     context.run validationContext@{
-        this@applyRules.applyRules(*rules)
+        this@applyRules.applyRules(rules = rules)
     }
 
 /**

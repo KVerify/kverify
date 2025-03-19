@@ -75,7 +75,7 @@ class ValidationResultTest :
 
         test("factory function ValidationResult(vararg Violation)") {
             val violationList = List(3) { violation }
-            ValidationResult(*violationList.toTypedArray()) shouldBe ValidationResult(violationList)
+            ValidationResult(violations = violationList.toTypedArray()) shouldBe ValidationResult(violationList)
         }
 
         test("merge") {
