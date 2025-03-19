@@ -54,13 +54,27 @@ inline fun validateAll(
  *
  * Note: This function will create a copy of [violationsStorage] to use in [ValidationResult]
  *
- * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
+ * @return [ValidationResult] containing all collected [Violation]s.
  */
 fun <T> T.validateAllWithRules(
+    violationsStorage: MutableCollection<Violation>,
     vararg rules: Rule<T>,
-    violationsStorage: MutableCollection<Violation> = mutableListOf(),
 ): ValidationResult =
     validateAll(violationsStorage) lambda@{
+        this@validateAllWithRules.applyRules(*rules)
+    }
+
+/**
+ * Applies all [rules] to this value within an [AggregatingValidationContext] context,
+ * collecting [Violation]s reported via [ValidationContext.onFailure]
+ * and storing them in a new [MutableList].
+ *
+ * @return [ValidationResult] containing all collected [Violation]s.
+ */
+fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
+    validateAll(
+        violationsStorage = mutableListOf(),
+    ) lambda@{
         this@validateAllWithRules.applyRules(*rules)
     }
 
