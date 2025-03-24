@@ -13,8 +13,8 @@ import kotlin.contracts.contract
  * collects [Violation]s reported via [ValidationContext.onFailure]
  * and stores them in [violationsStorage].
  */
-open class AggregatingValidationContext(
-    val violationsStorage: MutableCollection<Violation> = mutableListOf(),
+public open class AggregatingValidationContext(
+    public val violationsStorage: MutableCollection<Violation> = mutableListOf(),
 ) : ValidationContext {
     override fun onFailure(violation: Violation) {
         violationsStorage.add(violation)
@@ -31,7 +31,7 @@ open class AggregatingValidationContext(
  * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
  */
 @OptIn(ExperimentalContracts::class)
-inline fun validateAll(
+public inline fun validateAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
     block: AggregatingValidationContext.() -> Unit,
 ): ValidationResult {
@@ -56,7 +56,7 @@ inline fun validateAll(
  *
  * @return [ValidationResult] containing all collected [Violation]s.
  */
-fun <T> T.validateAllWithRules(
+public fun <T> T.validateAllWithRules(
     violationsStorage: MutableCollection<Violation>,
     vararg rules: Rule<T>,
 ): ValidationResult =
@@ -71,7 +71,7 @@ fun <T> T.validateAllWithRules(
  *
  * @return [ValidationResult] containing all collected [Violation]s.
  */
-fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
+public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
     validateAll(
         violationsStorage = mutableListOf(),
     ) lambda@{
@@ -90,7 +90,7 @@ fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
  * with all collected [Violation]s
  */
 @OptIn(ExperimentalContracts::class)
-inline fun <T> runValidatingAll(
+public inline fun <T> runValidatingAll(
     violationsStorage: MutableCollection<Violation> = mutableListOf(),
     block: AggregatingValidationContext.() -> T,
 ): Result<T> {

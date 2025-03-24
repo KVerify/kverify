@@ -6,7 +6,7 @@ package io.github.kverify.core.exception
  * @param message a message describing the error.
  * @param cause an optional cause of the exception.
  */
-class PropertyAccessException(
+public class PropertyAccessException(
     override val message: String,
     override val cause: Throwable? = null,
 ) : Throwable()

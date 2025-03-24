@@ -8,25 +8,25 @@ import kotlin.jvm.JvmInline
  * Represents the result of a validation process, containing a list of [violations].
  */
 @JvmInline
-value class ValidationResult(
-    val violations: List<Violation>,
+public value class ValidationResult(
+    public val violations: List<Violation>,
 ) {
     /**
      * Returns `true` if there are no violations.
      */
-    inline val isValid: Boolean
+    public inline val isValid: Boolean
         get() = violations.isEmpty()
 
     /**
      * Returns `true` if there is at least one violation.
      */
-    inline val isInvalid: Boolean
+    public inline val isInvalid: Boolean
         get() = violations.isNotEmpty()
 
     /**
      * Returns a new result with [violation] added.
      */
-    operator fun plus(violation: Violation): ValidationResult =
+    public operator fun plus(violation: Violation): ValidationResult =
         ValidationResult(
             this.violations + violation,
         )
@@ -34,7 +34,7 @@ value class ValidationResult(
     /**
      * Returns a new result with [violations] added.
      */
-    operator fun <C : Collection<Violation>> plus(violations: C): ValidationResult =
+    public operator fun <C : Collection<Violation>> plus(violations: C): ValidationResult =
         ValidationResult(
             this.violations + violations,
         )
@@ -42,7 +42,7 @@ value class ValidationResult(
     /**
      * Combines this result with [other], merging their violations.
      */
-    operator fun plus(other: ValidationResult): ValidationResult =
+    public operator fun plus(other: ValidationResult): ValidationResult =
         ValidationResult(
             this.violations + other.violations,
         )
@@ -61,11 +61,11 @@ value class ValidationResult(
             })"
         }
 
-    companion object {
+    public companion object {
         /**
          * Represents a successful validation result with no violations.
          */
-        val VALID = ValidationResult(emptyList())
+        public val VALID: ValidationResult = ValidationResult(emptyList())
     }
 }
 
@@ -73,7 +73,7 @@ value class ValidationResult(
  * Creates a [ValidationResult] from [violations].
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun ValidationResult(vararg violations: Violation): ValidationResult =
+public inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
         violations.asList(),
     )
@@ -81,12 +81,12 @@ inline fun ValidationResult(vararg violations: Violation): ValidationResult =
 /**
  * Merges this result with [results], combining all violations.
  */
-fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult = this + results.flatMap { it.violations }
+public fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult = this + results.flatMap { it.violations }
 
 /**
  * Merges all results in this list, combining all violations.
  */
-fun List<ValidationResult>.mergeResults(): ValidationResult =
+public fun List<ValidationResult>.mergeResults(): ValidationResult =
     ValidationResult(
         this.flatMap { it.violations },
     )
@@ -97,7 +97,7 @@ fun List<ValidationResult>.mergeResults(): ValidationResult =
  * @return the original result.
  * @see ValidationResult.isValid
  */
-inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
+public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
     if (isValid) block()
     return this
 }
@@ -108,7 +108,7 @@ inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
  * @return the original result.
  * @see ValidationResult.isInvalid
  */
-inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
+public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
     if (isInvalid) block(violations)
     return this
 }
@@ -119,7 +119,7 @@ inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): Validat
  * @see ValidationResult.isValid
  * @see ValidationResult.isInvalid
  */
-inline fun <T> ValidationResult.fold(
+public inline fun <T> ValidationResult.fold(
     onValid: () -> T,
     onInvalid: (List<Violation>) -> T,
 ): T =
@@ -137,7 +137,7 @@ inline fun <T> ValidationResult.fold(
  * @see ValidationResult.isInvalid
  */
 @Suppress("LongParameterList")
-fun ValidationResult.throwOnFailure(
+public fun ValidationResult.throwOnFailure(
     separator: CharSequence = ", ",
     prefix: CharSequence = "Validation failed: [",
     postfix: CharSequence = "]",

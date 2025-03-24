@@ -4,44 +4,44 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 
 @Suppress("TooManyFunctions")
-interface CollectionViolations {
-    fun <C : Collection<*>> ofSize(
+public interface CollectionViolations {
+    public fun <C : Collection<*>> ofSize(
         size: Int,
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must have exactly $size elements, but it has ${value.size}.".asViolation()
 
-    fun <C : Collection<*>> notOfSize(
+    public fun <C : Collection<*>> notOfSize(
         size: Int,
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must not have exactly $size elements, but it does.".asViolation()
 
-    fun <C : Collection<*>> maxSize(
+    public fun <C : Collection<*>> maxSize(
         size: Int,
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must have at most $size elements, but it has ${value.size}.".asViolation()
 
-    fun <C : Collection<*>> minSize(
+    public fun <C : Collection<*>> minSize(
         size: Int,
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must have at least $size elements, but it has ${value.size}.".asViolation()
 
-    fun <C : Collection<*>> sizeBetween(
+    public fun <C : Collection<*>> sizeBetween(
         range: IntRange,
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must have a size within the range $range, but it has ${value.size}.".asViolation()
 
-    fun <C : Collection<*>> sizeNotBetween(
+    public fun <C : Collection<*>> sizeNotBetween(
         range: IntRange,
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must not have a size within the range $range, but it has ${value.size}.".asViolation()
 
-    fun <T, C : Collection<T>> containsAll(
+    public fun <T, C : Collection<T>> containsAll(
         elements: Collection<T>,
         value: C,
         name: String = "collection",
@@ -56,7 +56,7 @@ interface CollectionViolations {
         }
     }
 
-    fun <T, C : Collection<T>> containsNone(
+    public fun <T, C : Collection<T>> containsNone(
         elements: Collection<T>,
         value: C,
         name: String = "collection",
@@ -70,7 +70,7 @@ interface CollectionViolations {
         }
     }
 
-    fun <T, C : Collection<T>> contains(
+    public fun <T, C : Collection<T>> contains(
         element: T,
         value: C,
         name: String = "collection",
@@ -79,7 +79,7 @@ interface CollectionViolations {
         return "'$name' must contain the element '$element', but it only contains: [$valueString].".asViolation()
     }
 
-    fun <T, C : Collection<T>> notContains(
+    public fun <T, C : Collection<T>> notContains(
         element: T,
         value: C,
         name: String = "collection",
@@ -88,7 +88,7 @@ interface CollectionViolations {
         return "'$name' must not contain the element '$element', but it contains: [$valueString].".asViolation()
     }
 
-    fun <T, C : Collection<T>> containsOnly(
+    public fun <T, C : Collection<T>> containsOnly(
         elements: Collection<T>,
         value: C,
         name: String = "collection",
@@ -104,12 +104,12 @@ interface CollectionViolations {
         }
     }
 
-    fun <C : Collection<*>> notEmpty(
+    public fun <C : Collection<*>> notEmpty(
         value: C,
         name: String = "collection",
     ): Violation = "'$name' must not be empty, but it is.".asViolation()
 
-    fun <C : Collection<*>> distinct(
+    public fun <C : Collection<*>> distinct(
         value: C,
         name: String = "collection",
     ): Violation {
@@ -128,5 +128,5 @@ interface CollectionViolations {
         }
     }
 
-    companion object Default : CollectionViolations
+    public companion object Default : CollectionViolations
 }

@@ -4,68 +4,68 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 
 @Suppress("TooManyFunctions")
-interface StringViolations {
-    fun ofLength(
+public interface StringViolations {
+    public fun ofLength(
         length: Int,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must have exactly $length characters, but it has ${value.length}.".asViolation()
 
-    fun notOfLength(
+    public fun notOfLength(
         length: Int,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not have exactly $length characters, but it does.".asViolation()
 
-    fun maxLength(
+    public fun maxLength(
         max: Int,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must have at most $max characters, but it has ${value.length}.".asViolation()
 
-    fun minLength(
+    public fun minLength(
         min: Int,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must have at least $min characters, but it has ${value.length}.".asViolation()
 
-    fun lengthBetween(
+    public fun lengthBetween(
         range: IntRange,
         value: String,
         name: String = "string",
     ): Violation = "'$name' length must be within $range, but it has ${value.length}.".asViolation()
 
-    fun lengthNotBetween(
+    public fun lengthNotBetween(
         range: IntRange,
         value: String,
         name: String = "string",
     ): Violation = "'$name' length must not be within $range, but it has ${value.length}.".asViolation()
 
-    fun contains(
+    public fun contains(
         string: String,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain '$string', but it does not.".asViolation()
 
-    fun contains(
+    public fun contains(
         regex: Regex,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must match the pattern '$regex', but it does not.".asViolation()
 
-    fun notContains(
+    public fun notContains(
         string: String,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not contain '$string', but it does.".asViolation()
 
-    fun notContains(
+    public fun notContains(
         regex: Regex,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not match the pattern '$regex', but it does.".asViolation()
 
-    fun containsAll(
+    public fun containsAll(
         chars: Set<Char>,
         value: String,
         name: String = "string",
@@ -75,7 +75,7 @@ interface StringViolations {
             .asViolation()
     }
 
-    fun containsOnly(
+    public fun containsOnly(
         chars: Set<Char>,
         value: String,
         name: String = "string",
@@ -87,7 +87,7 @@ interface StringViolations {
             .asViolation()
     }
 
-    fun containsNone(
+    public fun containsNone(
         chars: Set<Char>,
         value: String,
         name: String = "string",
@@ -97,66 +97,66 @@ interface StringViolations {
         return "'$name' must not contain any of the following characters: $forbiddenChars, but it does.".asViolation()
     }
 
-    fun matches(
+    public fun matches(
         regex: Regex,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must fully match the pattern '$regex', but it does not.".asViolation()
 
-    fun notMatches(
+    public fun notMatches(
         regex: Regex,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not match the pattern '$regex', but it does.".asViolation()
 
-    fun startsWith(
+    public fun startsWith(
         prefix: String,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must start with '$prefix', but it does not.".asViolation()
 
-    fun endsWith(
+    public fun endsWith(
         suffix: String,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must end with '$suffix', but it does not.".asViolation()
 
-    fun alphabetic(
+    public fun alphabetic(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain only alphabetic characters, but it contains invalid characters.".asViolation()
 
-    fun numeric(
+    public fun numeric(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain only numeric characters, but it contains invalid characters.".asViolation()
 
-    fun alphanumeric(
+    public fun alphanumeric(
         value: String,
         name: String = "string",
     ): Violation =
         "'$name' must contain only alphanumeric characters, but it contains invalid characters."
             .asViolation()
 
-    fun notBlank(
+    public fun notBlank(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not be blank, but it is.".asViolation()
 
-    fun notEmpty(
+    public fun notEmpty(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not be empty, but it is.".asViolation()
 
-    fun lowerCase(
+    public fun lowerCase(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must be in lowercase, but it contains uppercase characters.".asViolation()
 
-    fun upperCase(
+    public fun upperCase(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must be in uppercase, but it contains lowercase characters.".asViolation()
 
-    companion object Default : StringViolations
+    public companion object Default : StringViolations
 }

@@ -8,16 +8,16 @@ import io.github.kverify.core.violation.asViolation
 /**
  * Represents a validation context that handles validation failures.
  */
-fun interface ValidationContext {
+public fun interface ValidationContext {
     /**
      * Handles a validation failure for a given [violation].
      */
-    fun onFailure(violation: Violation)
+    public fun onFailure(violation: Violation)
 
     /**
      * @return this value after applying all [rules].
      */
-    fun <T> T.applyRules(vararg rules: Rule<T>): T {
+    public fun <T> T.applyRules(vararg rules: Rule<T>): T {
         rules.forEach {
             it.runValidation(
                 context = this@ValidationContext,
@@ -32,7 +32,7 @@ fun interface ValidationContext {
  * Converts [message] into [io.github.kverify.core.violation.StringViolation]
  * and handles a validation failure.
  */
-fun ValidationContext.onFailure(message: String): Unit =
+public fun ValidationContext.onFailure(message: String): Unit =
     onFailure(
         message.asViolation(),
     )
@@ -40,7 +40,7 @@ fun ValidationContext.onFailure(message: String): Unit =
 /**
  * @return this value after applying all [rules] within a given [context].
  */
-fun <T> T.applyRules(
+public fun <T> T.applyRules(
     context: ValidationContext,
     vararg rules: Rule<T>,
 ): T =
@@ -51,7 +51,7 @@ fun <T> T.applyRules(
 /**
  * Applies given [rules] to [Unit] within the current validation context.
  */
-fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
+public fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
     rules.forEach {
         it.runValidation(
             context = this@applyUnitRules,
@@ -63,7 +63,7 @@ fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
  * Calls [ValidationContext.onFailure] with the result of calling [violationGenerator]
  * if the [condition] is `false`.
  */
-inline fun ValidationContext.validate(
+public inline fun ValidationContext.validate(
     condition: Boolean,
     violationGenerator: () -> Violation,
 ) {

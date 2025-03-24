@@ -5,9 +5,9 @@ package io.github.kverify.core.violation
  *
  * Contains a [message] describing the violation.
  */
-interface Violation {
+public interface Violation {
     /**
      * Describes the violation.
      */
-    val message: String
+    public val message: String
 }

@@ -3,54 +3,54 @@ package io.github.kverify.rule.set.violation
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 
-interface ComparableViolations {
-    fun <T : Comparable<T>> equalTo(
+public interface ComparableViolations {
+    public fun <T : Comparable<T>> equalTo(
         other: T,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must be equal to '$other', but it is '$value'.".asViolation()
 
-    fun <T : Comparable<T>> notEqualTo(
+    public fun <T : Comparable<T>> notEqualTo(
         other: T,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must not be equal to '$other', but it is.".asViolation()
 
-    fun <T : Comparable<T>> greaterThan(
+    public fun <T : Comparable<T>> greaterThan(
         other: T,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must be greater than '$other', but it is '$value'.".asViolation()
 
-    fun <T : Comparable<T>> greaterThanOrEqualTo(
+    public fun <T : Comparable<T>> greaterThanOrEqualTo(
         other: T,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must be greater than or equal to '$other', but it is '$value'.".asViolation()
 
-    fun <T : Comparable<T>> lessThan(
+    public fun <T : Comparable<T>> lessThan(
         other: T,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must be less than '$other', but it is '$value'.".asViolation()
 
-    fun <T : Comparable<T>> lessThanOrEqualTo(
+    public fun <T : Comparable<T>> lessThanOrEqualTo(
         other: T,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must be less than or equal to '$other', but it is '$value'.".asViolation()
 
-    fun <T : Comparable<T>> between(
+    public fun <T : Comparable<T>> between(
         range: ClosedRange<T>,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must be in range '$range', but it is '$value'.".asViolation()
 
-    fun <T : Comparable<T>> notBetween(
+    public fun <T : Comparable<T>> notBetween(
         range: ClosedRange<T>,
         value: T,
         name: String = "comparable",
     ): Violation = "'$name' must not be in range '$range', but it is '$value'.".asViolation()
 
-    companion object Default : ComparableViolations
+    public companion object Default : ComparableViolations
 }

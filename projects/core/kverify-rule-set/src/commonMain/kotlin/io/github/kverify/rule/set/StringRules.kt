@@ -8,16 +8,16 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.StringViolations
 
-open class StringRules(
-    val stringViolations: StringViolations = StringViolations.Default,
+public open class StringRules(
+    public val stringViolations: StringViolations = StringViolations.Default,
 ) {
-    inner class OfLength(
-        val length: Int,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class OfLength(
+        public val length: Int,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.ofLength(length, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             length: Int,
             name: String,
         ) : this(
@@ -36,9 +36,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedOfLength(
-        val length: Int,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedOfLength(
+        public val length: Int,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.ofLength(length, value, name)
         },
     ) : NamedRule<String> {
@@ -51,13 +51,13 @@ open class StringRules(
         }
     }
 
-    inner class NotOfLength(
-        val length: Int,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class NotOfLength(
+        public val length: Int,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.notOfLength(length, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             length: Int,
             name: String,
         ) : this(
@@ -76,9 +76,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedNotOfLength(
-        val length: Int,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNotOfLength(
+        public val length: Int,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.notOfLength(length, value, name)
         },
     ) : NamedRule<String> {
@@ -91,13 +91,13 @@ open class StringRules(
         }
     }
 
-    inner class MaxLength(
-        val max: Int,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class MaxLength(
+        public val max: Int,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.maxLength(max, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             max: Int,
             name: String,
         ) : this(
@@ -116,9 +116,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedMaxLength(
-        val max: Int,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedMaxLength(
+        public val max: Int,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.maxLength(max, value, name)
         },
     ) : NamedRule<String> {
@@ -131,13 +131,13 @@ open class StringRules(
         }
     }
 
-    inner class MinLength(
-        val min: Int,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class MinLength(
+        public val min: Int,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.minLength(min, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             min: Int,
             name: String,
         ) : this(
@@ -155,9 +155,9 @@ open class StringRules(
             }
         }
 
-        inner class NamedMinLength(
-            val min: Int,
-            val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+        public inner class NamedMinLength(
+            public val min: Int,
+            public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
                 stringViolations.minLength(min, value, name)
             },
         ) : NamedRule<String> {
@@ -171,13 +171,13 @@ open class StringRules(
         }
     }
 
-    inner class LengthBetween(
-        val range: IntRange,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class LengthBetween(
+        public val range: IntRange,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.lengthBetween(range, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             violationGenerator: (String) -> Violation = { value ->
@@ -188,7 +188,7 @@ open class StringRules(
             violationGenerator = violationGenerator,
         )
 
-        constructor(
+        public constructor(
             range: IntRange,
             name: String,
         ) : this(
@@ -198,7 +198,7 @@ open class StringRules(
             },
         )
 
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             name: String,
@@ -218,9 +218,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedLengthBetween(
-        val range: IntRange,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedLengthBetween(
+        public val range: IntRange,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.lengthBetween(range, value, name)
         },
     ) : NamedRule<String> {
@@ -233,13 +233,13 @@ open class StringRules(
         }
     }
 
-    inner class LengthNotBetween(
-        val range: IntRange,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class LengthNotBetween(
+        public val range: IntRange,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.lengthNotBetween(range, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             violationGenerator: (String) -> Violation = { value ->
@@ -250,7 +250,7 @@ open class StringRules(
             violationGenerator = violationGenerator,
         )
 
-        constructor(
+        public constructor(
             range: IntRange,
             name: String,
         ) : this(
@@ -260,7 +260,7 @@ open class StringRules(
             },
         )
 
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             name: String,
@@ -280,9 +280,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedLengthNotBetween(
-        val range: IntRange,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedLengthNotBetween(
+        public val range: IntRange,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.lengthNotBetween(range, value, name)
         },
     ) : NamedRule<String> {
@@ -295,14 +295,14 @@ open class StringRules(
         }
     }
 
-    inner class Contains(
-        val string: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class Contains(
+        public val string: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.contains(string, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             string: String,
             ignoreCase: Boolean = false,
             name: String,
@@ -323,10 +323,10 @@ open class StringRules(
         }
     }
 
-    inner class NamedContains(
-        val string: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedContains(
+        public val string: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.contains(string, value, name)
         },
     ) : NamedRule<String> {
@@ -339,13 +339,13 @@ open class StringRules(
         }
     }
 
-    inner class ContainsRegex(
-        val regex: Regex,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class ContainsRegex(
+        public val regex: Regex,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.contains(regex, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             regex: Regex,
             name: String,
         ) : this(
@@ -364,9 +364,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedContainsRegex(
-        val regex: Regex,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedContainsRegex(
+        public val regex: Regex,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.contains(regex, value, name)
         },
     ) : NamedRule<String> {
@@ -379,14 +379,14 @@ open class StringRules(
         }
     }
 
-    inner class NotContains(
-        val string: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class NotContains(
+        public val string: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.notContains(string, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             string: String,
             ignoreCase: Boolean = false,
             name: String,
@@ -407,10 +407,10 @@ open class StringRules(
         }
     }
 
-    inner class NamedNotContains(
-        val string: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNotContains(
+        public val string: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.notContains(string, value, name)
         },
     ) : NamedRule<String> {
@@ -423,13 +423,13 @@ open class StringRules(
         }
     }
 
-    inner class NotContainsRegex(
-        val regex: Regex,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class NotContainsRegex(
+        public val regex: Regex,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.notContains(regex, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             regex: Regex,
             name: String,
         ) : this(
@@ -448,9 +448,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedNotContainsRegex(
-        val regex: Regex,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNotContainsRegex(
+        public val regex: Regex,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.notContains(regex, value, name)
         },
     ) : NamedRule<String> {
@@ -463,13 +463,13 @@ open class StringRules(
         }
     }
 
-    inner class ContainsAll(
-        val chars: Set<Char>,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class ContainsAll(
+        public val chars: Set<Char>,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.containsAll(chars, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             chars: Set<Char>,
             name: String,
         ) : this(
@@ -488,9 +488,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedContainsAll(
-        val chars: Set<Char>,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedContainsAll(
+        public val chars: Set<Char>,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.containsAll(chars, value, name)
         },
     ) : NamedRule<String> {
@@ -503,13 +503,13 @@ open class StringRules(
         }
     }
 
-    inner class ContainsOnly(
-        val chars: Set<Char>,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class ContainsOnly(
+        public val chars: Set<Char>,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.containsOnly(chars, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             chars: Set<Char>,
             name: String,
         ) : this(
@@ -526,9 +526,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedContainsOnly(
-        val chars: Set<Char>,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedContainsOnly(
+        public val chars: Set<Char>,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.containsOnly(
                 chars,
                 value,
@@ -545,13 +545,13 @@ open class StringRules(
         }
     }
 
-    inner class ContainsNone(
-        val chars: Set<Char>,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class ContainsNone(
+        public val chars: Set<Char>,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.containsNone(chars, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             chars: Set<Char>,
             name: String,
         ) : this(
@@ -570,9 +570,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedContainsNone(
-        val chars: Set<Char>,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedContainsNone(
+        public val chars: Set<Char>,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.containsNone(chars, value, name)
         },
     ) : NamedRule<String> {
@@ -585,13 +585,13 @@ open class StringRules(
         }
     }
 
-    inner class Matches(
-        val regex: Regex,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class Matches(
+        public val regex: Regex,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.matches(regex, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             regex: Regex,
             name: String,
         ) : this(
@@ -610,9 +610,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedMatches(
-        val regex: Regex,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedMatches(
+        public val regex: Regex,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.matches(regex, value, name)
         },
     ) : NamedRule<String> {
@@ -625,13 +625,13 @@ open class StringRules(
         }
     }
 
-    inner class NotMatches(
-        val regex: Regex,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class NotMatches(
+        public val regex: Regex,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.notMatches(regex, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             regex: Regex,
             name: String,
         ) : this(
@@ -650,9 +650,9 @@ open class StringRules(
         }
     }
 
-    inner class NamedNotMatches(
-        val regex: Regex,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNotMatches(
+        public val regex: Regex,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.notMatches(regex, value, name)
         },
     ) : NamedRule<String> {
@@ -665,14 +665,14 @@ open class StringRules(
         }
     }
 
-    inner class StartsWith(
-        val prefix: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class StartsWith(
+        public val prefix: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.startsWith(prefix, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             prefix: String,
             name: String,
             ignoreCase: Boolean = false,
@@ -693,10 +693,10 @@ open class StringRules(
         }
     }
 
-    inner class NamedStartsWith(
-        val prefix: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedStartsWith(
+        public val prefix: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.startsWith(prefix, value, name)
         },
     ) : NamedRule<String> {
@@ -709,14 +709,14 @@ open class StringRules(
         }
     }
 
-    inner class EndsWith(
-        val suffix: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class EndsWith(
+        public val suffix: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.endsWith(suffix, value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             suffix: String,
             name: String,
             ignoreCase: Boolean = false,
@@ -737,10 +737,10 @@ open class StringRules(
         }
     }
 
-    inner class NamedEndsWith(
-        val suffix: String,
-        val ignoreCase: Boolean = false,
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedEndsWith(
+        public val suffix: String,
+        public val ignoreCase: Boolean = false,
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.endsWith(suffix, value, name)
         },
     ) : NamedRule<String> {
@@ -753,12 +753,12 @@ open class StringRules(
         }
     }
 
-    inner class Alphabetic(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class Alphabetic(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.alphabetic(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -775,8 +775,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedAlphabetic(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedAlphabetic(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.alphabetic(value, name)
         },
     ) : NamedRule<String> {
@@ -789,12 +789,12 @@ open class StringRules(
         }
     }
 
-    inner class Numeric(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class Numeric(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.numeric(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -811,8 +811,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedNumeric(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNumeric(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.numeric(value, name)
         },
     ) : NamedRule<String> {
@@ -825,12 +825,12 @@ open class StringRules(
         }
     }
 
-    inner class Alphanumeric(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class Alphanumeric(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.alphanumeric(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -847,8 +847,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedAlphanumeric(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedAlphanumeric(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.alphanumeric(value, name)
         },
     ) : NamedRule<String> {
@@ -861,12 +861,12 @@ open class StringRules(
         }
     }
 
-    inner class NotBlank(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class NotBlank(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.notBlank(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -883,8 +883,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedNotBlank(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNotBlank(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.notBlank(value, name)
         },
     ) : NamedRule<String> {
@@ -897,12 +897,12 @@ open class StringRules(
         }
     }
 
-    inner class NotEmpty(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class NotEmpty(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.notEmpty(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -919,8 +919,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedNotEmpty(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedNotEmpty(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.notEmpty(value, name)
         },
     ) : NamedRule<String> {
@@ -933,12 +933,12 @@ open class StringRules(
         }
     }
 
-    inner class LowerCase(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class LowerCase(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.lowerCase(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -955,8 +955,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedLowerCase(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedLowerCase(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.lowerCase(value, name)
         },
     ) : NamedRule<String> {
@@ -969,12 +969,12 @@ open class StringRules(
         }
     }
 
-    inner class UpperCase(
-        val violationGenerator: (String) -> Violation = { value ->
+    public inner class UpperCase(
+        public val violationGenerator: (String) -> Violation = { value ->
             stringViolations.upperCase(value)
         },
     ) : Rule<String> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -991,8 +991,8 @@ open class StringRules(
         }
     }
 
-    inner class NamedUpperCase(
-        val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
+    public inner class NamedUpperCase(
+        public val violationGenerator: (NamedValue<String>) -> Violation = { (name, value) ->
             stringViolations.upperCase(value, name)
         },
     ) : NamedRule<String> {
@@ -1005,7 +1005,7 @@ open class StringRules(
         }
     }
 
-    companion object : StringRules(
+    public companion object : StringRules(
         stringViolations = StringViolations.Default,
     )
 }

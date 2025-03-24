@@ -8,16 +8,16 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.ComparableViolations
 
-open class ComparableRules(
-    val comparableViolations: ComparableViolations = ComparableViolations.Default,
+public open class ComparableRules(
+    public val comparableViolations: ComparableViolations = ComparableViolations.Default,
 ) {
-    inner class EqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class EqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.equalTo(other, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             other: T,
             name: String,
         ) : this(
@@ -36,9 +36,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.equalTo(other, value, name)
         },
     ) : NamedRule<T> {
@@ -51,13 +51,13 @@ open class ComparableRules(
         }
     }
 
-    inner class NotEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class NotEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.notEqualTo(other, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             other: T,
             name: String,
         ) : this(
@@ -76,9 +76,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedNotEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedNotEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.notEqualTo(other, value, name)
         },
     ) : NamedRule<T> {
@@ -91,13 +91,13 @@ open class ComparableRules(
         }
     }
 
-    inner class GreaterThan<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class GreaterThan<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.greaterThan(other, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             other: T,
             name: String,
         ) : this(
@@ -116,9 +116,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedGreaterThan<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedGreaterThan<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.greaterThan(other, value, name)
         },
     ) : NamedRule<T> {
@@ -131,13 +131,13 @@ open class ComparableRules(
         }
     }
 
-    inner class GreaterThanOrEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class GreaterThanOrEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.greaterThanOrEqualTo(other, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             other: T,
             name: String,
         ) : this(
@@ -156,9 +156,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedGreaterThanOrEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedGreaterThanOrEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.greaterThanOrEqualTo(other, value, name)
         },
     ) : NamedRule<T> {
@@ -171,13 +171,13 @@ open class ComparableRules(
         }
     }
 
-    inner class LessThan<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class LessThan<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.lessThan(other, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             other: T,
             name: String,
         ) : this(
@@ -196,9 +196,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedLessThan<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedLessThan<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.lessThan(other, value, name)
         },
     ) : NamedRule<T> {
@@ -211,13 +211,13 @@ open class ComparableRules(
         }
     }
 
-    inner class LessThanOrEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class LessThanOrEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.lessThanOrEqualTo(other, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             other: T,
             name: String,
         ) : this(
@@ -236,9 +236,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedLessThanOrEqualTo<T : Comparable<T>>(
-        val other: T,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedLessThanOrEqualTo<T : Comparable<T>>(
+        public val other: T,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.lessThanOrEqualTo(other, value, name)
         },
     ) : NamedRule<T> {
@@ -251,13 +251,13 @@ open class ComparableRules(
         }
     }
 
-    inner class Between<T : Comparable<T>>(
-        val range: ClosedRange<T>,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class Between<T : Comparable<T>>(
+        public val range: ClosedRange<T>,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.between(range, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             min: T,
             max: T,
             violationGenerator: (T) -> Violation = { value ->
@@ -277,9 +277,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedBetween<T : Comparable<T>>(
-        val range: ClosedRange<T>,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedBetween<T : Comparable<T>>(
+        public val range: ClosedRange<T>,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.between(range, value, name)
         },
     ) : NamedRule<T> {
@@ -292,13 +292,13 @@ open class ComparableRules(
         }
     }
 
-    inner class NotBetween<T : Comparable<T>>(
-        val range: ClosedRange<T>,
-        val violationGenerator: (T) -> Violation = { value ->
+    public inner class NotBetween<T : Comparable<T>>(
+        public val range: ClosedRange<T>,
+        public val violationGenerator: (T) -> Violation = { value ->
             comparableViolations.notBetween(range, value)
         },
     ) : Rule<T> {
-        constructor(
+        public constructor(
             min: T,
             max: T,
             violationGenerator: (T) -> Violation = { value ->
@@ -318,9 +318,9 @@ open class ComparableRules(
         }
     }
 
-    inner class NamedNotBetween<T : Comparable<T>>(
-        val range: ClosedRange<T>,
-        val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
+    public inner class NamedNotBetween<T : Comparable<T>>(
+        public val range: ClosedRange<T>,
+        public val violationGenerator: (NamedValue<T>) -> Violation = { (name, value) ->
             comparableViolations.notBetween(range, value, name)
         },
     ) : NamedRule<T> {
@@ -333,7 +333,7 @@ open class ComparableRules(
         }
     }
 
-    companion object : ComparableRules(
+    public companion object : ComparableRules(
         comparableViolations = ComparableViolations.Default,
     )
 }

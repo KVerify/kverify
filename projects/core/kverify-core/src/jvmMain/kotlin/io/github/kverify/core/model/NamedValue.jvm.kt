@@ -13,7 +13,7 @@ import kotlin.reflect.jvm.isAccessible
  * accessing the property (e.g., missing instance or illegal access), a [PropertyAccessException]
  * is thrown with a helpful error message.
  */
-fun <T> KProperty<T>.toNamed(): NamedValue<T> =
+public fun <T> KProperty<T>.toNamed(): NamedValue<T> =
     try {
         val originalIsAccessible = getter.isAccessible
 

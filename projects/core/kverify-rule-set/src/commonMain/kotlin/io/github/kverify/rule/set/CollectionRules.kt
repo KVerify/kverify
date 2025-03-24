@@ -8,16 +8,16 @@ import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.violation.CollectionViolations
 
-open class CollectionRules(
-    val collectionViolations: CollectionViolations = CollectionViolations.Default,
+public open class CollectionRules(
+    public val collectionViolations: CollectionViolations = CollectionViolations.Default,
 ) {
-    inner class OfSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class OfSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.ofSize(size, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             size: Int,
             name: String,
         ) : this(
@@ -36,9 +36,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedOfSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedOfSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.ofSize(size, value, name)
         },
     ) : NamedRule<C> {
@@ -51,13 +51,13 @@ open class CollectionRules(
         }
     }
 
-    inner class NotOfSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class NotOfSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.notOfSize(size, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             size: Int,
             name: String,
         ) : this(
@@ -76,9 +76,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedNotOfSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedNotOfSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.notOfSize(size, value, name)
         },
     ) : NamedRule<C> {
@@ -91,13 +91,13 @@ open class CollectionRules(
         }
     }
 
-    inner class MaxSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class MaxSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.maxSize(size, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             size: Int,
             name: String,
         ) : this(
@@ -116,9 +116,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedMaxSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedMaxSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.maxSize(size, value, name)
         },
     ) : NamedRule<C> {
@@ -131,13 +131,13 @@ open class CollectionRules(
         }
     }
 
-    inner class MinSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class MinSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.minSize(size, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             size: Int,
             name: String,
         ) : this(
@@ -156,9 +156,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedMinSize<C : Collection<*>>(
-        val size: Int,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedMinSize<C : Collection<*>>(
+        public val size: Int,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.minSize(size, value, name)
         },
     ) : NamedRule<C> {
@@ -171,13 +171,13 @@ open class CollectionRules(
         }
     }
 
-    inner class SizeBetween<C : Collection<*>>(
-        val range: IntRange,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class SizeBetween<C : Collection<*>>(
+        public val range: IntRange,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.sizeBetween(range, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             violationGenerator: (C) -> Violation = { value ->
@@ -188,7 +188,7 @@ open class CollectionRules(
             violationGenerator = violationGenerator,
         )
 
-        constructor(
+        public constructor(
             range: IntRange,
             name: String,
         ) : this(
@@ -198,7 +198,7 @@ open class CollectionRules(
             },
         )
 
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             name: String,
@@ -218,9 +218,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedSizeBetween<C : Collection<*>>(
-        val range: IntRange,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedSizeBetween<C : Collection<*>>(
+        public val range: IntRange,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.sizeBetween(range, value, name)
         },
     ) : NamedRule<C> {
@@ -233,13 +233,13 @@ open class CollectionRules(
         }
     }
 
-    inner class SizeNotBetween<C : Collection<*>>(
-        val range: IntRange,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class SizeNotBetween<C : Collection<*>>(
+        public val range: IntRange,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.sizeNotBetween(range, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             min: Int,
             max: Int,
             violationGenerator: (C) -> Violation = { value ->
@@ -259,9 +259,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedSizeNotBetween<C : Collection<*>>(
-        val range: IntRange,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedSizeNotBetween<C : Collection<*>>(
+        public val range: IntRange,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.sizeNotBetween(range, value, name)
         },
     ) : NamedRule<C> {
@@ -274,13 +274,13 @@ open class CollectionRules(
         }
     }
 
-    inner class ContainsAll<T, C : Collection<T>>(
-        val elements: C,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class ContainsAll<T, C : Collection<T>>(
+        public val elements: C,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.containsAll(elements, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             elements: C,
             name: String,
         ) : this(
@@ -299,9 +299,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedContainsAll<T, C : Collection<T>>(
-        val elements: C,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedContainsAll<T, C : Collection<T>>(
+        public val elements: C,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.containsAll(elements, value, name)
         },
     ) : NamedRule<C> {
@@ -314,13 +314,13 @@ open class CollectionRules(
         }
     }
 
-    inner class ContainsNone<T, C : Collection<T>>(
-        val elements: C,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class ContainsNone<T, C : Collection<T>>(
+        public val elements: C,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.containsNone(elements, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             elements: C,
             name: String,
         ) : this(
@@ -339,9 +339,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedContainsNone<T, C : Collection<T>>(
-        val elements: C,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedContainsNone<T, C : Collection<T>>(
+        public val elements: C,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.containsNone(elements, value, name)
         },
     ) : NamedRule<C> {
@@ -354,13 +354,13 @@ open class CollectionRules(
         }
     }
 
-    inner class Contains<T, C : Collection<T>>(
-        val element: T,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class Contains<T, C : Collection<T>>(
+        public val element: T,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.contains(element, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             element: T,
             name: String,
         ) : this(
@@ -379,9 +379,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedContains<T, C : Collection<T>>(
-        val element: T,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedContains<T, C : Collection<T>>(
+        public val element: T,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.contains(element, value, name)
         },
     ) : NamedRule<C> {
@@ -394,13 +394,13 @@ open class CollectionRules(
         }
     }
 
-    inner class NotContains<T, C : Collection<T>>(
-        val element: T,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class NotContains<T, C : Collection<T>>(
+        public val element: T,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.notContains(element, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             element: T,
             name: String,
         ) : this(
@@ -419,9 +419,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedNotContains<T, C : Collection<T>>(
-        val element: T,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedNotContains<T, C : Collection<T>>(
+        public val element: T,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.notContains(element, value, name)
         },
     ) : NamedRule<C> {
@@ -434,13 +434,13 @@ open class CollectionRules(
         }
     }
 
-    inner class ContainsOnly<T, C : Collection<T>>(
-        val elements: Collection<T>,
-        val violationGenerator: (C) -> Violation = { value ->
+    public inner class ContainsOnly<T, C : Collection<T>>(
+        public val elements: Collection<T>,
+        public val violationGenerator: (C) -> Violation = { value ->
             collectionViolations.containsOnly(elements, value)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             elements: Collection<T>,
             name: String,
         ) : this(
@@ -459,9 +459,9 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedContainsOnly<T, C : Collection<T>>(
-        val elements: Collection<T>,
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedContainsOnly<T, C : Collection<T>>(
+        public val elements: Collection<T>,
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.containsOnly(elements, value, name)
         },
     ) : NamedRule<C> {
@@ -474,12 +474,12 @@ open class CollectionRules(
         }
     }
 
-    inner class NotEmpty<C : Collection<*>>(
-        val violationGenerator: (C) -> Violation = {
+    public inner class NotEmpty<C : Collection<*>>(
+        public val violationGenerator: (C) -> Violation = {
             collectionViolations.notEmpty(it)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -496,8 +496,8 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedNotEmpty<C : Collection<*>>(
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedNotEmpty<C : Collection<*>>(
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.notEmpty(value, name)
         },
     ) : NamedRule<C> {
@@ -510,12 +510,12 @@ open class CollectionRules(
         }
     }
 
-    inner class Distinct<C : Collection<*>>(
-        val violationGenerator: (C) -> Violation = {
+    public inner class Distinct<C : Collection<*>>(
+        public val violationGenerator: (C) -> Violation = {
             collectionViolations.distinct(it)
         },
     ) : Rule<C> {
-        constructor(
+        public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
@@ -532,8 +532,8 @@ open class CollectionRules(
         }
     }
 
-    inner class NamedDistinct<C : Collection<*>>(
-        val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
+    public inner class NamedDistinct<C : Collection<*>>(
+        public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
             collectionViolations.distinct(value, name)
         },
     ) : NamedRule<C> {
@@ -546,7 +546,7 @@ open class CollectionRules(
         }
     }
 
-    companion object : CollectionRules(
+    public companion object : CollectionRules(
         collectionViolations = CollectionViolations.Default,
     )
 }

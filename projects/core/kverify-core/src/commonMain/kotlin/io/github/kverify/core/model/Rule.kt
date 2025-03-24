@@ -7,23 +7,23 @@ import io.github.kverify.core.violation.Violation
 /**
  * A validation [Rule] for a [NamedValue].
  */
-typealias NamedRule<T> = Rule<NamedValue<T>>
+public typealias NamedRule<T> = Rule<NamedValue<T>>
 
 /**
  * Represents a validation rule for a value of type [T].
  */
-fun interface Rule<T> {
+public fun interface Rule<T> {
     /**
      * Runs validation for the given [value] within this [ValidationContext].
      */
-    fun ValidationContext.runValidation(value: T)
+    public fun ValidationContext.runValidation(value: T)
 }
 
 /**
  * Runs this [Rule] within the given [context] for the specified [value].
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <T> Rule<T>.runValidation(
+public inline fun <T> Rule<T>.runValidation(
     context: ValidationContext,
     value: T,
 ): Unit = context.runValidation(value)
@@ -31,7 +31,7 @@ inline fun <T> Rule<T>.runValidation(
 /**
  * Combines this [Rule] with [other], applying both sequentially.
  */
-operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
+public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     Rule validationContext@{ value ->
         this@plus.runValidation(
             this@validationContext,
@@ -48,7 +48,7 @@ operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
  * Creates a [Rule] that executes [ValidationContext.validate]
  * with the given [predicate] and [violationGenerator].
  */
-inline fun <T> Rule(
+public inline fun <T> Rule(
     crossinline predicate: (T) -> Boolean,
     crossinline violationGenerator: (T) -> Violation,
 ): Rule<T> =

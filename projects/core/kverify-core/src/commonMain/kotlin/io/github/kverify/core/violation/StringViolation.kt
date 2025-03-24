@@ -8,7 +8,7 @@ import kotlin.jvm.JvmInline
  * Holds a [message] describing the violation.
  */
 @JvmInline
-value class StringViolation(
+public value class StringViolation(
     override val message: String,
 ) : Violation {
     override fun toString(): String = "StringViolation(message=$message)"
@@ -20,4 +20,4 @@ value class StringViolation(
  * @return a [StringViolation] with the provided [String] as its message.
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun String.asViolation(): StringViolation = StringViolation(this)
+public inline fun String.asViolation(): StringViolation = StringViolation(this)

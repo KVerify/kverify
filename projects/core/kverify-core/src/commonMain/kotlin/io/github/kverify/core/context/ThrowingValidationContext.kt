@@ -13,14 +13,14 @@ import kotlin.contracts.contract
  * Implementation of [ValidationContext] that throws a [ValidationException]
  * containing the first [Violation] reported via [ValidationContext.onFailure].
  */
-open class ThrowingValidationContext : ValidationContext {
+public open class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     /**
      * Converts [message] into [io.github.kverify.core.violation.StringViolation]
      * and handles a validation failure.
      */
-    fun onFailure(message: String): Nothing = onFailure(message.asViolation())
+    public fun onFailure(message: String): Nothing = onFailure(message.asViolation())
 
     /**
      * Uses Kotlin contracts to indicate that a successful return implies [condition] was `true`.
@@ -29,7 +29,7 @@ open class ThrowingValidationContext : ValidationContext {
      * if [condition] is `false`.
      */
     @OptIn(ExperimentalContracts::class)
-    inline fun validate(
+    public inline fun validate(
         condition: Boolean,
         violationGenerator: () -> Violation,
     ) {
@@ -40,7 +40,7 @@ open class ThrowingValidationContext : ValidationContext {
         if (!condition) onFailure(violationGenerator())
     }
 
-    companion object : ThrowingValidationContext()
+    public companion object : ThrowingValidationContext()
 }
 
 /**
@@ -50,7 +50,7 @@ open class ThrowingValidationContext : ValidationContext {
  * if [condition] is `false`.
  */
 @OptIn(ExperimentalContracts::class)
-inline fun validateThatOrThrow(
+public inline fun validateThatOrThrow(
     condition: Boolean,
     violationGenerator: () -> Violation,
 ) {
@@ -72,7 +72,7 @@ inline fun validateThatOrThrow(
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
  */
 @OptIn(ExperimentalContracts::class)
-inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
+public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -85,7 +85,7 @@ inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
  */
-inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
+public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
         ValidationResult.VALID
@@ -98,7 +98,7 @@ inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): Validatio
  *
  * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
  */
-fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
+public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
     validateOrThrow {
         applyRules(rules = rules)
     }
@@ -109,7 +109,7 @@ fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
  * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
  * or [ValidationResult.VALID] if no violations occurred.
  */
-fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
+public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
     validateFirst {
         applyRules(rules = rules)
     }
@@ -121,7 +121,7 @@ fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
  * @return [Result.success], wrapping result of running [block] if no [Violation]s were reported.
  * [Result.failure], wrapping [ValidationException] with the first reported [Violation] otherwise.
  */
-inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
+public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     try {
         Result.success(
             ThrowingValidationContext.run(block),

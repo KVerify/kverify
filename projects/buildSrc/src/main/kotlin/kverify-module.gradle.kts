@@ -6,7 +6,7 @@ plugins {
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-//    explicitApi() TODO: Uncomment after commit
+    explicitApi()
 
     compilerOptions {
         applyKverifyCommonCompilerOptions()
