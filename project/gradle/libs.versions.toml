@@ -5,6 +5,7 @@ publish = "0.28.0"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+vanniktech-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 
 kotest-framework-engine = { module = "io.kotest:kotest-framework-engine", version.ref = "kotest" }
 kotest-runner-junit5 = { module = "io.kotest:kotest-runner-junit5", version.ref = "kotest" }
@@ -12,9 +13,9 @@ kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest"
 
 [plugins]
 kotest-multiplatform = { id = "io.kotest.multiplatform", version.ref = "kotest" }
-maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
 
 [bundles]
 pluginsForBuildSrc = [
     "kotlin-gradle-plugin",
+    "vanniktech-maven-publish",
 ]
