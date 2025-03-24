@@ -20,6 +20,7 @@ kotlin {
     }
 
     js {
+        nodejs()
         useCommonJs()
     }
 
