@@ -7,9 +7,9 @@
 </p>
 
 <p align="center">
-  <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin--multiplatform-2.0.0-blue.svg?logo=kotlin" alt="Kotlin 2.0.0"></a>
+  <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin--multiplatform-2.0.21-blue.svg?logo=kotlin" alt="Kotlin 2.0.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/Version-2.0.0--rc--1-blue" alt="Version 2.0.0-rc-1">
+  <img src="https://img.shields.io/badge/Version-2.0.0--rc--1-blue" alt="Version 2.0.0-rc-2">
 </p>
 
 ---
@@ -36,7 +36,7 @@ Add KVerify to your project using Gradle:
 ```kotlin
 dependencies {
     implementation("io.github.kverify:kverify-core:$version")
-    implementation("io.github.kverify:rule-set:$version") // optional
+    implementation("io.github.kverify:kverify-rule-set:$version") // optional
 }
 ```
 
@@ -57,9 +57,9 @@ val emailRule =
 
 validateAll {
     "john.doe@example.com".applyRules(
-        StringRules.notBlank(),
-        StringRules.lengthBetween(3..255),
-        ComparableRules.notEqualTo("not-an-email"),
+        StringRules.NotBlank(),
+        StringRules.LengthBetween(3..255),
+        ComparableRules.NotEqualTo("not-an-email"),
         emailRule,
     )
 
