@@ -8,7 +8,7 @@ mavenPublishing {
     coordinates(
         groupId = LibrarySettings.GROUP,
         version = LibrarySettings.VERSION,
-        artifactId = project.name,
+        artifactId = "kverify-${project.name}",
     )
 
     pom {

@@ -7,7 +7,7 @@ plugins {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            api(project(":core:kverify-core"))
+            api(project(":kverify:core"))
         }
     }
 }
