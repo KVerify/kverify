@@ -17,9 +17,3 @@ class StringViolationTest :
             StringViolation(message) shouldBe message.asViolation()
         }
     })
-
-// Checks if anything breaking was added to the interface
-@Suppress("UnusedPrivateClass")
-private class TestViolation(
-    override val message: String,
-) : Violation
