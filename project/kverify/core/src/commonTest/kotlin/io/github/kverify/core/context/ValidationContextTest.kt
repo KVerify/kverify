@@ -9,7 +9,7 @@ import kotlin.test.fail
 
 class ValidationContextTest :
     FunSpec({
-        val failingContext = ValidationContext { fail(it.message) }
+        val failingContext = ValidationContext { fail(it.reason) }
         val message = "test"
         val violation = StringViolation(message)
 
@@ -19,7 +19,7 @@ class ValidationContextTest :
         test("onFailure") {
             shouldFail {
                 failingContext.onFailure(violation)
-            }.message shouldBe violation.message
+            }.message shouldBe violation.reason
 
             shouldFail {
                 failingContext.onFailure(message)
@@ -29,15 +29,15 @@ class ValidationContextTest :
         test("applyRules") {
             shouldFail {
                 failingContext.run { Unit.applyRules(successfulRule, failingRule) }
-            }.message shouldBe failingRule.violation.message
+            }.message shouldBe failingRule.violation.reason
 
             shouldFail {
                 Unit.applyRules(failingContext, successfulRule, failingRule)
-            }.message shouldBe failingRule.violation.message
+            }.message shouldBe failingRule.violation.reason
 
             shouldFail {
                 failingContext.applyUnitRules(successfulRule, failingRule)
-            }.message shouldBe failingRule.violation.message
+            }.message shouldBe failingRule.violation.reason
         }
 
         test("validate") {
@@ -46,6 +46,6 @@ class ValidationContextTest :
                     validate(!successfulRule.shouldFail) { successfulRule.violation }
                     validate(!failingRule.shouldFail) { failingRule.violation }
                 }
-            }.message shouldBe failingRule.violation.message
+            }.message shouldBe failingRule.violation.reason
         }
     })

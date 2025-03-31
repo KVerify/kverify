@@ -147,7 +147,7 @@ class ValidationResultTest :
                     postfix = "]",
                     limit = 10,
                     truncated = "...",
-                    transform = { it.message },
+                    transform = { it.reason },
                 )
 
             validResult.throwOnFailure()
@@ -161,7 +161,7 @@ class ValidationResultTest :
                         limit = 10,
                         truncated = "...",
                         cause = exception,
-                        transform = { it.message },
+                        transform = { it.reason },
                     )
                 }
 

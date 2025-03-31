@@ -19,7 +19,7 @@ public open class ValidationException(
 /**
  * Creates a [ValidationException] containing the given [violations] and an optional [cause].
  *
- * - If [violations] list is not empty, their [Violation.message]s are joined into a single string,
+ * - If [violations] list is not empty, their [Violation.reason]s are joined into a single string,
  *   separated by newlines.
  * - If [violations] list is empty, the default message is `"Validation failed"`.
  */
@@ -33,7 +33,7 @@ public fun ValidationException(
         } else {
             "Validation failed: \n${
                 violations.joinToString("\n") {
-                    "\t- ${it.message}"
+                    "\t- ${it.reason}"
                 }
             }"
         }

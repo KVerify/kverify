@@ -115,6 +115,6 @@ class ValidationExceptionTest :
 private fun validationExceptionMessageGenerator(violations: List<Violation>): String =
     "Validation failed: \n${
         violations.joinToString("\n") {
-            "\t- ${it.message}"
+            "\t- ${it.reason}"
         }
     }"

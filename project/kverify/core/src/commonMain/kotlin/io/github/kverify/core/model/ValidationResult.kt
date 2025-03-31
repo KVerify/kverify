@@ -144,7 +144,7 @@ public fun ValidationResult.throwOnFailure(
     limit: Int = 10,
     truncated: CharSequence = "...",
     cause: Throwable? = null,
-    transform: (Violation) -> String = { it.message },
+    transform: (Violation) -> String = { it.reason },
 ) {
     if (isValid) return
 

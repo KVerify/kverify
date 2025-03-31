@@ -16,7 +16,7 @@ import kotlin.test.DefaultAsserter.fail
 
 class StringRulesTest :
     FunSpec({
-        val failContext = ValidationContext { fail(it.message) }
+        val failContext = ValidationContext { fail(it.reason) }
 
         test("of length") {
             Arb.int(1..10).checkAll { length ->
@@ -39,7 +39,7 @@ class StringRulesTest :
                         .ofLength(
                             length,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -49,7 +49,7 @@ class StringRulesTest :
                             length,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -74,7 +74,7 @@ class StringRulesTest :
                         .notOfLength(
                             length,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -84,7 +84,7 @@ class StringRulesTest :
                             length,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -109,7 +109,7 @@ class StringRulesTest :
                         .maxLength(
                             max,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -119,7 +119,7 @@ class StringRulesTest :
                             max,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -144,7 +144,7 @@ class StringRulesTest :
                         .minLength(
                             min,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -154,7 +154,7 @@ class StringRulesTest :
                             min,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -185,7 +185,7 @@ class StringRulesTest :
                         .lengthBetween(
                             range,
                             incorrectValueTooShort,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueTooLong)
@@ -194,7 +194,7 @@ class StringRulesTest :
                         .lengthBetween(
                             range,
                             incorrectValueTooLong,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueTooShort)
@@ -204,7 +204,7 @@ class StringRulesTest :
                             range,
                             namedIncorrectValueTooShort.value,
                             namedIncorrectValueTooShort.name,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueTooLong)
@@ -214,7 +214,7 @@ class StringRulesTest :
                             range,
                             namedIncorrectValueTooLong.value,
                             namedIncorrectValueTooLong.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -247,7 +247,7 @@ class StringRulesTest :
                         .lengthNotBetween(
                             range,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -257,7 +257,7 @@ class StringRulesTest :
                             range,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -285,7 +285,7 @@ class StringRulesTest :
                         .contains(
                             substring,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -295,7 +295,7 @@ class StringRulesTest :
                             substring,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -320,7 +320,7 @@ class StringRulesTest :
                     .contains(
                         regex,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -330,7 +330,7 @@ class StringRulesTest :
                         regex,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("not contains") {
@@ -357,7 +357,7 @@ class StringRulesTest :
                         .notContains(
                             substring,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -367,7 +367,7 @@ class StringRulesTest :
                             substring,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -392,7 +392,7 @@ class StringRulesTest :
                     .notContains(
                         regex,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -402,7 +402,7 @@ class StringRulesTest :
                         regex,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("contains all") {
@@ -426,7 +426,7 @@ class StringRulesTest :
                     .containsAll(
                         chars,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -436,7 +436,7 @@ class StringRulesTest :
                         chars,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("contains only") {
@@ -460,7 +460,7 @@ class StringRulesTest :
                     .containsOnly(
                         chars,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -470,7 +470,7 @@ class StringRulesTest :
                         chars,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("contains none") {
@@ -494,7 +494,7 @@ class StringRulesTest :
                     .containsNone(
                         chars,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -504,7 +504,7 @@ class StringRulesTest :
                         chars,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("matches") {
@@ -528,7 +528,7 @@ class StringRulesTest :
                     .matches(
                         regex,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -538,7 +538,7 @@ class StringRulesTest :
                         regex,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("not matches") {
@@ -562,7 +562,7 @@ class StringRulesTest :
                     .notMatches(
                         regex,
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -572,7 +572,7 @@ class StringRulesTest :
                         regex,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("starts with") {
@@ -599,7 +599,7 @@ class StringRulesTest :
                         .startsWith(
                             prefix,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -609,7 +609,7 @@ class StringRulesTest :
                             prefix,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -637,7 +637,7 @@ class StringRulesTest :
                         .endsWith(
                             suffix,
                             incorrectValue,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
@@ -647,7 +647,7 @@ class StringRulesTest :
                             suffix,
                             namedIncorrectValue.value,
                             namedIncorrectValue.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -670,7 +670,7 @@ class StringRulesTest :
                 StringViolations
                     .alphabetic(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -679,7 +679,7 @@ class StringRulesTest :
                     .alphabetic(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("numeric") {
@@ -701,7 +701,7 @@ class StringRulesTest :
                 StringViolations
                     .numeric(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -710,7 +710,7 @@ class StringRulesTest :
                     .numeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("alphanumeric") {
@@ -732,7 +732,7 @@ class StringRulesTest :
                 StringViolations
                     .alphanumeric(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -741,7 +741,7 @@ class StringRulesTest :
                     .alphanumeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("not blank") {
@@ -763,7 +763,7 @@ class StringRulesTest :
                 StringViolations
                     .notBlank(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -772,7 +772,7 @@ class StringRulesTest :
                     .notBlank(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("not empty") {
@@ -794,7 +794,7 @@ class StringRulesTest :
                 StringViolations
                     .notEmpty(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -803,7 +803,7 @@ class StringRulesTest :
                     .notEmpty(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("lower case") {
@@ -825,7 +825,7 @@ class StringRulesTest :
                 StringViolations
                     .lowerCase(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -834,7 +834,7 @@ class StringRulesTest :
                     .lowerCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
 
         test("upper case") {
@@ -856,7 +856,7 @@ class StringRulesTest :
                 StringViolations
                     .upperCase(
                         incorrectValue,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
@@ -865,6 +865,6 @@ class StringRulesTest :
                     .upperCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
-                    ).message
+                    ).reason
         }
     })

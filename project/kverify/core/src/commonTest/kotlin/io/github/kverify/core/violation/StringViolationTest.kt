@@ -10,7 +10,7 @@ class StringViolationTest :
         test("constructor") {
             val violation = StringViolation(message)
 
-            violation.message shouldBe message
+            violation.reason shouldBe message
         }
 
         test("asViolation") {

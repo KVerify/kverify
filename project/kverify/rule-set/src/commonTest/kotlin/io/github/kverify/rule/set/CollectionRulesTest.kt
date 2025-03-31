@@ -16,7 +16,7 @@ private typealias IntList = List<Int>
 
 class CollectionRulesTest :
     FunSpec({
-        val failContext = ValidationContext { fail(it.message) }
+        val failContext = ValidationContext { fail(it.reason) }
 
         test("of size") {
             Arb.int(1..10).checkAll { size ->
@@ -39,7 +39,7 @@ class CollectionRulesTest :
                         .ofSize(
                             size,
                             incorrectCollection,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -49,7 +49,7 @@ class CollectionRulesTest :
                             size,
                             namedIncorrectCollection.value,
                             namedIncorrectCollection.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -74,7 +74,7 @@ class CollectionRulesTest :
                         .notOfSize(
                             size,
                             incorrectCollection,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -84,7 +84,7 @@ class CollectionRulesTest :
                             size,
                             namedIncorrectCollection.value,
                             namedIncorrectCollection.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -109,7 +109,7 @@ class CollectionRulesTest :
                         .maxSize(
                             size,
                             incorrectCollection,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -119,7 +119,7 @@ class CollectionRulesTest :
                             size,
                             namedIncorrectCollection.value,
                             namedIncorrectCollection.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -144,7 +144,7 @@ class CollectionRulesTest :
                         .minSize(
                             size,
                             incorrectCollection,
-                        ).message
+                        ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -154,7 +154,7 @@ class CollectionRulesTest :
                             size,
                             namedIncorrectCollection.value,
                             namedIncorrectCollection.name,
-                        ).message
+                        ).reason
             }
         }
 
@@ -181,7 +181,7 @@ class CollectionRulesTest :
                             .sizeBetween(
                                 range,
                                 incorrectCollection,
-                            ).message
+                            ).reason
 
                     shouldFail {
                         namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -191,7 +191,7 @@ class CollectionRulesTest :
                                 range,
                                 namedIncorrectCollection.value,
                                 namedIncorrectCollection.name,
-                            ).message
+                            ).reason
                 }
             }
         }
@@ -219,7 +219,7 @@ class CollectionRulesTest :
                             .sizeNotBetween(
                                 range,
                                 incorrectCollection,
-                            ).message
+                            ).reason
 
                     shouldFail {
                         namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -229,7 +229,7 @@ class CollectionRulesTest :
                                 range,
                                 namedIncorrectCollection.value,
                                 namedIncorrectCollection.name,
-                            ).message
+                            ).reason
                 }
             }
         }
@@ -255,7 +255,7 @@ class CollectionRulesTest :
                     .containsAll(
                         elements,
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -265,7 +265,7 @@ class CollectionRulesTest :
                         elements,
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
 
         test("contains none") {
@@ -289,7 +289,7 @@ class CollectionRulesTest :
                     .containsNone(
                         elements,
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -299,7 +299,7 @@ class CollectionRulesTest :
                         elements,
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
 
         test("contains") {
@@ -323,7 +323,7 @@ class CollectionRulesTest :
                     .contains(
                         element,
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -333,7 +333,7 @@ class CollectionRulesTest :
                         element,
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
 
         test("not contains") {
@@ -357,7 +357,7 @@ class CollectionRulesTest :
                     .notContains(
                         element,
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -367,7 +367,7 @@ class CollectionRulesTest :
                         element,
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
 
         test("contains only") {
@@ -391,7 +391,7 @@ class CollectionRulesTest :
                     .containsOnly(
                         elements,
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -401,7 +401,7 @@ class CollectionRulesTest :
                         elements,
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
 
         test("not empty") {
@@ -423,7 +423,7 @@ class CollectionRulesTest :
                 CollectionViolations
                     .notEmpty(
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -432,7 +432,7 @@ class CollectionRulesTest :
                     .notEmpty(
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
 
         test("distinct") {
@@ -454,7 +454,7 @@ class CollectionRulesTest :
                 CollectionViolations
                     .distinct(
                         incorrectCollection,
-                    ).message
+                    ).reason
 
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
@@ -463,6 +463,6 @@ class CollectionRulesTest :
                     .distinct(
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
-                    ).message
+                    ).reason
         }
     })
