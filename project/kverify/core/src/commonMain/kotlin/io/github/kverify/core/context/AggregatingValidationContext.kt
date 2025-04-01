@@ -60,7 +60,7 @@ public fun <T> T.validateAllWithRules(
     violationsStorage: MutableCollection<Violation>,
     vararg rules: Rule<T>,
 ): ValidationResult =
-    validateAll(violationsStorage) lambda@{
+    validateAll(violationsStorage) {
         this@validateAllWithRules.applyRules(rules = rules)
     }
 
@@ -74,7 +74,7 @@ public fun <T> T.validateAllWithRules(
 public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
     validateAll(
         violationsStorage = mutableListOf(),
-    ) lambda@{
+    ) {
         this@validateAllWithRules.applyRules(rules = rules)
     }
 
