@@ -72,9 +72,7 @@ public fun <T> T.validateAllWithRules(
  * @return [ValidationResult] containing all collected [Violation]s.
  */
 public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
-    validateAll(
-        violationsStorage = mutableListOf(),
-    ) {
+    validateAll(mutableListOf()) {
         this@validateAllWithRules.applyRules(rules = rules)
     }
 
