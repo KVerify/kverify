@@ -121,9 +121,8 @@ public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult
  */
 public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     try {
-        Result.success(
-            ThrowingValidationContext.run(block),
-        )
+        val result = ThrowingValidationContext.run(block)
+        Result.success(result)
     } catch (e: ValidationException) {
         Result.failure(e)
     }
