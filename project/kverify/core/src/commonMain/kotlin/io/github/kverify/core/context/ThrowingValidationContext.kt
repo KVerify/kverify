@@ -58,12 +58,10 @@ public inline fun validateThatOrThrow(
         returns() implies condition
     }
 
-    validateOrThrow {
-        validate(
-            condition,
-            violationGenerator,
-        )
-    }
+    ThrowingValidationContext.validate(
+        condition,
+        violationGenerator,
+    )
 }
 
 /**
