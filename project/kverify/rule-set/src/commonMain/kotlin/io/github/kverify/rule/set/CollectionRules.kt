@@ -6,15 +6,15 @@ import io.github.kverify.core.model.NamedRule
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.rule.set.violation.CollectionViolations
+import io.github.kverify.rule.set.factory.CollectionViolationFactory
 
 public open class CollectionRules(
-    public val collectionViolations: CollectionViolations = CollectionViolations.Default,
+    public val collectionViolationFactory: CollectionViolationFactory = CollectionViolationFactory.Default,
 ) {
     public inner class OfSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.ofSize(size, value)
+            collectionViolationFactory.ofSize(size, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -23,7 +23,7 @@ public open class CollectionRules(
         ) : this(
             size = size,
             violationGenerator = { value ->
-                collectionViolations.ofSize(size, value, name)
+                collectionViolationFactory.ofSize(size, value, name)
             },
         )
 
@@ -39,7 +39,7 @@ public open class CollectionRules(
     public inner class NamedOfSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.ofSize(size, value, name)
+            collectionViolationFactory.ofSize(size, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -54,7 +54,7 @@ public open class CollectionRules(
     public inner class NotOfSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.notOfSize(size, value)
+            collectionViolationFactory.notOfSize(size, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -63,7 +63,7 @@ public open class CollectionRules(
         ) : this(
             size = size,
             violationGenerator = { value ->
-                collectionViolations.notOfSize(size, value, name)
+                collectionViolationFactory.notOfSize(size, value, name)
             },
         )
 
@@ -79,7 +79,7 @@ public open class CollectionRules(
     public inner class NamedNotOfSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.notOfSize(size, value, name)
+            collectionViolationFactory.notOfSize(size, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -94,7 +94,7 @@ public open class CollectionRules(
     public inner class MaxSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.maxSize(size, value)
+            collectionViolationFactory.maxSize(size, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -103,7 +103,7 @@ public open class CollectionRules(
         ) : this(
             size = size,
             violationGenerator = { value ->
-                collectionViolations.maxSize(size, value, name)
+                collectionViolationFactory.maxSize(size, value, name)
             },
         )
 
@@ -119,7 +119,7 @@ public open class CollectionRules(
     public inner class NamedMaxSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.maxSize(size, value, name)
+            collectionViolationFactory.maxSize(size, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -134,7 +134,7 @@ public open class CollectionRules(
     public inner class MinSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.minSize(size, value)
+            collectionViolationFactory.minSize(size, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -143,7 +143,7 @@ public open class CollectionRules(
         ) : this(
             size = size,
             violationGenerator = { value ->
-                collectionViolations.minSize(size, value, name)
+                collectionViolationFactory.minSize(size, value, name)
             },
         )
 
@@ -159,7 +159,7 @@ public open class CollectionRules(
     public inner class NamedMinSize<C : Collection<*>>(
         public val size: Int,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.minSize(size, value, name)
+            collectionViolationFactory.minSize(size, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -174,14 +174,14 @@ public open class CollectionRules(
     public inner class SizeBetween<C : Collection<*>>(
         public val range: IntRange,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.sizeBetween(range, value)
+            collectionViolationFactory.sizeBetween(range, value)
         },
     ) : Rule<C> {
         public constructor(
             min: Int,
             max: Int,
             violationGenerator: (C) -> Violation = { value ->
-                collectionViolations.sizeBetween(min..max, value)
+                collectionViolationFactory.sizeBetween(min..max, value)
             },
         ) : this(
             range = min..max,
@@ -194,7 +194,7 @@ public open class CollectionRules(
         ) : this(
             range = range,
             violationGenerator = { value ->
-                collectionViolations.sizeBetween(range, value, name)
+                collectionViolationFactory.sizeBetween(range, value, name)
             },
         )
 
@@ -205,7 +205,7 @@ public open class CollectionRules(
         ) : this(
             range = min..max,
             violationGenerator = { value ->
-                collectionViolations.sizeBetween(min..max, value, name)
+                collectionViolationFactory.sizeBetween(min..max, value, name)
             },
         )
 
@@ -221,7 +221,7 @@ public open class CollectionRules(
     public inner class NamedSizeBetween<C : Collection<*>>(
         public val range: IntRange,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.sizeBetween(range, value, name)
+            collectionViolationFactory.sizeBetween(range, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -236,14 +236,14 @@ public open class CollectionRules(
     public inner class SizeNotBetween<C : Collection<*>>(
         public val range: IntRange,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.sizeNotBetween(range, value)
+            collectionViolationFactory.sizeNotBetween(range, value)
         },
     ) : Rule<C> {
         public constructor(
             min: Int,
             max: Int,
             violationGenerator: (C) -> Violation = { value ->
-                collectionViolations.sizeNotBetween(min..max, value)
+                collectionViolationFactory.sizeNotBetween(min..max, value)
             },
         ) : this(
             range = min..max,
@@ -262,7 +262,7 @@ public open class CollectionRules(
     public inner class NamedSizeNotBetween<C : Collection<*>>(
         public val range: IntRange,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.sizeNotBetween(range, value, name)
+            collectionViolationFactory.sizeNotBetween(range, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -277,7 +277,7 @@ public open class CollectionRules(
     public inner class ContainsAll<T, C : Collection<T>>(
         public val elements: C,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.containsAll(elements, value)
+            collectionViolationFactory.containsAll(elements, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -286,7 +286,7 @@ public open class CollectionRules(
         ) : this(
             elements = elements,
             violationGenerator = { value ->
-                collectionViolations.containsAll(elements, value, name)
+                collectionViolationFactory.containsAll(elements, value, name)
             },
         )
 
@@ -302,7 +302,7 @@ public open class CollectionRules(
     public inner class NamedContainsAll<T, C : Collection<T>>(
         public val elements: C,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.containsAll(elements, value, name)
+            collectionViolationFactory.containsAll(elements, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -317,7 +317,7 @@ public open class CollectionRules(
     public inner class ContainsNone<T, C : Collection<T>>(
         public val elements: C,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.containsNone(elements, value)
+            collectionViolationFactory.containsNone(elements, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -326,7 +326,7 @@ public open class CollectionRules(
         ) : this(
             elements = elements,
             violationGenerator = { value ->
-                collectionViolations.containsNone(elements, value, name)
+                collectionViolationFactory.containsNone(elements, value, name)
             },
         )
 
@@ -342,7 +342,7 @@ public open class CollectionRules(
     public inner class NamedContainsNone<T, C : Collection<T>>(
         public val elements: C,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.containsNone(elements, value, name)
+            collectionViolationFactory.containsNone(elements, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -357,7 +357,7 @@ public open class CollectionRules(
     public inner class Contains<T, C : Collection<T>>(
         public val element: T,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.contains(element, value)
+            collectionViolationFactory.contains(element, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -366,7 +366,7 @@ public open class CollectionRules(
         ) : this(
             element = element,
             violationGenerator = { value ->
-                collectionViolations.contains(element, value, name)
+                collectionViolationFactory.contains(element, value, name)
             },
         )
 
@@ -382,7 +382,7 @@ public open class CollectionRules(
     public inner class NamedContains<T, C : Collection<T>>(
         public val element: T,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.contains(element, value, name)
+            collectionViolationFactory.contains(element, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -397,7 +397,7 @@ public open class CollectionRules(
     public inner class NotContains<T, C : Collection<T>>(
         public val element: T,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.notContains(element, value)
+            collectionViolationFactory.notContains(element, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -406,7 +406,7 @@ public open class CollectionRules(
         ) : this(
             element = element,
             violationGenerator = { value ->
-                collectionViolations.notContains(element, value, name)
+                collectionViolationFactory.notContains(element, value, name)
             },
         )
 
@@ -422,7 +422,7 @@ public open class CollectionRules(
     public inner class NamedNotContains<T, C : Collection<T>>(
         public val element: T,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.notContains(element, value, name)
+            collectionViolationFactory.notContains(element, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -437,7 +437,7 @@ public open class CollectionRules(
     public inner class ContainsOnly<T, C : Collection<T>>(
         public val elements: Collection<T>,
         public val violationGenerator: (C) -> Violation = { value ->
-            collectionViolations.containsOnly(elements, value)
+            collectionViolationFactory.containsOnly(elements, value)
         },
     ) : Rule<C> {
         public constructor(
@@ -446,7 +446,7 @@ public open class CollectionRules(
         ) : this(
             elements = elements,
             violationGenerator = { value ->
-                collectionViolations.containsOnly(elements, value, name)
+                collectionViolationFactory.containsOnly(elements, value, name)
             },
         )
 
@@ -462,7 +462,7 @@ public open class CollectionRules(
     public inner class NamedContainsOnly<T, C : Collection<T>>(
         public val elements: Collection<T>,
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.containsOnly(elements, value, name)
+            collectionViolationFactory.containsOnly(elements, value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -476,14 +476,14 @@ public open class CollectionRules(
 
     public inner class NotEmpty<C : Collection<*>>(
         public val violationGenerator: (C) -> Violation = {
-            collectionViolations.notEmpty(it)
+            collectionViolationFactory.notEmpty(it)
         },
     ) : Rule<C> {
         public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
-                collectionViolations.notEmpty(value, name)
+                collectionViolationFactory.notEmpty(value, name)
             },
         )
 
@@ -498,7 +498,7 @@ public open class CollectionRules(
 
     public inner class NamedNotEmpty<C : Collection<*>>(
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.notEmpty(value, name)
+            collectionViolationFactory.notEmpty(value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -512,14 +512,14 @@ public open class CollectionRules(
 
     public inner class Distinct<C : Collection<*>>(
         public val violationGenerator: (C) -> Violation = {
-            collectionViolations.distinct(it)
+            collectionViolationFactory.distinct(it)
         },
     ) : Rule<C> {
         public constructor(
             name: String,
         ) : this(
             violationGenerator = { value ->
-                collectionViolations.distinct(value, name)
+                collectionViolationFactory.distinct(value, name)
             },
         )
 
@@ -534,7 +534,7 @@ public open class CollectionRules(
 
     public inner class NamedDistinct<C : Collection<*>>(
         public val violationGenerator: (NamedValue<C>) -> Violation = { (name, value) ->
-            collectionViolations.distinct(value, name)
+            collectionViolationFactory.distinct(value, name)
         },
     ) : NamedRule<C> {
         override fun ValidationContext.runValidation(value: NamedValue<C>) {
@@ -547,6 +547,6 @@ public open class CollectionRules(
     }
 
     public companion object : CollectionRules(
-        collectionViolations = CollectionViolations.Default,
+        collectionViolationFactory = CollectionViolationFactory.Default,
     )
 }

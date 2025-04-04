@@ -1,10 +1,10 @@
-package io.github.kverify.rule.set.violation
+package io.github.kverify.rule.set.factory
 
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolation
 
 @Suppress("TooManyFunctions")
-public interface CollectionViolations {
+public interface CollectionViolationFactory {
     public fun <C : Collection<*>> ofSize(
         size: Int,
         value: C,
@@ -128,5 +128,5 @@ public interface CollectionViolations {
         }
     }
 
-    public companion object Default : CollectionViolations
+    public companion object Default : CollectionViolationFactory
 }
