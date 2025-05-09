@@ -2,8 +2,8 @@ package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.util.executionCheck
-import io.github.kverify.core.violation.StringViolation
 import io.github.kverify.core.violation.Violation
+import io.github.kverify.core.violation.ViolationReason
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -11,7 +11,7 @@ import kotlin.test.DefaultAsserter.fail
 
 class ValidationResultTest :
     FunSpec({
-        val violation = StringViolation("test")
+        val violation = ViolationReason("test")
 
         test("isValid") {
             ValidationResult(emptyList()).isValid shouldBe true

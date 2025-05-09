@@ -1,7 +1,7 @@
 package io.github.kverify.core.exception
 
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.core.violation.asViolation
+import io.github.kverify.core.violation.asViolationReason
 import kotlin.jvm.JvmName
 
 /**
@@ -59,7 +59,7 @@ public fun ValidationException(
 
 /**
  * Creates a [ValidationException] with the given [message] and [violationMessages],
- * mapping the [violationMessages] to [io.github.kverify.core.violation.StringViolation] objects.
+ * mapping the [violationMessages] to [io.github.kverify.core.violation.ViolationReason] objects.
  */
 public fun ValidationException(
     message: String? = null,
@@ -68,13 +68,13 @@ public fun ValidationException(
 ): ValidationException =
     ValidationException(
         message,
-        violationMessages.map { it.asViolation() },
+        violationMessages.map { it.asViolationReason() },
         cause,
     )
 
 /**
  * Creates a [ValidationException] from the given [violationMessages],
- * mapping them to [io.github.kverify.core.violation.StringViolation] objects.
+ * mapping them to [io.github.kverify.core.violation.ViolationReason] objects.
  */
 @JvmName("ValidationExceptionFromMessages")
 public fun ValidationException(
@@ -82,6 +82,6 @@ public fun ValidationException(
     cause: Throwable? = null,
 ): ValidationException =
     ValidationException(
-        violationMessages.map { it.asViolation() },
+        violationMessages.map { it.asViolationReason() },
         cause,
     )

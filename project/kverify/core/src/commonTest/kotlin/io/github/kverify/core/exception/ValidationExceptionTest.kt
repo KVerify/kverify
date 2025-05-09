@@ -1,7 +1,7 @@
 package io.github.kverify.core.exception
 
-import io.github.kverify.core.violation.StringViolation
 import io.github.kverify.core.violation.Violation
+import io.github.kverify.core.violation.ViolationReason
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -31,8 +31,8 @@ class ValidationExceptionTest :
         test("factory function ValidationException(List<Violation>, Throwable?") {
             val violations =
                 listOf<Violation>(
-                    StringViolation(message),
-                    StringViolation(message),
+                    ViolationReason(message),
+                    ViolationReason(message),
                 )
 
             val emptyViolationsException =
@@ -58,15 +58,15 @@ class ValidationExceptionTest :
         test("factory function ValidationException(vararg Violation, Throwable?)") {
             val exception =
                 ValidationException(
-                    StringViolation(message),
-                    StringViolation(message),
+                    ViolationReason(message),
+                    ViolationReason(message),
                     cause = cause,
                 )
 
             exception.violations shouldBe
                 listOf(
-                    StringViolation(message),
-                    StringViolation(message),
+                    ViolationReason(message),
+                    ViolationReason(message),
                 )
             exception.cause shouldBe cause
             exception.message shouldBe
@@ -85,8 +85,8 @@ class ValidationExceptionTest :
 
             exception.violations shouldBe
                 listOf(
-                    StringViolation(message),
-                    StringViolation(message),
+                    ViolationReason(message),
+                    ViolationReason(message),
                 )
             exception.cause shouldBe cause
             exception.message shouldBe message
@@ -101,8 +101,8 @@ class ValidationExceptionTest :
 
             exception.violations shouldBe
                 listOf(
-                    StringViolation(message),
-                    StringViolation(message),
+                    ViolationReason(message),
+                    ViolationReason(message),
                 )
             exception.cause shouldBe cause
             exception.message shouldBe

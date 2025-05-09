@@ -1,7 +1,7 @@
 package io.github.kverify.rule.set.factory
 
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.core.violation.asViolation
+import io.github.kverify.core.violation.asViolationReason
 
 @Suppress("TooManyFunctions")
 public interface CollectionViolationFactory {
@@ -9,37 +9,37 @@ public interface CollectionViolationFactory {
         size: Int,
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must have exactly $size elements, but it has ${value.size}.".asViolation()
+    ): Violation = "'$name' must have exactly $size elements, but it has ${value.size}.".asViolationReason()
 
     public fun <C : Collection<*>> notOfSize(
         size: Int,
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must not have exactly $size elements, but it does.".asViolation()
+    ): Violation = "'$name' must not have exactly $size elements, but it does.".asViolationReason()
 
     public fun <C : Collection<*>> maxSize(
         size: Int,
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must have at most $size elements, but it has ${value.size}.".asViolation()
+    ): Violation = "'$name' must have at most $size elements, but it has ${value.size}.".asViolationReason()
 
     public fun <C : Collection<*>> minSize(
         size: Int,
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must have at least $size elements, but it has ${value.size}.".asViolation()
+    ): Violation = "'$name' must have at least $size elements, but it has ${value.size}.".asViolationReason()
 
     public fun <C : Collection<*>> sizeBetween(
         range: IntRange,
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must have a size within the range $range, but it has ${value.size}.".asViolation()
+    ): Violation = "'$name' must have a size within the range $range, but it has ${value.size}.".asViolationReason()
 
     public fun <C : Collection<*>> sizeNotBetween(
         range: IntRange,
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must not have a size within the range $range, but it has ${value.size}.".asViolation()
+    ): Violation = "'$name' must not have a size within the range $range, but it has ${value.size}.".asViolationReason()
 
     public fun <T, C : Collection<T>> containsAll(
         elements: Collection<T>,
@@ -50,9 +50,9 @@ public interface CollectionViolationFactory {
 
         return if (missingElements.isNotEmpty()) {
             "'$name' must contain all of the following elements: [$missingElements], but some are missing."
-                .asViolation()
+                .asViolationReason()
         } else {
-            "'$name' must contain all specified elements.".asViolation()
+            "'$name' must contain all specified elements.".asViolationReason()
         }
     }
 
@@ -64,9 +64,9 @@ public interface CollectionViolationFactory {
         val forbiddenElements = elements.filter { it in value }.joinToString(", ")
 
         return if (forbiddenElements.isNotEmpty()) {
-            "'$name' must not contain these elements: [$forbiddenElements], but they are present.".asViolation()
+            "'$name' must not contain these elements: [$forbiddenElements], but they are present.".asViolationReason()
         } else {
-            "'$name' must not contain any of the specified elements.".asViolation()
+            "'$name' must not contain any of the specified elements.".asViolationReason()
         }
     }
 
@@ -76,7 +76,7 @@ public interface CollectionViolationFactory {
         name: String = "collection",
     ): Violation {
         val valueString = value.joinToString(", ")
-        return "'$name' must contain the element '$element', but it only contains: [$valueString].".asViolation()
+        return "'$name' must contain the element '$element', but it only contains: [$valueString].".asViolationReason()
     }
 
     public fun <T, C : Collection<T>> notContains(
@@ -85,7 +85,7 @@ public interface CollectionViolationFactory {
         name: String = "collection",
     ): Violation {
         val valueString = value.joinToString(", ")
-        return "'$name' must not contain the element '$element', but it contains: [$valueString].".asViolation()
+        return "'$name' must not contain the element '$element', but it contains: [$valueString].".asViolationReason()
     }
 
     public fun <T, C : Collection<T>> containsOnly(
@@ -98,16 +98,16 @@ public interface CollectionViolationFactory {
 
         return if (unexpectedElements.isNotEmpty()) {
             "'$name' must contain only the elements: [$elementsAsString], but it also contains: [$unexpectedElements]."
-                .asViolation()
+                .asViolationReason()
         } else {
-            "'$name' must only contain the specified elements.".asViolation()
+            "'$name' must only contain the specified elements.".asViolationReason()
         }
     }
 
     public fun <C : Collection<*>> notEmpty(
         value: C,
         name: String = "collection",
-    ): Violation = "'$name' must not be empty, but it is.".asViolation()
+    ): Violation = "'$name' must not be empty, but it is.".asViolationReason()
 
     public fun <C : Collection<*>> distinct(
         value: C,
@@ -122,9 +122,9 @@ public interface CollectionViolationFactory {
                 .joinToString(", ")
 
         return if (duplicates.isNotEmpty()) {
-            "'$name' must contain only distinct elements, but it has duplicates: [$duplicates].".asViolation()
+            "'$name' must contain only distinct elements, but it has duplicates: [$duplicates].".asViolationReason()
         } else {
-            "'$name' must be distinct.".asViolation()
+            "'$name' must be distinct.".asViolationReason()
         }
     }
 

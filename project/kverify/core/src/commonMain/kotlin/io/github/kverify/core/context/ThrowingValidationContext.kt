@@ -4,7 +4,7 @@ import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.core.violation.asViolation
+import io.github.kverify.core.violation.asViolationReason
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -17,10 +17,10 @@ public open class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     /**
-     * Converts [message] into [io.github.kverify.core.violation.StringViolation]
+     * Converts [message] into [io.github.kverify.core.violation.ViolationReason]
      * and handles a validation failure.
      */
-    public fun onFailure(message: String): Nothing = onFailure(message.asViolation())
+    public fun onFailure(message: String): Nothing = onFailure(message.asViolationReason())
 
     /**
      * Uses Kotlin contracts to indicate that a successful return implies [condition] was `true`.
@@ -74,6 +74,7 @@ public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
+
     ThrowingValidationContext.apply(block)
 }
 

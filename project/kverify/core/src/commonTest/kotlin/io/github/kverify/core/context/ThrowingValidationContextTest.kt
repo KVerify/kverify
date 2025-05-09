@@ -3,7 +3,7 @@ package io.github.kverify.core.context
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.util.StubRule
 import io.github.kverify.core.util.shouldContainExactly
-import io.github.kverify.core.violation.StringViolation
+import io.github.kverify.core.violation.ViolationReason
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
 class ThrowingValidationContextTest :
     FunSpec({
         val message = "test"
-        val violation = StringViolation(message)
+        val violation = ViolationReason(message)
         val failingRule = StubRule<Any>(shouldFail = true, violation)
 
         test("onFailure") {

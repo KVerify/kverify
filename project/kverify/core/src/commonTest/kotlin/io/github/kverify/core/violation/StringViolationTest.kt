@@ -8,12 +8,12 @@ class StringViolationTest :
         val message = "test"
 
         test("constructor") {
-            val violation = StringViolation(message)
+            val violation = ViolationReason(message)
 
             violation.reason shouldBe message
         }
 
-        test("asViolation") {
-            StringViolation(message) shouldBe message.asViolation()
+        test("asViolationReason") {
+            ViolationReason(message) shouldBe message.asViolationReason()
         }
     })

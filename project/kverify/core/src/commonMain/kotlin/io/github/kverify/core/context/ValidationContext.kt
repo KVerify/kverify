@@ -3,7 +3,7 @@ package io.github.kverify.core.context
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.runValidation
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.core.violation.asViolation
+import io.github.kverify.core.violation.asViolationReason
 
 /**
  * Represents a validation context that handles validation failures.
@@ -29,12 +29,12 @@ public fun interface ValidationContext {
 }
 
 /**
- * Converts [message] into [io.github.kverify.core.violation.StringViolation]
+ * Converts [message] into [io.github.kverify.core.violation.ViolationReason]
  * and handles a validation failure.
  */
 public fun ValidationContext.onFailure(message: String): Unit =
     onFailure(
-        message.asViolation(),
+        message.asViolationReason(),
     )
 
 /**

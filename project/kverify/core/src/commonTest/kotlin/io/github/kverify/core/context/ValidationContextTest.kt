@@ -1,7 +1,7 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.util.StubRule
-import io.github.kverify.core.violation.StringViolation
+import io.github.kverify.core.violation.ViolationReason
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -11,10 +11,10 @@ class ValidationContextTest :
     FunSpec({
         val failingContext = ValidationContext { fail(it.reason) }
         val message = "test"
-        val violation = StringViolation(message)
+        val violation = ViolationReason(message)
 
-        val successfulRule = StubRule<Unit>(shouldFail = false, StringViolation("Rule 1 should not fail"))
-        val failingRule = StubRule<Unit>(shouldFail = true, StringViolation("Rule 2 should fail"))
+        val successfulRule = StubRule<Unit>(shouldFail = false, ViolationReason("Rule 1 should not fail"))
+        val failingRule = StubRule<Unit>(shouldFail = true, ViolationReason("Rule 2 should fail"))
 
         test("onFailure") {
             shouldFail {

@@ -2,7 +2,7 @@ package io.github.kverify.core.model
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.util.executionCountCheck
-import io.github.kverify.core.violation.asViolation
+import io.github.kverify.core.violation.asViolationReason
 import io.kotest.core.spec.style.FunSpec
 
 class RuleTest :
@@ -13,7 +13,7 @@ class RuleTest :
             ) {
                 val context = ValidationContext { execute() }
 
-                val rule = Rule<Any> { onFailure("".asViolation()) }
+                val rule = Rule<Any> { onFailure("".asViolationReason()) }
 
                 rule.runValidation(context, Unit)
 
@@ -27,7 +27,7 @@ class RuleTest :
             ) {
                 val context = ValidationContext { execute() }
 
-                val rule = Rule<Any> { onFailure("".asViolation()) }
+                val rule = Rule<Any> { onFailure("".asViolationReason()) }
 
                 (rule + rule).runValidation(context, Unit)
             }
@@ -47,7 +47,7 @@ class RuleTest :
                         },
                         violationGenerator = {
                             execute()
-                            "".asViolation()
+                            "".asViolationReason()
                         },
                     )
 
@@ -66,7 +66,7 @@ class RuleTest :
                         },
                         violationGenerator = {
                             execute()
-                            "".asViolation()
+                            "".asViolationReason()
                         },
                     )
 
