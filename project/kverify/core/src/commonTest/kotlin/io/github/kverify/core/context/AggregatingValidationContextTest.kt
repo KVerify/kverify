@@ -15,81 +15,102 @@ class AggregatingValidationContextTest :
         val violation = ViolationReason(message)
         val failingRule = StubRule<Any>(shouldFail = true, violation)
 
-        test("Adds violations to violationsStorage") {
-            val violationsStorage: MutableCollection<Violation> = mutableListOf(violation)
+        test("onFailure adds violation to storage") {
+            val violationsStorage = mutableListOf<Violation>()
             val context = AggregatingValidationContext(violationsStorage)
 
             context.onFailure(violation)
 
-            violationsStorage.shouldContainExactly(violation, violation)
+            violationsStorage.shouldContainExactly(violation)
         }
 
-        test("validateAll") {
-            val violationsStorage: MutableCollection<Violation> = mutableListOf(violation)
-
-            val defaultStoreResult =
+        test("validateAll stores violations into new ArrayList") {
+            val result =
                 validateAll {
                     onFailure(violation)
                 }
-            val customStoreResult =
-                validateAll(violationsStorage) {
+
+            result.violations.shouldContainExactly(violation)
+        }
+
+        test("validateAllTo uses provided destination") {
+            val storage = mutableListOf<Violation>()
+            val result =
+                validateAllTo(storage) {
                     onFailure(violation)
                 }
 
-            // validateAll must create a copy of violationsStorage on return
-            violationsStorage.add(violation)
-
-            defaultStoreResult.violations.shouldContainExactly(violation)
-            customStoreResult.violations.shouldContainExactly(violation, violation)
-            violationsStorage.shouldContainExactly(violation, violation, violation)
+            result.violations.shouldContainExactly(violation)
+            storage.shouldContainExactly(violation)
         }
 
-        test("validateAllWithRules") {
-            val violationsStorage: MutableCollection<Violation> = mutableListOf(violation)
+        test("validateAllUsing stores violations into given context") {
+            val context = AggregatingValidationContext(mutableListOf())
+            val result =
+                validateAllUsing(context) {
+                    onFailure(violation)
+                }
 
-            val defaultStoreResult = Unit.validateAllWithRules(failingRule)
-            val customStoreResult =
-                Unit.validateAllWithRules(
-                    violationsStorage = violationsStorage,
-                    failingRule,
-                )
-
-            // validateAll must create a copy of violationsStorage on return
-            violationsStorage.add(violation)
-
-            defaultStoreResult.violations.shouldContainExactly(violation)
-            customStoreResult.violations.shouldContainExactly(violation, violation)
-            violationsStorage.shouldContainExactly(violation, violation, violation)
+            result.violations.shouldContainExactly(violation)
+            context.violationsStorage.shouldContainExactly(violation)
         }
 
-        test("runValidatingAll") {
-            val value = "test"
-            val violationsStorage: MutableCollection<Violation> = mutableListOf(violation)
+        test("validateAllWithRules applies rules to receiver") {
+            val result = Unit.validateAllWithRules(failingRule)
 
-            val defaultStoreResult =
+            result.violations.shouldContainExactly(violation)
+        }
+
+        test("validateAllWithRulesTo applies rules using provided destination") {
+            val storage = mutableListOf<Violation>()
+            val result = Unit.validateAllWithRulesTo(storage, failingRule)
+
+            result.violations.shouldContainExactly(violation)
+            storage.shouldContainExactly(violation)
+        }
+
+        test("validateAllWithRulesUsing applies rules using custom context") {
+            val context = AggregatingValidationContext(mutableListOf())
+            val result = Unit.validateAllWithRulesUsing(context, failingRule)
+
+            result.violations.shouldContainExactly(violation)
+            context.violationsStorage.shouldContainExactly(violation)
+        }
+
+        test("runValidatingAll returns success if no violations") {
+            val result =
                 runValidatingAll {
-                    Unit.applyRules(failingRule)
-                    value
-                }
-            val customStoreResult =
-                runValidatingAll(violationsStorage) {
-                    Unit.applyRules(failingRule)
-                    value
+                    "success"
                 }
 
-            val successResult = runValidatingAll { value }
+            result.getOrThrow() shouldBe "success"
+        }
 
-            // validateAll must create a copy of violationsStorage on return
-            violationsStorage.add(violation)
+        test("runValidatingAllTo returns failure if violations exist") {
+            val storage = mutableListOf<Violation>()
+            val result =
+                runValidatingAllTo(storage) {
+                    Unit.applyRules(failingRule)
+                    "value"
+                }
 
             shouldThrow<ValidationException> {
-                defaultStoreResult.getOrThrow()
+                result.getOrThrow()
             }.violations.shouldContainExactly(violation)
-            shouldThrow<ValidationException> {
-                customStoreResult.getOrThrow()
-            }.violations.shouldContainExactly(violation, violation)
+            storage.shouldContainExactly(violation)
+        }
 
-            successResult.getOrThrow() shouldBe value
-            violationsStorage.shouldContainExactly(violation, violation, violation)
+        test("runValidatingAllUsing respects context violations") {
+            val context = AggregatingValidationContext(mutableListOf())
+            val result =
+                runValidatingAllUsing(context) {
+                    onFailure(violation)
+                    42
+                }
+
+            shouldThrow<ValidationException> {
+                result.getOrThrow()
+            }.violations.shouldContainExactly(violation)
+            context.violationsStorage.shouldContainExactly(violation)
         }
     })
