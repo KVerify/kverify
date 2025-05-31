@@ -19,6 +19,16 @@ public open class AggregatingValidationContext(
     override fun onFailure(violation: Violation) {
         violationsStorage.add(violation)
     }
+
+    /**
+     * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
+     */
+    public open fun build(): ValidationResult =
+        ValidationResult(
+            // toList creates a copy,
+            // so we don't have to worry about concurrent modification
+            violationsStorage.toList(),
+        )
 }
 
 /**
@@ -39,12 +49,9 @@ public inline fun validateAll(
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return ValidationResult(
-        AggregatingValidationContext(violationsStorage)
-            .apply(block)
-            .violationsStorage
-            .toList(),
-    )
+    return AggregatingValidationContext(violationsStorage)
+        .apply(block)
+        .build()
 }
 
 /**
