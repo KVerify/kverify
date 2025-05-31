@@ -9,9 +9,12 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
- * Implementation of the [ValidationContext], that
- * collects [Violation]s reported via [ValidationContext.onFailure]
- * and stores them in [violationsStorage].
+ * A [ValidationContext] implementation that accumulates all validation [Violation]s.
+ *
+ * This context allows multiple validation failures to be collected instead of stopping at the first one.
+ * It stores violations in a provided mutable collection, enabling custom or shared storage logic.
+ *
+ * @property violationsStorage The mutable collection where [Violation]s will be stored.
  */
 public open class AggregatingValidationContext(
     public val violationsStorage: MutableCollection<Violation>,
@@ -21,12 +24,14 @@ public open class AggregatingValidationContext(
     }
 
     /**
-     * @return [ValidationResult] containing all [Violation]s from [violationsStorage].
+     * Finalizes and builds a [ValidationResult] containing all accumulated [Violation]s.
+     *
+     * A copy of the current [violationsStorage] is created to ensure immutability and thread safety.
+     *
+     * @return A [ValidationResult] representing the collected validation state.
      */
     public open fun build(): ValidationResult =
         ValidationResult(
-            // toList creates a copy,
-            // so we don't have to worry about concurrent modification
             violationsStorage.toList(),
         )
 }
@@ -34,10 +39,17 @@ public open class AggregatingValidationContext(
 // ----Validate using AggregatingValidationContext with ArrayList as violationStorage----
 
 /**
- * Executes the given [block] inside an [AggregatingValidationContext],
- * collecting any [Violation]s into a new [ArrayList].
+ * Runs a [block] of validation logic
+ * and collects all [Violation]s using a fresh [AggregatingValidationContext].
  *
- * @return [ValidationResult] with all collected [Violation]s.
+ * Internally creates a new [AggregatingValidationContext]
+ * with a new [ArrayList] as [AggregatingValidationContext.violationsStorage] to store [Violation]s.
+ *
+ * Best suited for validating multiple values or complex validation flows
+ * when no custom storage/context is required.
+ *
+ * @param block A lambda with validation logic to execute.
+ * @return A [ValidationResult] containing all collected [Violation]s.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateAll(block: AggregatingValidationContext.() -> Unit): ValidationResult {
@@ -49,10 +61,17 @@ public inline fun validateAll(block: AggregatingValidationContext.() -> Unit): V
 }
 
 /**
- * Applies the given [rules] to the receiver value,
- * collecting any [Violation]s into a new [ArrayList].
+ * Applies the given [rules] to the receiver [T]
+ * and collects all [Violation]s using a fresh [AggregatingValidationContext].
  *
- * @return [ValidationResult] with all collected [Violation]s.
+ * Internally creates a new [AggregatingValidationContext]
+ * with a new [ArrayList] as [AggregatingValidationContext.violationsStorage] to store [Violation]s.
+ *
+ * Best suited for validating a single value
+ * when no custom storage/context is required.
+ *
+ * @param rules The rules to apply to receiver object.
+ * @return A [ValidationResult] containing all [Violation]s triggered by the [rules].
  */
 public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
     this.validateAllWithRulesTo(
@@ -61,12 +80,16 @@ public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
     )
 
 /**
- * Runs the given [block] inside an [AggregatingValidationContext],
- * collecting any [Violation]s into a new [ArrayList]. Returns
- * [Result.success] if no violations, otherwise [Result.failure]
- * with a [ValidationException].
+ * Executes a [block] that may perform validation, returning the result or a failure.
  *
- * @return [Result] wrapping either the block result or a [ValidationException].
+ * If no [Violation]s occur, returns [Result.success] with the [block]’s return value.
+ * Otherwise, returns [Result.failure] wrapping a [ValidationException].
+ *
+ * Internally creates a new [AggregatingValidationContext]
+ * with a new [ArrayList] as [AggregatingValidationContext.violationsStorage] to store [Violation]s.
+ *
+ * @param block A lambda with validation and business logic to execute.
+ * @return A [Result] containing either the [block]’s result or a [ValidationException].
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> runValidatingAll(block: AggregatingValidationContext.() -> T): Result<T> {
@@ -80,11 +103,18 @@ public inline fun <T> runValidatingAll(block: AggregatingValidationContext.() ->
 // ----Validate using AggregatingValidationContext with provided destination as violationStorage----
 
 /**
- * Executes the given [block] inside an [AggregatingValidationContext],
- * collecting any [Violation]s into the provided [destination].
+ * Runs a [block] of validation logic
+ * and collects all [Violation]s into the given [destination].
  *
- * @param destination collection to store [Violation]s
- * @return [ValidationResult] with all collected [Violation]s.
+ * Internally creates a new [AggregatingValidationContext] with the provided [destination]
+ * as [AggregatingValidationContext.violationsStorage] to store [Violation]s.
+ *
+ * Best suited for validating multiple values or complex validation flows
+ * when a custom storage is required.
+ *
+ * @param destination The collection used to store [Violation]s.
+ * @param block A lambda with validation logic to execute.
+ * @return A [ValidationResult] containing all collected [Violation]s.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateAllTo(
@@ -99,11 +129,18 @@ public inline fun validateAllTo(
 }
 
 /**
- * Applies the given [rules] to the receiver value,
- * collecting any [Violation]s into the provided [destination].
+ * Applies the given [rules] to the receiver [T]
+ * and stores [Violation]s in the provided [destination].
  *
- * @param destination collection to store [Violation]s
- * @return [ValidationResult] with all collected [Violation]s.
+ * Internally creates a new [AggregatingValidationContext] with the provided [destination]
+ * as [AggregatingValidationContext.violationsStorage] to store [Violation]s.
+ *
+ * Best suited for validating a single value
+ * when a custom storage is required.
+ *
+ * @param destination The collection used to store [Violation]s.
+ * @param rules The rules to apply to the receiver object.
+ * @return A [ValidationResult] containing all [Violation]s triggered by the [rules].
  */
 public fun <T> T.validateAllWithRulesTo(
     destination: MutableCollection<Violation>,
@@ -115,13 +152,17 @@ public fun <T> T.validateAllWithRulesTo(
     )
 
 /**
- * Runs the given [block] inside an [AggregatingValidationContext],
- * collecting any [Violation]s into the provided [destination].
- * Returns [Result.success] if no violations, otherwise [Result.failure]
- * with a [ValidationException].
+ * Executes a [block] that may perform validation, returning the result or a failure.
  *
- * @param destination collection to store [Violation]s
- * @return [Result] wrapping either the block result or a [ValidationException].
+ * If no [Violation]s occur, returns [Result.success] with the [block]’s return value.
+ * Otherwise, returns [Result.failure] wrapping a [ValidationException].
+ *
+ * Internally creates a new [AggregatingValidationContext] with the provided [destination]
+ * as [AggregatingValidationContext.violationsStorage] to store [Violation]s.
+ *
+ * @param destination The collection used to store [Violation]s.
+ * @param block A lambda with validation and business logic to execute.
+ * @return A [Result] containing the block result or a [ValidationException].
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> runValidatingAllTo(
@@ -138,12 +179,18 @@ public inline fun <T> runValidatingAllTo(
 // ----Validate using provided context----
 
 /**
- * Executes the given [block] inside the specified [context],
- * collecting any [Violation]s reported via [ValidationContext.onFailure].
+ * Runs a [block] of validation logic using the provided [context]
+ * to collect all [Violation]s.
  *
- * @param context the [AggregatingValidationContext] to use for collecting violations
- * @param block the validation logic to execute within the context
- * @return [ValidationResult] containing all collected violations after the block executes
+ * Enables reuse of an existing [AggregatingValidationContext], allowing
+ * custom or shared violation storage.
+ *
+ * Best suited for validating multiple values or complex validation flows
+ * when a custom context or violation storage is required.
+ *
+ * @param context The validation context to run the block within.
+ * @param block A lambda with validation logic to execute.
+ * @return A [ValidationResult] containing all collected [Violation]s.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun <C : AggregatingValidationContext> validateAllUsing(
@@ -158,12 +205,15 @@ public inline fun <C : AggregatingValidationContext> validateAllUsing(
 }
 
 /**
- * Applies the given [rules] to the receiver value within the specified [context],
- * collecting any [Violation]s reported via [ValidationContext.onFailure].
+ * Applies the given [rules] to the receiver [T] using the provided [context]
+ * to collect all [Violation]s.
  *
- * @param context the [AggregatingValidationContext] to use for collecting violations
- * @param rules the validation rules to apply
- * @return [ValidationResult] containing all collected violations after applying the rules
+ * Best suited for validating a single value when validation rules
+ * when a custom context or violation storage is required.
+ *
+ * @param context The validation context used to accumulate violations.
+ * @param rules The rules to apply to the receiver object.
+ * @return A [ValidationResult] containing all [Violation]s triggered by the rules.
  */
 public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
     context: C,
@@ -174,14 +224,16 @@ public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
     }
 
 /**
- * Runs the given [block] inside the specified [context],
- * collecting any [Violation]s reported via [ValidationContext.onFailure].
- * Returns [Result.success] if no violations were collected,
- * otherwise [Result.failure] containing a [ValidationException] wrapping the violations.
+ * Executes a [block] that may perform validation, returning the result or a failure.
  *
- * @param context the [AggregatingValidationContext] to use for collecting violations
- * @param block the validation logic to execute within the context
- * @return [Result] wrapping either the block result or a [ValidationException] with collected violations
+ * If no [Violation]s occur, returns [Result.success] with the [block]’s return value.
+ * Otherwise, returns [Result.failure] wrapping a [ValidationException].
+ *
+ * Uses the provided [context] to store [Violation]s.
+ *
+ * @param context The validation context used to collect violations.
+ * @param block The logic block to execute.
+ * @return A [Result] containing success with the block result or failure due to validation errors.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T, C : AggregatingValidationContext> runValidatingAllUsing(
