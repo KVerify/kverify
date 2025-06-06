@@ -10,9 +10,7 @@ import kotlin.jvm.JvmInline
 @JvmInline
 public value class ViolationReason(
     override val reason: String,
-) : Violation {
-    override fun toString(): String = "ViolationReason(reason=$reason)"
-}
+) : Violation
 
 /**
  * Converts the given [String] into a [ViolationReason].
