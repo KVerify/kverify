@@ -10,23 +10,42 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
- * Implementation of [ValidationContext] that throws a [ValidationException]
- * containing the first [Violation] reported via [ValidationContext.onFailure].
+ * A [ValidationContext] implementation that immediately throws a [ValidationException] on the first validation failure.
+ *
+ * This context provides fail-fast validation behavior, stopping execution as soon as any validation rule fails.
+ * It's ideal for scenarios where immediate error handling is required and collecting multiple violations is unnecessary.
+ *
+ * The context throws [ValidationException] containing the first encountered [Violation], making it suitable
+ * for input validation, precondition checks, and other scenarios where early termination is desired.
  */
 public open class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
 
     /**
-     * Converts [message] into [io.github.kverify.core.violation.ViolationReason]
-     * and handles a validation failure.
+     * Triggers validation failure with a simple string message.
+     *
+     * Converts the provided [message] into a [Violation] and immediately throws a [ValidationException].
+     * This is a convenience method for quick validation checks without creating explicit violation objects.
+     *
+     * @param message The error message describing the validation failure.
+     * @throws ValidationException Always thrown with the converted violation.
      */
-    public fun onFailure(message: String): Nothing = onFailure(message.asViolationReason())
+    public fun onFailure(message: String): Nothing =
+        onFailure(
+            message.asViolationReason(),
+        )
 
     /**
-     * Uses Kotlin contracts to indicate that a successful return implies [condition] was `true`.
+     * Validates a condition and throws on failure.
      *
-     * @throws ValidationException with the result of calling [violationGenerator]
-     * if [condition] is `false`.
+     * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
+     * and immediately throws a [ValidationException].
+     * The Kotlin [contract] ensures that after this function returns normally,
+     * the condition is guaranteed to be `true`.
+     *
+     * @param condition The boolean condition to validate.
+     * @param violationGenerator A lambda that produces the [Violation] when validation fails.
+     * @throws ValidationException When the condition is `false`.
      */
     @OptIn(ExperimentalContracts::class)
     public inline fun validate(
@@ -43,31 +62,19 @@ public open class ThrowingValidationContext : ValidationContext {
     public companion object : ThrowingValidationContext()
 }
 
-/**
- * Uses Kotlin contracts to indicate that a successful return implies [condition] was true.
- *
- * @throws ValidationException with the result of calling [violationGenerator]
- * if [condition] is `false`.
- */
-@OptIn(ExperimentalContracts::class)
-public inline fun validateThatOrThrow(
-    condition: Boolean,
-    violationGenerator: () -> Violation,
-) {
-    contract {
-        returns() implies condition
-    }
-
-    ThrowingValidationContext.validate(
-        condition,
-        violationGenerator,
-    )
-}
+// ----Validate using ThrowingValidationContext with fail-fast behavior----
 
 /**
- * Executes the given [block] within a [ThrowingValidationContext] context.
+ * Runs a [block] of validation logic with fail-fast behavior.
  *
- * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
+ * Internally uses [ThrowingValidationContext] to execute the validation [block].
+ * Execution stops immediately upon the first validation failure, throwing a [ValidationException].
+ *
+ * Best suited for input validation, precondition checks, and scenarios where
+ * early termination on failure is desired.
+ *
+ * @param block A lambda with validation logic to execute.
+ * @throws ValidationException When any validation within the block fails.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
@@ -75,55 +82,209 @@ public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    ThrowingValidationContext.apply(block)
+    validateOrThrowUsing(
+        ThrowingValidationContext,
+        block,
+    )
 }
 
 /**
- * Executes the given [block] within a [ThrowingValidationContext] context.
+ * Runs a [block] of validation logic and captures the first failure as a [ValidationResult].
  *
- * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
- * or [ValidationResult.VALID] if no violations occurred.
+ * Internally uses [ThrowingValidationContext] but catches any [ValidationException]
+ * to return a [ValidationResult] instead of propagating the exception.
+ *
+ * Returns [ValidationResult.VALID] if no violations occur, or a [ValidationResult]
+ * containing the first encountered violation.
+ *
+ * Best suited for validation scenarios where you want fail-fast behavior
+ * but prefer result objects over exception handling.
+ *
+ * @param block A lambda with validation logic to execute.
+ * @return A [ValidationResult] representing the validation outcome.
  */
 public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
+    validateFirstUsing(
+        ThrowingValidationContext,
+        block,
+    )
+
+/**
+ * Applies the given [rules] to the receiver [T] with fail-fast behavior.
+ *
+ * Internally uses [ThrowingValidationContext] to apply rules sequentially.
+ * Execution stops immediately upon the first rule violation, throwing a [ValidationException].
+ *
+ * Best suited for validating a single value with multiple rules
+ * when immediate failure response is required.
+ *
+ * @param rules The rules to apply to the receiver object.
+ * @throws ValidationException When any rule violation occurs.
+ */
+public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
+    this.validateOrThrowWithRulesUsing(
+        ThrowingValidationContext,
+        rules = rules,
+    )
+
+/**
+ * Applies the given [rules] to the receiver [T] and captures the first failure as a [ValidationResult].
+ *
+ * Internally uses [ThrowingValidationContext] to apply rules but catches any [ValidationException]
+ * to return a [ValidationResult] instead of propagating the exception.
+ *
+ * Returns [ValidationResult.VALID] if all rules pass, or a [ValidationResult]
+ * containing the first rule violation encountered.
+ *
+ * Best suited for validating a single value with multiple rules
+ * when you want fail-fast behavior but prefer result objects over exception handling.
+ *
+ * @param rules The rules to apply to the receiver object.
+ * @return A [ValidationResult] containing the first violation or indicating success.
+ */
+public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
+    this.validateFirstWithRulesUsing(
+        ThrowingValidationContext,
+        rules = rules,
+    )
+
+/**
+ * Executes a [block] that may perform validation, returning the result or a failure.
+ *
+ * If no [Violation]s occur, returns [Result.success] with the [block]'s return value.
+ * Otherwise, returns [Result.failure] wrapping the [ValidationException] from the first violation.
+ *
+ * Internally uses [ThrowingValidationContext] to provide fail-fast validation behavior
+ * while wrapping the outcome in a [Result] for functional error handling.
+ *
+ * @param block A lambda with validation and business logic to execute.
+ * @return A [Result] containing either the [block]'s result or a [ValidationException].
+ */
+public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
+    runValidatingFirstUsing(
+        ThrowingValidationContext,
+        block,
+    )
+
+// ----Validate using provided ThrowingValidationContext----
+
+/**
+ * Runs a [block] of validation logic using the provided [context] with fail-fast behavior.
+ *
+ * Enables reuse of an existing [ThrowingValidationContext], allowing
+ * custom subclasses or shared context instances.
+ *
+ * Best suited for validation scenarios requiring custom context behavior
+ * while maintaining fail-fast semantics.
+ *
+ * @param context The throwing validation context to run the block within.
+ * @param block A lambda with validation logic to execute.
+ * @throws ValidationException When any validation within the block fails.
+ */
+@OptIn(ExperimentalContracts::class)
+public inline fun <C : ThrowingValidationContext> validateOrThrowUsing(
+    context: C,
+    block: C.() -> Unit,
+) {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    context.apply(block)
+}
+
+/**
+ * Runs a [block] of validation logic using the provided [context] and captures the first failure.
+ *
+ * Uses the provided [context] to execute validation with fail-fast behavior,
+ * but catches any [ValidationException] to return a [ValidationResult] instead.
+ *
+ * Returns [ValidationResult.VALID] if no violations occur, or a [ValidationResult]
+ * containing the first encountered violation.
+ *
+ * Best suited for validation scenarios requiring custom context behavior
+ * while preferring result objects over exception handling.
+ *
+ * @param context The throwing validation context to use for validation.
+ * @param block A lambda with validation logic to execute.
+ * @return A [ValidationResult] representing the validation outcome.
+ */
+public inline fun <C : ThrowingValidationContext> validateFirstUsing(
+    context: C,
+    block: C.() -> Unit,
+): ValidationResult =
     try {
-        validateOrThrow(block)
+        validateOrThrowUsing(context, block)
         ValidationResult.VALID
     } catch (violation: ValidationException) {
         ValidationResult(violation.violations)
     }
 
 /**
- * Applies the given [rules] to this value within a [ThrowingValidationContext] context.
+ * Applies the given [rules] to the receiver [T] using the provided [context] with fail-fast behavior.
  *
- * @throws ValidationException if any [Violation] is reported via [ValidationContext.onFailure].
+ * Uses the provided [context] to apply rules sequentially with fail-fast behavior.
+ * Execution stops immediately upon the first rule violation, throwing a [ValidationException].
+ *
+ * Best suited for validating a single value with multiple rules
+ * when custom context behavior and immediate failure response are required.
+ *
+ * @param context The throwing validation context used for rule application.
+ * @param rules The rules to apply to the receiver object.
+ * @throws ValidationException When any rule violation occurs.
  */
-public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
-    validateOrThrow {
-        this@validateOrThrowWithRules.applyRules(rules = rules)
+public fun <T, C : ThrowingValidationContext> T.validateOrThrowWithRulesUsing(
+    context: C,
+    vararg rules: Rule<T>,
+) {
+    validateOrThrowUsing(context) {
+        this@validateOrThrowWithRulesUsing.applyRules(rules = rules)
+    }
+}
+
+/**
+ * Applies the given [rules] to the receiver [T] using the provided [context] and captures the first failure.
+ *
+ * Uses the provided [context] to apply rules with fail-fast behavior,
+ * but catches any [ValidationException] to return a [ValidationResult] instead.
+ *
+ * Returns [ValidationResult.VALID] if all rules pass, or a [ValidationResult]
+ * containing the first rule violation encountered.
+ *
+ * Best suited for validating a single value with multiple rules
+ * when custom context behavior is needed but result objects are preferred over exception handling.
+ *
+ * @param context The throwing validation context used for rule application.
+ * @param rules The rules to apply to the receiver object.
+ * @return A [ValidationResult] containing the first violation or indicating success.
+ */
+public fun <T, C : ThrowingValidationContext> T.validateFirstWithRulesUsing(
+    context: C,
+    vararg rules: Rule<T>,
+): ValidationResult =
+    validateFirstUsing(context) {
+        this@validateFirstWithRulesUsing.applyRules(rules = rules)
     }
 
 /**
- * Applies the given [rules] to this value within a [ThrowingValidationContext] context.
+ * Executes a [block] that may perform validation using the provided [context], returning the result or a failure.
  *
- * @return [ValidationResult] containing the first [Violation] reported via [ValidationContext.onFailure],
- * or [ValidationResult.VALID] if no violations occurred.
- */
-public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
-    validateFirst {
-        this@validateFirstWithRules.applyRules(rules = rules)
-    }
-
-/**
- * Runs [block] within a [ThrowingValidationContext] context,
- * stopping if any [Violation] is reported via [ValidationContext.onFailure].
+ * If no [Violation]s occur, returns [Result.success] with the [block]'s return value.
+ * Otherwise, returns [Result.failure] wrapping the [ValidationException] from the first violation.
  *
- * @return [Result.success], wrapping result of running [block] if no [Violation]s were reported.
- * [Result.failure], wrapping [ValidationException] with the first reported [Violation] otherwise.
+ * Uses the provided [context] to provide fail-fast validation behavior
+ * while wrapping the outcome in a [Result] for functional error handling.
+ *
+ * @param context The throwing validation context used for validation.
+ * @param block A lambda with validation and business logic to execute.
+ * @return A [Result] containing either the [block]'s result or a [ValidationException].
  */
-public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
+public inline fun <T, C : ThrowingValidationContext> runValidatingFirstUsing(
+    context: C,
+    block: C.() -> T,
+): Result<T> =
     try {
-        val result = ThrowingValidationContext.run(block)
-        Result.success(result)
+        Result.success(context.run(block))
     } catch (e: ValidationException) {
         Result.failure(e)
     }
