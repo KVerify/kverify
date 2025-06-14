@@ -6,16 +6,46 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolationReason
 
 /**
- * Represents a validation context that handles validation failures.
+ * The core interface for handling validation failures within the kverify validation library.
+ *
+ * This functional interface defines the contract for processing validation violations.
+ * Different implementations can handle failures in various ways - throwing exceptions immediately,
+ * accumulating violations for later processing, or logging errors.
+ *
+ * The interface serves as the foundation for all validation contexts in the library,
+ * enabling flexible validation strategies through different implementations.
  */
 public fun interface ValidationContext {
     /**
-     * Handles a validation failure for a given [violation].
+     * Processes a validation failure for the given violation.
+     *
+     * This method is called whenever a validation rule fails.
+     * The implementation determines how the violation is handled - whether to throw an exception,
+     * store it for later processing, log it, or take other appropriate action.
+     *
+     * Different context implementations provide different failure handling strategies:
+     * - Throwing contexts immediately terminate with exceptions
+     * - Aggregating contexts collect violations for batch-processing
+     * - Custom contexts can implement domain-specific failure handling
+     *
+     * @param violation The validation violation that occurred.
      */
     public fun onFailure(violation: Violation)
 
     /**
-     * @return this value after applying all [rules].
+     * Applies multiple validation rules to the receiver object within this context.
+     *
+     * Executes each provided rule against the receiver object using this validation context
+     * to handle any failures.
+     * Rules are applied sequentially, and the behavior on failure
+     * depends on the specific context implementation.
+     *
+     * Returns the original receiver object to enable method chaining and fluent validation syntax.
+     * This allows for convenient validation patterns where the validated object continues
+     * through the processing pipeline.
+     *
+     * @param rules The validation rules to apply to the receiver object.
+     * @return The original receiver object after all rules have been applied.
      */
     public fun <T> T.applyRules(vararg rules: Rule<T>): T {
         rules.forEach {
@@ -29,8 +59,17 @@ public fun interface ValidationContext {
 }
 
 /**
- * Converts [message] into [io.github.kverify.core.violation.ViolationReason]
- * and handles a validation failure.
+ * Processes a validation failure using a simple string message.
+ *
+ * Converts the provided string message into a [io.github.kverify.core.violation.ViolationReason] object and delegates
+ * to the main [ValidationContext.onFailure] method.
+ * This is a convenience extension for scenarios where quick validation checks need to report failures without
+ * creating explicit violation objects.
+ *
+ * Best suited for simple validation scenarios where detailed violation metadata
+ * is not required and a descriptive message is enough.
+ *
+ * @param message The error message describing the validation failure.
  */
 public fun ValidationContext.onFailure(message: String): Unit =
     onFailure(
@@ -38,18 +77,48 @@ public fun ValidationContext.onFailure(message: String): Unit =
     )
 
 /**
- * @return this value after applying all [rules] within a given [context].
+ * Applies multiple validation rules to the receiver object using the specified context.
+ *
+ * This standalone function provides an alternative to the extension method approach,
+ * allowing explicit specification of the validation context. Rules are applied sequentially
+ * against the receiver object, with the provided context handling any failures.
+ *
+ * Returns the original receiver object to enable method chaining and integration
+ * with existing processing pipelines. The explicit context parameter makes this
+ * function suitable for scenarios where the context needs to be passed explicitly
+ * rather than being available in the receiver scope.
+ *
+ * Best suited for functional programming patterns, library integration scenarios,
+ * and cases where explicit context control is preferred over extension methods.
+ *
+ * @param context The validation context to use for handling failures.
+ * @param rules The validation rules to apply to the receiver object.
+ * @return The original receiver object after all rules have been applied.
  */
-public fun <T> T.applyRules(
+public fun <T> T.applyRulesUsing(
     context: ValidationContext,
     vararg rules: Rule<T>,
 ): T =
     context.run validationContext@{
-        this@applyRules.applyRules(rules = rules)
+        this@applyRulesUsing.applyRules(rules = rules)
     }
 
 /**
- * Applies given [rules] to [Unit] within the current validation context.
+ * Applies validation rules that operate on Unit values within the current context.
+ *
+ * This specialized method handles validation rules that don't require specific input values
+ * but instead validate general conditions, global state, or perform contextual checks.
+ * Each rule is executed with Unit as the value, allowing for validation logic that
+ * focuses on conditions rather than data transformation.
+ *
+ * Best suited for validation scenarios involving:
+ * - Global state validation
+ * - Contextual precondition checks
+ * - Environment validation
+ * - Configuration validation
+ * - Any validation logic that doesn't depend on specific input values
+ *
+ * @param rules The Unit-based validation rules to execute within this context.
  */
 public fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
     rules.forEach {
@@ -60,8 +129,25 @@ public fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
     }
 
 /**
- * Calls [ValidationContext.onFailure] with the result of calling [violationGenerator]
- * if the [condition] is `false`.
+ * Conditionally triggers a validation failure based on a boolean condition.
+ *
+ * Evaluates the provided condition and triggers validation failure if the condition is false.
+ * The violation is generated only when needed (lazy evaluation), avoiding unnecessary
+ * object creation when validation passes.
+ *
+ * This method provides a convenient way to perform conditional validation checks
+ * without requiring explicit if-else logic in validation code. The inline nature
+ * ensures efficient execution while the lambda-based violation generation enables
+ * lazy evaluation and custom violation creation.
+ *
+ * Best suited for:
+ * - Precondition validation
+ * - Business rule enforcement
+ * - Custom validation logic
+ * - Conditional checks within larger validation workflows
+ *
+ * @param condition The boolean condition to evaluate - validation fails if false.
+ * @param violationGenerator A lambda that produces the violation when validation fails.
  */
 public inline fun ValidationContext.validate(
     condition: Boolean,
