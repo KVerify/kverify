@@ -3,7 +3,6 @@ package io.github.kverify.core.context
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.runValidation
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.core.violation.asViolationReason
 
 /**
  * The core interface for handling validation failures within the kverify validation library.
@@ -33,12 +32,12 @@ public fun interface ValidationContext {
     public fun onFailure(violation: Violation)
 
     /**
-     * Applies multiple validation rules to the receiver object within this context.
+     * Applies multiple validation rules to the receiver object within the current validation context.
      *
-     * Executes each provided rule against the receiver object using this validation context
-     * to handle any failures.
-     * Rules are applied sequentially, and the behavior on failure
-     * depends on the specific context implementation.
+     * Executes each provided rule against the receiver object,
+     * using the current validation context to handle any failures.
+     * Rules are applied sequentially,
+     * and the [onFailure] behavior depends on the specific context implementation.
      *
      * Returns the original receiver object to enable method chaining and fluent validation syntax.
      * This allows for convenient validation patterns where the validated object continues
@@ -57,24 +56,6 @@ public fun interface ValidationContext {
         return this
     }
 }
-
-/**
- * Processes a validation failure using a simple string message.
- *
- * Converts the provided string message into a [io.github.kverify.core.violation.ViolationReason] object and delegates
- * to the main [ValidationContext.onFailure] method.
- * This is a convenience extension for scenarios where quick validation checks need to report failures without
- * creating explicit violation objects.
- *
- * Best suited for simple validation scenarios where detailed violation metadata
- * is not required and a descriptive message is enough.
- *
- * @param message The error message describing the validation failure.
- */
-public fun ValidationContext.onFailure(message: String): Unit =
-    onFailure(
-        message.asViolationReason(),
-    )
 
 /**
  * Applies multiple validation rules to the receiver object using the specified context.

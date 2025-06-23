@@ -4,7 +4,6 @@ import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.Rule
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.violation.Violation
-import io.github.kverify.core.violation.asViolationReason
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -19,20 +18,9 @@ import kotlin.contracts.contract
  * for input validation, precondition checks, and other scenarios where early termination is desired.
  */
 public open class ThrowingValidationContext : ValidationContext {
-    override fun onFailure(violation: Violation): Nothing = throw ValidationException(listOf(violation))
-
-    /**
-     * Triggers validation failure with a simple string message.
-     *
-     * Converts the provided [message] into a [Violation] and immediately throws a [ValidationException].
-     * This is a convenience method for quick validation checks without creating explicit violation objects.
-     *
-     * @param message The error message describing the validation failure.
-     * @throws ValidationException Always thrown with the converted violation.
-     */
-    public fun onFailure(message: String): Nothing =
-        onFailure(
-            message.asViolationReason(),
+    override fun onFailure(violation: Violation): Nothing =
+        throw ValidationException(
+            listOf(violation),
         )
 
     /**
@@ -40,6 +28,7 @@ public open class ThrowingValidationContext : ValidationContext {
      *
      * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
      * and immediately throws a [ValidationException].
+     *
      * The Kotlin [contract] ensures that after this function returns normally,
      * the condition is guaranteed to be `true`.
      *
