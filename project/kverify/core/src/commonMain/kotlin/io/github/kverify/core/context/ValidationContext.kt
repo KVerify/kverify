@@ -70,9 +70,9 @@ public fun interface ValidationContext {
      * @param rule The validation rule to apply.
      * @return The original receiver object after validation.
      */
-    public infix fun <T> T.verifyWith(rule: Rule<T>): T {
+    public infix fun <T> T.applyRule(rule: Rule<T>): T {
         val context = this@ValidationContext
-        val value = this@verifyWith
+        val value = this@applyRule
 
         rule.runValidation(
             context = context,
