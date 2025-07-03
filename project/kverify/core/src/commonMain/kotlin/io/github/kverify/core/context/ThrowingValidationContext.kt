@@ -59,6 +59,36 @@ internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValid
 // ----Validate using ThrowingValidationContext with fail-fast behavior----
 
 /**
+ * Validates a condition and throws on failure.
+ *
+ * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
+ * and immediately throws a [ValidationException].
+ *
+ * The Kotlin [contract] ensures that after this function returns normally,
+ * the condition is guaranteed to be `true`.
+ *
+ * Internally uses default singleton implementation of [ThrowingValidationContext].
+ *
+ * @param condition The boolean condition to validate.
+ * @param violationGenerator A lambda that produces the [Violation] when validation fails.
+ * @throws ValidationException When the condition is `false`.
+ */
+@OptIn(ExperimentalContracts::class)
+public inline fun validateThatOrThrow(
+    condition: Boolean,
+    violationGenerator: () -> Violation,
+) {
+    contract {
+        returns() implies condition
+    }
+
+    ThrowingValidationObject.validate(
+        condition,
+        violationGenerator,
+    )
+}
+
+/**
  * Runs a [block] of validation logic with fail-fast behavior.
  *
  * Internally uses [ThrowingValidationContext] to execute the validation [block].
@@ -161,6 +191,38 @@ public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> 
     )
 
 // ----Validate using provided ThrowingValidationContext----
+
+/**
+ * Validates a condition and throws on failure.
+ *
+ * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
+ * and immediately throws a [ValidationException].
+ *
+ * The Kotlin [contract] ensures that after this function returns normally,
+ * the condition is guaranteed to be `true`.
+ *
+ * Uses the provided [context] for validation behavior.
+ *
+ * @param context The throwing validation context to use for validation.
+ * @param condition The boolean condition to validate.
+ * @param violationGenerator A lambda that produces the [Violation] when validation fails.
+ * @throws ValidationException When the condition is `false`.
+ */
+@OptIn(ExperimentalContracts::class)
+public inline fun validateThatOrThrowUsing(
+    context: ThrowingValidationContext,
+    condition: Boolean,
+    violationGenerator: () -> Violation,
+) {
+    contract {
+        returns() implies condition
+    }
+
+    context.validate(
+        condition,
+        violationGenerator,
+    )
+}
 
 /**
  * Runs a [block] of validation logic using the provided [context] with fail-fast behavior.
