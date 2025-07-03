@@ -32,6 +32,28 @@ public fun interface ValidationContext {
     public fun onFailure(violation: Violation)
 
     /**
+     * Applies a single validation rule to the receiver object within the current validation context.
+     *
+     * This infix function provides a fluent and readable syntax for applying a single rule,
+     * such as `value verifyWith rule`. The rule is executed using the current validation context,
+     * and any validation failures are handled via [onFailure].
+     *
+     * @param rule The validation rule to apply.
+     * @return The original receiver object after validation.
+     */
+    public infix fun <T> T.applyRule(rule: Rule<T>): T {
+        val context = this@ValidationContext
+        val value = this@applyRule
+
+        rule.runValidation(
+            context = context,
+            value = value,
+        )
+
+        return this
+    }
+
+    /**
      * Applies multiple validation rules to the receiver object within the current validation context.
      *
      * Executes each provided rule against the receiver object,
@@ -58,28 +80,6 @@ public fun interface ValidationContext {
         }
 
         return value
-    }
-
-    /**
-     * Applies a single validation rule to the receiver object within the current validation context.
-     *
-     * This infix function provides a fluent and readable syntax for applying a single rule,
-     * such as `value verifyWith rule`. The rule is executed using the current validation context,
-     * and any validation failures are handled via [onFailure].
-     *
-     * @param rule The validation rule to apply.
-     * @return The original receiver object after validation.
-     */
-    public infix fun <T> T.applyRule(rule: Rule<T>): T {
-        val context = this@ValidationContext
-        val value = this@applyRule
-
-        rule.runValidation(
-            context = context,
-            value = value,
-        )
-
-        return this
     }
 }
 
