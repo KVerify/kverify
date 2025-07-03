@@ -47,13 +47,17 @@ public fun interface ValidationContext {
      * @return The original receiver object after all rules have been applied.
      */
     public fun <T> T.applyRules(vararg rules: Rule<T>): T {
-        rules.forEach {
-            it.runValidation(
-                context = this@ValidationContext,
-                value = this@applyRules,
+        val context = this@ValidationContext
+        val value = this@applyRules
+
+        for (rule in rules) {
+            rule.runValidation(
+                context = context,
+                value = value,
             )
         }
-        return this
+
+        return value
     }
 }
 
