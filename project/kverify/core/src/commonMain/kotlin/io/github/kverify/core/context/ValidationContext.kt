@@ -106,7 +106,7 @@ public fun <T> T.applyRulesUsing(
     context: ValidationContext,
     vararg rules: Rule<T>,
 ): T =
-    context.run validationContext@{
+    with(context) {
         this@applyRulesUsing.applyRules(rules = rules)
     }
 
@@ -127,13 +127,14 @@ public fun <T> T.applyRulesUsing(
  *
  * @param rules The Unit-based validation rules to execute within this context.
  */
-public fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>): Unit =
-    rules.forEach {
-        it.runValidation(
-            context = this@applyUnitRules,
+public fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>) {
+    for (rule in rules) {
+        rule.runValidation(
+            context = this,
             value = Unit,
         )
     }
+}
 
 /**
  * Conditionally triggers a validation failure based on a boolean condition.
