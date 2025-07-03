@@ -92,14 +92,6 @@ public fun List<ValidationResult>.mergeResults(): ValidationResult =
     )
 
 /**
- * Ignores specified [violations] in this result, returning a new result with the remaining violations.
- */
-public fun ValidationResult.ignore(vararg violations: Violation): ValidationResult =
-    ValidationResult(
-        this.violations - violations.asList(),
-    )
-
-/**
  * Executes [block] if this result is valid.
  *
  * @return the original result.
