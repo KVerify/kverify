@@ -47,9 +47,14 @@ public open class ThrowingValidationContext : ValidationContext {
 
         if (!condition) onFailure(violationGenerator())
     }
-
-    public companion object : ThrowingValidationContext()
 }
+
+/**
+ * A singleton instance of [ThrowingValidationContext] for easy access.
+ * Hides [ThrowingValidationContext.validate] from IDE import suggestions.
+ */
+@PublishedApi
+internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValidationContext()
 
 // ----Validate using ThrowingValidationContext with fail-fast behavior----
 
@@ -72,7 +77,7 @@ public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
     }
 
     validateOrThrowUsing(
-        ThrowingValidationContext,
+        ThrowingValidationObject,
         block,
     )
 }
@@ -94,7 +99,7 @@ public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
  */
 public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
     validateFirstUsing(
-        ThrowingValidationContext,
+        ThrowingValidationObject,
         block,
     )
 
@@ -112,7 +117,7 @@ public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): Va
  */
 public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
     this.validateOrThrowWithRulesUsing(
-        ThrowingValidationContext,
+        ThrowingValidationObject,
         rules = rules,
     )
 
@@ -133,7 +138,7 @@ public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
  */
 public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
     this.validateFirstWithRulesUsing(
-        ThrowingValidationContext,
+        ThrowingValidationObject,
         rules = rules,
     )
 
@@ -151,7 +156,7 @@ public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult
  */
 public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     runValidatingFirstUsing(
-        ThrowingValidationContext,
+        ThrowingValidationObject,
         block,
     )
 
