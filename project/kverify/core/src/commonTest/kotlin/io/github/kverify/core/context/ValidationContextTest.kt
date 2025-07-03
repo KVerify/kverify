@@ -20,10 +20,6 @@ class ValidationContextTest :
             shouldFail {
                 failingContext.onFailure(violation)
             }.message shouldBe violation.reason
-
-            shouldFail {
-                failingContext.onFailure(message)
-            }.message shouldBe message
         }
 
         test("applyRules") {

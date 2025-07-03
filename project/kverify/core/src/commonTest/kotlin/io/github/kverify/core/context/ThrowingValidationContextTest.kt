@@ -12,33 +12,29 @@ import kotlin.test.assertTrue
 
 class ThrowingValidationContextTest :
     FunSpec({
+        val throwingContext = ThrowingValidationContext()
         val message = "test"
         val violation = ViolationReason(message)
         val failingRule = StubRule<Any>(shouldFail = true, violation)
 
         test("onFailure") {
             shouldThrow<ValidationException> {
-                ThrowingValidationContext.onFailure(violation)
-                ThrowingValidationContext.onFailure(violation)
-            }.violations.shouldContainExactly(violation)
-
-            shouldThrow<ValidationException> {
-                ThrowingValidationContext.onFailure(message)
-                ThrowingValidationContext.onFailure(message)
+                throwingContext.onFailure(violation)
+                throwingContext.onFailure(violation)
             }.violations.shouldContainExactly(violation)
         }
 
         test("validate") {
-            ThrowingValidationContext.validate(true) { violation }
+            throwingContext.validate(true) { violation }
 
             shouldThrow<ValidationException> {
-                ThrowingValidationContext.validate(false) { violation }
-                ThrowingValidationContext.validate(false) { violation }
+                throwingContext.validate(false) { violation }
+                throwingContext.validate(false) { violation }
             }.violations.shouldContainExactly(violation)
 
             // contract casts
             val notNull: Int? = 1
-            ThrowingValidationContext.validate(notNull != null) { violation }
+            throwingContext.validate(notNull != null) { violation }
             notNull + 1
         }
 
