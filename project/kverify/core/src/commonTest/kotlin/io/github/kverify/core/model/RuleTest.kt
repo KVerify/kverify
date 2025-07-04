@@ -1,6 +1,9 @@
 package io.github.kverify.core.model
 
 import io.github.kverify.core.context.ValidationContext
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.plus
+import io.github.kverify.core.rule.runValidation
 import io.github.kverify.core.util.executionCountCheck
 import io.github.kverify.core.violation.asViolationReason
 import io.kotest.core.spec.style.FunSpec

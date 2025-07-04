@@ -2,7 +2,7 @@ package io.github.kverify.rule.set
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
-import io.github.kverify.core.model.runValidation
+import io.github.kverify.core.rule.runValidation
 import io.github.kverify.rule.set.factory.ComparableViolationFactory
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec

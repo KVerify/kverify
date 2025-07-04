@@ -1,7 +1,7 @@
 package io.github.kverify.core.context
 
-import io.github.kverify.core.model.Rule
-import io.github.kverify.core.model.runValidation
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.runValidation
 import io.github.kverify.core.violation.Violation
 
 /**

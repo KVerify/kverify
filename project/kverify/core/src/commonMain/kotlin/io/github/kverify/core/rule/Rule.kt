@@ -1,13 +1,8 @@
-package io.github.kverify.core.model
+package io.github.kverify.core.rule
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.validate
 import io.github.kverify.core.violation.Violation
-
-/**
- * A validation [Rule] for a [NamedValue].
- */
-public typealias NamedRule<T> = Rule<NamedValue<T>>
 
 /**
  * Represents a validation rule for a value of type [T].

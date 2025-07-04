@@ -2,9 +2,9 @@ package io.github.kverify.rule.set
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.validate
-import io.github.kverify.core.model.NamedRule
 import io.github.kverify.core.model.NamedValue
-import io.github.kverify.core.model.Rule
+import io.github.kverify.core.rule.NamedRule
+import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.rule.set.factory.StringViolationFactory
 
