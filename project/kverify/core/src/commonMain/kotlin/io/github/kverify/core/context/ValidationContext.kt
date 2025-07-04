@@ -111,7 +111,7 @@ public fun <T> T.applyRulesUsing(
     }
 
 /**
- * Applies validation rules that operate on Unit values within the current context.
+ * Runs validation rules that operate on Unit values within the current context.
  *
  * This specialized method handles validation rules that don't require specific input values
  * but instead validate general conditions, global state, or perform contextual checks.
@@ -127,7 +127,7 @@ public fun <T> T.applyRulesUsing(
  *
  * @param rules The Unit-based validation rules to execute within this context.
  */
-public fun ValidationContext.applyUnitRules(vararg rules: Rule<Unit>) {
+public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>) {
     for (rule in rules) {
         rule.runValidation(
             context = this,

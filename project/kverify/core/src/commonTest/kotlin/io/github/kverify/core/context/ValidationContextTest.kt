@@ -32,7 +32,7 @@ class ValidationContextTest :
             }.message shouldBe failingRule.violation.reason
 
             shouldFail {
-                failingContext.applyUnitRules(successfulRule, failingRule)
+                failingContext.runUnitRules(successfulRule, failingRule)
             }.message shouldBe failingRule.violation.reason
         }
 
