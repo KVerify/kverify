@@ -50,7 +50,7 @@ public fun interface ValidationContext {
             value = value,
         )
 
-        return this
+        return value
     }
 
     /**
