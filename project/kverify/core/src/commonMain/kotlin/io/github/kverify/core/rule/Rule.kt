@@ -28,14 +28,17 @@ public inline fun <T> Rule<T>.runValidation(
  */
 public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     Rule validationContext@{ value ->
-        this@plus.runValidation(
-            this@validationContext,
-            value,
+        val context = this@validationContext
+        val thisRule = this@plus
+
+        thisRule.runValidation(
+            context = context,
+            value = value,
         )
 
         other.runValidation(
-            this@validationContext,
-            value,
+            context = context,
+            value = value,
         )
     }
 
