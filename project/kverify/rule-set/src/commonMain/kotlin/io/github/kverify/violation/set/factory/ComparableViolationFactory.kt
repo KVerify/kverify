@@ -1,4 +1,4 @@
-package io.github.kverify.rule.set.factory
+package io.github.kverify.violation.set.factory
 
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolationReason

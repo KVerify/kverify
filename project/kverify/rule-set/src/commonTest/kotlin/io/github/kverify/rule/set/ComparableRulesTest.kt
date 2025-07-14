@@ -3,7 +3,8 @@ package io.github.kverify.rule.set
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.rule.runValidation
-import io.github.kverify.rule.set.factory.ComparableViolationFactory
+import io.github.kverify.rule.set.factory.ComparableRules
+import io.github.kverify.violation.set.factory.ComparableViolationFactory
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -18,8 +19,8 @@ class ComparableRulesTest :
 
         test("equal to") {
             Arb.int(1..10).checkAll { value ->
-                val rule = ComparableRules.EqualTo<Int>(value)
-                val namedRule = ComparableRules.NamedEqualTo<Int>(value)
+                val rule = ComparableRules.equalTo(value)
+                val namedRule = ComparableRules.namedEqualTo(value)
 
                 val correctValue = value
                 val incorrectValue = value + 1
@@ -53,8 +54,8 @@ class ComparableRulesTest :
 
         test("not equal to") {
             Arb.int(1..10).checkAll { value ->
-                val rule = ComparableRules.NotEqualTo<Int>(value)
-                val namedRule = ComparableRules.NamedNotEqualTo<Int>(value)
+                val rule = ComparableRules.notEqualTo(value)
+                val namedRule = ComparableRules.namedNotEqualTo(value)
 
                 val correctValue = value + 1
                 val incorrectValue = value
@@ -88,8 +89,8 @@ class ComparableRulesTest :
 
         test("greater than") {
             Arb.int(1..10).checkAll { value ->
-                val rule = ComparableRules.GreaterThan<Int>(value)
-                val namedRule = ComparableRules.NamedGreaterThan<Int>(value)
+                val rule = ComparableRules.greaterThan(value)
+                val namedRule = ComparableRules.namedGreaterThan(value)
 
                 val correctValue = value + 1
                 val incorrectValue = value
@@ -123,8 +124,8 @@ class ComparableRulesTest :
 
         test("greater than or equal to") {
             Arb.int(1..10).checkAll { value ->
-                val rule = ComparableRules.GreaterThanOrEqualTo<Int>(value)
-                val namedRule = ComparableRules.NamedGreaterThanOrEqualTo<Int>(value)
+                val rule = ComparableRules.greaterThanOrEqualTo(value)
+                val namedRule = ComparableRules.namedGreaterThanOrEqualTo(value)
 
                 val correctValueEqual = value
                 val correctValueGreater = value + 1
@@ -162,8 +163,8 @@ class ComparableRulesTest :
 
         test("less than") {
             Arb.int(1..10).checkAll { value ->
-                val rule = ComparableRules.LessThan<Int>(value)
-                val namedRule = ComparableRules.NamedLessThan<Int>(value)
+                val rule = ComparableRules.lessThan(value)
+                val namedRule = ComparableRules.namedLessThan(value)
 
                 val correctValue = value - 1
                 val incorrectValue = value
@@ -197,8 +198,8 @@ class ComparableRulesTest :
 
         test("less than or equal to") {
             Arb.int(1..10).checkAll { value ->
-                val rule = ComparableRules.LessThanOrEqualTo<Int>(value)
-                val namedRule = ComparableRules.NamedLessThanOrEqualTo<Int>(value)
+                val rule = ComparableRules.lessThanOrEqualTo(value)
+                val namedRule = ComparableRules.namedLessThanOrEqualTo(value)
 
                 val correctValueEqual = value
                 val correctValueLess = value - 1
@@ -239,8 +240,8 @@ class ComparableRulesTest :
                 val max = min + 5
                 val range = min..max
 
-                val rule = ComparableRules.Between<Int>(range)
-                val namedRule = ComparableRules.NamedBetween<Int>(range)
+                val rule = ComparableRules.between(range)
+                val namedRule = ComparableRules.namedBetween(range)
 
                 val correctValueMin = min
                 val correctValueMiddle = min + 2
@@ -307,8 +308,8 @@ class ComparableRulesTest :
                 val max = min + 5
                 val range = min..max
 
-                val rule = ComparableRules.NotBetween<Int>(range)
-                val namedRule = ComparableRules.NamedNotBetween<Int>(range)
+                val rule = ComparableRules.notBetween(range)
+                val namedRule = ComparableRules.namedNotBetween(range)
 
                 val incorrectValueMin = min
                 val incorrectValueMiddle = min + 2
