@@ -1,8 +1,34 @@
-package io.github.kverify.rule.set.collection
+package io.github.kverify.rule.set.factory
 
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.rule.set.factory.CollectionViolationFactory
+import io.github.kverify.rule.set.collection.CollectionContainsAllRule
+import io.github.kverify.rule.set.collection.CollectionContainsNoneRule
+import io.github.kverify.rule.set.collection.CollectionContainsOnlyRule
+import io.github.kverify.rule.set.collection.CollectionContainsRule
+import io.github.kverify.rule.set.collection.CollectionDistinctRule
+import io.github.kverify.rule.set.collection.CollectionMaxSizeRule
+import io.github.kverify.rule.set.collection.CollectionMinSizeRule
+import io.github.kverify.rule.set.collection.CollectionNotContainsRule
+import io.github.kverify.rule.set.collection.CollectionNotEmptyRule
+import io.github.kverify.rule.set.collection.CollectionNotOfSizeRule
+import io.github.kverify.rule.set.collection.CollectionOfSizeRule
+import io.github.kverify.rule.set.collection.CollectionSizeBetweenRule
+import io.github.kverify.rule.set.collection.CollectionSizeNotBetweenRule
+import io.github.kverify.rule.set.collection.NamedCollectionContainsAllRule
+import io.github.kverify.rule.set.collection.NamedCollectionContainsNoneRule
+import io.github.kverify.rule.set.collection.NamedCollectionContainsOnlyRule
+import io.github.kverify.rule.set.collection.NamedCollectionContainsRule
+import io.github.kverify.rule.set.collection.NamedCollectionDistinctRule
+import io.github.kverify.rule.set.collection.NamedCollectionMaxSizeRule
+import io.github.kverify.rule.set.collection.NamedCollectionMinSizeRule
+import io.github.kverify.rule.set.collection.NamedCollectionNotContainsRule
+import io.github.kverify.rule.set.collection.NamedCollectionNotEmptyRule
+import io.github.kverify.rule.set.collection.NamedCollectionNotOfSizeRule
+import io.github.kverify.rule.set.collection.NamedCollectionOfSizeRule
+import io.github.kverify.rule.set.collection.NamedCollectionSizeBetweenRule
+import io.github.kverify.rule.set.collection.NamedCollectionSizeNotBetweenRule
+import io.github.kverify.violation.set.factory.CollectionViolationFactory
 
 public interface CollectionRuleFactory {
     public val collectionViolationFactory: CollectionViolationFactory
