@@ -3,7 +3,8 @@ package io.github.kverify.rule.set
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.rule.runValidation
-import io.github.kverify.rule.set.factory.StringViolationFactory
+import io.github.kverify.rule.set.factory.StringRules
+import io.github.kverify.violation.set.factory.StringViolationFactory
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -20,8 +21,8 @@ class StringRulesTest :
 
         test("of length") {
             Arb.int(1..10).checkAll { length ->
-                val rule = StringRules.OfLength(length)
-                val namedRule = StringRules.NamedOfLength(length)
+                val rule = StringRules.ofLength(length)
+                val namedRule = StringRules.namedOfLength(length)
 
                 val correctValue = "a".repeat(length)
                 val incorrectValue = "a".repeat(length + 1)
@@ -55,8 +56,8 @@ class StringRulesTest :
 
         test("not of length") {
             Arb.int(1..10).checkAll { length ->
-                val rule = StringRules.NotOfLength(length)
-                val namedRule = StringRules.NamedNotOfLength(length)
+                val rule = StringRules.notOfLength(length)
+                val namedRule = StringRules.namedNotOfLength(length)
 
                 val correctValue = "a".repeat(length + 1)
                 val incorrectValue = "a".repeat(length)
@@ -90,8 +91,8 @@ class StringRulesTest :
 
         test("max length") {
             Arb.int(5..10).checkAll { max ->
-                val rule = StringRules.MaxLength(max)
-                val namedRule = StringRules.NamedMaxLength(max)
+                val rule = StringRules.maxLength(max)
+                val namedRule = StringRules.namedMaxLength(max)
 
                 val correctValue = "a".repeat(max)
                 val incorrectValue = "a".repeat(max + 1)
@@ -125,8 +126,8 @@ class StringRulesTest :
 
         test("min length") {
             Arb.int(5..10).checkAll { min ->
-                val rule = StringRules.MinLength(min)
-                val namedRule = StringRules.MinLength(min).NamedMinLength(min)
+                val rule = StringRules.minLength(min)
+                val namedRule = StringRules.namedMinLength(min)
 
                 val correctValue = "a".repeat(min)
                 val incorrectValue = "a".repeat(min - 1)
@@ -164,8 +165,8 @@ class StringRulesTest :
                 Arb.int(6..10),
             ) { min, max ->
                 val range = min..max
-                val rule = StringRules.LengthBetween(range)
-                val namedRule = StringRules.NamedLengthBetween(range)
+                val rule = StringRules.lengthBetween(range)
+                val namedRule = StringRules.namedLengthBetween(range)
 
                 val correctValue = "a".repeat((min + max) / 2)
                 val incorrectValueTooShort = "a".repeat(min - 1)
@@ -224,8 +225,8 @@ class StringRulesTest :
                 Arb.int(6..10),
             ) { min, max ->
                 val range = min..max
-                val rule = StringRules.LengthNotBetween(range)
-                val namedRule = StringRules.NamedLengthNotBetween(range)
+                val rule = StringRules.lengthNotBetween(range)
+                val namedRule = StringRules.namedLengthNotBetween(range)
 
                 val correctValueTooShort = "a".repeat(min - 1)
                 val correctValueTooLong = "a".repeat(max + 1)
@@ -266,8 +267,8 @@ class StringRulesTest :
                 Arb.string(1..5),
                 Arb.boolean(),
             ) { substring, ignoreCase ->
-                val rule = StringRules.Contains(substring, ignoreCase)
-                val namedRule = StringRules.NamedContains(substring, ignoreCase)
+                val rule = StringRules.contains(substring, ignoreCase)
+                val namedRule = StringRules.namedContains(substring, ignoreCase)
 
                 val correctValue = "pre${substring}post"
                 val incorrectValue = "123456".replace(substring, "", ignoreCase)
@@ -301,8 +302,8 @@ class StringRulesTest :
 
         test("contains regex") {
             val regex = Regex("[0-9]+")
-            val rule = StringRules.ContainsRegex(regex)
-            val namedRule = StringRules.NamedContainsRegex(regex)
+            val rule = StringRules.containsRegex(regex)
+            val namedRule = StringRules.namedContainsRegex(regex)
 
             val correctValue = "abc123def"
             val incorrectValue = "abcdef"
@@ -317,7 +318,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .contains(
+                    .containsRegex(
                         regex,
                         incorrectValue,
                     ).reason
@@ -326,7 +327,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .contains(
+                    .containsRegex(
                         regex,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -338,8 +339,8 @@ class StringRulesTest :
                 Arb.string(1..5),
                 Arb.boolean(),
             ) { substring, ignoreCase ->
-                val rule = StringRules.NotContains(substring, ignoreCase)
-                val namedRule = StringRules.NamedNotContains(substring, ignoreCase)
+                val rule = StringRules.notContains(substring, ignoreCase)
+                val namedRule = StringRules.namedNotContains(substring, ignoreCase)
 
                 val correctValue = "123456".replace(substring, "", ignoreCase)
                 val incorrectValue = "pre${substring}post"
@@ -373,8 +374,8 @@ class StringRulesTest :
 
         test("not contains regex") {
             val regex = Regex("[0-9]+")
-            val rule = StringRules.NotContainsRegex(regex)
-            val namedRule = StringRules.NamedNotContainsRegex(regex)
+            val rule = StringRules.notContainsRegex(regex)
+            val namedRule = StringRules.namedNotContainsRegex(regex)
 
             val correctValue = "abcdef"
             val incorrectValue = "abc123def"
@@ -389,7 +390,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .notContains(
+                    .notContainsRegex(
                         regex,
                         incorrectValue,
                     ).reason
@@ -398,7 +399,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .notContains(
+                    .notContainsRegex(
                         regex,
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -407,8 +408,8 @@ class StringRulesTest :
 
         test("contains all") {
             val chars = setOf('a', 'b', 'c')
-            val rule = StringRules.ContainsAll(chars)
-            val namedRule = StringRules.NamedContainsAll(chars)
+            val rule = StringRules.containsAll(chars)
+            val namedRule = StringRules.namedContainsAll(chars)
 
             val correctValue = "abcdef"
             val incorrectValue = "abdef"
@@ -441,8 +442,8 @@ class StringRulesTest :
 
         test("contains only") {
             val chars = setOf('a', 'b', 'c')
-            val rule = StringRules.ContainsOnly(chars)
-            val namedRule = StringRules.NamedContainsOnly(chars)
+            val rule = StringRules.containsOnly(chars)
+            val namedRule = StringRules.namedContainsOnly(chars)
 
             val correctValue = "abcabc"
             val incorrectValue = "abcdef"
@@ -475,8 +476,8 @@ class StringRulesTest :
 
         test("contains none") {
             val chars = setOf('x', 'y', 'z')
-            val rule = StringRules.ContainsNone(chars)
-            val namedRule = StringRules.NamedContainsNone(chars)
+            val rule = StringRules.containsNone(chars)
+            val namedRule = StringRules.namedContainsNone(chars)
 
             val correctValue = "abcdef"
             val incorrectValue = "abcxyz"
@@ -509,8 +510,8 @@ class StringRulesTest :
 
         test("matches") {
             val regex = Regex("^[a-z]{3}$")
-            val rule = StringRules.Matches(regex)
-            val namedRule = StringRules.NamedMatches(regex)
+            val rule = StringRules.matches(regex)
+            val namedRule = StringRules.namedMatches(regex)
 
             val correctValue = "abc"
             val incorrectValue = "abcd"
@@ -543,8 +544,8 @@ class StringRulesTest :
 
         test("not matches") {
             val regex = Regex("^[a-z]{3}$")
-            val rule = StringRules.NotMatches(regex)
-            val namedRule = StringRules.NamedNotMatches(regex)
+            val rule = StringRules.notMatches(regex)
+            val namedRule = StringRules.namedNotMatches(regex)
 
             val correctValue = "abcd"
             val incorrectValue = "abc"
@@ -580,8 +581,8 @@ class StringRulesTest :
                 Arb.string(1..5),
                 Arb.boolean(),
             ) { prefix, ignoreCase ->
-                val rule = StringRules.StartsWith(prefix, ignoreCase)
-                val namedRule = StringRules.NamedStartsWith(prefix, ignoreCase)
+                val rule = StringRules.startsWith(prefix, ignoreCase)
+                val namedRule = StringRules.namedStartsWith(prefix, ignoreCase)
 
                 val correctValue = "${prefix}suffix"
                 val incorrectValue = "123456".replace(prefix, "") + prefix
@@ -618,8 +619,8 @@ class StringRulesTest :
                 Arb.string(1..5),
                 Arb.boolean(),
             ) { suffix, ignoreCase ->
-                val rule = StringRules.EndsWith(suffix, ignoreCase)
-                val namedRule = StringRules.NamedEndsWith(suffix, ignoreCase)
+                val rule = StringRules.endsWith(suffix, ignoreCase)
+                val namedRule = StringRules.namedEndsWith(suffix, ignoreCase)
 
                 val correctValue = "prefix$suffix"
                 val incorrectValue = suffix + "123456".replace(suffix, "")
@@ -651,9 +652,9 @@ class StringRulesTest :
             }
         }
 
-        test("alphabetic") {
-            val rule = StringRules.Alphabetic()
-            val namedRule = StringRules.NamedAlphabetic()
+        test("is alphabetic") {
+            val rule = StringRules.isAlphabetic()
+            val namedRule = StringRules.namedIsAlphabetic()
 
             val correctValue = "abcXYZ"
             val incorrectValue = "abc123"
@@ -668,7 +669,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .alphabetic(
+                    .isAlphabetic(
                         incorrectValue,
                     ).reason
 
@@ -676,15 +677,15 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .alphabetic(
+                    .isAlphabetic(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
         }
 
-        test("numeric") {
-            val rule = StringRules.Numeric()
-            val namedRule = StringRules.NamedNumeric()
+        test("is numeric") {
+            val rule = StringRules.isNumeric()
+            val namedRule = StringRules.namedIsNumeric()
 
             val correctValue = "12345"
             val incorrectValue = "123abc"
@@ -699,7 +700,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .numeric(
+                    .isNumeric(
                         incorrectValue,
                     ).reason
 
@@ -707,15 +708,15 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .numeric(
+                    .isNumeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
         }
 
-        test("alphanumeric") {
-            val rule = StringRules.Alphanumeric()
-            val namedRule = StringRules.NamedAlphanumeric()
+        test("is alphanumeric") {
+            val rule = StringRules.isAlphanumeric()
+            val namedRule = StringRules.namedIsAlphanumeric()
 
             val correctValue = "abc123"
             val incorrectValue = "abc123!"
@@ -730,7 +731,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .alphanumeric(
+                    .isAlphanumeric(
                         incorrectValue,
                     ).reason
 
@@ -738,15 +739,15 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .alphanumeric(
+                    .isAlphanumeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
         }
 
-        test("not blank") {
-            val rule = StringRules.NotBlank()
-            val namedRule = StringRules.NamedNotBlank()
+        test("is not blank") {
+            val rule = StringRules.isNotBlank()
+            val namedRule = StringRules.namedIsNotBlank()
 
             val correctValue = "abc"
             val incorrectValue = "   "
@@ -761,7 +762,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .notBlank(
+                    .isNotBlank(
                         incorrectValue,
                     ).reason
 
@@ -769,15 +770,15 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .notBlank(
+                    .isNotBlank(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
         }
 
-        test("not empty") {
-            val rule = StringRules.NotEmpty()
-            val namedRule = StringRules.NamedNotEmpty()
+        test("is not empty") {
+            val rule = StringRules.isNotEmpty()
+            val namedRule = StringRules.namedIsNotEmpty()
 
             val correctValue = "abc"
             val incorrectValue = ""
@@ -792,7 +793,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .notEmpty(
+                    .isNotEmpty(
                         incorrectValue,
                     ).reason
 
@@ -800,15 +801,15 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .notEmpty(
+                    .isNotEmpty(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
         }
 
-        test("lower case") {
-            val rule = StringRules.LowerCase()
-            val namedRule = StringRules.NamedLowerCase()
+        test("is lower case") {
+            val rule = StringRules.isLowerCase()
+            val namedRule = StringRules.namedIsLowerCase()
 
             val correctValue = "abc"
             val incorrectValue = "abC"
@@ -823,7 +824,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .lowerCase(
+                    .isLowerCase(
                         incorrectValue,
                     ).reason
 
@@ -831,15 +832,15 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .lowerCase(
+                    .isLowerCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
         }
 
-        test("upper case") {
-            val rule = StringRules.UpperCase()
-            val namedRule = StringRules.NamedUpperCase()
+        test("is upper case") {
+            val rule = StringRules.isUpperCase()
+            val namedRule = StringRules.namedIsUpperCase()
 
             val correctValue = "ABC"
             val incorrectValue = "ABc"
@@ -854,7 +855,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .upperCase(
+                    .isUpperCase(
                         incorrectValue,
                     ).reason
 
@@ -862,7 +863,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationFactory
-                    .upperCase(
+                    .isUpperCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason

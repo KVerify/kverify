@@ -1,4 +1,4 @@
-package io.github.kverify.rule.set.factory
+package io.github.kverify.violation.set.factory
 
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolationReason
@@ -47,26 +47,26 @@ public interface StringViolationFactory {
         name: String = "string",
     ): Violation = "'$name' must contain '$string', but it does not.".asViolationReason()
 
-    public fun contains(
+    public fun containsRegex(
         regex: Regex,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must match the pattern '$regex', but it does not.".asViolationReason()
 
     public fun notContains(
-        string: String,
+        subString: String,
         value: String,
         name: String = "string",
-    ): Violation = "'$name' must not contain '$string', but it does.".asViolationReason()
+    ): Violation = "'$name' must not contain '$subString', but it does.".asViolationReason()
 
-    public fun notContains(
+    public fun notContainsRegex(
         regex: Regex,
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not match the pattern '$regex', but it does.".asViolationReason()
 
     public fun containsAll(
-        chars: Set<Char>,
+        chars: Iterable<Char>,
         value: String,
         name: String = "string",
     ): Violation {
@@ -76,7 +76,7 @@ public interface StringViolationFactory {
     }
 
     public fun containsOnly(
-        chars: Set<Char>,
+        chars: Iterable<Char>,
         value: String,
         name: String = "string",
     ): Violation {
@@ -88,7 +88,7 @@ public interface StringViolationFactory {
     }
 
     public fun containsNone(
-        chars: Set<Char>,
+        chars: Iterable<Char>,
         value: String,
         name: String = "string",
     ): Violation {
@@ -121,39 +121,39 @@ public interface StringViolationFactory {
         name: String = "string",
     ): Violation = "'$name' must end with '$suffix', but it does not.".asViolationReason()
 
-    public fun alphabetic(
+    public fun isAlphabetic(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain only alphabetic characters, but it contains invalid characters.".asViolationReason()
 
-    public fun numeric(
+    public fun isNumeric(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain only numeric characters, but it contains invalid characters.".asViolationReason()
 
-    public fun alphanumeric(
+    public fun isAlphanumeric(
         value: String,
         name: String = "string",
     ): Violation =
         "'$name' must contain only alphanumeric characters, but it contains invalid characters."
             .asViolationReason()
 
-    public fun notBlank(
+    public fun isNotBlank(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not be blank, but it is.".asViolationReason()
 
-    public fun notEmpty(
+    public fun isNotEmpty(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not be empty, but it is.".asViolationReason()
 
-    public fun lowerCase(
+    public fun isLowerCase(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must be in lowercase, but it contains uppercase characters.".asViolationReason()
 
-    public fun upperCase(
+    public fun isUpperCase(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must be in uppercase, but it contains lowercase characters.".asViolationReason()

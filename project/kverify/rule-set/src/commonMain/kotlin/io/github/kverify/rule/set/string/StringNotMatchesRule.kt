@@ -1,0 +1,96 @@
+package io.github.kverify.rule.set.string
+
+import io.github.kverify.core.context.ValidationContext
+import io.github.kverify.core.context.validate
+import io.github.kverify.core.model.NamedValue
+import io.github.kverify.core.rule.NamedRule
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.rule.set.NamedValueViolationGenerator
+import io.github.kverify.rule.set.ValueViolationGenerator
+import io.github.kverify.violation.set.factory.StringViolationFactory
+
+public open class StringNotMatchesRule(
+    public val regex: Regex,
+    public val violationGenerator: ValueViolationGenerator<String> = { value ->
+        StringViolationFactory.Default.notMatches(
+            regex = regex,
+            value = value,
+        )
+    },
+) : Rule<String> {
+    public constructor(
+        regex: Regex,
+        name: String,
+    ) : this(
+        regex = regex,
+        violationGenerator = { value ->
+            StringViolationFactory.Default.notMatches(
+                regex = regex,
+                value = value,
+                name = name,
+            )
+        },
+    )
+
+    public constructor(
+        stringRegex: String,
+        violationGenerator: ValueViolationGenerator<String> = { value ->
+            StringViolationFactory.Default.notMatches(
+                regex = stringRegex.toRegex(),
+                value = value,
+            )
+        },
+    ) : this(
+        regex = stringRegex.toRegex(),
+        violationGenerator = violationGenerator,
+    )
+
+    public constructor(
+        stringRegex: String,
+        name: String,
+    ) : this(
+        regex = stringRegex.toRegex(),
+        name = name,
+    )
+
+    override fun ValidationContext.runValidation(value: String) {
+        validate(
+            !regex.matches(value),
+        ) {
+            violationGenerator(value)
+        }
+    }
+}
+
+public open class NamedStringNotMatchesRule(
+    public val regex: Regex,
+    public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
+        StringViolationFactory.Default.notMatches(
+            regex = regex,
+            value = value,
+            name = name,
+        )
+    },
+) : NamedRule<String> {
+    public constructor(
+        stringRegex: String,
+        violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
+            StringViolationFactory.Default.notMatches(
+                regex = stringRegex.toRegex(),
+                value = value,
+                name = name,
+            )
+        },
+    ) : this(
+        regex = stringRegex.toRegex(),
+        violationGenerator = violationGenerator,
+    )
+
+    override fun ValidationContext.runValidation(value: NamedValue<String>) {
+        validate(
+            !regex.matches(value.value),
+        ) {
+            violationGenerator(value)
+        }
+    }
+}
