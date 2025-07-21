@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.ComparableViolationFactory
+import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
 public open class ComparableBetweenRule<T : Comparable<T>>(
     public val range: ClosedRange<T>,
     public val violationGenerator: ValueViolationGenerator<T> = { value ->
-        ComparableViolationFactory.Default.between(
+        ComparableViolationProvider.Default.between(
             range = range,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class ComparableBetweenRule<T : Comparable<T>>(
     ) : this(
         range = range,
         violationGenerator = { value ->
-            ComparableViolationFactory.Default.between(
+            ComparableViolationProvider.Default.between(
                 range = range,
                 value = value,
                 name = name,
@@ -36,7 +36,7 @@ public open class ComparableBetweenRule<T : Comparable<T>>(
         min: T,
         max: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            ComparableViolationFactory.Default.between(
+            ComparableViolationProvider.Default.between(
                 range = min..max,
                 value = value,
             )
@@ -53,7 +53,7 @@ public open class ComparableBetweenRule<T : Comparable<T>>(
     ) : this(
         range = min..max,
         violationGenerator = { value ->
-            ComparableViolationFactory.Default.between(
+            ComparableViolationProvider.Default.between(
                 range = min..max,
                 value = value,
                 name = name,
@@ -73,7 +73,7 @@ public open class ComparableBetweenRule<T : Comparable<T>>(
 public open class NamedComparableBetweenRule<T : Comparable<T>>(
     public val range: ClosedRange<T>,
     public val violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-        ComparableViolationFactory.Default.between(
+        ComparableViolationProvider.Default.between(
             range = range,
             value = value,
             name = name,
@@ -84,7 +84,7 @@ public open class NamedComparableBetweenRule<T : Comparable<T>>(
         min: T,
         max: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            ComparableViolationFactory.Default.between(
+            ComparableViolationProvider.Default.between(
                 range = min..max,
                 value = value,
                 name = name,

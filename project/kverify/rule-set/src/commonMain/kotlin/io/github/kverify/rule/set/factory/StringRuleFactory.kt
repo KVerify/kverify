@@ -50,21 +50,21 @@ import io.github.kverify.rule.set.string.StringNotMatchesRule
 import io.github.kverify.rule.set.string.StringNotOfLengthRule
 import io.github.kverify.rule.set.string.StringOfLengthRule
 import io.github.kverify.rule.set.string.StringStartsWithRule
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 private typealias StringViolationGenerator = ValueViolationGenerator<String>
 
 private typealias NamedStringViolationGenerator = NamedValueViolationGenerator<String>
 
 public interface StringRuleFactory {
-    public val stringViolationFactory: StringViolationFactory
-        get() = StringViolationFactory.Default
+    public val stringViolationProvider: StringViolationProvider
+        get() = StringViolationProvider.Default
 
     // region containsAll
     public fun containsAll(
         chars: Iterable<Char>,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsAll(
+            StringViolationProvider.Default.containsAll(
                 chars = chars,
                 value = value,
             )
@@ -87,7 +87,7 @@ public interface StringRuleFactory {
     public fun containsAll(
         string: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsAll(
+            StringViolationProvider.Default.containsAll(
                 chars = string.asIterable(),
                 value = value,
             )
@@ -112,7 +112,7 @@ public interface StringRuleFactory {
     public fun namedContainsAll(
         chars: Iterable<Char>,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsAll(
+            StringViolationProvider.Default.containsAll(
                 chars = chars,
                 value = value,
                 name = name,
@@ -127,7 +127,7 @@ public interface StringRuleFactory {
     public fun namedContainsAll(
         string: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsAll(
+            StringViolationProvider.Default.containsAll(
                 chars = string.asIterable(),
                 value = value,
                 name = name,
@@ -144,7 +144,7 @@ public interface StringRuleFactory {
     public fun containsNone(
         chars: Iterable<Char>,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsNone(
+            StringViolationProvider.Default.containsNone(
                 chars = chars,
                 value = value,
             )
@@ -158,7 +158,7 @@ public interface StringRuleFactory {
     public fun containsNone(
         string: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsNone(
+            StringViolationProvider.Default.containsNone(
                 chars = string.asIterable(),
                 value = value,
             )
@@ -174,7 +174,7 @@ public interface StringRuleFactory {
     public fun namedContainsNone(
         chars: Iterable<Char>,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsNone(
+            StringViolationProvider.Default.containsNone(
                 chars = chars,
                 value = value,
                 name = name,
@@ -189,7 +189,7 @@ public interface StringRuleFactory {
     public fun namedContainsNone(
         string: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsNone(
+            StringViolationProvider.Default.containsNone(
                 chars = string.asIterable(),
                 value = value,
                 name = name,
@@ -206,7 +206,7 @@ public interface StringRuleFactory {
     public fun containsOnly(
         chars: Iterable<Char>,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = chars,
                 value = value,
             )
@@ -229,7 +229,7 @@ public interface StringRuleFactory {
     public fun containsOnly(
         string: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = string.asIterable(),
                 value = value,
             )
@@ -254,7 +254,7 @@ public interface StringRuleFactory {
     public fun namedContainsOnly(
         chars: Iterable<Char>,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = chars,
                 value = value,
                 name = name,
@@ -269,7 +269,7 @@ public interface StringRuleFactory {
     public fun namedContainsOnly(
         string: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = string.asIterable(),
                 value = value,
                 name = name,
@@ -286,7 +286,7 @@ public interface StringRuleFactory {
     public fun containsRegex(
         regex: Regex,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = regex,
                 value = value,
             )
@@ -309,7 +309,7 @@ public interface StringRuleFactory {
     public fun containsRegex(
         stringRegex: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = stringRegex.toRegex(),
                 value = value,
             )
@@ -334,7 +334,7 @@ public interface StringRuleFactory {
     public fun namedContainsRegex(
         regex: Regex,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = regex,
                 value = value,
                 name = name,
@@ -349,7 +349,7 @@ public interface StringRuleFactory {
     public fun namedContainsRegex(
         stringRegex: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = stringRegex.toRegex(),
                 value = value,
                 name = name,
@@ -367,7 +367,7 @@ public interface StringRuleFactory {
         string: String,
         ignoreCase: Boolean = false,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.contains(
+            StringViolationProvider.Default.contains(
                 value = value,
                 string = string,
             )
@@ -396,7 +396,7 @@ public interface StringRuleFactory {
         string: String,
         ignoreCase: Boolean = false,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.contains(
+            StringViolationProvider.Default.contains(
                 value = value,
                 string = string,
                 name = name,
@@ -415,7 +415,7 @@ public interface StringRuleFactory {
         suffix: String,
         ignoreCase: Boolean = false,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.endsWith(
+            StringViolationProvider.Default.endsWith(
                 value = value,
                 suffix = suffix,
             )
@@ -444,7 +444,7 @@ public interface StringRuleFactory {
         suffix: String,
         ignoreCase: Boolean = false,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.endsWith(
+            StringViolationProvider.Default.endsWith(
                 value = value,
                 suffix = suffix,
                 name = name,
@@ -461,7 +461,7 @@ public interface StringRuleFactory {
     // region isAlphabetic
     public fun isAlphabetic(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isAlphabetic(value = value)
+            StringViolationProvider.Default.isAlphabetic(value = value)
         },
     ): StringIsAlphabeticRule =
         StringIsAlphabeticRule(
@@ -477,7 +477,7 @@ public interface StringRuleFactory {
     // region namedIsAlphabetic
     public fun namedIsAlphabetic(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isAlphabetic(value = value, name = name)
+            StringViolationProvider.Default.isAlphabetic(value = value, name = name)
         },
     ): NamedStringIsAlphabeticRule =
         NamedStringIsAlphabeticRule(
@@ -488,7 +488,7 @@ public interface StringRuleFactory {
     // region isAlphanumeric
     public fun isAlphanumeric(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isAlphanumeric(value = value)
+            StringViolationProvider.Default.isAlphanumeric(value = value)
         },
     ): StringIsAlphanumericRule =
         StringIsAlphanumericRule(
@@ -504,7 +504,7 @@ public interface StringRuleFactory {
     // region namedIsAlphanumeric
     public fun namedIsAlphanumeric(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isAlphanumeric(value = value, name = name)
+            StringViolationProvider.Default.isAlphanumeric(value = value, name = name)
         },
     ): NamedStringIsAlphanumericRule =
         NamedStringIsAlphanumericRule(
@@ -515,7 +515,7 @@ public interface StringRuleFactory {
     // region isLowerCase
     public fun isLowerCase(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isLowerCase(value = value)
+            StringViolationProvider.Default.isLowerCase(value = value)
         },
     ): StringIsLowerCaseRule =
         StringIsLowerCaseRule(
@@ -531,7 +531,7 @@ public interface StringRuleFactory {
     // region namedIsLowerCase
     public fun namedIsLowerCase(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isLowerCase(value = value, name = name)
+            StringViolationProvider.Default.isLowerCase(value = value, name = name)
         },
     ): NamedStringIsLowerCaseRule =
         NamedStringIsLowerCaseRule(
@@ -542,7 +542,7 @@ public interface StringRuleFactory {
     // region isNotBlank
     public fun isNotBlank(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isNotBlank(
+            StringViolationProvider.Default.isNotBlank(
                 value = value,
             )
         },
@@ -560,7 +560,7 @@ public interface StringRuleFactory {
     // region namedIsNotBlank
     public fun namedIsNotBlank(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isNotBlank(
+            StringViolationProvider.Default.isNotBlank(
                 value = value,
                 name = name,
             )
@@ -574,7 +574,7 @@ public interface StringRuleFactory {
     // region isNotEmpty
     public fun isNotEmpty(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isNotEmpty(
+            StringViolationProvider.Default.isNotEmpty(
                 value = value,
             )
         },
@@ -592,7 +592,7 @@ public interface StringRuleFactory {
     // region namedIsNotEmpty
     public fun namedIsNotEmpty(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isNotEmpty(
+            StringViolationProvider.Default.isNotEmpty(
                 value = value,
                 name = name,
             )
@@ -606,7 +606,7 @@ public interface StringRuleFactory {
     // region isNumeric
     public fun isNumeric(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isNumeric(
+            StringViolationProvider.Default.isNumeric(
                 value = value,
             )
         },
@@ -624,7 +624,7 @@ public interface StringRuleFactory {
     // region namedIsNumeric
     public fun namedIsNumeric(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isNumeric(
+            StringViolationProvider.Default.isNumeric(
                 value = value,
                 name = name,
             )
@@ -638,7 +638,7 @@ public interface StringRuleFactory {
     // region isUpperCase
     public fun isUpperCase(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.isUpperCase(value = value)
+            StringViolationProvider.Default.isUpperCase(value = value)
         },
     ): StringIsUpperCaseRule =
         StringIsUpperCaseRule(
@@ -654,7 +654,7 @@ public interface StringRuleFactory {
     // region namedIsUpperCase
     public fun namedIsUpperCase(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.isUpperCase(value = value, name = name)
+            StringViolationProvider.Default.isUpperCase(value = value, name = name)
         },
     ): NamedStringIsUpperCaseRule =
         NamedStringIsUpperCaseRule(
@@ -666,7 +666,7 @@ public interface StringRuleFactory {
     public fun lengthBetween(
         range: IntRange,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.lengthBetween(
+            StringViolationProvider.Default.lengthBetween(
                 value = value,
                 range = range,
             )
@@ -690,7 +690,7 @@ public interface StringRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.lengthBetween(
+            StringViolationProvider.Default.lengthBetween(
                 value = value,
                 range = min..max,
             )
@@ -718,7 +718,7 @@ public interface StringRuleFactory {
     public fun namedLengthBetween(
         range: IntRange,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.lengthBetween(
+            StringViolationProvider.Default.lengthBetween(
                 value = value,
                 range = range,
                 name = name,
@@ -734,7 +734,7 @@ public interface StringRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.lengthBetween(
+            StringViolationProvider.Default.lengthBetween(
                 value = value,
                 range = min..max,
                 name = name,
@@ -752,7 +752,7 @@ public interface StringRuleFactory {
     public fun lengthNotBetween(
         range: IntRange,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.lengthNotBetween(
+            StringViolationProvider.Default.lengthNotBetween(
                 value = value,
                 range = range,
             )
@@ -776,7 +776,7 @@ public interface StringRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.lengthNotBetween(
+            StringViolationProvider.Default.lengthNotBetween(
                 value = value,
                 range = min..max,
             )
@@ -804,7 +804,7 @@ public interface StringRuleFactory {
     public fun namedLengthNotBetween(
         range: IntRange,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.lengthNotBetween(
+            StringViolationProvider.Default.lengthNotBetween(
                 value = value,
                 range = range,
                 name = name,
@@ -820,7 +820,7 @@ public interface StringRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.lengthNotBetween(
+            StringViolationProvider.Default.lengthNotBetween(
                 value = value,
                 range = min..max,
                 name = name,
@@ -838,7 +838,7 @@ public interface StringRuleFactory {
     public fun matches(
         regex: Regex,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.matches(
+            StringViolationProvider.Default.matches(
                 value = value,
                 regex = regex,
             )
@@ -861,7 +861,7 @@ public interface StringRuleFactory {
     public fun matches(
         stringRegex: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.matches(
+            StringViolationProvider.Default.matches(
                 value = value,
                 regex = stringRegex.toRegex(),
             )
@@ -886,7 +886,7 @@ public interface StringRuleFactory {
     public fun namedMatches(
         regex: Regex,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.matches(
+            StringViolationProvider.Default.matches(
                 value = value,
                 regex = regex,
                 name = name,
@@ -901,7 +901,7 @@ public interface StringRuleFactory {
     public fun namedMatches(
         stringRegex: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.matches(
+            StringViolationProvider.Default.matches(
                 value = value,
                 regex = stringRegex.toRegex(),
                 name = name,
@@ -918,7 +918,7 @@ public interface StringRuleFactory {
     public fun maxLength(
         max: Int,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.maxLength(
+            StringViolationProvider.Default.maxLength(
                 value = value,
                 max = max,
             )
@@ -943,7 +943,7 @@ public interface StringRuleFactory {
     public fun namedMaxLength(
         max: Int,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.maxLength(
+            StringViolationProvider.Default.maxLength(
                 value = value,
                 max = max,
                 name = name,
@@ -960,7 +960,7 @@ public interface StringRuleFactory {
     public fun minLength(
         min: Int,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.minLength(
+            StringViolationProvider.Default.minLength(
                 value = value,
                 min = min,
             )
@@ -985,7 +985,7 @@ public interface StringRuleFactory {
     public fun namedMinLength(
         min: Int,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.minLength(
+            StringViolationProvider.Default.minLength(
                 value = value,
                 min = min,
                 name = name,
@@ -1002,7 +1002,7 @@ public interface StringRuleFactory {
     public fun notContainsRegex(
         regex: Regex,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.notContainsRegex(
+            StringViolationProvider.Default.notContainsRegex(
                 value = value,
                 regex = regex,
             )
@@ -1025,7 +1025,7 @@ public interface StringRuleFactory {
     public fun notContainsRegex(
         stringRegex: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.notContainsRegex(
+            StringViolationProvider.Default.notContainsRegex(
                 value = value,
                 regex = stringRegex.toRegex(),
             )
@@ -1050,7 +1050,7 @@ public interface StringRuleFactory {
     public fun namedNotContainsRegex(
         regex: Regex,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.notContainsRegex(
+            StringViolationProvider.Default.notContainsRegex(
                 value = value,
                 regex = regex,
                 name = name,
@@ -1065,7 +1065,7 @@ public interface StringRuleFactory {
     public fun namedNotContainsRegex(
         stringRegex: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.notContainsRegex(
+            StringViolationProvider.Default.notContainsRegex(
                 value = value,
                 regex = stringRegex.toRegex(),
                 name = name,
@@ -1083,7 +1083,7 @@ public interface StringRuleFactory {
         subString: String,
         ignoreCase: Boolean = false,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.notContains(
+            StringViolationProvider.Default.notContains(
                 value = value,
                 subString = subString,
             )
@@ -1112,7 +1112,7 @@ public interface StringRuleFactory {
         subString: String,
         ignoreCase: Boolean = false,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.notContains(
+            StringViolationProvider.Default.notContains(
                 value = value,
                 subString = subString,
                 name = name,
@@ -1130,7 +1130,7 @@ public interface StringRuleFactory {
     public fun notMatches(
         regex: Regex,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 value = value,
                 regex = regex,
             )
@@ -1153,7 +1153,7 @@ public interface StringRuleFactory {
     public fun notMatches(
         stringRegex: String,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 value = value,
                 regex = stringRegex.toRegex(),
             )
@@ -1178,7 +1178,7 @@ public interface StringRuleFactory {
     public fun namedNotMatches(
         regex: Regex,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 value = value,
                 regex = regex,
                 name = name,
@@ -1193,7 +1193,7 @@ public interface StringRuleFactory {
     public fun namedNotMatches(
         stringRegex: String,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 value = value,
                 regex = stringRegex.toRegex(),
                 name = name,
@@ -1210,7 +1210,7 @@ public interface StringRuleFactory {
     public fun notOfLength(
         length: Int,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.notOfLength(
+            StringViolationProvider.Default.notOfLength(
                 value = value,
                 length = length,
             )
@@ -1235,7 +1235,7 @@ public interface StringRuleFactory {
     public fun namedNotOfLength(
         length: Int,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.notOfLength(
+            StringViolationProvider.Default.notOfLength(
                 value = value,
                 length = length,
                 name = name,
@@ -1252,7 +1252,7 @@ public interface StringRuleFactory {
     public fun ofLength(
         length: Int,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.ofLength(
+            StringViolationProvider.Default.ofLength(
                 value = value,
                 length = length,
             )
@@ -1277,7 +1277,7 @@ public interface StringRuleFactory {
     public fun namedOfLength(
         length: Int,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.ofLength(
+            StringViolationProvider.Default.ofLength(
                 value = value,
                 length = length,
                 name = name,
@@ -1295,7 +1295,7 @@ public interface StringRuleFactory {
         prefix: String,
         ignoreCase: Boolean = false,
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationFactory.Default.startsWith(
+            StringViolationProvider.Default.startsWith(
                 value = value,
                 prefix = prefix,
             )
@@ -1324,7 +1324,7 @@ public interface StringRuleFactory {
         prefix: String,
         ignoreCase: Boolean = false,
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationFactory.Default.startsWith(
+            StringViolationProvider.Default.startsWith(
                 value = value,
                 prefix = prefix,
                 name = name,
@@ -1340,9 +1340,9 @@ public interface StringRuleFactory {
 }
 
 public open class StringRules(
-    public override val stringViolationFactory: StringViolationFactory,
+    public override val stringViolationProvider: StringViolationProvider,
 ) : StringRuleFactory {
     public companion object : StringRules(
-        stringViolationFactory = StringViolationFactory.Default,
+        stringViolationProvider = StringViolationProvider.Default,
     )
 }

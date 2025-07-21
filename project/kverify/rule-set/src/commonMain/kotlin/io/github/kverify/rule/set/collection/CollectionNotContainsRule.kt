@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public open class CollectionNotContainsRule<E, C : Collection<E>>(
     public val element: E,
     public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationFactory.Default.notContains(
+        CollectionViolationProvider.Default.notContains(
             element = element,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class CollectionNotContainsRule<E, C : Collection<E>>(
     ) : this(
         element = element,
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.notContains(
+            CollectionViolationProvider.Default.notContains(
                 element = element,
                 value = value,
                 name = name,
@@ -44,7 +44,7 @@ public open class CollectionNotContainsRule<E, C : Collection<E>>(
 public open class NamedCollectionNotContainsRule<E, C : Collection<E>>(
     public val element: E,
     public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationFactory.Default.notContains(
+        CollectionViolationProvider.Default.notContains(
             element = element,
             value = value,
             name = name,

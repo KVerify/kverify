@@ -4,7 +4,7 @@ import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.rule.runValidation
 import io.github.kverify.rule.set.factory.StringRules
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -36,7 +36,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .ofLength(
                             length,
                             incorrectValue,
@@ -45,7 +45,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .ofLength(
                             length,
                             namedIncorrectValue.value,
@@ -71,7 +71,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .notOfLength(
                             length,
                             incorrectValue,
@@ -80,7 +80,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .notOfLength(
                             length,
                             namedIncorrectValue.value,
@@ -106,7 +106,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .maxLength(
                             max,
                             incorrectValue,
@@ -115,7 +115,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .maxLength(
                             max,
                             namedIncorrectValue.value,
@@ -141,7 +141,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .minLength(
                             min,
                             incorrectValue,
@@ -150,7 +150,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .minLength(
                             min,
                             namedIncorrectValue.value,
@@ -182,7 +182,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueTooShort)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .lengthBetween(
                             range,
                             incorrectValueTooShort,
@@ -191,7 +191,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueTooLong)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .lengthBetween(
                             range,
                             incorrectValueTooLong,
@@ -200,7 +200,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueTooShort)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .lengthBetween(
                             range,
                             namedIncorrectValueTooShort.value,
@@ -210,7 +210,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueTooLong)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .lengthBetween(
                             range,
                             namedIncorrectValueTooLong.value,
@@ -244,7 +244,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .lengthNotBetween(
                             range,
                             incorrectValue,
@@ -253,7 +253,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .lengthNotBetween(
                             range,
                             namedIncorrectValue.value,
@@ -282,7 +282,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .contains(
                             substring,
                             incorrectValue,
@@ -291,7 +291,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .contains(
                             substring,
                             namedIncorrectValue.value,
@@ -317,7 +317,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsRegex(
                         regex,
                         incorrectValue,
@@ -326,7 +326,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsRegex(
                         regex,
                         namedIncorrectValue.value,
@@ -354,7 +354,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .notContains(
                             substring,
                             incorrectValue,
@@ -363,7 +363,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .notContains(
                             substring,
                             namedIncorrectValue.value,
@@ -389,7 +389,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .notContainsRegex(
                         regex,
                         incorrectValue,
@@ -398,7 +398,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .notContainsRegex(
                         regex,
                         namedIncorrectValue.value,
@@ -423,7 +423,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsAll(
                         chars,
                         incorrectValue,
@@ -432,7 +432,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsAll(
                         chars,
                         namedIncorrectValue.value,
@@ -457,7 +457,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsOnly(
                         chars,
                         incorrectValue,
@@ -466,7 +466,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsOnly(
                         chars,
                         namedIncorrectValue.value,
@@ -491,7 +491,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsNone(
                         chars,
                         incorrectValue,
@@ -500,7 +500,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .containsNone(
                         chars,
                         namedIncorrectValue.value,
@@ -525,7 +525,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .matches(
                         regex,
                         incorrectValue,
@@ -534,7 +534,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .matches(
                         regex,
                         namedIncorrectValue.value,
@@ -559,7 +559,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .notMatches(
                         regex,
                         incorrectValue,
@@ -568,7 +568,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .notMatches(
                         regex,
                         namedIncorrectValue.value,
@@ -596,7 +596,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .startsWith(
                             prefix,
                             incorrectValue,
@@ -605,7 +605,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .startsWith(
                             prefix,
                             namedIncorrectValue.value,
@@ -634,7 +634,7 @@ class StringRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .endsWith(
                             suffix,
                             incorrectValue,
@@ -643,7 +643,7 @@ class StringRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    StringViolationFactory
+                    StringViolationProvider
                         .endsWith(
                             suffix,
                             namedIncorrectValue.value,
@@ -668,7 +668,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isAlphabetic(
                         incorrectValue,
                     ).reason
@@ -676,7 +676,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isAlphabetic(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -699,7 +699,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isNumeric(
                         incorrectValue,
                     ).reason
@@ -707,7 +707,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isNumeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -730,7 +730,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isAlphanumeric(
                         incorrectValue,
                     ).reason
@@ -738,7 +738,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isAlphanumeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -761,7 +761,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isNotBlank(
                         incorrectValue,
                     ).reason
@@ -769,7 +769,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isNotBlank(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -792,7 +792,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isNotEmpty(
                         incorrectValue,
                     ).reason
@@ -800,7 +800,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isNotEmpty(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -823,7 +823,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isLowerCase(
                         incorrectValue,
                     ).reason
@@ -831,7 +831,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isLowerCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
@@ -854,7 +854,7 @@ class StringRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isUpperCase(
                         incorrectValue,
                     ).reason
@@ -862,7 +862,7 @@ class StringRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
-                StringViolationFactory
+                StringViolationProvider
                     .isUpperCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,

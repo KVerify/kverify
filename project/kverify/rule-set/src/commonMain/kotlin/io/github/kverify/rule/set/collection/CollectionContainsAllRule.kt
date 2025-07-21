@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public open class CollectionContainsAllRule<E, C : Collection<E>>(
     public val elements: Collection<E>,
     public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationFactory.Default.containsAll(
+        CollectionViolationProvider.Default.containsAll(
             elements = elements,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class CollectionContainsAllRule<E, C : Collection<E>>(
     ) : this(
         elements = elements,
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.containsAll(
+            CollectionViolationProvider.Default.containsAll(
                 elements = elements,
                 value = value,
                 name = name,
@@ -35,7 +35,7 @@ public open class CollectionContainsAllRule<E, C : Collection<E>>(
     public constructor(
         vararg elements: E,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.containsAll(
+            CollectionViolationProvider.Default.containsAll(
                 elements = elements.asList(),
                 value = value,
             )
@@ -51,7 +51,7 @@ public open class CollectionContainsAllRule<E, C : Collection<E>>(
     ) : this(
         elements = elements.asList(),
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.containsAll(
+            CollectionViolationProvider.Default.containsAll(
                 elements = elements.asList(),
                 value = value,
                 name = name,
@@ -71,7 +71,7 @@ public open class CollectionContainsAllRule<E, C : Collection<E>>(
 public open class NamedCollectionContainsAllRule<E, C : Collection<E>>(
     public val elements: Collection<E>,
     public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationFactory.Default.containsAll(
+        CollectionViolationProvider.Default.containsAll(
             elements = elements,
             value = value,
             name = name,
@@ -81,7 +81,7 @@ public open class NamedCollectionContainsAllRule<E, C : Collection<E>>(
     public constructor(
         vararg elements: E,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.containsAll(
+            CollectionViolationProvider.Default.containsAll(
                 elements = elements.asList(),
                 value = value,
                 name = name,

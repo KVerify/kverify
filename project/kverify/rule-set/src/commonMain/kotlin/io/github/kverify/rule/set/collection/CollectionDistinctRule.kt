@@ -7,11 +7,11 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public open class CollectionDistinctRule<C : Collection<*>>(
     public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationFactory.Default.distinct(
+        CollectionViolationProvider.Default.distinct(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class CollectionDistinctRule<C : Collection<*>>(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.distinct(
+            CollectionViolationProvider.Default.distinct(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class CollectionDistinctRule<C : Collection<*>>(
 
 public open class NamedCollectionDistinctRule<C : Collection<*>>(
     public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationFactory.Default.distinct(
+        CollectionViolationProvider.Default.distinct(
             value = value,
             name = name,
         )

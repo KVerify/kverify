@@ -7,11 +7,11 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsNotBlankRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.isNotBlank(
+        StringViolationProvider.Default.isNotBlank(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsNotBlankRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationFactory.Default.isNotBlank(
+            StringViolationProvider.Default.isNotBlank(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsNotBlankRule(
 
 public open class NamedStringIsNotBlankRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.isNotBlank(
+        StringViolationProvider.Default.isNotBlank(
             value = value,
             name = name,
         )

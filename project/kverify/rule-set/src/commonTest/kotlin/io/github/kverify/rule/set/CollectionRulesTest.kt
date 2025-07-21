@@ -4,7 +4,7 @@ import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.rule.runValidation
 import io.github.kverify.rule.set.factory.CollectionRules
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
@@ -36,7 +36,7 @@ class CollectionRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .ofSize(
                             size,
                             incorrectCollection,
@@ -45,7 +45,7 @@ class CollectionRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .ofSize(
                             size,
                             namedIncorrectCollection.value,
@@ -71,7 +71,7 @@ class CollectionRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .notOfSize(
                             size,
                             incorrectCollection,
@@ -80,7 +80,7 @@ class CollectionRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .notOfSize(
                             size,
                             namedIncorrectCollection.value,
@@ -106,7 +106,7 @@ class CollectionRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .maxSize(
                             size,
                             incorrectCollection,
@@ -115,7 +115,7 @@ class CollectionRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .maxSize(
                             size,
                             namedIncorrectCollection.value,
@@ -141,7 +141,7 @@ class CollectionRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .minSize(
                             size,
                             incorrectCollection,
@@ -150,7 +150,7 @@ class CollectionRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectCollection)
                 }.message shouldBe
-                    CollectionViolationFactory
+                    CollectionViolationProvider
                         .minSize(
                             size,
                             namedIncorrectCollection.value,
@@ -178,7 +178,7 @@ class CollectionRulesTest :
                     shouldFail {
                         rule.runValidation(failContext, incorrectCollection)
                     }.message shouldBe
-                        CollectionViolationFactory
+                        CollectionViolationProvider
                             .sizeBetween(
                                 range,
                                 incorrectCollection,
@@ -187,7 +187,7 @@ class CollectionRulesTest :
                     shouldFail {
                         namedRule.runValidation(failContext, namedIncorrectCollection)
                     }.message shouldBe
-                        CollectionViolationFactory
+                        CollectionViolationProvider
                             .sizeBetween(
                                 range,
                                 namedIncorrectCollection.value,
@@ -216,7 +216,7 @@ class CollectionRulesTest :
                     shouldFail {
                         rule.runValidation(failContext, incorrectCollection)
                     }.message shouldBe
-                        CollectionViolationFactory
+                        CollectionViolationProvider
                             .sizeNotBetween(
                                 range,
                                 incorrectCollection,
@@ -225,7 +225,7 @@ class CollectionRulesTest :
                     shouldFail {
                         namedRule.runValidation(failContext, namedIncorrectCollection)
                     }.message shouldBe
-                        CollectionViolationFactory
+                        CollectionViolationProvider
                             .sizeNotBetween(
                                 range,
                                 namedIncorrectCollection.value,
@@ -252,7 +252,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .containsAll(
                         elements,
                         incorrectCollection,
@@ -261,7 +261,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .containsAll(
                         elements,
                         namedIncorrectCollection.value,
@@ -286,7 +286,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .containsNone(
                         elements,
                         incorrectCollection,
@@ -295,7 +295,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .containsNone(
                         elements,
                         namedIncorrectCollection.value,
@@ -320,7 +320,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .contains(
                         element,
                         incorrectCollection,
@@ -329,7 +329,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .contains(
                         element,
                         namedIncorrectCollection.value,
@@ -354,7 +354,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .notContains(
                         element,
                         incorrectCollection,
@@ -363,7 +363,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .notContains(
                         element,
                         namedIncorrectCollection.value,
@@ -388,7 +388,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .containsOnly(
                         elements,
                         incorrectCollection,
@@ -397,7 +397,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .containsOnly(
                         elements,
                         namedIncorrectCollection.value,
@@ -421,7 +421,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .notEmpty(
                         incorrectCollection,
                     ).reason
@@ -429,7 +429,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .notEmpty(
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,
@@ -452,7 +452,7 @@ class CollectionRulesTest :
             shouldFail {
                 rule.runValidation(failContext, incorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .distinct(
                         incorrectCollection,
                     ).reason
@@ -460,7 +460,7 @@ class CollectionRulesTest :
             shouldFail {
                 namedRule.runValidation(failContext, namedIncorrectCollection)
             }.message shouldBe
-                CollectionViolationFactory
+                CollectionViolationProvider
                     .distinct(
                         namedIncorrectCollection.value,
                         namedIncorrectCollection.name,

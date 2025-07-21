@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringNotMatchesRule(
     public val regex: Regex,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.notMatches(
+        StringViolationProvider.Default.notMatches(
             regex = regex,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class StringNotMatchesRule(
     ) : this(
         regex = regex,
         violationGenerator = { value ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 regex = regex,
                 value = value,
                 name = name,
@@ -35,7 +35,7 @@ public open class StringNotMatchesRule(
     public constructor(
         stringRegex: String,
         violationGenerator: ValueViolationGenerator<String> = { value ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 regex = stringRegex.toRegex(),
                 value = value,
             )
@@ -65,7 +65,7 @@ public open class StringNotMatchesRule(
 public open class NamedStringNotMatchesRule(
     public val regex: Regex,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.notMatches(
+        StringViolationProvider.Default.notMatches(
             regex = regex,
             value = value,
             name = name,
@@ -75,7 +75,7 @@ public open class NamedStringNotMatchesRule(
     public constructor(
         stringRegex: String,
         violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-            StringViolationFactory.Default.notMatches(
+            StringViolationProvider.Default.notMatches(
                 regex = stringRegex.toRegex(),
                 value = value,
                 name = name,

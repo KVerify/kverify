@@ -7,13 +7,13 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringContainsRule(
     public val string: String,
     public val ignoreCase: Boolean = false,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.contains(
+        StringViolationProvider.Default.contains(
             string = string,
             value = value,
         )
@@ -27,7 +27,7 @@ public open class StringContainsRule(
         string = string,
         ignoreCase = ignoreCase,
         violationGenerator = { value ->
-            StringViolationFactory.Default.contains(
+            StringViolationProvider.Default.contains(
                 string = string,
                 value = value,
                 name = name,
@@ -48,7 +48,7 @@ public open class NamedStringContainsRule(
     public val string: String,
     public val ignoreCase: Boolean = false,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.contains(
+        StringViolationProvider.Default.contains(
             string = string,
             value = value,
             name = name,

@@ -1,9 +1,9 @@
-package io.github.kverify.violation.set.factory
+package io.github.kverify.violation.set.provider
 
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolationReason
 
-public interface ComparableViolationFactory {
+public interface ComparableViolationProvider {
     public fun <T : Comparable<T>> equalTo(
         other: T,
         value: T,
@@ -52,5 +52,5 @@ public interface ComparableViolationFactory {
         name: String = "comparable",
     ): Violation = "'$name' must not be in range '$range', but it is '$value'.".asViolationReason()
 
-    public companion object Default : ComparableViolationFactory
+    public companion object Default : ComparableViolationProvider
 }

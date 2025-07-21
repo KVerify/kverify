@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public open class CollectionOfSizeRule<C : Collection<*>>(
     public val size: Int,
     public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationFactory.Default.ofSize(
+        CollectionViolationProvider.Default.ofSize(
             size = size,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class CollectionOfSizeRule<C : Collection<*>>(
     ) : this(
         size = size,
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.minSize(
+            CollectionViolationProvider.Default.minSize(
                 size = size,
                 value = value,
                 name = name,
@@ -44,7 +44,7 @@ public open class CollectionOfSizeRule<C : Collection<*>>(
 public open class NamedCollectionOfSizeRule<C : Collection<*>>(
     public val size: Int,
     public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationFactory.Default.ofSize(
+        CollectionViolationProvider.Default.ofSize(
             size = size,
             value = value,
             name = name,

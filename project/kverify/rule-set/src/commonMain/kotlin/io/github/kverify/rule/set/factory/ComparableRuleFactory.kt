@@ -18,17 +18,17 @@ import io.github.kverify.rule.set.comparable.NamedComparableLessThanOrEqualToRul
 import io.github.kverify.rule.set.comparable.NamedComparableLessThanRule
 import io.github.kverify.rule.set.comparable.NamedComparableNotBetweenRule
 import io.github.kverify.rule.set.comparable.NamedComparableNotEqualToRule
-import io.github.kverify.violation.set.factory.ComparableViolationFactory
+import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
 public interface ComparableRuleFactory {
-    public val comparableViolationFactory: ComparableViolationFactory
-        get() = ComparableViolationFactory.Default
+    public val comparableViolationProvider: ComparableViolationProvider
+        get() = ComparableViolationProvider.Default
 
     // region between
     public fun <T : Comparable<T>> between(
         range: ClosedRange<T>,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.between(
+            comparableViolationProvider.between(
                 range = range,
                 value = value,
             )
@@ -52,7 +52,7 @@ public interface ComparableRuleFactory {
         min: T,
         max: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.between(
+            comparableViolationProvider.between(
                 range = min..max,
                 value = value,
             )
@@ -78,7 +78,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedBetween(
         range: ClosedRange<T>,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.between(
+            comparableViolationProvider.between(
                 range = range,
                 value = value,
                 name = name,
@@ -94,7 +94,7 @@ public interface ComparableRuleFactory {
         min: T,
         max: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.between(
+            comparableViolationProvider.between(
                 range = min..max,
                 value = value,
                 name = name,
@@ -111,7 +111,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> equalTo(
         other: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.equalTo(
+            comparableViolationProvider.equalTo(
                 other = other,
                 value = value,
             )
@@ -136,7 +136,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedEqualTo(
         other: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.equalTo(
+            comparableViolationProvider.equalTo(
                 other = other,
                 value = value,
                 name = name,
@@ -153,7 +153,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> greaterThanOrEqualTo(
         other: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.greaterThanOrEqualTo(
+            comparableViolationProvider.greaterThanOrEqualTo(
                 other = other,
                 value = value,
             )
@@ -178,7 +178,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedGreaterThanOrEqualTo(
         other: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.greaterThanOrEqualTo(
+            comparableViolationProvider.greaterThanOrEqualTo(
                 other = other,
                 value = value,
                 name = name,
@@ -195,7 +195,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> greaterThan(
         other: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.greaterThan(
+            comparableViolationProvider.greaterThan(
                 other = other,
                 value = value,
             )
@@ -220,7 +220,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedGreaterThan(
         other: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.greaterThan(
+            comparableViolationProvider.greaterThan(
                 other = other,
                 value = value,
                 name = name,
@@ -237,7 +237,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> lessThanOrEqualTo(
         other: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.lessThanOrEqualTo(
+            comparableViolationProvider.lessThanOrEqualTo(
                 other = other,
                 value = value,
             )
@@ -262,7 +262,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedLessThanOrEqualTo(
         other: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.lessThanOrEqualTo(
+            comparableViolationProvider.lessThanOrEqualTo(
                 other = other,
                 value = value,
                 name = name,
@@ -279,7 +279,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> lessThan(
         other: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.lessThan(
+            comparableViolationProvider.lessThan(
                 other = other,
                 value = value,
             )
@@ -304,7 +304,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedLessThan(
         other: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.lessThan(
+            comparableViolationProvider.lessThan(
                 other = other,
                 value = value,
                 name = name,
@@ -321,7 +321,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> notBetween(
         range: ClosedRange<T>,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.notBetween(
+            comparableViolationProvider.notBetween(
                 range = range,
                 value = value,
             )
@@ -345,7 +345,7 @@ public interface ComparableRuleFactory {
         min: T,
         max: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.notBetween(
+            comparableViolationProvider.notBetween(
                 range = min..max,
                 value = value,
             )
@@ -373,7 +373,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedNotBetween(
         range: ClosedRange<T>,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.notBetween(
+            comparableViolationProvider.notBetween(
                 range = range,
                 value = value,
                 name = name,
@@ -389,7 +389,7 @@ public interface ComparableRuleFactory {
         min: T,
         max: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.notBetween(
+            comparableViolationProvider.notBetween(
                 range = min..max,
                 value = value,
                 name = name,
@@ -407,7 +407,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> notEqualTo(
         other: T,
         violationGenerator: ValueViolationGenerator<T> = { value ->
-            comparableViolationFactory.notEqualTo(
+            comparableViolationProvider.notEqualTo(
                 other = other,
                 value = value,
             )
@@ -432,7 +432,7 @@ public interface ComparableRuleFactory {
     public fun <T : Comparable<T>> namedNotEqualTo(
         other: T,
         violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-            comparableViolationFactory.notEqualTo(
+            comparableViolationProvider.notEqualTo(
                 other = other,
                 value = value,
                 name = name,
@@ -447,9 +447,9 @@ public interface ComparableRuleFactory {
 }
 
 public open class ComparableRules(
-    override val comparableViolationFactory: ComparableViolationFactory,
+    override val comparableViolationProvider: ComparableViolationProvider,
 ) : ComparableRuleFactory {
     public companion object : ComparableRules(
-        comparableViolationFactory = ComparableViolationFactory.Default,
+        comparableViolationProvider = ComparableViolationProvider.Default,
     )
 }

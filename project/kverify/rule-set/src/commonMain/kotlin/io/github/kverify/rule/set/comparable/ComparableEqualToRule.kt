@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.ComparableViolationFactory
+import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
 public open class ComparableEqualToRule<T : Comparable<T>>(
     public val other: T,
     public val violationGenerator: ValueViolationGenerator<T> = { value ->
-        ComparableViolationFactory.Default.equalTo(
+        ComparableViolationProvider.Default.equalTo(
             other = other,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class ComparableEqualToRule<T : Comparable<T>>(
     ) : this(
         other = other,
         violationGenerator = { value ->
-            ComparableViolationFactory.Default.equalTo(
+            ComparableViolationProvider.Default.equalTo(
                 other = other,
                 value = value,
                 name = name,
@@ -44,7 +44,7 @@ public open class ComparableEqualToRule<T : Comparable<T>>(
 public open class NamedComparableEqualToRule<T : Comparable<T>>(
     public val other: T,
     public val violationGenerator: NamedValueViolationGenerator<T> = { (name, value) ->
-        ComparableViolationFactory.Default.equalTo(
+        ComparableViolationProvider.Default.equalTo(
             other = other,
             value = value,
             name = name,

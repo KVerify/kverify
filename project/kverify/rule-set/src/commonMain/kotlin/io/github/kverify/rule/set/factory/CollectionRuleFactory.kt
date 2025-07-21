@@ -28,17 +28,17 @@ import io.github.kverify.rule.set.collection.NamedCollectionNotOfSizeRule
 import io.github.kverify.rule.set.collection.NamedCollectionOfSizeRule
 import io.github.kverify.rule.set.collection.NamedCollectionSizeBetweenRule
 import io.github.kverify.rule.set.collection.NamedCollectionSizeNotBetweenRule
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public interface CollectionRuleFactory {
-    public val collectionViolationFactory: CollectionViolationFactory
-        get() = CollectionViolationFactory.Default
+    public val collectionViolationProvider: CollectionViolationProvider
+        get() = CollectionViolationProvider.Default
 
     // region containsAll
     public fun <E, C : Collection<E>> containsAll(
         elements: Collection<E>,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.containsAll(
+            collectionViolationProvider.containsAll(
                 elements = elements,
                 value = value,
             )
@@ -61,7 +61,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> containsAll(
         vararg elements: E,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.containsAll(
+            collectionViolationProvider.containsAll(
                 elements = elements.asList(),
                 value = value,
             )
@@ -86,7 +86,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContainsAll(
         elements: Collection<E>,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.containsAll(
+            collectionViolationProvider.containsAll(
                 elements = elements,
                 value = value,
                 name = name,
@@ -101,7 +101,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContainsAll(
         vararg elements: E,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.containsAll(
+            collectionViolationProvider.containsAll(
                 elements = elements.asList(),
                 value = value,
                 name = name,
@@ -118,7 +118,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> containsNone(
         elements: Collection<E>,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.containsNone(
+            collectionViolationProvider.containsNone(
                 elements = elements,
                 value = value,
             )
@@ -141,7 +141,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> containsNone(
         vararg elements: E,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.containsNone(
+            collectionViolationProvider.containsNone(
                 elements = elements.asList(),
                 value = value,
             )
@@ -166,7 +166,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContainsNone(
         elements: Collection<E>,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.containsNone(
+            collectionViolationProvider.containsNone(
                 elements = elements,
                 value = value,
                 name = name,
@@ -181,7 +181,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContainsNone(
         vararg elements: E,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.containsNone(
+            collectionViolationProvider.containsNone(
                 elements = elements.asList(),
                 value = value,
                 name = name,
@@ -198,7 +198,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> containsOnly(
         elements: Collection<E>,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.containsOnly(
+            collectionViolationProvider.containsOnly(
                 elements = elements,
                 value = value,
             )
@@ -221,7 +221,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> containsOnly(
         vararg elements: E,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.containsOnly(
+            collectionViolationProvider.containsOnly(
                 elements = elements.asList(),
                 value = value,
             )
@@ -246,7 +246,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContainsOnly(
         elements: Collection<E>,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.containsOnly(
+            collectionViolationProvider.containsOnly(
                 elements = elements,
                 value = value,
                 name = name,
@@ -261,7 +261,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContainsOnly(
         vararg elements: E,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.containsOnly(
+            collectionViolationProvider.containsOnly(
                 elements = elements.asList(),
                 value = value,
                 name = name,
@@ -278,7 +278,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> contains(
         element: E,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.contains(
+            collectionViolationProvider.contains(
                 element = element,
                 value = value,
             )
@@ -303,7 +303,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedContains(
         element: E,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.contains(
+            collectionViolationProvider.contains(
                 element = element,
                 value = value,
                 name = name,
@@ -319,7 +319,7 @@ public interface CollectionRuleFactory {
     // region distinct
     public fun <C : Collection<*>> distinct(
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.distinct(
+            CollectionViolationProvider.Default.distinct(
                 value = value,
             )
         },
@@ -337,7 +337,7 @@ public interface CollectionRuleFactory {
     // region namedDistinct
     public fun <C : Collection<*>> namedDistinct(
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.distinct(
+            CollectionViolationProvider.Default.distinct(
                 value = value,
                 name = name,
             )
@@ -352,7 +352,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> maxSize(
         size: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.maxSize(
+            CollectionViolationProvider.Default.maxSize(
                 value = value,
                 size = size,
             )
@@ -377,7 +377,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> namedMaxSize(
         size: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.maxSize(
+            CollectionViolationProvider.Default.maxSize(
                 value = value,
                 size = size,
                 name = name,
@@ -394,7 +394,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> minSize(
         size: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.minSize(
+            CollectionViolationProvider.Default.minSize(
                 value = value,
                 size = size,
             )
@@ -419,7 +419,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> namedMinSize(
         size: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.minSize(
+            CollectionViolationProvider.Default.minSize(
                 value = value,
                 size = size,
                 name = name,
@@ -436,7 +436,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> notContains(
         element: E,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            collectionViolationFactory.notContains(
+            collectionViolationProvider.notContains(
                 element = element,
                 value = value,
             )
@@ -461,7 +461,7 @@ public interface CollectionRuleFactory {
     public fun <E, C : Collection<E>> namedNotContains(
         element: E,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            collectionViolationFactory.notContains(
+            collectionViolationProvider.notContains(
                 element = element,
                 value = value,
                 name = name,
@@ -477,7 +477,7 @@ public interface CollectionRuleFactory {
     // region notEmpty
     public fun <C : Collection<*>> notEmpty(
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.notEmpty(
+            CollectionViolationProvider.Default.notEmpty(
                 value = value,
             )
         },
@@ -495,7 +495,7 @@ public interface CollectionRuleFactory {
     // region namedNotEmpty
     public fun <C : Collection<*>> namedNotEmpty(
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.notEmpty(
+            CollectionViolationProvider.Default.notEmpty(
                 value = value,
                 name = name,
             )
@@ -510,7 +510,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> notOfSize(
         size: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.notOfSize(
+            CollectionViolationProvider.Default.notOfSize(
                 value = value,
                 size = size,
             )
@@ -535,7 +535,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> namedNotOfSize(
         size: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.notOfSize(
+            CollectionViolationProvider.Default.notOfSize(
                 value = value,
                 size = size,
                 name = name,
@@ -552,7 +552,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> ofSize(
         size: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.ofSize(
+            CollectionViolationProvider.Default.ofSize(
                 value = value,
                 size = size,
             )
@@ -577,7 +577,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> namedOfSize(
         size: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.ofSize(
+            CollectionViolationProvider.Default.ofSize(
                 value = value,
                 size = size,
                 name = name,
@@ -594,7 +594,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> sizeBetween(
         range: IntRange,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.sizeBetween(
+            CollectionViolationProvider.Default.sizeBetween(
                 range = range,
                 value = value,
             )
@@ -618,7 +618,7 @@ public interface CollectionRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.sizeBetween(
+            CollectionViolationProvider.Default.sizeBetween(
                 range = min..max,
                 value = value,
             )
@@ -646,7 +646,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> namedSizeBetween(
         range: IntRange,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.sizeBetween(
+            CollectionViolationProvider.Default.sizeBetween(
                 range = range,
                 value = value,
                 name = name,
@@ -662,7 +662,7 @@ public interface CollectionRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.sizeBetween(
+            CollectionViolationProvider.Default.sizeBetween(
                 range = min..max,
                 value = value,
                 name = name,
@@ -680,7 +680,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> sizeNotBetween(
         range: IntRange,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = range,
                 value = value,
             )
@@ -704,7 +704,7 @@ public interface CollectionRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = min..max,
                 value = value,
             )
@@ -732,7 +732,7 @@ public interface CollectionRuleFactory {
     public fun <C : Collection<*>> namedSizeNotBetween(
         range: IntRange,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = range,
                 value = value,
                 name = name,
@@ -748,7 +748,7 @@ public interface CollectionRuleFactory {
         min: Int,
         max: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = min..max,
                 value = value,
                 name = name,
@@ -764,9 +764,9 @@ public interface CollectionRuleFactory {
 }
 
 public open class CollectionRules(
-    public override val collectionViolationFactory: CollectionViolationFactory,
+    public override val collectionViolationProvider: CollectionViolationProvider,
 ) : CollectionRuleFactory {
     public companion object : CollectionRules(
-        collectionViolationFactory = CollectionViolationFactory.Default,
+        collectionViolationProvider = CollectionViolationProvider.Default,
     )
 }

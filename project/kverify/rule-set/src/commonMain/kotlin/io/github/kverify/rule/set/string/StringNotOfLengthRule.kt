@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringNotOfLengthRule(
     public val length: Int,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.notOfLength(
+        StringViolationProvider.Default.notOfLength(
             length = length,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class StringNotOfLengthRule(
     ) : this(
         length = length,
         violationGenerator = { value ->
-            StringViolationFactory.Default.notOfLength(
+            StringViolationProvider.Default.notOfLength(
                 length = length,
                 value = value,
                 name = name,
@@ -44,7 +44,7 @@ public open class StringNotOfLengthRule(
 public open class NamedStringNotOfLengthRule(
     public val length: Int,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.notOfLength(
+        StringViolationProvider.Default.notOfLength(
             length = length,
             value = value,
             name = name,

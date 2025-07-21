@@ -1,10 +1,10 @@
-package io.github.kverify.violation.set.factory
+package io.github.kverify.violation.set.provider
 
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolationReason
 
 @Suppress("TooManyFunctions")
-public interface StringViolationFactory {
+public interface StringViolationProvider {
     public fun ofLength(
         length: Int,
         value: String,
@@ -158,5 +158,5 @@ public interface StringViolationFactory {
         name: String = "string",
     ): Violation = "'$name' must be in uppercase, but it contains lowercase characters.".asViolationReason()
 
-    public companion object Default : StringViolationFactory
+    public companion object Default : StringViolationProvider
 }

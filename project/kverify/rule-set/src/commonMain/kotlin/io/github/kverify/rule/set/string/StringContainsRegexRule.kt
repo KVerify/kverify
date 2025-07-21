@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringContainsRegexRule(
     public val regex: Regex,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.containsRegex(
+        StringViolationProvider.Default.containsRegex(
             regex = regex,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class StringContainsRegexRule(
     ) : this(
         regex = regex,
         violationGenerator = { value ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = regex,
                 value = value,
                 name = name,
@@ -35,7 +35,7 @@ public open class StringContainsRegexRule(
     public constructor(
         stringRegex: String,
         violationGenerator: ValueViolationGenerator<String> = { value ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = stringRegex.toRegex(),
                 value = value,
             )
@@ -51,7 +51,7 @@ public open class StringContainsRegexRule(
     ) : this(
         regex = stringRegex.toRegex(),
         violationGenerator = { value ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = stringRegex.toRegex(),
                 value = value,
                 name = name,
@@ -71,7 +71,7 @@ public open class StringContainsRegexRule(
 public open class NamedStringContainsRegexRule(
     public val regex: Regex,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.containsRegex(
+        StringViolationProvider.Default.containsRegex(
             regex = regex,
             value = value,
             name = name,
@@ -81,7 +81,7 @@ public open class NamedStringContainsRegexRule(
     public constructor(
         stringRegex: String,
         violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-            StringViolationFactory.Default.containsRegex(
+            StringViolationProvider.Default.containsRegex(
                 regex = stringRegex.toRegex(),
                 value = value,
                 name = name,

@@ -7,11 +7,11 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsUpperCaseRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.isUpperCase(
+        StringViolationProvider.Default.isUpperCase(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsUpperCaseRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationFactory.Default.isUpperCase(
+            StringViolationProvider.Default.isUpperCase(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsUpperCaseRule(
 
 public open class NamedStringIsUpperCaseRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.isUpperCase(
+        StringViolationProvider.Default.isUpperCase(
             value = value,
             name = name,
         )

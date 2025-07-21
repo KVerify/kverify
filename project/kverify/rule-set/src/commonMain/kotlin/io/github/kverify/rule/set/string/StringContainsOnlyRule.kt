@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringContainsOnlyRule(
     public val chars: Iterable<Char>,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.containsOnly(
+        StringViolationProvider.Default.containsOnly(
             chars = chars,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class StringContainsOnlyRule(
     ) : this(
         chars = chars,
         violationGenerator = { value ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = chars,
                 value = value,
                 name = name,
@@ -35,7 +35,7 @@ public open class StringContainsOnlyRule(
     public constructor(
         string: String,
         violationGenerator: ValueViolationGenerator<String> = { value ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = string.asIterable(),
                 value = value,
             )
@@ -51,7 +51,7 @@ public open class StringContainsOnlyRule(
     ) : this(
         chars = string.asIterable(),
         violationGenerator = { value ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = string.asIterable(),
                 value = value,
                 name = name,
@@ -71,7 +71,7 @@ public open class StringContainsOnlyRule(
 public open class NamedStringContainsOnlyRule(
     public val chars: Iterable<Char>,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.containsOnly(
+        StringViolationProvider.Default.containsOnly(
             chars = chars,
             value = value,
             name = name,
@@ -81,7 +81,7 @@ public open class NamedStringContainsOnlyRule(
     public constructor(
         string: String,
         violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-            StringViolationFactory.Default.containsOnly(
+            StringViolationProvider.Default.containsOnly(
                 chars = string.asIterable(),
                 value = value,
                 name = name,

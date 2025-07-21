@@ -7,13 +7,13 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.StringViolationFactory
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringEndsWithRule(
     public val suffix: String,
     public val ignoreCase: Boolean = false,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationFactory.Default.endsWith(
+        StringViolationProvider.Default.endsWith(
             suffix = suffix,
             value = value,
         )
@@ -27,7 +27,7 @@ public open class StringEndsWithRule(
         suffix = suffix,
         ignoreCase = ignoreCase,
         violationGenerator = { value ->
-            StringViolationFactory.Default.endsWith(
+            StringViolationProvider.Default.endsWith(
                 suffix = suffix,
                 value = value,
                 name = name,
@@ -48,7 +48,7 @@ public open class NamedStringEndsWithRule(
     public val suffix: String,
     public val ignoreCase: Boolean = false,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationFactory.Default.endsWith(
+        StringViolationProvider.Default.endsWith(
             suffix = suffix,
             value = value,
             name = name,

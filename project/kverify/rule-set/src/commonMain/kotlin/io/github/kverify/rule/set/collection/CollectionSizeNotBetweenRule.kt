@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.NamedRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.factory.CollectionViolationFactory
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public open class CollectionSizeNotBetweenRule<C : Collection<*>>(
     public val range: IntRange,
     public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationFactory.Default.sizeNotBetween(
+        CollectionViolationProvider.Default.sizeNotBetween(
             range = range,
             value = value,
         )
@@ -24,7 +24,7 @@ public open class CollectionSizeNotBetweenRule<C : Collection<*>>(
     ) : this(
         range = range,
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = range,
                 value = value,
                 name = name,
@@ -36,7 +36,7 @@ public open class CollectionSizeNotBetweenRule<C : Collection<*>>(
         min: Int,
         max: Int,
         violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = min..max,
                 value = value,
             )
@@ -53,7 +53,7 @@ public open class CollectionSizeNotBetweenRule<C : Collection<*>>(
     ) : this(
         range = min..max,
         violationGenerator = { value ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = min..max,
                 value = value,
                 name = name,
@@ -73,7 +73,7 @@ public open class CollectionSizeNotBetweenRule<C : Collection<*>>(
 public open class NamedCollectionSizeNotBetweenRule<C : Collection<*>>(
     public val range: IntRange,
     public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationFactory.Default.sizeNotBetween(
+        CollectionViolationProvider.Default.sizeNotBetween(
             range = range,
             value = value,
             name = name,
@@ -84,7 +84,7 @@ public open class NamedCollectionSizeNotBetweenRule<C : Collection<*>>(
         min: Int,
         max: Int,
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationFactory.Default.sizeNotBetween(
+            CollectionViolationProvider.Default.sizeNotBetween(
                 range = min..max,
                 value = value,
                 name = name,
