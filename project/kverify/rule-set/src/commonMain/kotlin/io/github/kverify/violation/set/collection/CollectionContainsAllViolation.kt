@@ -14,7 +14,7 @@ public data class CollectionContainsAllViolation<E, C : Collection<E>>(
             val elementsAsString = elements.joinWithLimitAndBrackets()
             val missingElements = elements.filterNot { it in value }.joinWithLimitAndBrackets()
 
-            "$displayName must contain all of the following elements: $elementsAsString, but some are missing: $missingElements."
+            "$displayName must contain all of the following elements: $elementsAsString, but these are missing: $missingElements."
         },
 ) : Violation {
     public constructor(
