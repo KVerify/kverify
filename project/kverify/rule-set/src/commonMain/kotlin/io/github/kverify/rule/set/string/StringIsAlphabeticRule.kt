@@ -11,7 +11,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsAlphabeticRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.isAlphabetic(
+        StringViolationProvider.Default.alphabetic(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsAlphabeticRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationProvider.Default.isAlphabetic(
+            StringViolationProvider.Default.alphabetic(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsAlphabeticRule(
 
 public open class NamedStringIsAlphabeticRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.isAlphabetic(
+        StringViolationProvider.Default.alphabetic(
             value = value,
             name = name,
         )

@@ -461,7 +461,7 @@ public interface StringRuleFactory {
     // region isAlphabetic
     public fun isAlphabetic(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isAlphabetic(value = value)
+            StringViolationProvider.Default.alphabetic(value = value)
         },
     ): StringIsAlphabeticRule =
         StringIsAlphabeticRule(
@@ -477,7 +477,7 @@ public interface StringRuleFactory {
     // region namedIsAlphabetic
     public fun namedIsAlphabetic(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isAlphabetic(value = value, name = name)
+            StringViolationProvider.Default.alphabetic(value = value, name = name)
         },
     ): NamedStringIsAlphabeticRule =
         NamedStringIsAlphabeticRule(
@@ -488,7 +488,7 @@ public interface StringRuleFactory {
     // region isAlphanumeric
     public fun isAlphanumeric(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isAlphanumeric(value = value)
+            StringViolationProvider.Default.alphanumeric(value = value)
         },
     ): StringIsAlphanumericRule =
         StringIsAlphanumericRule(
@@ -504,7 +504,7 @@ public interface StringRuleFactory {
     // region namedIsAlphanumeric
     public fun namedIsAlphanumeric(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isAlphanumeric(value = value, name = name)
+            StringViolationProvider.Default.alphanumeric(value = value, name = name)
         },
     ): NamedStringIsAlphanumericRule =
         NamedStringIsAlphanumericRule(
@@ -515,7 +515,7 @@ public interface StringRuleFactory {
     // region isLowerCase
     public fun isLowerCase(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isLowerCase(value = value)
+            StringViolationProvider.Default.lowerCase(value = value)
         },
     ): StringIsLowerCaseRule =
         StringIsLowerCaseRule(
@@ -531,7 +531,7 @@ public interface StringRuleFactory {
     // region namedIsLowerCase
     public fun namedIsLowerCase(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isLowerCase(value = value, name = name)
+            StringViolationProvider.Default.lowerCase(value = value, name = name)
         },
     ): NamedStringIsLowerCaseRule =
         NamedStringIsLowerCaseRule(
@@ -542,7 +542,7 @@ public interface StringRuleFactory {
     // region isNotBlank
     public fun isNotBlank(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isNotBlank(
+            StringViolationProvider.Default.notBlank(
                 value = value,
             )
         },
@@ -560,7 +560,7 @@ public interface StringRuleFactory {
     // region namedIsNotBlank
     public fun namedIsNotBlank(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isNotBlank(
+            StringViolationProvider.Default.notBlank(
                 value = value,
                 name = name,
             )
@@ -574,7 +574,7 @@ public interface StringRuleFactory {
     // region isNotEmpty
     public fun isNotEmpty(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isNotEmpty(
+            StringViolationProvider.Default.notEmpty(
                 value = value,
             )
         },
@@ -592,7 +592,7 @@ public interface StringRuleFactory {
     // region namedIsNotEmpty
     public fun namedIsNotEmpty(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isNotEmpty(
+            StringViolationProvider.Default.notEmpty(
                 value = value,
                 name = name,
             )
@@ -606,7 +606,7 @@ public interface StringRuleFactory {
     // region isNumeric
     public fun isNumeric(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isNumeric(
+            StringViolationProvider.Default.numeric(
                 value = value,
             )
         },
@@ -624,7 +624,7 @@ public interface StringRuleFactory {
     // region namedIsNumeric
     public fun namedIsNumeric(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isNumeric(
+            StringViolationProvider.Default.numeric(
                 value = value,
                 name = name,
             )
@@ -638,7 +638,7 @@ public interface StringRuleFactory {
     // region isUpperCase
     public fun isUpperCase(
         violationGenerator: StringViolationGenerator = { value ->
-            StringViolationProvider.Default.isUpperCase(value = value)
+            StringViolationProvider.Default.upperCase(value = value)
         },
     ): StringIsUpperCaseRule =
         StringIsUpperCaseRule(
@@ -654,7 +654,7 @@ public interface StringRuleFactory {
     // region namedIsUpperCase
     public fun namedIsUpperCase(
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
-            StringViolationProvider.Default.isUpperCase(value = value, name = name)
+            StringViolationProvider.Default.upperCase(value = value, name = name)
         },
     ): NamedStringIsUpperCaseRule =
         NamedStringIsUpperCaseRule(

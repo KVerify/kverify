@@ -4,14 +4,14 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.violation.set.joinWithLimitAndBrackets
 import io.github.kverify.violation.set.resolveStringName
 
-public data class StringIsAlphabeticViolation(
+public data class StringLowerCaseViolation(
     val value: String,
     val name: String? = null,
     override val reason: String =
         run {
             val displayName = resolveStringName(name)
-            val unexpectedChars = value.asIterable().filterNot { it.isLetter() }.joinWithLimitAndBrackets()
+            val upperCaseChars = value.asIterable().filterNot { it.isLowerCase() }.joinWithLimitAndBrackets()
 
-            "$displayName must contain only letters, but it also contains: $unexpectedChars."
+            "$displayName must be entirely lower case, but it also contains upper case characters: $upperCaseChars."
         },
 ) : Violation

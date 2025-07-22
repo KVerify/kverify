@@ -11,7 +11,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsNotBlankRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.isNotBlank(
+        StringViolationProvider.Default.notBlank(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsNotBlankRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationProvider.Default.isNotBlank(
+            StringViolationProvider.Default.notBlank(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsNotBlankRule(
 
 public open class NamedStringIsNotBlankRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.isNotBlank(
+        StringViolationProvider.Default.notBlank(
             value = value,
             name = name,
         )

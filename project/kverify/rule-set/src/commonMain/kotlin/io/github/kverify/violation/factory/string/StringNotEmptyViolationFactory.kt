@@ -4,18 +4,18 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.violation.factory.NamedViolationFactory
 import io.github.kverify.violation.factory.ViolationFactory
-import io.github.kverify.violation.set.string.StringIsNumericViolation
+import io.github.kverify.violation.set.string.StringNotEmptyViolation
 
-public class StringIsNumericViolationFactory : ViolationFactory<String> {
+public class StringIsNotEmptyViolationFactory : ViolationFactory<String> {
     override fun createViolation(value: String): Violation =
-        StringIsNumericViolation(
+        StringNotEmptyViolation(
             value = value,
         )
 }
 
-public class NamedStringIsNumericViolationFactory : NamedViolationFactory<String> {
+public class NamedStringIsNotEmptyViolationFactory : NamedViolationFactory<String> {
     override fun createViolation(value: NamedValue<String>): Violation =
-        StringIsNumericViolation(
+        StringNotEmptyViolation(
             value = value.value,
             name = value.name,
         )

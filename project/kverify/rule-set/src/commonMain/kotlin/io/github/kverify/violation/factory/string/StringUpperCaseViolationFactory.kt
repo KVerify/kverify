@@ -4,18 +4,18 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.violation.factory.NamedViolationFactory
 import io.github.kverify.violation.factory.ViolationFactory
-import io.github.kverify.violation.set.string.StringIsNotEmptyViolation
+import io.github.kverify.violation.set.string.StringUpperCaseViolation
 
-public class StringIsNotEmptyViolationFactory : ViolationFactory<String> {
+public class StringIsUpperCaseViolationFactory : ViolationFactory<String> {
     override fun createViolation(value: String): Violation =
-        StringIsNotEmptyViolation(
+        StringUpperCaseViolation(
             value = value,
         )
 }
 
-public class NamedStringIsNotEmptyViolationFactory : NamedViolationFactory<String> {
+public class NamedStringIsUpperCaseViolationFactory : NamedViolationFactory<String> {
     override fun createViolation(value: NamedValue<String>): Violation =
-        StringIsNotEmptyViolation(
+        StringUpperCaseViolation(
             value = value.value,
             name = value.name,
         )

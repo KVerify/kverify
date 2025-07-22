@@ -4,18 +4,18 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.violation.factory.NamedViolationFactory
 import io.github.kverify.violation.factory.ViolationFactory
-import io.github.kverify.violation.set.string.StringIsAlphanumericViolation
+import io.github.kverify.violation.set.string.StringNotBlankViolation
 
-public open class StringIsAlphanumericViolationFactory : ViolationFactory<String> {
+public object StringIsNotBlankViolationFactory : ViolationFactory<String> {
     override fun createViolation(value: String): Violation =
-        StringIsAlphanumericViolation(
+        StringNotBlankViolation(
             value = value,
         )
 }
 
-public open class NamedStringIsAlphanumericViolationFactory : NamedViolationFactory<String> {
+public object NamedStringIsNotBlankViolationFactory : NamedViolationFactory<String> {
     override fun createViolation(value: NamedValue<String>): Violation =
-        StringIsAlphanumericViolation(
+        StringNotBlankViolation(
             value = value.value,
             name = value.name,
         )

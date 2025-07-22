@@ -11,7 +11,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsAlphanumericRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.isAlphanumeric(
+        StringViolationProvider.Default.alphanumeric(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsAlphanumericRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationProvider.Default.isAlphanumeric(
+            StringViolationProvider.Default.alphanumeric(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsAlphanumericRule(
 
 public open class NamedStringIsAlphanumericRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.isAlphanumeric(
+        StringViolationProvider.Default.alphanumeric(
             value = value,
             name = name,
         )

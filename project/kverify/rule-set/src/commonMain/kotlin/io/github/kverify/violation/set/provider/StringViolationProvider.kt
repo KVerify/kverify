@@ -121,39 +121,39 @@ public interface StringViolationProvider {
         name: String = "string",
     ): Violation = "'$name' must end with '$suffix', but it does not.".asViolationReason()
 
-    public fun isAlphabetic(
+    public fun alphabetic(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain only alphabetic characters, but it contains invalid characters.".asViolationReason()
 
-    public fun isNumeric(
+    public fun numeric(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must contain only numeric characters, but it contains invalid characters.".asViolationReason()
 
-    public fun isAlphanumeric(
+    public fun alphanumeric(
         value: String,
         name: String = "string",
     ): Violation =
         "'$name' must contain only alphanumeric characters, but it contains invalid characters."
             .asViolationReason()
 
-    public fun isNotBlank(
+    public fun notBlank(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not be blank, but it is.".asViolationReason()
 
-    public fun isNotEmpty(
+    public fun notEmpty(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must not be empty, but it is.".asViolationReason()
 
-    public fun isLowerCase(
+    public fun lowerCase(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must be in lowercase, but it contains uppercase characters.".asViolationReason()
 
-    public fun isUpperCase(
+    public fun upperCase(
         value: String,
         name: String = "string",
     ): Violation = "'$name' must be in uppercase, but it contains lowercase characters.".asViolationReason()

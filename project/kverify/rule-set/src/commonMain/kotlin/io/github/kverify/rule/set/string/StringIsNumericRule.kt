@@ -11,7 +11,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsNumericRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.isNumeric(
+        StringViolationProvider.Default.numeric(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsNumericRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationProvider.Default.isNumeric(
+            StringViolationProvider.Default.numeric(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsNumericRule(
 
 public open class NamedStringIsNumericRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.isNumeric(
+        StringViolationProvider.Default.numeric(
             value = value,
             name = name,
         )

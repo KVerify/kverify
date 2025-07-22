@@ -11,7 +11,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringIsLowerCaseRule(
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.isLowerCase(
+        StringViolationProvider.Default.lowerCase(
             value = value,
         )
     },
@@ -20,7 +20,7 @@ public open class StringIsLowerCaseRule(
         name: String,
     ) : this(
         violationGenerator = { value ->
-            StringViolationProvider.Default.isLowerCase(
+            StringViolationProvider.Default.lowerCase(
                 value = value,
                 name = name,
             )
@@ -38,7 +38,7 @@ public open class StringIsLowerCaseRule(
 
 public open class NamedStringIsLowerCaseRule(
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.isLowerCase(
+        StringViolationProvider.Default.lowerCase(
             value = value,
             name = name,
         )

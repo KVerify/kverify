@@ -4,15 +4,18 @@ import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.violation.factory.NamedViolationFactory
 import io.github.kverify.violation.factory.ViolationFactory
-import io.github.kverify.violation.set.string.StringIsLowerCaseViolation
+import io.github.kverify.violation.set.string.StringNumericViolation
 
-public open class StringIsLowerCaseViolationFactory : ViolationFactory<String> {
-    override fun createViolation(value: String): Violation = StringIsLowerCaseViolation(value = value)
+public class StringIsNumericViolationFactory : ViolationFactory<String> {
+    override fun createViolation(value: String): Violation =
+        StringNumericViolation(
+            value = value,
+        )
 }
 
-public open class NamedStringIsLowerCaseViolationFactory : NamedViolationFactory<String> {
+public class NamedStringIsNumericViolationFactory : NamedViolationFactory<String> {
     override fun createViolation(value: NamedValue<String>): Violation =
-        StringIsLowerCaseViolation(
+        StringNumericViolation(
             value = value.value,
             name = value.name,
         )

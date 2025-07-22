@@ -3,7 +3,7 @@ package io.github.kverify.violation.set.string
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.violation.set.resolveStringName
 
-public data class StringIsNotBlankViolation(
+public data class StringNotBlankViolation(
     val value: String,
     val name: String? = null,
     override val reason: String =

@@ -669,7 +669,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isAlphabetic(
+                    .alphabetic(
                         incorrectValue,
                     ).reason
 
@@ -677,7 +677,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isAlphabetic(
+                    .alphabetic(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
@@ -700,7 +700,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isNumeric(
+                    .numeric(
                         incorrectValue,
                     ).reason
 
@@ -708,7 +708,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isNumeric(
+                    .numeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
@@ -731,7 +731,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isAlphanumeric(
+                    .alphanumeric(
                         incorrectValue,
                     ).reason
 
@@ -739,7 +739,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isAlphanumeric(
+                    .alphanumeric(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
@@ -762,7 +762,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isNotBlank(
+                    .notBlank(
                         incorrectValue,
                     ).reason
 
@@ -770,7 +770,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isNotBlank(
+                    .notBlank(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
@@ -793,7 +793,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isNotEmpty(
+                    .notEmpty(
                         incorrectValue,
                     ).reason
 
@@ -801,7 +801,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isNotEmpty(
+                    .notEmpty(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
@@ -824,7 +824,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isLowerCase(
+                    .lowerCase(
                         incorrectValue,
                     ).reason
 
@@ -832,7 +832,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isLowerCase(
+                    .lowerCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
@@ -855,7 +855,7 @@ class StringRulesTest :
                 rule.runValidation(failContext, incorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isUpperCase(
+                    .upperCase(
                         incorrectValue,
                     ).reason
 
@@ -863,7 +863,7 @@ class StringRulesTest :
                 namedRule.runValidation(failContext, namedIncorrectValue)
             }.message shouldBe
                 StringViolationProvider
-                    .isUpperCase(
+                    .upperCase(
                         namedIncorrectValue.value,
                         namedIncorrectValue.name,
                     ).reason
