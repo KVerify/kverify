@@ -3,7 +3,7 @@ package io.github.kverify.rule.set
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.rule.runValidation
 import io.github.kverify.named.model.NamedValue
-import io.github.kverify.rule.set.factory.StringRules
+import io.github.kverify.rule.set.provider.StringRules
 import io.github.kverify.violation.set.provider.StringViolationProvider
 import io.kotest.assertions.shouldFail
 import io.kotest.core.spec.style.FunSpec

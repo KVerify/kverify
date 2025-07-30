@@ -1,4 +1,4 @@
-package io.github.kverify.rule.set.factory
+package io.github.kverify.rule.set.provider
 
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
@@ -30,7 +30,7 @@ import io.github.kverify.rule.set.collection.NamedCollectionSizeBetweenRule
 import io.github.kverify.rule.set.collection.NamedCollectionSizeNotBetweenRule
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
-public interface CollectionRuleFactory {
+public interface CollectionRuleProvider {
     public val collectionViolationProvider: CollectionViolationProvider
         get() = CollectionViolationProvider.Default
 
@@ -765,7 +765,7 @@ public interface CollectionRuleFactory {
 
 public open class CollectionRules(
     public override val collectionViolationProvider: CollectionViolationProvider,
-) : CollectionRuleFactory {
+) : CollectionRuleProvider {
     public companion object : CollectionRules(
         collectionViolationProvider = CollectionViolationProvider.Default,
     )

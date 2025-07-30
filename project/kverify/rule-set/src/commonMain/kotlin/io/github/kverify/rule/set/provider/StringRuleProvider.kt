@@ -1,4 +1,4 @@
-package io.github.kverify.rule.set.factory
+package io.github.kverify.rule.set.provider
 
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
@@ -56,7 +56,7 @@ private typealias StringViolationGenerator = ValueViolationGenerator<String>
 
 private typealias NamedStringViolationGenerator = NamedValueViolationGenerator<String>
 
-public interface StringRuleFactory {
+public interface StringRuleProvider {
     public val stringViolationProvider: StringViolationProvider
         get() = StringViolationProvider.Default
 
@@ -1341,7 +1341,7 @@ public interface StringRuleFactory {
 
 public open class StringRules(
     public override val stringViolationProvider: StringViolationProvider,
-) : StringRuleFactory {
+) : StringRuleProvider {
     public companion object : StringRules(
         stringViolationProvider = StringViolationProvider.Default,
     )

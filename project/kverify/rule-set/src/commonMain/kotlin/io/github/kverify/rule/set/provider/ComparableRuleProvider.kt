@@ -1,4 +1,4 @@
-package io.github.kverify.rule.set.factory
+package io.github.kverify.rule.set.provider
 
 import io.github.kverify.rule.set.NamedValueViolationGenerator
 import io.github.kverify.rule.set.ValueViolationGenerator
@@ -20,7 +20,7 @@ import io.github.kverify.rule.set.comparable.NamedComparableNotBetweenRule
 import io.github.kverify.rule.set.comparable.NamedComparableNotEqualToRule
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
-public interface ComparableRuleFactory {
+public interface ComparableRuleProvider {
     public val comparableViolationProvider: ComparableViolationProvider
         get() = ComparableViolationProvider.Default
 
@@ -448,7 +448,7 @@ public interface ComparableRuleFactory {
 
 public open class ComparableRules(
     override val comparableViolationProvider: ComparableViolationProvider,
-) : ComparableRuleFactory {
+) : ComparableRuleProvider {
     public companion object : ComparableRules(
         comparableViolationProvider = ComparableViolationProvider.Default,
     )
