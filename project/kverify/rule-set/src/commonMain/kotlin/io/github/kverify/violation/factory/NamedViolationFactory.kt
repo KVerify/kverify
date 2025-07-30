@@ -1,7 +1,7 @@
 package io.github.kverify.violation.factory
 
-import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.violation.Violation
+import io.github.kverify.named.model.NamedValue
 import kotlin.jvm.JvmInline
 
 public typealias NamedViolationFactory<T> = ViolationFactory<NamedValue<T>>

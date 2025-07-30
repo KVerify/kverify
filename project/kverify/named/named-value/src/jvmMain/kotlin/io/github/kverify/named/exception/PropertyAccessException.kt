@@ -1,4 +1,4 @@
-package io.github.kverify.core.exception
+package io.github.kverify.named.exception
 
 /**
  * Exception thrown when there is an issue accessing a property.

@@ -1,4 +1,4 @@
-package io.github.kverify.core.model
+package io.github.kverify.named.model
 
 import io.github.kverify.test.util.executionCountCheck
 import io.kotest.core.spec.style.FunSpec

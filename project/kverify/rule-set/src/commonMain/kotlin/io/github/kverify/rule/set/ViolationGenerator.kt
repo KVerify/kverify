@@ -1,7 +1,7 @@
 package io.github.kverify.rule.set
 
-import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.violation.Violation
+import io.github.kverify.named.model.NamedValue
 
 internal typealias ValueViolationGenerator<T> = (T) -> Violation
 

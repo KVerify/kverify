@@ -1,6 +1,6 @@
-package io.github.kverify.core.model
+package io.github.kverify.named.model
 
-import io.github.kverify.core.exception.PropertyAccessException
+import io.github.kverify.named.exception.PropertyAccessException
 import kotlin.reflect.KProperty
 import kotlin.reflect.jvm.isAccessible
 

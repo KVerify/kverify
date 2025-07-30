@@ -1,11 +1,13 @@
-package io.github.kverify.core.rule
+package io.github.kverify.named.rule
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.model.NamedValue
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.runValidation
+import io.github.kverify.named.model.NamedValue
 import kotlin.jvm.JvmInline
 
 /**
- * A validation [Rule] for a [io.github.kverify.core.model.NamedValue].
+ * A validation [Rule] for a [NamedValue].
  */
 public typealias NamedRule<T> = Rule<NamedValue<T>>
 

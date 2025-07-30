@@ -1,8 +1,8 @@
 package io.github.kverify.rule.set
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.model.NamedValue
 import io.github.kverify.core.rule.runValidation
+import io.github.kverify.named.model.NamedValue
 import io.github.kverify.rule.set.factory.CollectionRules
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 import io.kotest.assertions.shouldFail

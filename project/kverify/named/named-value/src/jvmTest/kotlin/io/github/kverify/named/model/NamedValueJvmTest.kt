@@ -1,6 +1,6 @@
-package io.github.kverify.core.model
+package io.github.kverify.named.model
 
-import io.github.kverify.core.exception.PropertyAccessException
+import io.github.kverify.named.exception.PropertyAccessException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
