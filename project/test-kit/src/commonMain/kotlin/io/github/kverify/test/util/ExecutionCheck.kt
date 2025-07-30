@@ -1,4 +1,4 @@
-package io.github.kverify.core.util
+package io.github.kverify.test.util
 
 import kotlin.test.assertTrue
 

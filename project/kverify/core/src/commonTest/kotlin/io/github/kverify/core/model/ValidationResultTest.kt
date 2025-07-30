@@ -1,9 +1,9 @@
 package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
-import io.github.kverify.core.util.executionCheck
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.ViolationReason
+import io.github.kverify.test.util.executionCheck
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe

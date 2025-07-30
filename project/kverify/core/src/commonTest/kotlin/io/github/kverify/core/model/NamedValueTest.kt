@@ -1,6 +1,6 @@
 package io.github.kverify.core.model
 
-import io.github.kverify.core.util.executionCountCheck
+import io.github.kverify.test.util.executionCountCheck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
