@@ -155,14 +155,14 @@ public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>) {
  * - Conditional checks within larger validation workflows
  *
  * @param condition The boolean condition to evaluate - validation fails if false.
- * @param violationGenerator A lambda that produces the violation when validation fails.
+ * @param lazyViolation A lambda that produces the violation when validation fails.
  */
 public inline fun ValidationContext.validate(
     condition: Boolean,
-    violationGenerator: () -> Violation,
+    lazyViolation: () -> Violation,
 ) {
     if (!condition) {
-        val violation = violationGenerator()
+        val violation = lazyViolation()
         onFailure(violation)
     }
 }

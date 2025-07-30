@@ -26,26 +26,26 @@ public open class ThrowingValidationContext : ValidationContext {
     /**
      * Validates a condition and throws on failure.
      *
-     * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
+     * If the [condition] is `false`, executes the [lazyViolation] to create a [Violation]
      * and immediately throws a [ValidationException].
      *
      * The Kotlin [contract] ensures that after this function returns normally,
      * the condition is guaranteed to be `true`.
      *
      * @param condition The boolean condition to validate.
-     * @param violationGenerator A lambda that produces the [Violation] when validation fails.
+     * @param lazyViolation A lambda that produces the [Violation] when validation fails.
      * @throws ValidationException When the condition is `false`.
      */
     @OptIn(ExperimentalContracts::class)
     public inline fun validate(
         condition: Boolean,
-        violationGenerator: () -> Violation,
+        lazyViolation: () -> Violation,
     ) {
         contract {
             returns() implies condition
         }
 
-        if (!condition) onFailure(violationGenerator())
+        if (!condition) onFailure(lazyViolation())
     }
 }
 
@@ -61,7 +61,7 @@ internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValid
 /**
  * Validates a condition and throws on failure.
  *
- * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
+ * If the [condition] is `false`, executes the [violationFactory] to create a [Violation]
  * and immediately throws a [ValidationException].
  *
  * The Kotlin [contract] ensures that after this function returns normally,
@@ -70,13 +70,13 @@ internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValid
  * Internally uses default singleton implementation of [ThrowingValidationContext].
  *
  * @param condition The boolean condition to validate.
- * @param violationGenerator A lambda that produces the [Violation] when validation fails.
+ * @param violationFactory A lambda that produces the [Violation] when validation fails.
  * @throws ValidationException When the condition is `false`.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateThatOrThrow(
     condition: Boolean,
-    violationGenerator: () -> Violation,
+    violationFactory: () -> Violation,
 ) {
     contract {
         returns() implies condition
@@ -84,7 +84,7 @@ public inline fun validateThatOrThrow(
 
     ThrowingValidationObject.validate(
         condition,
-        violationGenerator,
+        violationFactory,
     )
 }
 
@@ -195,7 +195,7 @@ public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> 
 /**
  * Validates a condition and throws on failure.
  *
- * If the [condition] is `false`, executes the [violationGenerator] to create a [Violation]
+ * If the [condition] is `false`, executes the [violationFactory] to create a [Violation]
  * and immediately throws a [ValidationException].
  *
  * The Kotlin [contract] ensures that after this function returns normally,
@@ -205,14 +205,14 @@ public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> 
  *
  * @param context The throwing validation context to use for validation.
  * @param condition The boolean condition to validate.
- * @param violationGenerator A lambda that produces the [Violation] when validation fails.
+ * @param violationFactory A lambda that produces the [Violation] when validation fails.
  * @throws ValidationException When the condition is `false`.
  */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateThatOrThrowUsing(
     context: ThrowingValidationContext,
     condition: Boolean,
-    violationGenerator: () -> Violation,
+    violationFactory: () -> Violation,
 ) {
     contract {
         returns() implies condition
@@ -220,7 +220,7 @@ public inline fun validateThatOrThrowUsing(
 
     context.validate(
         condition,
-        violationGenerator,
+        violationFactory,
     )
 }
 
