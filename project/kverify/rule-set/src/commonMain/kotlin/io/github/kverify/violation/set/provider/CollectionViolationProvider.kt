@@ -128,5 +128,9 @@ public interface CollectionViolationProvider {
         }
     }
 
-    public companion object Default : CollectionViolationProvider
+    public companion object {
+        public val Default: CollectionViolationProvider = DefaultCollectionViolationProvider
+    }
 }
+
+internal object DefaultCollectionViolationProvider : CollectionViolationProvider

@@ -52,5 +52,9 @@ public interface ComparableViolationProvider {
         name: String = "comparable",
     ): Violation = "'$name' must not be in range '$range', but it is '$value'.".asViolationReason()
 
-    public companion object Default : ComparableViolationProvider
+    public companion object {
+        public val Default: ComparableViolationProvider = DefaultComparableViolationProvider
+    }
 }
+
+internal object DefaultComparableViolationProvider : ComparableViolationProvider

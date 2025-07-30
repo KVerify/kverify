@@ -158,5 +158,9 @@ public interface StringViolationProvider {
         name: String = "string",
     ): Violation = "'$name' must be in uppercase, but it contains lowercase characters.".asViolationReason()
 
-    public companion object Default : StringViolationProvider
+    public companion object {
+        public val Default: StringViolationProvider = DefaultStringViolationProvider
+    }
 }
+
+internal object DefaultStringViolationProvider : StringViolationProvider
