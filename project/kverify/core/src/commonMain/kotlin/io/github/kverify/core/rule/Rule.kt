@@ -1,8 +1,6 @@
 package io.github.kverify.core.rule
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
-import io.github.kverify.core.violation.Violation
 
 /**
  * Represents a validation rule for a value of type [T].
@@ -27,33 +25,8 @@ public inline fun <T> Rule<T>.runValidation(
  * Combines this [Rule] with [other], applying both sequentially.
  */
 public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
-    Rule validationContext@{ value ->
-        val context = this@validationContext
-        val thisRule = this@plus
-
-        thisRule.runValidation(
-            context = context,
-            value = value,
-        )
-
-        other.runValidation(
-            context = context,
-            value = value,
-        )
-    }
-
-/**
- * Creates a [Rule] that executes [ValidationContext.validate]
- * with the given [predicate] and [violationGenerator].
- */
-public inline fun <T> Rule(
-    crossinline predicate: (T) -> Boolean,
-    crossinline violationGenerator: (T) -> Violation,
-): Rule<T> =
-    Rule { value ->
-        validate(
-            predicate(value),
-        ) {
-            violationGenerator(value)
-        }
+    when {
+        this is StackedRule && other is StackedRule -> StackedRule(this.rules + other.rules)
+        this is StackedRule -> StackedRule(this.rules + other)
+        else -> StackedRule(listOf(this, other))
     }
