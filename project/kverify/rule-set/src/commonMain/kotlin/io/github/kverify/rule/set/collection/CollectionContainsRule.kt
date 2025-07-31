@@ -1,61 +1,18 @@
 package io.github.kverify.rule.set.collection
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.collection.CollectionContainsCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.CollectionViolationProvider
+import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
 
-public open class CollectionContainsRule<E, C : Collection<E>>(
+public class CollectionContainsRule<E, C : Collection<E>>(
     public val element: E,
-    public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationProvider.Default.contains(
+    public val violationFactory: ViolationFactory<C> =
+        CollectionViolationFactoryProvider.Default.contains(
             element = element,
-            value = value,
-        )
-    },
-) : Rule<C> {
-    public constructor(
-        element: E,
-        name: String,
-    ) : this(
-        element = element,
-        violationGenerator = { value ->
-            CollectionViolationProvider.Default.contains(
-                element = element,
-                value = value,
-                name = name,
-            )
-        },
+        ),
+) : Rule<C> by PredicateRule(
+        validationCheck = CollectionContainsCheck(element),
+        violationFactory = violationFactory,
     )
-
-    override fun ValidationContext.runValidation(value: C) {
-        validate(
-            value.contains(element),
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
-
-public open class NamedCollectionContainsRule<E, C : Collection<E>>(
-    public val element: E,
-    public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationProvider.Default.contains(
-            element = element,
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<C> {
-    override fun ValidationContext.runValidation(value: NamedValue<C>) {
-        validate(
-            value.value.contains(element),
-        ) {
-            violationGenerator(value)
-        }
-    }
-}

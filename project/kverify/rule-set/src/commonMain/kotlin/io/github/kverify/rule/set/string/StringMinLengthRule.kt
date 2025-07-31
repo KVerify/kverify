@@ -1,61 +1,18 @@
 package io.github.kverify.rule.set.string
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.string.StringMinLengthCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.StringViolationProvider
+import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
 public open class StringMinLengthRule(
-    public val min: Int,
-    public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.minLength(
-            minLength = min,
-            value = value,
-        )
-    },
-) : Rule<String> {
-    public constructor(
-        min: Int,
-        name: String,
-    ) : this(
-        min = min,
-        violationGenerator = { value ->
-            StringViolationProvider.Default.minLength(
-                minLength = min,
-                value = value,
-                name = name,
-            )
-        },
+    public val minLength: Int,
+    public val violationFactory: ViolationFactory<String> =
+        StringViolationFactoryProvider.Default.minLength(
+            minLength = minLength,
+        ),
+) : Rule<String> by PredicateRule(
+        validationCheck = StringMinLengthCheck(minLength),
+        violationFactory = violationFactory,
     )
-
-    override fun ValidationContext.runValidation(value: String) {
-        validate(
-            value.length >= min,
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
-
-public open class NamedStringMinLengthRule(
-    public val min: Int,
-    public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.minLength(
-            minLength = min,
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<String> {
-    override fun ValidationContext.runValidation(value: NamedValue<String>) {
-        validate(
-            value.value.length >= min,
-        ) {
-            violationGenerator(value)
-        }
-    }
-}

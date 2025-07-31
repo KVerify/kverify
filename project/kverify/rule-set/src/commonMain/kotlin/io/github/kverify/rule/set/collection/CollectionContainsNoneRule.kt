@@ -1,102 +1,72 @@
 package io.github.kverify.rule.set.collection
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.collection.CollectionContainsNoneCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.CollectionViolationProvider
+import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
 
-public open class CollectionContainsNoneRule<E, C : Collection<E>>(
+public class CollectionContainsNoneRule<E, C : Collection<E>>(
     public val elements: Collection<E>,
-    public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationProvider.Default.containsNone(
+    public val violationFactory: ViolationFactory<C> =
+        CollectionViolationFactoryProvider.Default.containsNone(
             elements = elements,
-            value = value,
-        )
-    },
-) : Rule<C> {
-    public constructor(
-        elements: Collection<E>,
-        name: String,
-    ) : this(
-        elements = elements,
-        violationGenerator = { value ->
-            CollectionViolationProvider.Default.containsNone(
-                elements = elements,
-                value = value,
-                name = name,
-            )
-        },
+        ),
+) : Rule<C> by PredicateRule(
+        validationCheck = CollectionContainsNoneCheck(elements),
+        violationFactory = violationFactory,
     )
 
-    public constructor(
-        vararg elements: E,
-        violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationProvider.Default.containsNone(
-                elements = elements.asList(),
-                value = value,
-            )
-        },
-    ) : this(
-        elements = elements.asList(),
-        violationGenerator = violationGenerator,
-    )
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(
+    vararg elements: E,
+    violationFactory: ViolationFactory<C>,
+): CollectionContainsNoneRule<E, C> {
+    val elementsSet = setOf(elements = elements)
 
-    public constructor(
-        vararg elements: E,
-        name: String,
-    ) : this(
-        elements = elements.asList(),
-        violationGenerator = { value ->
-            CollectionViolationProvider.Default.containsNone(
-                elements = elements.asList(),
-                value = value,
-                name = name,
-            )
-        },
+    return CollectionContainsNoneRule(
+        elements = elementsSet,
+        violationFactory = violationFactory,
     )
-
-    override fun ValidationContext.runValidation(value: C) {
-        validate(
-            elements.none { it in value },
-        ) {
-            violationGenerator(value)
-        }
-    }
 }
 
-public open class NamedCollectionContainsNoneRule<E, C : Collection<E>>(
-    public val elements: Collection<E>,
-    public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationProvider.Default.containsNone(
-            elements = elements,
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<C> {
-    public constructor(
-        vararg elements: E,
-        violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationProvider.Default.containsNone(
-                elements = elements.asList(),
-                value = value,
-                name = name,
-            )
-        },
-    ) : this(
-        elements = elements.asList(),
-        violationGenerator = violationGenerator,
-    )
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(vararg elements: E): CollectionContainsNoneRule<E, C> {
+    val elementsSet = setOf(elements = elements)
 
-    override fun ValidationContext.runValidation(value: NamedValue<C>) {
-        validate(
-            elements.none { it in value.value },
-        ) {
-            violationGenerator(value)
+    return CollectionContainsNoneRule(elements = elementsSet)
+}
+
+private fun disjoint(
+    c1: Collection<*>,
+    c2: Collection<*>,
+): Boolean {
+    if (c1.isEmpty() || c2.isEmpty()) return true
+
+    val iterate: Collection<*>
+    val contains: Collection<*>
+
+    when {
+        c1 is Set<*> -> {
+            iterate = c2
+            contains = c1
+        }
+
+        c2 is Set<*> -> {
+            iterate = c1
+            contains = c2
+        }
+
+        c1.size > c2.size -> {
+            iterate = c2
+            contains = c1
+        }
+
+        else -> {
+            iterate = c1
+            contains = c2
         }
     }
+
+    return iterate.none { it in contains }
 }

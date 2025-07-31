@@ -1,102 +1,34 @@
 package io.github.kverify.rule.set.string
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.string.StringContainsOnlyCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.StringViolationProvider
+import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
 public open class StringContainsOnlyRule(
     public val chars: Iterable<Char>,
-    public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.containsOnly(
+    public val violationFactory: ViolationFactory<String> =
+        StringViolationFactoryProvider.Default.containsOnly(
             chars = chars,
-            value = value,
-        )
-    },
-) : Rule<String> {
-    public constructor(
-        chars: Iterable<Char>,
-        name: String,
-    ) : this(
-        chars = chars,
-        violationGenerator = { value ->
-            StringViolationProvider.Default.containsOnly(
-                chars = chars,
-                value = value,
-                name = name,
-            )
-        },
+        ),
+) : Rule<String> by PredicateRule(
+        validationCheck = StringContainsOnlyCheck(chars),
+        violationFactory = violationFactory,
     )
 
-    public constructor(
-        string: String,
-        violationGenerator: ValueViolationGenerator<String> = { value ->
-            StringViolationProvider.Default.containsOnly(
-                chars = string.asIterable(),
-                value = value,
-            )
-        },
-    ) : this(
-        chars = string.asIterable(),
-        violationGenerator = violationGenerator,
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringContainsOnlyRule(
+    charsAsString: String,
+    violationFactory: ViolationFactory<String>,
+): StringContainsOnlyRule =
+    StringContainsOnlyRule(
+        chars = charsAsString.asIterable(),
+        violationFactory = violationFactory,
     )
 
-    public constructor(
-        string: String,
-        name: String,
-    ) : this(
-        chars = string.asIterable(),
-        violationGenerator = { value ->
-            StringViolationProvider.Default.containsOnly(
-                chars = string.asIterable(),
-                value = value,
-                name = name,
-            )
-        },
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringContainsOnlyRule(charsAsString: String): StringContainsOnlyRule =
+    StringContainsOnlyRule(
+        chars = charsAsString.asIterable(),
     )
-
-    override fun ValidationContext.runValidation(value: String) {
-        validate(
-            value.all { it in chars },
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
-
-public open class NamedStringContainsOnlyRule(
-    public val chars: Iterable<Char>,
-    public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.containsOnly(
-            chars = chars,
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<String> {
-    public constructor(
-        string: String,
-        violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-            StringViolationProvider.Default.containsOnly(
-                chars = string.asIterable(),
-                value = value,
-                name = name,
-            )
-        },
-    ) : this(
-        chars = string.asIterable(),
-        violationGenerator = violationGenerator,
-    )
-
-    override fun ValidationContext.runValidation(value: NamedValue<String>) {
-        validate(
-            value.value.all { it in chars },
-        ) {
-            violationGenerator(value)
-        }
-    }
-}

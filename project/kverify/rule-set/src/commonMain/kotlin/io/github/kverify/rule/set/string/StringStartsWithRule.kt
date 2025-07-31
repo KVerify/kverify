@@ -1,65 +1,42 @@
 package io.github.kverify.rule.set.string
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.string.StringStartsWithCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.StringViolationProvider
+import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
 public open class StringStartsWithRule(
     public val prefix: String,
     public val ignoreCase: Boolean = false,
-    public val violationGenerator: ValueViolationGenerator<String> = { value ->
-        StringViolationProvider.Default.startsWith(
+    public val violationFactory: ViolationFactory<String> =
+        StringViolationFactoryProvider.Default.startsWith(
             prefix = prefix,
-            value = value,
-        )
-    },
-) : Rule<String> {
-    public constructor(
-        prefix: String,
-        name: String,
-        ignoreCase: Boolean = false,
-    ) : this(
-        prefix = prefix,
-        ignoreCase = ignoreCase,
-        violationGenerator = { value ->
-            StringViolationProvider.Default.startsWith(
-                prefix = prefix,
-                value = value,
-                name = name,
-            )
-        },
+            ignoreCase = ignoreCase,
+        ),
+) : Rule<String> by PredicateRule(
+        validationCheck = StringStartsWithCheck(prefix, ignoreCase),
+        violationFactory = violationFactory,
     )
 
-    override fun ValidationContext.runValidation(value: String) {
-        validate(
-            value.startsWith(prefix, ignoreCase),
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringStartsWithRule(
+    prefixChar: Char,
+    ignoreCase: Boolean = false,
+    violationFactory: ViolationFactory<String>,
+): StringStartsWithRule =
+    StringStartsWithRule(
+        prefix = prefixChar.toString(),
+        ignoreCase = ignoreCase,
+        violationFactory = violationFactory,
+    )
 
-public open class NamedStringStartsWithRule(
-    public val prefix: String,
-    public val ignoreCase: Boolean = false,
-    public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
-        StringViolationProvider.Default.startsWith(
-            prefix = prefix,
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<String> {
-    override fun ValidationContext.runValidation(value: NamedValue<String>) {
-        validate(
-            value.value.startsWith(prefix, ignoreCase),
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringStartsWithRule(
+    prefixChar: Char,
+    ignoreCase: Boolean = false,
+): StringStartsWithRule =
+    StringStartsWithRule(
+        prefix = prefixChar.toString(),
+        ignoreCase = ignoreCase,
+    )

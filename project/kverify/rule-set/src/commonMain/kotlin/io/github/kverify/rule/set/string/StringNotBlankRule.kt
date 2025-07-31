@@ -1,16 +1,15 @@
 package io.github.kverify.rule.set.string
 
-import io.github.kverify.check.set.string.StringOfLengthCheck
+import io.github.kverify.check.set.string.StringNotBlankCheck
 import io.github.kverify.core.check.ViolationFactory
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringOfLengthRule(
-    public val length: Int,
+public open class StringNotBlankRule(
     public val violationFactory: ViolationFactory<String> =
-        StringViolationFactoryProvider.Default.ofLength(length),
+        StringViolationFactoryProvider.Default.notBlank(),
 ) : Rule<String> by PredicateRule(
-        validationCheck = StringOfLengthCheck(length),
+        validationCheck = StringNotBlankCheck,
         violationFactory = violationFactory,
     )

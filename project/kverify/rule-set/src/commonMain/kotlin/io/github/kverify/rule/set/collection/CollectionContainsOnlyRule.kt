@@ -1,102 +1,38 @@
 package io.github.kverify.rule.set.collection
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.collection.CollectionContainsOnlyCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.CollectionViolationProvider
+import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
 
-public open class CollectionContainsOnlyRule<E, C : Collection<E>>(
+public class CollectionContainsOnlyRule<E, C : Collection<E>>(
     public val elements: Collection<E>,
-    public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationProvider.Default.containsOnly(
+    public val violationFactory: ViolationFactory<C> =
+        CollectionViolationFactoryProvider.Default.containsOnly(
             elements = elements,
-            value = value,
-        )
-    },
-) : Rule<C> {
-    public constructor(
-        elements: Collection<E>,
-        name: String,
-    ) : this(
-        elements = elements,
-        violationGenerator = { value ->
-            CollectionViolationProvider.Default.containsOnly(
-                elements = elements,
-                value = value,
-                name = name,
-            )
-        },
+        ),
+) : Rule<C> by PredicateRule(
+        validationCheck = CollectionContainsOnlyCheck(elements),
+        violationFactory = violationFactory,
     )
 
-    public constructor(
-        vararg elements: E,
-        violationGenerator: ValueViolationGenerator<C> = { value ->
-            CollectionViolationProvider.Default.containsOnly(
-                elements = elements.asList(),
-                value = value,
-            )
-        },
-    ) : this(
-        elements = elements.asList(),
-        violationGenerator = violationGenerator,
-    )
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsOnlyRule(
+    vararg elements: E,
+    violationFactory: ViolationFactory<C>,
+): CollectionContainsOnlyRule<E, C> {
+    val elementsSet = setOf(elements = elements)
 
-    public constructor(
-        vararg elements: E,
-        name: String,
-    ) : this(
-        elements = elements.asList(),
-        violationGenerator = { value ->
-            CollectionViolationProvider.Default.containsOnly(
-                elements = elements.asList(),
-                value = value,
-                name = name,
-            )
-        },
+    return CollectionContainsOnlyRule(
+        elements = elementsSet,
+        violationFactory = violationFactory,
     )
-
-    override fun ValidationContext.runValidation(value: C) {
-        validate(
-            value.all { element -> element in elements },
-        ) {
-            violationGenerator(value)
-        }
-    }
 }
 
-public open class NamedCollectionContainsOnlyRule<E, C : Collection<E>>(
-    public val elements: Collection<E>,
-    public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationProvider.Default.containsOnly(
-            elements = elements,
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<C> {
-    public constructor(
-        vararg elements: E,
-        violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-            CollectionViolationProvider.Default.containsOnly(
-                elements = elements.asList(),
-                value = value,
-                name = name,
-            )
-        },
-    ) : this(
-        elements = elements.asList(),
-        violationGenerator = violationGenerator,
-    )
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsOnlyRule(vararg elements: E): CollectionContainsOnlyRule<E, C> {
+    val elementsSet = setOf(elements = elements)
 
-    override fun ValidationContext.runValidation(value: NamedValue<C>) {
-        validate(
-            value.value.all { element -> element in elements },
-        ) {
-            violationGenerator(value)
-        }
-    }
+    return CollectionContainsOnlyRule(elements = elementsSet)
 }

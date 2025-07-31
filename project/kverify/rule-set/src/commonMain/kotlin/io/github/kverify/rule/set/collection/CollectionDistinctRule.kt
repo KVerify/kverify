@@ -1,54 +1,15 @@
 package io.github.kverify.rule.set.collection
 
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.check.set.collection.CollectionDistinctCheck
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.named.model.NamedValue
-import io.github.kverify.named.rule.NamedRule
-import io.github.kverify.rule.set.NamedValueViolationGenerator
-import io.github.kverify.rule.set.ValueViolationGenerator
-import io.github.kverify.violation.set.provider.CollectionViolationProvider
+import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
 
-public open class CollectionDistinctRule<C : Collection<*>>(
-    public val violationGenerator: ValueViolationGenerator<C> = { value ->
-        CollectionViolationProvider.Default.distinct(
-            value = value,
-        )
-    },
-) : Rule<C> {
-    public constructor(
-        name: String,
-    ) : this(
-        violationGenerator = { value ->
-            CollectionViolationProvider.Default.distinct(
-                value = value,
-                name = name,
-            )
-        },
+public class CollectionDistinctRule<C : Collection<*>>(
+    public val violationFactory: ViolationFactory<C> =
+        CollectionViolationFactoryProvider.Default.distinct(),
+) : Rule<C> by PredicateRule(
+        validationCheck = CollectionDistinctCheck,
+        violationFactory = violationFactory,
     )
-
-    override fun ValidationContext.runValidation(value: C) {
-        validate(
-            value.size == value.toSet().size,
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
-
-public open class NamedCollectionDistinctRule<C : Collection<*>>(
-    public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
-        CollectionViolationProvider.Default.distinct(
-            value = value,
-            name = name,
-        )
-    },
-) : NamedRule<C> {
-    override fun ValidationContext.runValidation(value: NamedValue<C>) {
-        validate(
-            value.value.size == value.value.toSet().size,
-        ) {
-            violationGenerator(value)
-        }
-    }
-}
