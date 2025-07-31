@@ -24,7 +24,7 @@ public open class CollectionNotOfSizeRule<C : Collection<*>>(
     ) : this(
         size = size,
         violationGenerator = { value ->
-            CollectionViolationProvider.Default.minSize(
+            CollectionViolationProvider.Default.notOfSize(
                 size = size,
                 value = value,
                 name = name,

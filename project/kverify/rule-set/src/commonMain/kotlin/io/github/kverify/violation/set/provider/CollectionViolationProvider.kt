@@ -72,15 +72,13 @@ public interface CollectionViolationProvider {
 
     public fun <C : Collection<*>> sizeBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String? = null,
     ): Violation
 
     public fun <C : Collection<*>> sizeNotBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String? = null,
     ): Violation
 
@@ -224,29 +222,25 @@ public class CollectionViolations(
 
     override fun <C : Collection<*>> sizeBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String?,
     ): Violation =
         collectionViolationLocalizationProvider
             .sizeBetween(
                 value = value,
-                minSize = minSize,
-                maxSize = maxSize,
+                range = range,
                 name = name,
             ).asViolationReason()
 
     override fun <C : Collection<*>> sizeNotBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String?,
     ): Violation =
         collectionViolationLocalizationProvider
             .sizeNotBetween(
                 value = value,
-                minSize = minSize,
-                maxSize = maxSize,
+                range = range,
                 name = name,
             ).asViolationReason()
 }

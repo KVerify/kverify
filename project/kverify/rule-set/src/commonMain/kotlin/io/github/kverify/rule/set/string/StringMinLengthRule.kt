@@ -13,7 +13,7 @@ public open class StringMinLengthRule(
     public val min: Int,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
         StringViolationProvider.Default.minLength(
-            min = min,
+            minLength = min,
             value = value,
         )
     },
@@ -25,7 +25,7 @@ public open class StringMinLengthRule(
         min = min,
         violationGenerator = { value ->
             StringViolationProvider.Default.minLength(
-                min = min,
+                minLength = min,
                 value = value,
                 name = name,
             )
@@ -45,7 +45,7 @@ public open class NamedStringMinLengthRule(
     public val min: Int,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
         StringViolationProvider.Default.minLength(
-            min = min,
+            minLength = min,
             value = value,
             name = name,
         )

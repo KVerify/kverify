@@ -14,7 +14,7 @@ public open class StringContainsRule(
     public val ignoreCase: Boolean = false,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
         StringViolationProvider.Default.contains(
-            string = string,
+            substring = string,
             value = value,
         )
     },
@@ -28,7 +28,7 @@ public open class StringContainsRule(
         ignoreCase = ignoreCase,
         violationGenerator = { value ->
             StringViolationProvider.Default.contains(
-                string = string,
+                substring = string,
                 value = value,
                 name = name,
             )
@@ -49,7 +49,7 @@ public open class NamedStringContainsRule(
     public val ignoreCase: Boolean = false,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
         StringViolationProvider.Default.contains(
-            string = string,
+            substring = string,
             value = value,
             name = name,
         )

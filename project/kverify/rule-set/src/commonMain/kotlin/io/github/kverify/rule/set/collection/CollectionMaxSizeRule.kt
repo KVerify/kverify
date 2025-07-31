@@ -10,22 +10,22 @@ import io.github.kverify.rule.set.ValueViolationGenerator
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public open class CollectionMaxSizeRule<C : Collection<*>>(
-    public val size: Int,
+    public val maxSize: Int,
     public val violationGenerator: ValueViolationGenerator<C> = { value ->
         CollectionViolationProvider.Default.maxSize(
-            size = size,
+            maxSize = maxSize,
             value = value,
         )
     },
 ) : Rule<C> {
     public constructor(
-        size: Int,
+        maxSize: Int,
         name: String,
     ) : this(
-        size = size,
+        maxSize = maxSize,
         violationGenerator = { value ->
-            CollectionViolationProvider.Default.minSize(
-                size = size,
+            CollectionViolationProvider.Default.maxSize(
+                maxSize = maxSize,
                 value = value,
                 name = name,
             )
@@ -34,7 +34,7 @@ public open class CollectionMaxSizeRule<C : Collection<*>>(
 
     override fun ValidationContext.runValidation(value: C) {
         validate(
-            value.size <= size,
+            value.size <= maxSize,
         ) {
             violationGenerator(value)
         }
@@ -42,10 +42,10 @@ public open class CollectionMaxSizeRule<C : Collection<*>>(
 }
 
 public open class NamedCollectionMaxSizeRule<C : Collection<*>>(
-    public val size: Int,
+    public val maxSize: Int,
     public val violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
         CollectionViolationProvider.Default.maxSize(
-            size = size,
+            maxSize = maxSize,
             value = value,
             name = name,
         )
@@ -53,7 +53,7 @@ public open class NamedCollectionMaxSizeRule<C : Collection<*>>(
 ) : NamedRule<C> {
     override fun ValidationContext.runValidation(value: NamedValue<C>) {
         validate(
-            value.value.size <= size,
+            value.value.size <= maxSize,
         ) {
             violationGenerator(value)
         }

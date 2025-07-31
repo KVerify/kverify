@@ -71,15 +71,13 @@ public interface CollectionViolationLocalizationProvider {
 
     public fun <C : Collection<*>> sizeBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String? = null,
     ): String
 
     public fun <C : Collection<*>> sizeNotBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String? = null,
     ): String
 
@@ -214,23 +212,21 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
 
     override fun <C : Collection<*>> sizeBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String?,
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName size must be between $minSize and $maxSize (inclusive), but it is ${value.size}."
+        return "$displayName size must be between ${range.start} and ${range.endInclusive} (inclusive), but it is ${value.size}."
     }
 
     override fun <C : Collection<*>> sizeNotBetween(
         value: C,
-        minSize: Int,
-        maxSize: Int,
+        range: IntRange,
         name: String?,
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName size must NOT be between $minSize and $maxSize (inclusive), but it is ${value.size}."
+        return "$displayName size must NOT be between ${range.start} and ${range.endInclusive} (inclusive), but it is ${value.size}."
     }
 }

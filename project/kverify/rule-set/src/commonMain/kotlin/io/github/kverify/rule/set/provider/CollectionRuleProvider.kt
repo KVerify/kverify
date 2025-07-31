@@ -354,12 +354,12 @@ public interface CollectionRuleProvider {
         violationGenerator: ValueViolationGenerator<C> = { value ->
             CollectionViolationProvider.Default.maxSize(
                 value = value,
-                size = size,
+                maxSize = size,
             )
         },
     ): CollectionMaxSizeRule<C> =
         CollectionMaxSizeRule(
-            size = size,
+            maxSize = size,
             violationGenerator = violationGenerator,
         )
 
@@ -368,7 +368,7 @@ public interface CollectionRuleProvider {
         name: String,
     ): CollectionMaxSizeRule<C> =
         CollectionMaxSizeRule(
-            size = size,
+            maxSize = size,
             name = name,
         )
     // endregion
@@ -379,13 +379,13 @@ public interface CollectionRuleProvider {
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
             CollectionViolationProvider.Default.maxSize(
                 value = value,
-                size = size,
+                maxSize = size,
                 name = name,
             )
         },
     ): NamedCollectionMaxSizeRule<C> =
         NamedCollectionMaxSizeRule(
-            size = size,
+            maxSize = size,
             violationGenerator = violationGenerator,
         )
     // endregion
@@ -396,12 +396,12 @@ public interface CollectionRuleProvider {
         violationGenerator: ValueViolationGenerator<C> = { value ->
             CollectionViolationProvider.Default.minSize(
                 value = value,
-                size = size,
+                minSize = size,
             )
         },
     ): CollectionMinSizeRule<C> =
         CollectionMinSizeRule(
-            size = size,
+            minSize = size,
             violationGenerator = violationGenerator,
         )
 
@@ -410,7 +410,7 @@ public interface CollectionRuleProvider {
         name: String,
     ): CollectionMinSizeRule<C> =
         CollectionMinSizeRule(
-            size = size,
+            minSize = size,
             name = name,
         )
     // endregion
@@ -421,13 +421,13 @@ public interface CollectionRuleProvider {
         violationGenerator: NamedValueViolationGenerator<C> = { (name, value) ->
             CollectionViolationProvider.Default.minSize(
                 value = value,
-                size = size,
+                minSize = size,
                 name = name,
             )
         },
     ): NamedCollectionMinSizeRule<C> =
         NamedCollectionMinSizeRule(
-            size = size,
+            minSize = size,
             violationGenerator = violationGenerator,
         )
     // endregion

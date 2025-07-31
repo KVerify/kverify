@@ -5,8 +5,7 @@ import io.github.kverify.violation.set.resolveComparableName
 public interface ComparableViolationLocalizationProvider {
     public fun <T : Comparable<T>> between(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String? = null,
     ): String
 
@@ -42,8 +41,7 @@ public interface ComparableViolationLocalizationProvider {
 
     public fun <T : Comparable<T>> notBetween(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String? = null,
     ): String
 
@@ -61,13 +59,12 @@ public interface ComparableViolationLocalizationProvider {
 internal object DefaultComparableViolationLocalizationProvider : ComparableViolationLocalizationProvider {
     override fun <T : Comparable<T>> between(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String?,
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be between '$min' and '$max', but it is '$value'."
+        return "$displayName must be between '${range.start}' and '${range.endInclusive}', but it is '$value'."
     }
 
     override fun <T : Comparable<T>> equalTo(
@@ -122,13 +119,12 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
 
     override fun <T : Comparable<T>> notBetween(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String?,
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must not be between '$min' and '$max', but it is '$value'."
+        return "$displayName must not be between '${range.start}' and '${range.endInclusive}', but it is '$value'."
     }
 
     override fun <T : Comparable<T>> notEqualTo(

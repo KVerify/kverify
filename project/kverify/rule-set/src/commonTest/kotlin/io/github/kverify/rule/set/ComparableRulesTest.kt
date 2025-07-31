@@ -34,7 +34,7 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .equalTo(
                             value,
                             incorrectValue,
@@ -43,7 +43,7 @@ class ComparableRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .equalTo(
                             value,
                             namedIncorrectValue.value,
@@ -69,7 +69,7 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notEqualTo(
                             value,
                             incorrectValue,
@@ -78,7 +78,7 @@ class ComparableRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notEqualTo(
                             value,
                             namedIncorrectValue.value,
@@ -104,7 +104,7 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .greaterThan(
                             value,
                             incorrectValue,
@@ -113,7 +113,7 @@ class ComparableRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .greaterThan(
                             value,
                             namedIncorrectValue.value,
@@ -143,7 +143,7 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .greaterThanOrEqualTo(
                             value,
                             incorrectValue,
@@ -152,7 +152,7 @@ class ComparableRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .greaterThanOrEqualTo(
                             value,
                             namedIncorrectValue.value,
@@ -178,7 +178,7 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .lessThan(
                             value,
                             incorrectValue,
@@ -187,7 +187,7 @@ class ComparableRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .lessThan(
                             value,
                             namedIncorrectValue.value,
@@ -217,7 +217,7 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .lessThanOrEqualTo(
                             value,
                             incorrectValue,
@@ -226,7 +226,7 @@ class ComparableRulesTest :
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValue)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .lessThanOrEqualTo(
                             value,
                             namedIncorrectValue.value,
@@ -266,38 +266,38 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueLow)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .between(
-                            range,
                             incorrectValueLow,
+                            range,
                         ).reason
 
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueHigh)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .between(
-                            range,
                             incorrectValueHigh,
+                            range,
                         ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueLow)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .between(
-                            range,
                             namedIncorrectValueLow.value,
+                            range,
                             namedIncorrectValueLow.name,
                         ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueHigh)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .between(
-                            range,
                             namedIncorrectValueHigh.value,
+                            range,
                             namedIncorrectValueHigh.name,
                         ).reason
             }
@@ -332,57 +332,57 @@ class ComparableRulesTest :
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueMin)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notBetween(
-                            range,
                             incorrectValueMin,
+                            range,
                         ).reason
 
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueMiddle)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notBetween(
-                            range,
                             incorrectValueMiddle,
+                            range,
                         ).reason
 
                 shouldFail {
                     rule.runValidation(failContext, incorrectValueMax)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notBetween(
-                            range,
                             incorrectValueMax,
+                            range,
                         ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueMin)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notBetween(
-                            range,
                             namedIncorrectValueMin.value,
+                            range,
                             namedIncorrectValueMin.name,
                         ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueMiddle)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notBetween(
-                            range,
                             namedIncorrectValueMiddle.value,
+                            range,
                             namedIncorrectValueMiddle.name,
                         ).reason
 
                 shouldFail {
                     namedRule.runValidation(failContext, namedIncorrectValueMax)
                 }.message shouldBe
-                    ComparableViolationProvider
+                    ComparableViolationProvider.Default
                         .notBetween(
-                            range,
                             namedIncorrectValueMax.value,
+                            range,
                             namedIncorrectValueMax.name,
                         ).reason
             }

@@ -14,7 +14,7 @@ public open class StringNotContainsRule(
     public val ignoreCase: Boolean = false,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
         StringViolationProvider.Default.notContains(
-            subString = subString,
+            substring = subString,
             value = value,
         )
     },
@@ -28,7 +28,7 @@ public open class StringNotContainsRule(
         ignoreCase = ignoreCase,
         violationGenerator = { value ->
             StringViolationProvider.Default.notContains(
-                subString = subString,
+                substring = subString,
                 value = value,
                 name = name,
             )
@@ -49,7 +49,7 @@ public open class NamedStringNotContainsRule(
     public val ignoreCase: Boolean = false,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
         StringViolationProvider.Default.notContains(
-            subString = subString,
+            substring = subString,
             value = value,
             name = name,
         )

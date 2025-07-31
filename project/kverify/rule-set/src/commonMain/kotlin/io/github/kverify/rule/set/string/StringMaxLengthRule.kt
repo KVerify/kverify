@@ -10,10 +10,10 @@ import io.github.kverify.rule.set.ValueViolationGenerator
 import io.github.kverify.violation.set.provider.StringViolationProvider
 
 public open class StringMaxLengthRule(
-    public val max: Int,
+    public val maxLength: Int,
     public val violationGenerator: ValueViolationGenerator<String> = { value ->
         StringViolationProvider.Default.maxLength(
-            max = max,
+            maxLength = maxLength,
             value = value,
         )
     },
@@ -22,10 +22,10 @@ public open class StringMaxLengthRule(
         max: Int,
         name: String,
     ) : this(
-        max = max,
+        maxLength = max,
         violationGenerator = { value ->
             StringViolationProvider.Default.maxLength(
-                max = max,
+                maxLength = max,
                 value = value,
                 name = name,
             )
@@ -34,7 +34,7 @@ public open class StringMaxLengthRule(
 
     override fun ValidationContext.runValidation(value: String) {
         validate(
-            value.length <= max,
+            value.length <= maxLength,
         ) {
             violationGenerator(value)
         }
@@ -45,7 +45,7 @@ public open class NamedStringMaxLengthRule(
     public val max: Int,
     public val violationGenerator: NamedValueViolationGenerator<String> = { (name, value) ->
         StringViolationProvider.Default.maxLength(
-            max = max,
+            maxLength = max,
             value = value,
             name = name,
         )

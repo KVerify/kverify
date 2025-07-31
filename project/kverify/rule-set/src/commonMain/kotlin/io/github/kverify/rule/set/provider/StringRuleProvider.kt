@@ -369,7 +369,7 @@ public interface StringRuleProvider {
         violationGenerator: StringViolationGenerator = { value ->
             StringViolationProvider.Default.contains(
                 value = value,
-                string = string,
+                substring = string,
             )
         },
     ): StringContainsRule =
@@ -398,7 +398,7 @@ public interface StringRuleProvider {
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
             StringViolationProvider.Default.contains(
                 value = value,
-                string = string,
+                substring = string,
                 name = name,
             )
         },
@@ -920,12 +920,12 @@ public interface StringRuleProvider {
         violationGenerator: StringViolationGenerator = { value ->
             StringViolationProvider.Default.maxLength(
                 value = value,
-                max = max,
+                maxLength = max,
             )
         },
     ): StringMaxLengthRule =
         StringMaxLengthRule(
-            max = max,
+            maxLength = max,
             violationGenerator = violationGenerator,
         )
 
@@ -945,7 +945,7 @@ public interface StringRuleProvider {
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
             StringViolationProvider.Default.maxLength(
                 value = value,
-                max = max,
+                maxLength = max,
                 name = name,
             )
         },
@@ -962,7 +962,7 @@ public interface StringRuleProvider {
         violationGenerator: StringViolationGenerator = { value ->
             StringViolationProvider.Default.minLength(
                 value = value,
-                min = min,
+                minLength = min,
             )
         },
     ): StringMinLengthRule =
@@ -987,7 +987,7 @@ public interface StringRuleProvider {
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
             StringViolationProvider.Default.minLength(
                 value = value,
-                min = min,
+                minLength = min,
                 name = name,
             )
         },
@@ -1085,7 +1085,7 @@ public interface StringRuleProvider {
         violationGenerator: StringViolationGenerator = { value ->
             StringViolationProvider.Default.notContains(
                 value = value,
-                subString = subString,
+                substring = subString,
             )
         },
     ): StringNotContainsRule =
@@ -1114,7 +1114,7 @@ public interface StringRuleProvider {
         violationGenerator: NamedStringViolationGenerator = { (name, value) ->
             StringViolationProvider.Default.notContains(
                 value = value,
-                subString = subString,
+                substring = subString,
                 name = name,
             )
         },

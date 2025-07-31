@@ -7,8 +7,7 @@ import io.github.kverify.violation.set.localization.ComparableViolationLocalizat
 public interface ComparableViolationProvider {
     public fun <T : Comparable<T>> between(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String? = null,
     ): Violation
 
@@ -44,8 +43,7 @@ public interface ComparableViolationProvider {
 
     public fun <T : Comparable<T>> notBetween(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String? = null,
     ): Violation
 
@@ -66,15 +64,13 @@ public class ComparableViolations(
 ) : ComparableViolationProvider {
     override fun <T : Comparable<T>> between(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String?,
     ): Violation =
         comparableViolationLocalizationProvider
             .between(
                 value = value,
-                min = min,
-                max = max,
+                range = range,
                 name = name,
             ).asViolationReason()
 
@@ -140,15 +136,13 @@ public class ComparableViolations(
 
     override fun <T : Comparable<T>> notBetween(
         value: T,
-        min: T,
-        max: T,
+        range: ClosedRange<T>,
         name: String?,
     ): Violation =
         comparableViolationLocalizationProvider
             .notBetween(
                 value = value,
-                min = min,
-                max = max,
+                range = range,
                 name = name,
             ).asViolationReason()
 
