@@ -56,13 +56,13 @@ public interface StringViolationProvider {
 
     public fun lengthBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String? = null,
     ): Violation
 
     public fun lengthNotBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String? = null,
     ): Violation
 
@@ -255,25 +255,25 @@ public class StringViolations(
 
     override fun lengthBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String?,
     ): Violation =
         stringViolationLocalizationProvider
             .lengthBetween(
                 value = value,
-                range = range,
+                lengthRange = lengthRange,
                 name = name,
             ).asViolationReason()
 
     override fun lengthNotBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String?,
     ): Violation =
         stringViolationLocalizationProvider
             .lengthNotBetween(
                 value = value,
-                range = range,
+                lengthRange = lengthRange,
                 name = name,
             ).asViolationReason()
 

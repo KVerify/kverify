@@ -56,13 +56,13 @@ public interface StringViolationLocalizationProvider {
 
     public fun lengthBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String? = null,
     ): String
 
     public fun lengthNotBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String? = null,
     ): String
 
@@ -243,22 +243,22 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
 
     override fun lengthBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must have a length between ${range.start} and ${range.endInclusive} (inclusive), but its length is ${value.length}."
+        return "$displayName must have a length between ${lengthRange.start} and ${lengthRange.endInclusive} (inclusive), but its length is ${value.length}."
     }
 
     override fun lengthNotBetween(
         value: String,
-        range: IntRange,
+        lengthRange: IntRange,
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must NOT have a length between ${range.start} and ${range.endInclusive} (inclusive), but its length is ${value.length}."
+        return "$displayName must NOT have a length between ${lengthRange.start} and ${lengthRange.endInclusive} (inclusive), but its length is ${value.length}."
     }
 
     override fun lowerCase(

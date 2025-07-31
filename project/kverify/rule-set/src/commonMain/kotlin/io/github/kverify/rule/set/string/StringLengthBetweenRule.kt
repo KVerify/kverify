@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
 public open class StringLengthBetweenRule(
-    public val range: IntRange,
+    public val lengthRange: IntRange,
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.lengthBetween(
-            range = range,
+            lengthRange = lengthRange,
         ),
 ) : Rule<String> by PredicateRule(
-        validationCheck = StringLengthBetweenCheck(range),
+        validationCheck = StringLengthBetweenCheck(lengthRange),
         violationFactory = violationFactory,
     )

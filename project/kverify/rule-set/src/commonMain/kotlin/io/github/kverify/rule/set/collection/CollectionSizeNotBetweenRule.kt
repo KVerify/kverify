@@ -7,12 +7,12 @@ import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
 
 public class CollectionSizeNotBetweenRule<C : Collection<*>>(
-    public val range: IntRange,
+    public val sizeRange: IntRange,
     public val violationFactory: ViolationFactory<C> =
         CollectionViolationFactoryProvider.Default.sizeNotBetween(
-            range = range,
+            sizeRange = sizeRange,
         ),
 ) : Rule<C> by PredicateRule(
-        validationCheck = CollectionSizeNotBetweenCheck(range),
+        validationCheck = CollectionSizeNotBetweenCheck(sizeRange),
         violationFactory = violationFactory,
     )

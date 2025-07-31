@@ -29,9 +29,9 @@ public interface CollectionViolationFactoryProvider {
 
     public fun <C : Collection<*>> ofSize(size: Int): ViolationFactory<C>
 
-    public fun <C : Collection<*>> sizeBetween(range: IntRange): ViolationFactory<C>
+    public fun <C : Collection<*>> sizeBetween(sizeRange: IntRange): ViolationFactory<C>
 
-    public fun <C : Collection<*>> sizeNotBetween(range: IntRange): ViolationFactory<C>
+    public fun <C : Collection<*>> sizeNotBetween(sizeRange: IntRange): ViolationFactory<C>
 
     public companion object {
         public val Default: CollectionViolationFactoryProvider = CollectionViolationFactories()
@@ -134,19 +134,19 @@ public class CollectionViolationFactories(
             )
         }
 
-    override fun <C : Collection<*>> sizeBetween(range: IntRange): ViolationFactory<C> =
+    override fun <C : Collection<*>> sizeBetween(sizeRange: IntRange): ViolationFactory<C> =
         ViolationFactory { value ->
             collectionViolationProvider.sizeBetween(
                 value = value,
-                range = range,
+                sizeRange = sizeRange,
             )
         }
 
-    override fun <C : Collection<*>> sizeNotBetween(range: IntRange): ViolationFactory<C> =
+    override fun <C : Collection<*>> sizeNotBetween(sizeRange: IntRange): ViolationFactory<C> =
         ViolationFactory { value ->
             collectionViolationProvider.sizeNotBetween(
                 value = value,
-                range = range,
+                sizeRange = sizeRange,
             )
         }
 }

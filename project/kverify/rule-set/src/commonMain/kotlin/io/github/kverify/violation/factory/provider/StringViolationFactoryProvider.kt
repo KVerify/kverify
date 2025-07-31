@@ -29,9 +29,9 @@ public interface StringViolationFactoryProvider {
         ignoreCase: Boolean = false,
     ): ViolationFactory<String>
 
-    public fun lengthBetween(range: IntRange): ViolationFactory<String>
+    public fun lengthBetween(lengthRange: IntRange): ViolationFactory<String>
 
-    public fun lengthNotBetween(range: IntRange): ViolationFactory<String>
+    public fun lengthNotBetween(lengthRange: IntRange): ViolationFactory<String>
 
     public fun lowerCase(): ViolationFactory<String>
 
@@ -152,19 +152,19 @@ public class StringViolationFactories(
             )
         }
 
-    override fun lengthBetween(range: IntRange): ViolationFactory<String> =
+    override fun lengthBetween(lengthRange: IntRange): ViolationFactory<String> =
         ViolationFactory { value ->
             stringViolationProvider.lengthBetween(
                 value = value,
-                range = range,
+                lengthRange = lengthRange,
             )
         }
 
-    override fun lengthNotBetween(range: IntRange): ViolationFactory<String> =
+    override fun lengthNotBetween(lengthRange: IntRange): ViolationFactory<String> =
         ViolationFactory { value ->
             stringViolationProvider.lengthNotBetween(
                 value = value,
-                range = range,
+                lengthRange = lengthRange,
             )
         }
 
