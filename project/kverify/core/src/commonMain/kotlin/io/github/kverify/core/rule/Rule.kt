@@ -5,7 +5,7 @@ import io.github.kverify.core.context.ValidationContext
 /**
  * Represents a validation rule for a value of type [T].
  */
-public fun interface Rule<T> {
+public fun interface Rule<in T> {
     /**
      * Runs validation for the given [value] within this [ValidationContext].
      */

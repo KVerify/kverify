@@ -4,7 +4,7 @@ import io.github.kverify.core.context.ValidationContext
 import kotlin.jvm.JvmInline
 
 @JvmInline
-public value class StackedRule<T>(
+public value class StackedRule<in T>(
     public val rules: List<Rule<T>>,
 ) : Rule<T> {
     override fun ValidationContext.runValidation(value: T) {
