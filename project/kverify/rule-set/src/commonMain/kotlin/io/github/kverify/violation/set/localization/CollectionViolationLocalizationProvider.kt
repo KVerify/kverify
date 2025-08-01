@@ -1,8 +1,5 @@
 package io.github.kverify.violation.set.localization
 
-import io.github.kverify.violation.set.joinWithLimitAndBrackets
-import io.github.kverify.violation.set.resolveCollectionName
-
 @Suppress("TooManyFunctions")
 public interface CollectionViolationLocalizationProvider {
     public fun <E, C : Collection<E>> containsAll(

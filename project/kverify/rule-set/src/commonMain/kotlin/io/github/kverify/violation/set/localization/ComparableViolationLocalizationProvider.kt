@@ -1,7 +1,5 @@
 package io.github.kverify.violation.set.localization
 
-import io.github.kverify.violation.set.resolveComparableName
-
 public interface ComparableViolationLocalizationProvider {
     public fun <T : Comparable<T>> between(
         value: T,

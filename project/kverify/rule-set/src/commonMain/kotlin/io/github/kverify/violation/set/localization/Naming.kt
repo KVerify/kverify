@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package io.github.kverify.violation.set
+package io.github.kverify.violation.set.localization
 
 private inline fun resolveName(
     name: String?,

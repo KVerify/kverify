@@ -1,9 +1,5 @@
 package io.github.kverify.violation.set.localization
 
-import io.github.kverify.violation.set.joinWithLimitAndBrackets
-import io.github.kverify.violation.set.resolveComparableName
-import io.github.kverify.violation.set.resolveStringName
-
 @Suppress("TooManyFunctions")
 public interface StringViolationLocalizationProvider {
     public fun alphabetic(
