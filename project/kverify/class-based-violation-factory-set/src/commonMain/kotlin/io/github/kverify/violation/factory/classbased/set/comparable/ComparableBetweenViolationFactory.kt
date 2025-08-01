@@ -1,0 +1,52 @@
+package io.github.kverify.violation.factory.classbased.set.comparable
+
+import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.violation.Violation
+import io.github.kverify.violation.set.provider.ComparableViolationProvider
+
+public class ComparableBetweenViolationFactory<T : Comparable<T>>(
+    public val range: ClosedRange<T>,
+    public val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
+) : ViolationFactory<T> {
+    override fun createViolation(value: T): Violation =
+        comparableViolationProvider.between(
+            value = value,
+            range = range,
+        )
+}
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(
+    range: OpenEndRange<T>,
+    comparableViolationProvider: ComparableViolationProvider,
+): ComparableBetweenViolationFactory<T> =
+    ComparableBetweenViolationFactory(
+        range = range.start..range.endExclusive,
+        comparableViolationProvider = comparableViolationProvider,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(range: OpenEndRange<T>): ComparableBetweenViolationFactory<T> =
+    ComparableBetweenViolationFactory(
+        range = range.start..range.endExclusive,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(
+    min: T,
+    max: T,
+    comparableViolationProvider: ComparableViolationProvider,
+): ComparableBetweenViolationFactory<T> =
+    ComparableBetweenViolationFactory(
+        range = min..max,
+        comparableViolationProvider = comparableViolationProvider,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(
+    min: T,
+    max: T,
+): ComparableBetweenViolationFactory<T> =
+    ComparableBetweenViolationFactory(
+        range = min..max,
+    )
