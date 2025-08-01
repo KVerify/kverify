@@ -9,3 +9,9 @@ public value class CollectionContainsOnlyCheck<E, C : Collection<E>>(
 ) : ValidationCheck<C> {
     override fun isValid(value: C): Boolean = value.all { it in elements }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsOnlyCheck(vararg elements: E): CollectionContainsOnlyCheck<E, C> =
+    CollectionContainsOnlyCheck(
+        elements = elements.toSet(),
+    )

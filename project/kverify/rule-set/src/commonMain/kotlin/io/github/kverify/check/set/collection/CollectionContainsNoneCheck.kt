@@ -10,3 +10,9 @@ public value class CollectionContainsNoneCheck<E, C : Collection<E>>(
 ) : ValidationCheck<C> {
     override fun isValid(value: C): Boolean = disjoint(value, elements)
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsNoneCheck(vararg elements: E): CollectionContainsNoneCheck<E, C> =
+    CollectionContainsNoneCheck(
+        elements = elements.toSet(),
+    )

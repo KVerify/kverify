@@ -9,3 +9,9 @@ public value class StringNotContainsRegexCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = !value.contains(regex)
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringNotContainsRegexCheck(stringRegex: String): StringNotContainsRegexCheck =
+    StringNotContainsRegexCheck(
+        regex = stringRegex.toRegex(),
+    )

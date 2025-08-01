@@ -9,3 +9,15 @@ public value class StringContainsNoneCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = chars.none { it in value }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringContainsNoneCheck(vararg chars: Char): StringContainsNoneCheck =
+    StringContainsNoneCheck(
+        chars = chars.asList(),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringContainsNoneCheck(string: String): StringContainsNoneCheck =
+    StringContainsNoneCheck(
+        chars = string.asIterable(),
+    )

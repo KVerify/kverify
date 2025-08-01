@@ -9,3 +9,12 @@ public value class CollectionSizeBetweenCheck(
 ) : ValidationCheck<Collection<*>> {
     override fun isValid(value: Collection<*>): Boolean = value.size in sizeRange
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionSizeBetweenCheck(
+    minSize: Int,
+    maxSize: Int,
+): CollectionSizeBetweenCheck =
+    CollectionSizeBetweenCheck(
+        sizeRange = minSize..maxSize,
+    )
