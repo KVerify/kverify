@@ -1,0 +1,18 @@
+package io.github.kverify.named.violation.factory.classbased.set.string
+
+import io.github.kverify.core.violation.Violation
+import io.github.kverify.named.check.NamedViolationFactory
+import io.github.kverify.named.model.NamedValue
+import io.github.kverify.violation.set.provider.StringViolationProvider
+
+public class NamedStringOfLengthViolationFactory(
+    public val length: Int,
+    public val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
+) : NamedViolationFactory<String> {
+    override fun createViolation(value: NamedValue<String>): Violation =
+        stringViolationProvider.ofLength(
+            value = value.value,
+            length = length,
+            name = value.name,
+        )
+}

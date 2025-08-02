@@ -1,0 +1,36 @@
+package io.github.kverify.named.violation.factory.classbased.set.collection
+
+import io.github.kverify.core.violation.Violation
+import io.github.kverify.named.check.NamedViolationFactory
+import io.github.kverify.named.model.NamedValue
+import io.github.kverify.violation.set.provider.CollectionViolationProvider
+
+public class NamedCollectionContainsAllViolationFactory<E, C : Collection<E>>(
+    public val elements: Collection<E>,
+    public val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
+) : NamedViolationFactory<C> {
+    override fun createViolation(value: NamedValue<C>): Violation =
+        collectionViolationProvider.containsAll(
+            value = value.value,
+            elements = elements,
+            name = value.name,
+        )
+}
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionContainsAllViolationFactory(
+    vararg elements: E,
+    collectionViolationProvider: CollectionViolationProvider,
+): NamedCollectionContainsAllViolationFactory<E, C> =
+    NamedCollectionContainsAllViolationFactory(
+        elements = elements.toSet(),
+        collectionViolationProvider = collectionViolationProvider,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionContainsAllViolationFactory(
+    vararg elements: E,
+): NamedCollectionContainsAllViolationFactory<E, C> =
+    NamedCollectionContainsAllViolationFactory(
+        elements = elements.toSet(),
+    )
