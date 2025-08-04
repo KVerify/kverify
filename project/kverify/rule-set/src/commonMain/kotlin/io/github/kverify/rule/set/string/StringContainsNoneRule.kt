@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringContainsNoneRule(
+public class StringContainsNoneRule(
     public val chars: Iterable<Char>,
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.containsNone(

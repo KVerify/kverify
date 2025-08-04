@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringNotBlankRule(
+public class StringNotBlankRule(
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.notBlank(),
 ) : Rule<String> by PredicateRule(

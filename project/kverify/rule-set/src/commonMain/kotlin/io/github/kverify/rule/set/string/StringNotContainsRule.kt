@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringNotContainsRule(
+public class StringNotContainsRule(
     public val substring: String,
     public val ignoreCase: Boolean = false,
     public val violationFactory: ViolationFactory<String> =

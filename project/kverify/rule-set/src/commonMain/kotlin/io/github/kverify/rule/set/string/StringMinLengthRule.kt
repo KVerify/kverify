@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringMinLengthRule(
+public class StringMinLengthRule(
     public val minLength: Int,
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.minLength(

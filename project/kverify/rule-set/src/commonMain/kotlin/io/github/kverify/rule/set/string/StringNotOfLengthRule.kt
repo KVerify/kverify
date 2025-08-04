@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringNotOfLengthRule(
+public class StringNotOfLengthRule(
     public val length: Int,
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.notOfLength(length),

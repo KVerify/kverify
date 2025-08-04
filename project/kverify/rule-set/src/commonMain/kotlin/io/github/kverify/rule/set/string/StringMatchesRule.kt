@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringMatchesRule(
+public class StringMatchesRule(
     public val regex: Regex,
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.matches(

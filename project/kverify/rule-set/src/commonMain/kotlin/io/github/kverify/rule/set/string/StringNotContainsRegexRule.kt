@@ -6,7 +6,7 @@ import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 
-public open class StringNotContainsRegexRule(
+public class StringNotContainsRegexRule(
     public val regex: Regex,
     public val violationFactory: ViolationFactory<String> =
         StringViolationFactoryProvider.Default.notContainsRegex(
