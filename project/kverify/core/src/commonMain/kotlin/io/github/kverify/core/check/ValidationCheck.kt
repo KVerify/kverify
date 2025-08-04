@@ -9,8 +9,9 @@ public fun interface ValidationCheck<in T> {
 @Suppress("NOTHING_TO_INLINE")
 public inline operator fun <T> ValidationCheck<T>.not(): ValidationCheck<T> = InvertedValidationCheck(this)
 
+@PublishedApi
 @JvmInline
-public value class InvertedValidationCheck<in T>(
+internal value class InvertedValidationCheck<in T>(
     private val originalCheck: ValidationCheck<T>,
 ) : ValidationCheck<T> {
     override fun isValid(value: T): Boolean = !originalCheck.isValid(value)
