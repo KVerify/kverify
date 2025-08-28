@@ -65,7 +65,7 @@ public value class ValidationResult(
         /**
          * Represents a successful validation result with no violations.
          */
-        public val VALID: ValidationResult = ValidationResult(emptyList())
+        public val Valid: ValidationResult = ValidationResult(emptyList())
     }
 }
 
@@ -90,6 +90,20 @@ public fun List<ValidationResult>.mergeResults(): ValidationResult =
     ValidationResult(
         this.flatMap { it.violations },
     )
+
+public inline fun <T> ValidationResult.ifValid(block: () -> T): T? =
+    if (isValid) {
+        block()
+    } else {
+        null
+    }
+
+public inline fun <T> ValidationResult.ifInvalid(block: (List<Violation>) -> T): T? =
+    if (isInvalid) {
+        block(violations)
+    } else {
+        null
+    }
 
 /**
  * Executes [block] if this result is valid.

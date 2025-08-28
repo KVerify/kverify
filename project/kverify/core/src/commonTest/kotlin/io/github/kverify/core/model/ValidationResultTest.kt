@@ -69,8 +69,8 @@ class ValidationResultTest :
             })"
         }
 
-        test("Companion.VALID") {
-            ValidationResult.Companion.VALID shouldBe ValidationResult(emptyList())
+        test("Companion.Valid") {
+            ValidationResult.Companion.Valid shouldBe ValidationResult(emptyList())
         }
 
         test("factory function ValidationResult(vararg Violation)") {

@@ -118,7 +118,7 @@ public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
  * Internally uses [ThrowingValidationContext] but catches any [ValidationException]
  * to return a [ValidationResult] instead of propagating the exception.
  *
- * Returns [ValidationResult.VALID] if no violations occur, or a [ValidationResult]
+ * Returns [ValidationResult.Valid] if no violations occur, or a [ValidationResult]
  * containing the first encountered violation.
  *
  * Best suited for validation scenarios where you want fail-fast behavior
@@ -157,7 +157,7 @@ public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
  * Internally uses [ThrowingValidationContext] to apply rules but catches any [ValidationException]
  * to return a [ValidationResult] instead of propagating the exception.
  *
- * Returns [ValidationResult.VALID] if all rules pass, or a [ValidationResult]
+ * Returns [ValidationResult.Valid] if all rules pass, or a [ValidationResult]
  * containing the first rule violation encountered.
  *
  * Best suited for validating a single value with multiple rules
@@ -255,7 +255,7 @@ public inline fun <C : ThrowingValidationContext> validateOrThrowUsing(
  * Uses the provided [context] to execute validation with fail-fast behavior,
  * but catches any [ValidationException] to return a [ValidationResult] instead.
  *
- * Returns [ValidationResult.VALID] if no violations occur, or a [ValidationResult]
+ * Returns [ValidationResult.Valid] if no violations occur, or a [ValidationResult]
  * containing the first encountered violation.
  *
  * Best suited for validation scenarios requiring custom context behavior
@@ -271,7 +271,7 @@ public inline fun <C : ThrowingValidationContext> validateFirstUsing(
 ): ValidationResult =
     try {
         validateOrThrowUsing(context, block)
-        ValidationResult.VALID
+        ValidationResult.Valid
     } catch (violation: ValidationException) {
         ValidationResult(violation.violations)
     }
@@ -304,7 +304,7 @@ public fun <T, C : ThrowingValidationContext> T.validateOrThrowWithRulesUsing(
  * Uses the provided [context] to apply rules with fail-fast behavior,
  * but catches any [ValidationException] to return a [ValidationResult] instead.
  *
- * Returns [ValidationResult.VALID] if all rules pass, or a [ValidationResult]
+ * Returns [ValidationResult.Valid] if all rules pass, or a [ValidationResult]
  * containing the first rule violation encountered.
  *
  * Best suited for validating a single value with multiple rules
