@@ -1,6 +1,7 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ValidationException
+import io.github.kverify.core.model.violations
 import io.github.kverify.core.util.StubRule
 import io.github.kverify.core.violation.ViolationReason
 import io.github.kverify.test.util.shouldContainExactly

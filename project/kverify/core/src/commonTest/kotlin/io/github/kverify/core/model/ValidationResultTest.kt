@@ -33,7 +33,7 @@ class ValidationResultTest :
         }
 
         test("plus(Collection<Violation>)") {
-            val violationCollection: Collection<Violation> = List(3) { violation }
+            val violationCollection: List<Violation> = List(3) { violation }
             val validResult = ValidationResult(emptyList())
 
             val sumResult = validResult + violationCollection
@@ -70,7 +70,7 @@ class ValidationResultTest :
         }
 
         test("Companion.Valid") {
-            ValidationResult.Companion.Valid shouldBe ValidationResult(emptyList())
+            ValidationResult.Valid shouldBe ValidationResult(emptyList())
         }
 
         test("factory function ValidationResult(vararg Violation)") {
@@ -87,8 +87,8 @@ class ValidationResultTest :
             val validResult = ValidationResult(emptyList())
             val validationResultList = List(amount) { ValidationResult(violationList) }
 
-            val merged = validResult.merge(validationResultList)
-            val mergedResults = validationResultList.mergeResults()
+            val merged = validResult + validationResultList
+            val mergedResults = validationResultList.mergeValidationResults()
 
             merged.violations shouldBe expectedViolationList
             mergedResults.violations shouldBe expectedViolationList
@@ -123,13 +123,13 @@ class ValidationResultTest :
             val invalidResult = ValidationResult(listOf(violation))
 
             validResult.fold(
-                onValid = { value },
-                onInvalid = { fail("onInvalid should not be called for valid result") },
+                ifValid = { value },
+                ifInvalid = { fail("onInvalid should not be called for valid result") },
             ) shouldBe value
 
             invalidResult.fold(
-                onValid = { fail("onValid should not be called for invalid result") },
-                onInvalid = { value },
+                ifValid = { fail("onValid should not be called for invalid result") },
+                ifInvalid = { value },
             ) shouldBe value
         }
 

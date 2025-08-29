@@ -1,177 +1,191 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.violation.Violation
-import kotlin.jvm.JvmInline
+import kotlin.jvm.JvmName
 
-/**
- * Represents the result of a validation process, containing a list of [violations].
- */
-@JvmInline
-public value class ValidationResult(
-    public val violations: List<Violation>,
-) {
-    /**
-     * Returns `true` if there are no violations.
-     */
+public sealed class ValidationResult {
     public inline val isValid: Boolean
-        get() = violations.isEmpty()
+        get() = this is Valid
 
-    /**
-     * Returns `true` if there is at least one violation.
-     */
     public inline val isInvalid: Boolean
-        get() = violations.isNotEmpty()
+        get() = this is Invalid
 
-    /**
-     * Returns a new result with [violation] added.
-     */
-    public operator fun plus(violation: Violation): ValidationResult =
-        ValidationResult(
-            this.violations + violation,
-        )
-
-    /**
-     * Returns a new result with [violations] added.
-     */
-    public operator fun <C : Collection<Violation>> plus(violations: C): ValidationResult =
-        ValidationResult(
-            this.violations + violations,
-        )
-
-    /**
-     * Combines this result with [other], merging their violations.
-     */
-    public operator fun plus(other: ValidationResult): ValidationResult =
-        ValidationResult(
-            this.violations + other.violations,
-        )
-
-    override fun toString(): String =
-        if (isValid) {
-            "ValidationResult(valid=true)"
+    public fun violationsOrNull(): List<Violation>? =
+        if (this is Invalid) {
+            this.violations
         } else {
-            "ValidationResult(valid=false, violations=${
-                violations.joinToString(
-                    separator = ", ",
-                    prefix = "[",
-                    postfix = "]",
-                    limit = 10,
-                )
-            })"
+            null
         }
 
-    public companion object {
-        /**
-         * Represents a successful validation result with no violations.
-         */
-        public val Valid: ValidationResult = ValidationResult(emptyList())
+    public operator fun plus(other: ValidationResult): ValidationResult =
+        when (this) {
+            is Invalid ->
+                when (other) {
+                    is Invalid -> Invalid(this.violations + other.violations)
+                    is Valid -> this
+                }
+
+            is Valid -> other
+        }
+
+    public data object Valid : ValidationResult() {
+        override fun toString(): String = "ValidationResult.Valid"
+    }
+
+    public data class Invalid(
+        val violations: List<Violation>,
+    ) : ValidationResult() {
+        override fun toString(): String = "ValidationResult.Invalid(violations=$violations)"
     }
 }
 
-/**
- * Creates a [ValidationResult] from [violations].
- */
+public inline val ValidationResult.violations: List<Violation>
+    get() =
+        if (this is ValidationResult.Invalid) {
+            this.violations
+        } else {
+            emptyList()
+        }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ValidationResult(violations: List<Violation>): ValidationResult =
+    if (violations.isEmpty()) {
+        ValidationResult.Valid
+    } else {
+        ValidationResult.Invalid(
+            violations = violations,
+        )
+    }
+
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
-        violations.asList(),
+        violations = violations.asList(),
     )
 
-/**
- * Merges this result with [results], combining all violations.
- */
-public fun ValidationResult.merge(results: List<ValidationResult>): ValidationResult = this + results.flatMap { it.violations }
+public operator fun ValidationResult.plus(violation: Violation): ValidationResult =
+    when (this) {
+        is ValidationResult.Invalid ->
+            ValidationResult.Invalid(
+                violations = this.violations + violation,
+            )
 
-/**
- * Merges all results in this list, combining all violations.
- */
-public fun List<ValidationResult>.mergeResults(): ValidationResult =
-    ValidationResult(
-        this.flatMap { it.violations },
-    )
+        is ValidationResult.Valid ->
+            ValidationResult.Invalid(
+                violations = listOf(violation),
+            )
+    }
+
+@JvmName("plusViolationList")
+public operator fun ValidationResult.plus(violations: List<Violation>): ValidationResult {
+    if (violations.isEmpty()) return this
+
+    return when (this) {
+        is ValidationResult.Invalid ->
+            ValidationResult.Invalid(
+                violations = this.violations + violations,
+            )
+
+        is ValidationResult.Valid ->
+            ValidationResult.Invalid(
+                violations = violations,
+            )
+    }
+}
+
+@JvmName("plusValidationResultList")
+public operator fun ValidationResult.plus(validationResults: List<ValidationResult>): ValidationResult {
+    if (validationResults.isEmpty()) return this
+
+    val violations =
+        validationResults
+            .filterIsInstance<ValidationResult.Invalid>()
+            .flatMap { it.violations }
+
+    return this + violations
+}
+
+public fun List<ValidationResult>.mergeValidationResults(): ValidationResult {
+    if (this.isEmpty()) return ValidationResult.Valid
+
+    val violations =
+        this
+            .filterIsInstance<ValidationResult.Invalid>()
+            .flatMap { it.violations }
+
+    return ValidationResult(violations)
+}
 
 public inline fun <T> ValidationResult.ifValid(block: () -> T): T? =
-    if (isValid) {
+    if (this.isValid) {
         block()
     } else {
         null
     }
 
 public inline fun <T> ValidationResult.ifInvalid(block: (List<Violation>) -> T): T? =
-    if (isInvalid) {
-        block(violations)
+    if (this is ValidationResult.Invalid) {
+        block(this.violations)
     } else {
         null
     }
 
-/**
- * Executes [block] if this result is valid.
- *
- * @return the original result.
- * @see ValidationResult.isValid
- */
-public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
-    if (isValid) block()
-    return this
-}
-
-/**
- * Executes [block] if this result is invalid, passing the violations.
- *
- * @return the original result.
- * @see ValidationResult.isInvalid
- */
-public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
-    if (isInvalid) block(violations)
-    return this
-}
-
-/**
- * @return the result of [onValid] if this result is valid,
- * otherwise returns the result of [onInvalid].
- * @see ValidationResult.isValid
- * @see ValidationResult.isInvalid
- */
 public inline fun <T> ValidationResult.fold(
-    onValid: () -> T,
-    onInvalid: (List<Violation>) -> T,
+    ifValid: () -> T,
+    ifInvalid: (List<Violation>) -> T,
 ): T =
-    if (isValid) {
-        onValid()
-    } else {
-        onInvalid(violations)
+    when (this) {
+        is ValidationResult.Valid -> ifValid()
+        is ValidationResult.Invalid -> ifInvalid(this.violations)
     }
 
-/**
- * If this result is invalid, uses [joinToString] to generate a message from [ValidationResult.violations]
- * and throws [ValidationException], containing the generated message.
- *
- * @see joinToString
- * @see ValidationResult.isInvalid
- */
+public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
+    if (this.isValid) block()
+
+    return this
+}
+
+public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
+    if (this is ValidationResult.Invalid) block(this.violations)
+
+    return this
+}
+
 @Suppress("LongParameterList")
 public fun ValidationResult.throwOnFailure(
-    separator: CharSequence = ", ",
-    prefix: CharSequence = "Validation failed: [",
-    postfix: CharSequence = "]",
-    limit: Int = 10,
+    separator: CharSequence = "\n",
+    prefix: CharSequence = "Validation failed:\n",
+    postfix: CharSequence = "",
+    limit: Int = -1,
     truncated: CharSequence = "...",
+    onEmptyPrefix: CharSequence = "Validation failed",
     cause: Throwable? = null,
-    transform: (Violation) -> String = { it.reason },
+    transform: (Violation) -> String = { "\t- ${it.reason}" },
 ) {
-    if (isValid) return
+    if (this !is ValidationResult.Invalid) return
+
+    val prefix =
+        if (violations.isEmpty()) {
+            onEmptyPrefix
+        } else {
+            prefix
+        }
+
+    val message =
+        violations.joinToString(
+            separator = separator,
+            prefix = prefix,
+            postfix = postfix,
+            limit = limit,
+            truncated = truncated,
+            transform = transform,
+        )
 
     throw ValidationException(
-        message =
-            violations.joinToString(
-                separator = separator,
-                prefix = prefix,
-                postfix = postfix,
-                limit = limit,
-                truncated = truncated,
-                transform = transform,
-            ),
+        message = message,
         violations = violations,
         cause = cause,
     )

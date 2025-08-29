@@ -2,6 +2,7 @@ package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.ValidationResult
+import io.github.kverify.core.model.fold
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
@@ -245,13 +246,12 @@ public inline fun <T, C : AggregatingValidationContext> runValidatingAllUsing(
     }
 
     val result = context.run(block)
-    val violations = context.build().violations
 
-    return if (violations.isEmpty()) {
-        Result.success(result)
-    } else {
-        Result.failure(
-            ValidationException(violations),
-        )
-    }
+    return context.build().fold(
+        ifValid = { Result.success(result) },
+        ifInvalid = {
+            val exception = ValidationException(it)
+            Result.failure(exception)
+        },
+    )
 }
