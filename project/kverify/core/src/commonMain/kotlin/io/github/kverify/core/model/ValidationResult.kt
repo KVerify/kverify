@@ -4,40 +4,27 @@ package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.violation.Violation
+import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmName
 
-public sealed class ValidationResult {
-    public inline val isValid: Boolean
-        get() = this is Valid
+public sealed interface ValidationResult {
+    public val isValid: Boolean
+    public val isInvalid: Boolean
 
-    public inline val isInvalid: Boolean
-        get() = this is Invalid
+    public data object Valid : ValidationResult {
+        override val isValid: Boolean = true
+        override val isInvalid: Boolean = false
 
-    public fun violationsOrNull(): List<Violation>? =
-        if (this is Invalid) {
-            this.violations
-        } else {
-            null
-        }
-
-    public operator fun plus(other: ValidationResult): ValidationResult =
-        when (this) {
-            is Invalid ->
-                when (other) {
-                    is Invalid -> Invalid(this.violations + other.violations)
-                    is Valid -> this
-                }
-
-            is Valid -> other
-        }
-
-    public data object Valid : ValidationResult() {
         override fun toString(): String = "ValidationResult.Valid"
     }
 
-    public data class Invalid(
-        val violations: List<Violation>,
-    ) : ValidationResult() {
+    @JvmInline
+    public value class Invalid(
+        public val violations: List<Violation>,
+    ) : ValidationResult {
+        override inline val isValid: Boolean get() = false
+        override inline val isInvalid: Boolean get() = true
+
         override fun toString(): String = "ValidationResult.Invalid(violations=$violations)"
     }
 }
@@ -49,6 +36,13 @@ public inline val ValidationResult.violations: List<Violation>
         } else {
             emptyList()
         }
+
+public fun ValidationResult.violationsOrNull(): List<Violation>? =
+    if (this is ValidationResult.Invalid) {
+        this.violations
+    } else {
+        null
+    }
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(violation: Violation): ValidationResult =
@@ -71,6 +65,17 @@ public inline fun ValidationResult(vararg violations: Violation): ValidationResu
     ValidationResult(
         violations = violations.asList(),
     )
+
+public operator fun ValidationResult.plus(other: ValidationResult): ValidationResult =
+    when (this) {
+        is ValidationResult.Invalid ->
+            when (other) {
+                is ValidationResult.Invalid -> ValidationResult.Invalid(this.violations + other.violations)
+                is ValidationResult.Valid -> this
+            }
+
+        is ValidationResult.Valid -> other
+    }
 
 public operator fun ValidationResult.plus(violation: Violation): ValidationResult =
     when (this) {
