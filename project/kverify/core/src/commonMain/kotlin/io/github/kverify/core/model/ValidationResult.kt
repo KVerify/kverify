@@ -51,6 +51,12 @@ public inline val ValidationResult.violations: List<Violation>
         }
 
 @Suppress("NOTHING_TO_INLINE")
+public inline fun ValidationResult(violation: Violation): ValidationResult =
+    ValidationResult.Invalid(
+        violations = listOf(violation),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(violations: List<Violation>): ValidationResult =
     if (violations.isEmpty()) {
         ValidationResult.Valid
