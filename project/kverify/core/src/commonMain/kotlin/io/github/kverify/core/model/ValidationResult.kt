@@ -22,8 +22,8 @@ public sealed interface ValidationResult {
     public value class Invalid(
         public val violations: List<Violation>,
     ) : ValidationResult {
-        override inline val isValid: Boolean get() = false
-        override inline val isInvalid: Boolean get() = true
+        override val isValid: Boolean get() = false
+        override val isInvalid: Boolean get() = true
 
         override fun toString(): String = "ValidationResult.Invalid(violations=$violations)"
     }
