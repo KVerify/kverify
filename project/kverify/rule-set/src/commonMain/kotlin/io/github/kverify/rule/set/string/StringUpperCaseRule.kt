@@ -12,4 +12,6 @@ public class StringUpperCaseRule(
 ) : Rule<String> by PredicateRule(
         validationCheck = StringUpperCaseCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<String> by StringUpperCaseRule()
+}

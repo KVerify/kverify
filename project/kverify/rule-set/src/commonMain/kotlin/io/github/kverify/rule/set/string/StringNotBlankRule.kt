@@ -12,4 +12,6 @@ public class StringNotBlankRule(
 ) : Rule<String> by PredicateRule(
         validationCheck = StringNotBlankCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<String> by StringNotBlankRule()
+}

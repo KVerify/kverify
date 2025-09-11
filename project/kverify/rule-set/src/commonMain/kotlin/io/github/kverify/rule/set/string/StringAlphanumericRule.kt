@@ -12,4 +12,6 @@ public class StringAlphanumericRule(
 ) : Rule<String> by PredicateRule(
         validationCheck = StringAlphanumericCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<String> by StringAlphanumericRule()
+}

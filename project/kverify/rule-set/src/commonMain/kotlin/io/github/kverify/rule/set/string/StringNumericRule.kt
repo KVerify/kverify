@@ -12,4 +12,6 @@ public class StringNumericRule(
 ) : Rule<String> by PredicateRule(
         validationCheck = StringNumericCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<String> by StringNumericRule()
+}

@@ -12,4 +12,6 @@ public class CollectionNotEmptyRule<C : Collection<*>>(
 ) : Rule<C> by PredicateRule(
         validationCheck = CollectionNotEmptyCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<Collection<*>> by CollectionNotEmptyRule()
+}

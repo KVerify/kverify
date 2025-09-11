@@ -12,4 +12,6 @@ public class StringAlphabeticRule(
 ) : Rule<String> by PredicateRule(
         validationCheck = StringAlphabeticCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<String> by StringAlphabeticRule()
+}

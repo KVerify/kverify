@@ -12,4 +12,6 @@ public class StringLowerCaseRule(
 ) : Rule<String> by PredicateRule(
         validationCheck = StringLowerCaseCheck,
         violationFactory = violationFactory,
-    )
+    ) {
+    public companion object : Rule<String> by StringLowerCaseRule()
+}
