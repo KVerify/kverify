@@ -1,7 +1,6 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ThrowingValidationContextException
-import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
@@ -31,6 +30,9 @@ public class ThrowingValidationContext : ValidationContext {
 @PublishedApi
 internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValidationContext()
 
+// ==========================
+// Throwing validation
+// ==========================
 @OptIn(ExperimentalContracts::class)
 public inline fun validateThatOrThrow(
     condition: Boolean,
@@ -55,27 +57,54 @@ public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T):
     return ThrowingValidationObject.run(block)
 }
 
+public infix fun <T> T.validateOrThrowWithRule(rule: Rule<T>): T {
+    val value = this
+
+    validateOrThrow { value applyRule rule }
+
+    return value
+}
+
+public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
+    val value = this
+
+    validateOrThrow { value.applyRules(rules = rules) }
+
+    return value
+}
+
+// ==========================
+// Non-throwing validation
+// ==========================
 public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
+
         ValidationResult.Valid
     } catch (exception: ThrowingValidationContextException) {
         ValidationResult(exception.violation)
     }
 
-public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): Unit =
-    validateOrThrow {
-        this@validateOrThrowWithRules.applyRules(rules = rules)
-    }
+public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
+    val value = this
 
-public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
-    validateFirst {
-        this@validateFirstWithRules.applyRules(rules = rules)
-    }
+    val result = validateFirst { value applyRule rule }
+
+    return result
+}
+
+public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult {
+    val value = this
+
+    val result = validateFirst { value.applyRules(rules = rules) }
+
+    return result
+}
 
 public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     try {
         val result = ThrowingValidationObject.run(block)
+
         Result.success(result)
     } catch (exception: ThrowingValidationContextException) {
         Result.failure(exception)
