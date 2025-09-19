@@ -47,12 +47,12 @@ public inline fun validateThatOrThrow(
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline fun validateOrThrow(block: ThrowingValidationContext.() -> Unit) {
+public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T): T {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    ThrowingValidationObject.apply(block)
+    return ThrowingValidationObject.run(block)
 }
 
 public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
