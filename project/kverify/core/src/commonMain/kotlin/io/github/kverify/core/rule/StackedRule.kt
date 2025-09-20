@@ -16,3 +16,12 @@ public value class StackedRule<in T>(
         }
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> StackedRule(): StackedRule<T> = StackedRule(emptyList())
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> StackedRule(rule: Rule<T>): StackedRule<T> = StackedRule(listOf(rule))
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> StackedRule(vararg rules: Rule<T>): StackedRule<T> = StackedRule(rules.asList())
