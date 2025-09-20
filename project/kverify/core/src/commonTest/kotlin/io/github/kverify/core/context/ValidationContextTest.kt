@@ -39,8 +39,8 @@ class ValidationContextTest :
         test("validate") {
             shouldFail {
                 failingContext.run {
-                    validate(!successfulRule.shouldFail) { successfulRule.violation }
-                    validate(!failingRule.shouldFail) { failingRule.violation }
+                    this.failIfNot(!successfulRule.shouldFail) { successfulRule.violation }
+                    this.failIfNot(!failingRule.shouldFail) { failingRule.violation }
                 }
             }.message shouldBe failingRule.violation.reason
         }

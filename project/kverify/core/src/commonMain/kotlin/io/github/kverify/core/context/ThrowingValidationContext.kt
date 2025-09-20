@@ -15,7 +15,7 @@ public class ThrowingValidationContext : ValidationContext {
         )
 
     @OptIn(ExperimentalContracts::class)
-    public inline fun validate(
+    public inline fun failIfNot(
         condition: Boolean,
         lazyViolation: () -> Violation,
     ) {
@@ -23,7 +23,19 @@ public class ThrowingValidationContext : ValidationContext {
             returns() implies condition
         }
 
-        if (!condition) onFailure(lazyViolation())
+        failIf(!condition, lazyViolation)
+    }
+
+    @OptIn(ExperimentalContracts::class)
+    public inline fun failIf(
+        condition: Boolean,
+        lazyViolation: () -> Violation,
+    ) {
+        contract {
+            returns() implies !condition
+        }
+
+        if (condition) onFailure(lazyViolation())
     }
 }
 
@@ -33,21 +45,6 @@ internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValid
 // ==========================
 // Throwing validation
 // ==========================
-@OptIn(ExperimentalContracts::class)
-public inline fun validateThatOrThrow(
-    condition: Boolean,
-    violationFactory: () -> Violation,
-) {
-    contract {
-        returns() implies condition
-    }
-
-    ThrowingValidationObject.validate(
-        condition,
-        violationFactory,
-    )
-}
-
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T): T {
     contract {

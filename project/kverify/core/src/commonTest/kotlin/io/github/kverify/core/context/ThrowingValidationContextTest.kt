@@ -26,16 +26,16 @@ class ThrowingValidationContextTest :
         }
 
         test("validate") {
-            throwingContext.validate(true) { violation }
+            throwingContext.failIfNot(true) { violation }
 
             shouldThrow<ValidationException> {
-                throwingContext.validate(false) { violation }
-                throwingContext.validate(false) { violation }
+                throwingContext.failIfNot(false) { violation }
+                throwingContext.failIfNot(false) { violation }
             }.violations.shouldContainExactly(violation)
 
             // contract casts
             val notNull: Int? = 1
-            throwingContext.validate(notNull != null) { violation }
+            throwingContext.failIfNot(notNull != null) { violation }
             notNull + 1
         }
 

@@ -136,33 +136,21 @@ public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>) {
     }
 }
 
-/**
- * Conditionally triggers a validation failure based on a boolean condition.
- *
- * Evaluates the provided condition and triggers validation failure if the condition is false.
- * The violation is generated only when needed (lazy evaluation), avoiding unnecessary
- * object creation when validation passes.
- *
- * This method provides a convenient way to perform conditional validation checks
- * without requiring explicit if-else logic in validation code. The inline nature
- * ensures efficient execution while the lambda-based violation generation enables
- * lazy evaluation and custom violation creation.
- *
- * Best suited for:
- * - Precondition validation
- * - Business rule enforcement
- * - Custom validation logic
- * - Conditional checks within larger validation workflows
- *
- * @param condition The boolean condition to evaluate - validation fails if false.
- * @param lazyViolation A lambda that produces the violation when validation fails.
- */
-public inline fun ValidationContext.validate(
+public inline fun ValidationContext.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
-    if (!condition) {
+    if (condition) {
         val violation = lazyViolation()
         onFailure(violation)
     }
 }
+
+public inline fun ValidationContext.failIfNot(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+): Unit =
+    failIf(
+        condition = !condition,
+        lazyViolation = lazyViolation,
+    )

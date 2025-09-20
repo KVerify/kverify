@@ -3,7 +3,7 @@ package io.github.kverify.core.rule
 import io.github.kverify.core.check.ValidationCheck
 import io.github.kverify.core.check.ViolationFactory
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.validate
+import io.github.kverify.core.context.failIfNot
 
 public class PredicateRule<in T>(
     public val validationCheck: ValidationCheck<T>,
@@ -12,7 +12,7 @@ public class PredicateRule<in T>(
     override fun ValidationContext.runValidation(value: T) {
         val isValid = validationCheck.isValid(value)
 
-        validate(isValid) {
+        this@runValidation.failIfNot(isValid) {
             violationFactory.createViolation(value)
         }
     }
