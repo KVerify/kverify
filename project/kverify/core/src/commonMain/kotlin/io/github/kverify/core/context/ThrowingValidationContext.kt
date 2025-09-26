@@ -8,7 +8,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public class ThrowingValidationContext : ValidationContext {
+public open class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing =
         throw ThrowingValidationContextException(
             violation = violation,
