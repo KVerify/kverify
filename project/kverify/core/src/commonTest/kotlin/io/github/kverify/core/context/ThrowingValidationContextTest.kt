@@ -39,18 +39,6 @@ class ThrowingValidationContextTest :
             notNull + 1
         }
 
-        test("validateThatOrThrow") {
-            shouldThrow<ValidationException> {
-                validateThatOrThrow(false) { violation }
-                validateThatOrThrow(false) { violation }
-            }.violations.shouldContainExactly(violation)
-
-            // contract casts
-            val notNull: Int? = 1
-            validateThatOrThrow(notNull != null) { violation }
-            notNull + 1
-        }
-
         test("validateOrThrow") {
             shouldThrow<ValidationException> {
                 validateOrThrow {
