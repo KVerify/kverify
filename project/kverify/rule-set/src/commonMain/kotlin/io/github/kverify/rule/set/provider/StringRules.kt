@@ -32,7 +32,8 @@ import io.github.kverify.violation.set.localization.StringViolationLocalizationP
 import io.github.kverify.violation.set.provider.StringViolationProvider
 import io.github.kverify.violation.set.provider.StringViolations
 
-public class StringRules(
+@Suppress("TooManyFunctions")
+public open class StringRules(
     public val stringViolationFactoryProvider: StringViolationFactoryProvider =
         StringViolationFactoryProvider.Default,
 ) : StringRuleProvider,
@@ -403,4 +404,6 @@ public class StringRules(
         StringUpperCaseRule(
             violationFactory = violationFactory,
         )
+
+    public companion object : StringRules()
 }
