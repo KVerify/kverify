@@ -9,6 +9,7 @@ kotlin {
 }
 
 repositories {
+    google()
     mavenCentral()
 }
 
