@@ -1,16 +1,15 @@
-import gradle.kotlin.dsl.accessors._a8ec36be4619c16a910e731748c33891.android
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     org.jetbrains.kotlin.multiplatform
-    com.android.library
 }
 
 repositories {
     mavenCentral()
 }
 
-@OptIn(ExperimentalKotlinGradlePluginApi::class)
+@OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
 kotlin {
     compilerOptions {
         applyKverifyCommonCompilerOptions()
@@ -27,31 +26,32 @@ kotlin {
         useCommonJs()
     }
 
-    androidTarget()
-
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
-    macosX64()
+    // Tier 1
     macosArm64()
-    tvosX64()
-    tvosArm64()
-    tvosSimulatorArm64()
-    watchosX64()
-    watchosArm64()
-    watchosSimulatorArm64()
+    iosSimulatorArm64()
+    iosArm64()
 
+    // Tier 2
     linuxX64()
     linuxArm64()
+    macosX64()
+    iosX64()
+    watchosSimulatorArm64()
+    watchosX64()
+    watchosArm32()
+    tvosSimulatorArm64()
+    tvosX64()
+    tvosArm64()
 
+    // Tier 3
     mingwX64()
+    watchosDeviceArm64()
+
+    // Wasm
+    wasmJs()
+    wasmWasi()
 
     applyDefaultHierarchyTemplate()
-}
-
-android {
-    namespace = "io.github.kverify"
-    compileSdk = 34
 }
 
 tasks {
