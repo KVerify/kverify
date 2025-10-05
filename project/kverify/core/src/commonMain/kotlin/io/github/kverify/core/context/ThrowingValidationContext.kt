@@ -73,7 +73,7 @@ public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
 // ==========================
 // Non-throwing validation
 // ==========================
-public inline fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
+public fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult =
     try {
         validateOrThrow(block)
 
@@ -98,7 +98,7 @@ public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult
     return result
 }
 
-public inline fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
+public fun <T> runValidatingFirst(block: ThrowingValidationContext.() -> T): Result<T> =
     try {
         val result = ThrowingValidationObject.run(block)
 
