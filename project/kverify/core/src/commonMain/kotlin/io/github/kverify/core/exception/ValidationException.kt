@@ -8,7 +8,7 @@ public open class ValidationException(
     message: String? = null,
     public val violations: List<Violation> = emptyList(),
     cause: Throwable? = null,
-) : Throwable(
+) : RuntimeException(
         message = message,
         cause = cause,
     )
