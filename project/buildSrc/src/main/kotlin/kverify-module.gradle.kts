@@ -25,30 +25,22 @@ kotlin {
         useCommonJs()
     }
 
-    // Tier 1
-    macosArm64()
-    iosSimulatorArm64()
-    iosArm64()
-
-    // Tier 2
-    linuxX64()
-    linuxArm64()
-    macosX64()
     iosX64()
-    watchosSimulatorArm64()
-    watchosX64()
-    watchosArm32()
-    tvosSimulatorArm64()
+    iosArm64()
+    iosSimulatorArm64()
+    macosX64()
+    macosArm64()
     tvosX64()
     tvosArm64()
+    tvosSimulatorArm64()
+    watchosX64()
+    watchosArm64()
+    watchosSimulatorArm64()
 
-    // Tier 3
+    linuxX64()
+    linuxArm64()
+
     mingwX64()
-    watchosDeviceArm64()
-
-    // Wasm
-    wasmJs()
-    wasmWasi()
 
     applyDefaultHierarchyTemplate()
 
