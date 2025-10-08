@@ -1,31 +1,26 @@
 package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ThrowingValidationContextException
-import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+/**
+ * [ValidationContext] that throws on the first reported [Violation].
+ *
+ * Provides helper inline functions that declare contracts for use in control-flow.
+ */
 public open class ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing =
         throw ThrowingValidationContextException(
             violation = violation,
         )
 
-    @OptIn(ExperimentalContracts::class)
-    public inline fun failIfNot(
-        condition: Boolean,
-        lazyViolation: () -> Violation,
-    ) {
-        contract {
-            returns() implies condition
-        }
-
-        failIf(!condition, lazyViolation)
-    }
-
+    /**
+     * Reports a [Violation] if the given [condition] is `false`.
+     */
     @OptIn(ExperimentalContracts::class)
     public inline fun failIf(
         condition: Boolean,
@@ -37,14 +32,29 @@ public open class ThrowingValidationContext : ValidationContext {
 
         if (condition) onFailure(lazyViolation())
     }
+
+    /**
+     * Reports a [Violation] if the given [condition] is `true`.
+     */
+    @OptIn(ExperimentalContracts::class)
+    public inline fun failIfNot(
+        condition: Boolean,
+        lazyViolation: () -> Violation,
+    ) {
+        contract {
+            returns() implies condition
+        }
+
+        failIf(!condition, lazyViolation)
+    }
 }
 
 @PublishedApi
 internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValidationContext()
 
-// ==========================
-// Throwing validation
-// ==========================
+/**
+ * Runs [block] in a [ThrowingValidationContext], returning the [block] result or throwing on first failure.
+ */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T): T {
     contract {
@@ -54,6 +64,9 @@ public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T):
     return ThrowingValidationObject.run(block)
 }
 
+/**
+ * Validates `this` value with a single [rule] in a throwing context and returns the value.
+ */
 public infix fun <T> T.validateOrThrowWithRule(rule: Rule<T>): T {
     val value = this
 
@@ -62,6 +75,9 @@ public infix fun <T> T.validateOrThrowWithRule(rule: Rule<T>): T {
     return value
 }
 
+/**
+ * Validates `this` value with multiple [rules] in a throwing context and returns the value.
+ */
 public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
     val value = this
 

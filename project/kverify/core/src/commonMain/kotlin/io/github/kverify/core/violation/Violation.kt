@@ -1,13 +1,13 @@
 package io.github.kverify.core.violation
 
 /**
- * Represents a validation violation.
+ * Representation of a validation failure.
  *
- * Contains a [reason] describing the violation.
+ * Implementations provide a human-readable [reason].
  */
 public interface Violation {
     /**
-     * Describes the violation.
+     * Human-readable explanation of the violation.
      */
     public val reason: String
 }

@@ -3,9 +3,7 @@ package io.github.kverify.core.violation
 import kotlin.jvm.JvmInline
 
 /**
- * Represents a simple implementation of [Violation].
- *
- * Holds a [reason] describing the violation.
+ * Simple [Violation] implementation wrapping a string [reason].
  */
 @JvmInline
 public value class ViolationReason(
@@ -13,9 +11,7 @@ public value class ViolationReason(
 ) : Violation
 
 /**
- * Converts the given [String] into a [ViolationReason].
- *
- * @return a [ViolationReason] with the provided [String] as its reason.
+ * Converts a string to a [ViolationReason].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun String.asViolationReason(): ViolationReason = ViolationReason(this)

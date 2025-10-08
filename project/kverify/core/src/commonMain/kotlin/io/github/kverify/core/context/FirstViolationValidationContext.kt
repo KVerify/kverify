@@ -7,7 +7,13 @@ import io.github.kverify.core.violation.Violation
 
 internal object AbortValidationException : RuntimeException()
 
+/**
+ * Internal context that records the first [Violation] and aborts validation by throwing.
+ */
 internal class FirstViolationValidationContext : ThrowingValidationContext() {
+    /**
+     * The first reported violation.
+     */
     lateinit var firstViolation: Violation
         private set
 
@@ -18,6 +24,10 @@ internal class FirstViolationValidationContext : ThrowingValidationContext() {
     }
 }
 
+/**
+ * Runs [block] and returns a [ValidationResult]
+ * containing only the first violation (if any).
+ */
 public fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult {
     val context = FirstViolationValidationContext()
 
@@ -32,6 +42,10 @@ public fun validateFirst(block: ThrowingValidationContext.() -> Unit): Validatio
     }
 }
 
+/**
+ * Validates `this` value with a single [rule] and returns a [ValidationResult]
+ * containing only the first violation (if any).
+ */
 public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
     val value = this
 
@@ -40,6 +54,10 @@ public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
     return result
 }
 
+/**
+ * Validates `this` value with multiple [rules] and returns a [ValidationResult]
+ * containing only the first violation (if any).
+ */
 public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
@@ -48,6 +66,9 @@ public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult
     return result
 }
 
+/**
+ * Returns `true` if `this` value satisfies the given [rule], stopping at the first failure.
+ */
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
     val context = FirstViolationValidationContext()
@@ -64,6 +85,9 @@ public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     }
 }
 
+/**
+ * Returns `true` if `this` value satisfies all provided [rules], stopping at the first failure.
+ */
 public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
     val value = this
     val context = FirstViolationValidationContext()

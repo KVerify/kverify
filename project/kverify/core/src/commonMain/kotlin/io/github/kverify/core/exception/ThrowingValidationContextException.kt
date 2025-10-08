@@ -2,6 +2,11 @@ package io.github.kverify.core.exception
 
 import io.github.kverify.core.violation.Violation
 
+/**
+ * Exception thrown by contexts that abort validation by throwing on the first failure.
+ *
+ * Contains the single [violation] that caused the exception.
+ */
 public open class ThrowingValidationContextException(
     message: String? = null,
     public val violation: Violation,
