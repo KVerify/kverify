@@ -5,14 +5,23 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.named.model.NamedValue
 import kotlin.jvm.JvmInline
 
+/**
+ * A [ViolationFactory] producing violations for [NamedValue] instances.
+ */
 public typealias NamedViolationFactory<T> = ViolationFactory<NamedValue<T>>
 
+/**
+ * Wraps this [ViolationFactory] to operate on [NamedValue] values.
+ */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ViolationFactory<T>.asNamedViolationFactory(): NamedViolationFactory<T> =
     NamedViolationFactoryAdapter(
         baseFactory = this,
     )
 
+/**
+ * Internal adapter delegating violation creation to an underlying [ViolationFactory].
+ */
 @PublishedApi
 @JvmInline
 internal value class NamedViolationFactoryAdapter<T>(

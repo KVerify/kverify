@@ -7,11 +7,11 @@ import kotlin.reflect.jvm.isAccessible
 // JVM-specific code. For Kotlin Multiplatform, see `NamedValue` class
 
 /**
- * Converts a property to a [NamedValue] containing its name and value.
+ * Returns a [NamedValue] representing `this` property and its current value.
  *
- * This function attempts to retrieve the property value using reflection. If there are issues
- * accessing the property (e.g., missing instance or illegal access), a [PropertyAccessException]
- * is thrown with a helpful error message.
+ * Attempts to read the property value via reflection.
+ *
+ * @throws [PropertyAccessException] if the value cannot be accessed.
  */
 public fun <T> KProperty<T>.toNamed(): NamedValue<T> =
     try {
@@ -32,7 +32,7 @@ public fun <T> KProperty<T>.toNamed(): NamedValue<T> =
         throw PropertyAccessException(
             """
             Cannot access value of the property '$name' without an instance.
-            Hint: Use `instance::prop` instead of `Class::prop`
+            Hint: Use instance::prop instead of Class::prop
             """.trimIndent(),
             e,
         )

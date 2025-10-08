@@ -3,10 +3,7 @@ package io.github.kverify.named.model
 import kotlin.reflect.KProperty
 
 /**
- * Represents a [value] with an associated [name].
- *
- * @property name The name of the value.
- * @property value The actual value of type [T].
+ *  Represents a [value] paired with its [name].
  */
 public data class NamedValue<out T>(
     val name: String,
@@ -14,36 +11,56 @@ public data class NamedValue<out T>(
 )
 
 /**
- * Creates a tuple of type [NamedValue] from [name] and this value.
+ * Creates a [NamedValue] with `this` value and the given [name].
  */
-public infix fun <T> T.withName(name: String): NamedValue<T> = NamedValue(name, this)
+public infix fun <T> T.withName(name: String): NamedValue<T> =
+    NamedValue(
+        name = name,
+        value = this,
+    )
 
 /**
- * Creates a tuple of type [NamedValue] from this name and [value].
+ * Creates a [NamedValue] with `this` string as [NamedValue.name] and the given [value].
  */
-public infix fun <T> String.withValue(value: T): NamedValue<T> = NamedValue(this, value)
+public infix fun <T> String.withValue(value: T): NamedValue<T> =
+    NamedValue(
+        name = this,
+        value = value,
+    )
 
 /**
- * Creates a tuple of type [NamedValue] from this [KProperty.name] and [value].
+ * Creates a [NamedValue] using `this` property’s [KProperty.name] and the provided [value].
  */
-public fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> = NamedValue(name, value)
+public fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> =
+    NamedValue(
+        name = name,
+        value = value,
+    )
 
 /**
- * Converts this [Pair] into [NamedValue].
+ * Converts `this` pair into a [NamedValue], using [Pair.first] as the name and [Pair.second] as the value.
  */
-public fun <T> Pair<String, T>.toNamed(): NamedValue<T> = NamedValue(first, second)
+public fun <T> Pair<String, T>.toNamed(): NamedValue<T> =
+    NamedValue(
+        name = first,
+        value = second,
+    )
 
 /**
- * Executes [action] if [NamedValue.value] is not `null`.
+ * Invokes [block] if `this` [NamedValue.value] is not `null`.
  */
 @Suppress("UNCHECKED_CAST")
-public inline infix fun <T> NamedValue<T?>.ifValueNotNull(action: (NamedValue<T>) -> Unit): NamedValue<T?> {
-    if (value != null) action(this as NamedValue<T>)
+public inline infix fun <T> NamedValue<T?>.ifValueNotNull(block: (NamedValue<T>) -> Unit): NamedValue<T?> {
+    if (value != null) {
+        block(this as NamedValue<T>)
+    }
+
     return this
 }
 
 /**
- * @return this [NamedValue] if [NamedValue.value] is not `null`, otherwise returns `null`.
+ * Returns this [NamedValue] cast to a non-nullable type if `this` [NamedValue.value] is not `null`,
+ * or `null` otherwise.
  */
 @Suppress("UNCHECKED_CAST")
 public fun <T> NamedValue<T?>.unwrapOrNull(): NamedValue<T>? =

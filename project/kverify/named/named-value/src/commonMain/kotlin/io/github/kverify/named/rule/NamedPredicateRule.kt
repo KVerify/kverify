@@ -10,10 +10,16 @@ import io.github.kverify.named.check.asNamedViolationFactory
 import io.github.kverify.named.model.NamedValue
 import kotlin.jvm.JvmName
 
+/**
+ * A [PredicateRule] operating on a [NamedValue].
+ */
 public typealias NamedPredicateRule<T> = PredicateRule<NamedValue<T>>
 
+/**
+ * Creates a [NamedPredicateRule] from a [ValidationCheck] and a [NamedViolationFactory].
+ */
 @Suppress("NOTHING_TO_INLINE")
-@JvmName("namedPredicateRuleFromCheckAndNamedFactory")
+@JvmName("NamedPredicateRuleFromCheckAndNamedFactory")
 public inline fun <T> NamedPredicateRule(
     validationCheck: ValidationCheck<T>,
     violationFactory: NamedViolationFactory<T>,
@@ -23,8 +29,11 @@ public inline fun <T> NamedPredicateRule(
         violationFactory = violationFactory,
     )
 
+/**
+ * Creates a [NamedPredicateRule] from a [ValidationCheck] and a [ViolationFactory].
+ */
 @Suppress("NOTHING_TO_INLINE")
-@JvmName("namedPredicateRuleFromCheckAndFactory")
+@JvmName("NamedPredicateRuleFromCheckAndFactory")
 public inline fun <T> NamedPredicateRule(
     validationCheck: ValidationCheck<T>,
     violationFactory: ViolationFactory<T>,
@@ -34,8 +43,11 @@ public inline fun <T> NamedPredicateRule(
         violationFactory = violationFactory.asNamedViolationFactory(),
     )
 
+/**
+ * Creates a [NamedPredicateRule] from a [NamedValidationCheck] and a [ViolationFactory].
+ */
 @Suppress("NOTHING_TO_INLINE")
-@JvmName("namedPredicateRuleFromNamedCheckAndFactory")
+@JvmName("NamedPredicateRuleFromNamedCheckAndFactory")
 public inline fun <T> NamedPredicateRule(
     validationCheck: NamedValidationCheck<T>,
     violationFactory: ViolationFactory<T>,

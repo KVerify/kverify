@@ -7,20 +7,18 @@ import io.github.kverify.named.model.NamedValue
 import kotlin.jvm.JvmInline
 
 /**
- * A validation [Rule] for a [NamedValue].
+ * A [Rule] operating on a [NamedValue].
  */
 public typealias NamedRule<T> = Rule<NamedValue<T>>
 
 /**
- * Wraps this [Rule] to operate on a [NamedValue], preserving the original validation logic.
- *
- * This allows applying a standard [Rule] to named input without duplicating rule definitions.
+ * Wraps `this` [Rule] to work with [NamedValue].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> Rule<T>.asNamedRule(): NamedRule<T> = NamedRuleAdapter(this)
 
 /**
- * Adapts a [Rule] to a [NamedRule], enabling validation of [NamedValue]s using the original rule.
+ * Internal adapter delegating validation of [NamedValue] to an underlying [Rule].
  */
 @JvmInline
 @PublishedApi
@@ -29,10 +27,6 @@ internal value class NamedRuleAdapter<T>(
 ) : NamedRule<T> {
     override fun ValidationContext.runValidation(value: NamedValue<T>) {
         val context = this@runValidation
-
-        baseRule.runValidation(
-            context = context,
-            value = value.value,
-        )
+        baseRule.runValidation(context, value.value)
     }
 }
