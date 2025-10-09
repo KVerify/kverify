@@ -18,7 +18,7 @@ import io.github.kverify.violation.factory.provider.CollectionViolationFactoryPr
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 @Suppress("TooManyFunctions")
-public class ClassBasedCollectionViolationFactories(
+public class ClassBasedCollectionViolationFactorySet(
     public val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
 ) : CollectionViolationFactoryProvider {
     override fun <E, C : Collection<E>> containsAll(elements: Collection<E>): ViolationFactory<C> =

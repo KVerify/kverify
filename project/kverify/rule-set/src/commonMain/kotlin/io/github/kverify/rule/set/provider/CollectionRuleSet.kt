@@ -15,14 +15,14 @@ import io.github.kverify.rule.set.collection.CollectionNotOfSizeRule
 import io.github.kverify.rule.set.collection.CollectionOfSizeRule
 import io.github.kverify.rule.set.collection.CollectionSizeBetweenRule
 import io.github.kverify.rule.set.collection.CollectionSizeNotBetweenRule
-import io.github.kverify.violation.factory.provider.CollectionViolationFactories
 import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
+import io.github.kverify.violation.factory.provider.CollectionViolationFactorySet
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
-import io.github.kverify.violation.set.provider.CollectionViolations
+import io.github.kverify.violation.set.provider.CollectionViolationSet
 
 @Suppress("TooManyFunctions")
-public open class CollectionRules(
+public open class CollectionRuleSet(
     public val collectionViolationFactoryProvider: CollectionViolationFactoryProvider =
         CollectionViolationFactoryProvider.Default,
 ) : CollectionRuleProvider,
@@ -31,7 +31,7 @@ public open class CollectionRules(
         collectionViolationProvider: CollectionViolationProvider,
     ) : this(
         collectionViolationFactoryProvider =
-            CollectionViolationFactories(
+            CollectionViolationFactorySet(
                 collectionViolationProvider = collectionViolationProvider,
             ),
     )
@@ -40,7 +40,7 @@ public open class CollectionRules(
         collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider,
     ) : this(
         collectionViolationProvider =
-            CollectionViolations(
+            CollectionViolationSet(
                 collectionViolationLocalizationProvider = collectionViolationLocalizationProvider,
             ),
     )
@@ -230,5 +230,5 @@ public open class CollectionRules(
             violationFactory = violationFactory,
         )
 
-    public companion object : CollectionRules()
+    public companion object : CollectionRuleSet()
 }

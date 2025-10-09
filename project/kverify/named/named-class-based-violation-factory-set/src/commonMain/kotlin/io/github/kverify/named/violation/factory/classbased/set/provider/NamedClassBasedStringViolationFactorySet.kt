@@ -28,7 +28,7 @@ import io.github.kverify.named.violation.factory.classbased.set.string.NamedStri
 import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactoryProvider
 import io.github.kverify.violation.set.provider.StringViolationProvider
 
-public class NamedClassBasedStringViolationFactories(
+public class NamedClassBasedStringViolationFactorySet(
     public val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
 ) : NamedStringViolationFactoryProvider {
     override fun namedAlphabetic(): NamedViolationFactory<String> =

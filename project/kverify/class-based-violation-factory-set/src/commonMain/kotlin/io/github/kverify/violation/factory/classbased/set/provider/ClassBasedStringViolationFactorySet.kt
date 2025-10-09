@@ -29,7 +29,7 @@ import io.github.kverify.violation.factory.provider.StringViolationFactoryProvid
 import io.github.kverify.violation.set.provider.StringViolationProvider
 
 @Suppress("TooManyFunctions")
-public class ClassBasedStringViolationFactories(
+public class ClassBasedStringViolationFactorySet(
     public val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
 ) : StringViolationFactoryProvider {
     override fun alphabetic(): ViolationFactory<String> =

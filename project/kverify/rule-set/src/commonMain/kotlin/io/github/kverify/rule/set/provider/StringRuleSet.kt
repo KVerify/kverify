@@ -26,14 +26,14 @@ import io.github.kverify.rule.set.string.StringNumericRule
 import io.github.kverify.rule.set.string.StringOfLengthRule
 import io.github.kverify.rule.set.string.StringStartsWithRule
 import io.github.kverify.rule.set.string.StringUpperCaseRule
-import io.github.kverify.violation.factory.provider.StringViolationFactories
 import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
+import io.github.kverify.violation.factory.provider.StringViolationFactorySet
 import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.StringViolationProvider
-import io.github.kverify.violation.set.provider.StringViolations
+import io.github.kverify.violation.set.provider.StringViolationSet
 
 @Suppress("TooManyFunctions")
-public open class StringRules(
+public open class StringRuleSet(
     public val stringViolationFactoryProvider: StringViolationFactoryProvider =
         StringViolationFactoryProvider.Default,
 ) : StringRuleProvider,
@@ -42,7 +42,7 @@ public open class StringRules(
         stringViolationProvider: StringViolationProvider,
     ) : this(
         stringViolationFactoryProvider =
-            StringViolationFactories(
+            StringViolationFactorySet(
                 stringViolationProvider = stringViolationProvider,
             ),
     )
@@ -51,7 +51,7 @@ public open class StringRules(
         stringViolationLocalizationProvider: StringViolationLocalizationProvider,
     ) : this(
         stringViolationProvider =
-            StringViolations(
+            StringViolationSet(
                 stringViolationLocalizationProvider = stringViolationLocalizationProvider,
             ),
     )
@@ -405,5 +405,5 @@ public open class StringRules(
             violationFactory = violationFactory,
         )
 
-    public companion object : StringRules()
+    public companion object : StringRuleSet()
 }

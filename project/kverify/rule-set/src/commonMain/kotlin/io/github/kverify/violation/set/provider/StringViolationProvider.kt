@@ -146,6 +146,6 @@ public interface StringViolationProvider {
     ): Violation
 
     public companion object {
-        public val Default: StringViolationProvider = StringViolations()
+        public val Default: StringViolationProvider = StringViolationSet()
     }
 }

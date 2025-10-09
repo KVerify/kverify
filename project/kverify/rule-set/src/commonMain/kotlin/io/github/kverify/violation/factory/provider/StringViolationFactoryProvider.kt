@@ -1,9 +1,6 @@
 package io.github.kverify.violation.factory.provider
 
 import io.github.kverify.core.check.ViolationFactory
-import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
-import io.github.kverify.violation.set.provider.StringViolationProvider
-import io.github.kverify.violation.set.provider.StringViolations
 
 @Suppress("TooManyFunctions")
 public interface StringViolationFactoryProvider {
@@ -68,6 +65,6 @@ public interface StringViolationFactoryProvider {
     public fun upperCase(): ViolationFactory<String>
 
     public companion object {
-        public val Default: StringViolationFactoryProvider = StringViolationFactories()
+        public val Default: StringViolationFactoryProvider = StringViolationFactorySet()
     }
 }

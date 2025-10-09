@@ -1,7 +1,6 @@
 package io.github.kverify.named.violation.factory.provider
 
 import io.github.kverify.named.check.NamedViolationFactory
-import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
 public interface NamedComparableViolationFactoryProvider {
     public fun <T : Comparable<T>> namedBetween(range: ClosedRange<T>): NamedViolationFactory<T>
@@ -21,6 +20,6 @@ public interface NamedComparableViolationFactoryProvider {
     public fun <T : Comparable<T>> namedNotEqualTo(other: T): NamedViolationFactory<T>
 
     public companion object {
-        public val Default: NamedComparableViolationFactoryProvider = NamedComparableViolationFactories()
+        public val Default: NamedComparableViolationFactoryProvider = NamedComparableViolationFactorySet()
     }
 }

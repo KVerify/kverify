@@ -15,12 +15,12 @@ import io.github.kverify.named.rule.set.collection.NamedCollectionNotOfSizeRule
 import io.github.kverify.named.rule.set.collection.NamedCollectionOfSizeRule
 import io.github.kverify.named.rule.set.collection.NamedCollectionSizeBetweenRule
 import io.github.kverify.named.rule.set.collection.NamedCollectionSizeNotBetweenRule
-import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactories
 import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactoryProvider
+import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactorySet
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 @Suppress("TooManyFunctions")
-public class NamedCollectionRules(
+public class NamedCollectionRuleSet(
     public val namedCollectionViolationFactoryProvider: NamedCollectionViolationFactoryProvider =
         NamedCollectionViolationFactoryProvider.Default,
 ) : NamedCollectionRuleProvider,
@@ -29,7 +29,7 @@ public class NamedCollectionRules(
         collectionViolationProvider: CollectionViolationProvider,
     ) : this(
         namedCollectionViolationFactoryProvider =
-            NamedCollectionViolationFactories(
+            NamedCollectionViolationFactorySet(
                 collectionViolationProvider = collectionViolationProvider,
             ),
     )

@@ -13,7 +13,7 @@ import io.github.kverify.named.rule.set.comparable.NamedComparableNotEqualToRule
 import io.github.kverify.named.violation.factory.provider.NamedComparableViolationFactoryProvider
 
 @Suppress("TooManyFunctions")
-public class NamedComparableRules(
+public class NamedComparableRuleSet(
     public val namedComparableViolationFactoryProvider: NamedComparableViolationFactoryProvider =
         NamedComparableViolationFactoryProvider.Default,
 ) : NamedComparableRuleProvider,

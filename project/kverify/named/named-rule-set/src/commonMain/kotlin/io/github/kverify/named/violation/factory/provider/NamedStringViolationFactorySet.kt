@@ -4,7 +4,7 @@ import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.violation.set.provider.StringViolationProvider
 
 @Suppress("TooManyFunctions")
-public class NamedStringViolationFactories(
+public class NamedStringViolationFactorySet(
     public val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
 ) : NamedStringViolationFactoryProvider {
     override fun namedAlphabetic(): NamedViolationFactory<String> =

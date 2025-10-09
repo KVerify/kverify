@@ -12,7 +12,7 @@ import io.github.kverify.violation.typed.set.comparable.ComparableLessThanViolat
 import io.github.kverify.violation.typed.set.comparable.ComparableNotBetweenViolation
 import io.github.kverify.violation.typed.set.comparable.ComparableNotEqualToViolation
 
-public class ComparableTypedViolations(
+public class ComparableTypedViolationSet(
     public val localization: ComparableViolationLocalizationProvider = ComparableViolationLocalizationProvider.Default,
 ) : ComparableViolationProvider {
     override fun <T : Comparable<T>> between(
@@ -152,6 +152,6 @@ public class ComparableTypedViolations(
         )
 
     public companion object {
-        public val Default: ComparableTypedViolations = ComparableTypedViolations()
+        public val Default: ComparableTypedViolationSet = ComparableTypedViolationSet()
     }
 }

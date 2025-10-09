@@ -81,6 +81,6 @@ public interface CollectionViolationProvider {
     ): Violation
 
     public companion object {
-        public val Default: CollectionViolationProvider = CollectionViolations()
+        public val Default: CollectionViolationProvider = CollectionViolationSet()
     }
 }

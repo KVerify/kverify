@@ -29,7 +29,7 @@ import io.github.kverify.named.rule.set.string.NamedStringUpperCaseRule
 import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactoryProvider
 
 @Suppress("TooManyFunctions")
-public class NamedStringRules(
+public class NamedStringRuleSet(
     public val namedStringViolationFactoryProvider: NamedStringViolationFactoryProvider =
         NamedStringViolationFactoryProvider.Default,
 ) : NamedStringRuleProvider,

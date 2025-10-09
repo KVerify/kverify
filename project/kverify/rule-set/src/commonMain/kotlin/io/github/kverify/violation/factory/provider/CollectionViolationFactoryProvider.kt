@@ -1,9 +1,6 @@
 package io.github.kverify.violation.factory.provider
 
 import io.github.kverify.core.check.ViolationFactory
-import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
-import io.github.kverify.violation.set.provider.CollectionViolationProvider
-import io.github.kverify.violation.set.provider.CollectionViolations
 
 @Suppress("TooManyFunctions")
 public interface CollectionViolationFactoryProvider {
@@ -34,7 +31,7 @@ public interface CollectionViolationFactoryProvider {
     public fun <C : Collection<*>> sizeNotBetween(sizeRange: IntRange): ViolationFactory<C>
 
     public companion object {
-        public val Default: CollectionViolationFactoryProvider = CollectionViolationFactories()
+        public val Default: CollectionViolationFactoryProvider = CollectionViolationFactorySet()
     }
 }
 

@@ -10,14 +10,14 @@ import io.github.kverify.rule.set.comparable.ComparableLessThanOrEqualToRule
 import io.github.kverify.rule.set.comparable.ComparableLessThanRule
 import io.github.kverify.rule.set.comparable.ComparableNotBetweenRule
 import io.github.kverify.rule.set.comparable.ComparableNotEqualToRule
-import io.github.kverify.violation.factory.provider.ComparableViolationFactories
 import io.github.kverify.violation.factory.provider.ComparableViolationFactoryProvider
+import io.github.kverify.violation.factory.provider.ComparableViolationFactorySet
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
-import io.github.kverify.violation.set.provider.ComparableViolations
+import io.github.kverify.violation.set.provider.ComparableViolationSet
 
 @Suppress("TooManyFunctions")
-public open class ComparableRules(
+public open class ComparableRuleSet(
     public val comparableViolationFactoryProvider: ComparableViolationFactoryProvider =
         ComparableViolationFactoryProvider.Default,
 ) : ComparableRuleProvider,
@@ -26,7 +26,7 @@ public open class ComparableRules(
         comparableViolationProvider: ComparableViolationProvider,
     ) : this(
         comparableViolationFactoryProvider =
-            ComparableViolationFactories(
+            ComparableViolationFactorySet(
                 comparableViolationProvider = comparableViolationProvider,
             ),
     )
@@ -34,7 +34,7 @@ public open class ComparableRules(
     public constructor(
         comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
     ) : this(
-        comparableViolationProvider = ComparableViolations(comparableViolationLocalizationProvider),
+        comparableViolationProvider = ComparableViolationSet(comparableViolationLocalizationProvider),
     )
 
     override fun <T : Comparable<T>> between(range: ClosedRange<T>): Rule<T> =
@@ -157,5 +157,5 @@ public open class ComparableRules(
             violationFactory = violationFactory,
         )
 
-    public companion object : ComparableRules()
+    public companion object : ComparableRuleSet()
 }

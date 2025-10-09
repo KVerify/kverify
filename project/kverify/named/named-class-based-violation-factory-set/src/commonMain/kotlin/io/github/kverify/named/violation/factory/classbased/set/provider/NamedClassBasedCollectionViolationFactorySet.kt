@@ -17,7 +17,7 @@ import io.github.kverify.named.violation.factory.classbased.set.collection.Named
 import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactoryProvider
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
-public class NamedClassBasedCollectionViolationFactories(
+public class NamedClassBasedCollectionViolationFactorySet(
     public val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
 ) : NamedCollectionViolationFactoryProvider {
     override fun <E, C : Collection<E>> namedContainsAll(elements: Collection<E>): NamedViolationFactory<C> =

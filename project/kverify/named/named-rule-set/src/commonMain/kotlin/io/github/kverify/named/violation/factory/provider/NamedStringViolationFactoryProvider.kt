@@ -1,7 +1,6 @@
 package io.github.kverify.named.violation.factory.provider
 
 import io.github.kverify.named.check.NamedViolationFactory
-import io.github.kverify.violation.set.provider.StringViolationProvider
 
 @Suppress("TooManyFunctions")
 public interface NamedStringViolationFactoryProvider {
@@ -66,6 +65,6 @@ public interface NamedStringViolationFactoryProvider {
     public fun namedUpperCase(): NamedViolationFactory<String>
 
     public companion object {
-        public val Default: NamedStringViolationFactoryProvider = NamedStringViolationFactories()
+        public val Default: NamedStringViolationFactoryProvider = NamedStringViolationFactorySet()
     }
 }

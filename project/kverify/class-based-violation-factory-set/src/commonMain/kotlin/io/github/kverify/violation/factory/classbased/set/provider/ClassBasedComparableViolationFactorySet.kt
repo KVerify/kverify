@@ -13,7 +13,7 @@ import io.github.kverify.violation.factory.provider.ComparableViolationFactoryPr
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
 @Suppress("TooManyFunctions")
-public class ClassBasedComparableViolationFactories(
+public class ClassBasedComparableViolationFactorySet(
     public val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
 ) : ComparableViolationFactoryProvider {
     override fun <T : Comparable<T>> between(range: ClosedRange<T>): ViolationFactory<T> =

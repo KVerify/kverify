@@ -52,6 +52,6 @@ public interface ComparableViolationProvider {
     ): Violation
 
     public companion object {
-        public val Default: ComparableViolationProvider = ComparableViolations()
+        public val Default: ComparableViolationProvider = ComparableViolationSet()
     }
 }

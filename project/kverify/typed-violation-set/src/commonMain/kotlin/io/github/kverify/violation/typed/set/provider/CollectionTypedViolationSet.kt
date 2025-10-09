@@ -18,7 +18,7 @@ import io.github.kverify.violation.typed.set.collection.CollectionSizeBetweenVio
 import io.github.kverify.violation.typed.set.collection.CollectionSizeNotBetweenViolation
 
 @Suppress("TooManyFunctions")
-public class CollectionTypedViolations(
+public class CollectionTypedViolationSet(
     public val localizationProvider: CollectionViolationLocalizationProvider =
         CollectionViolationLocalizationProvider.Default,
 ) : CollectionViolationProvider {
@@ -238,6 +238,6 @@ public class CollectionTypedViolations(
         )
 
     public companion object {
-        public val Default: CollectionViolationProvider = CollectionTypedViolations()
+        public val Default: CollectionViolationProvider = CollectionTypedViolationSet()
     }
 }

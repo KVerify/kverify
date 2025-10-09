@@ -3,7 +3,6 @@
 package io.github.kverify.named.violation.factory.provider
 
 import io.github.kverify.named.check.NamedViolationFactory
-import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 public interface NamedCollectionViolationFactoryProvider {
     public fun <E, C : Collection<E>> namedContainsAll(elements: Collection<E>): NamedViolationFactory<C>
@@ -33,6 +32,6 @@ public interface NamedCollectionViolationFactoryProvider {
     public fun <C : Collection<*>> namedSizeNotBetween(sizeRange: IntRange): NamedViolationFactory<C>
 
     public companion object {
-        public val Default: NamedCollectionViolationFactoryProvider = NamedCollectionViolationFactories()
+        public val Default: NamedCollectionViolationFactoryProvider = NamedCollectionViolationFactorySet()
     }
 }
