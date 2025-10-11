@@ -7,8 +7,6 @@ publish = "0.28.0"
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 vanniktech-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 
-kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
-
 [bundles]
 pluginsForBuildSrc = [
     "kotlin-gradle-plugin",
