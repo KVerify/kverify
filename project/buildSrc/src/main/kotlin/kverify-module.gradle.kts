@@ -42,6 +42,9 @@ kotlin {
 
     mingwX64()
 
+    wasmJs()
+    wasmWasi()
+
     applyDefaultHierarchyTemplate()
 
     sourceSets {
