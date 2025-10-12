@@ -34,7 +34,10 @@ public open class ComparableRuleSet(
     public constructor(
         comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
     ) : this(
-        comparableViolationProvider = ComparableViolationSet(comparableViolationLocalizationProvider),
+        comparableViolationProvider =
+            ComparableViolationSet(
+                comparableViolationLocalizationProvider = comparableViolationLocalizationProvider,
+            ),
     )
 
     override fun <T : Comparable<T>> between(range: ClosedRange<T>): Rule<T> =
