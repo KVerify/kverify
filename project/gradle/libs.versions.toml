@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.2.20"
+kotlin = "2.0.21"
 kotest = "5.9.1"
 publish = "0.28.0"
 
