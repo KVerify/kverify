@@ -17,7 +17,10 @@ import io.github.kverify.named.rule.set.collection.NamedCollectionSizeBetweenRul
 import io.github.kverify.named.rule.set.collection.NamedCollectionSizeNotBetweenRule
 import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactoryProvider
 import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactorySet
+import io.github.kverify.rule.set.provider.CollectionRuleSet
+import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
+import io.github.kverify.violation.set.provider.CollectionViolationSet
 
 @Suppress("TooManyFunctions")
 public class NamedCollectionRuleSet(
@@ -31,6 +34,15 @@ public class NamedCollectionRuleSet(
         namedCollectionViolationFactoryProvider =
             NamedCollectionViolationFactorySet(
                 collectionViolationProvider = collectionViolationProvider,
+            ),
+    )
+
+    public constructor(
+        collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider,
+    ) : this(
+        collectionViolationProvider =
+            CollectionViolationSet(
+                collectionViolationLocalizationProvider = collectionViolationLocalizationProvider,
             ),
     )
 

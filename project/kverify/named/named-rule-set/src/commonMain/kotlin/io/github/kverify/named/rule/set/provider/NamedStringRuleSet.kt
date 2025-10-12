@@ -27,6 +27,10 @@ import io.github.kverify.named.rule.set.string.NamedStringOfLengthRule
 import io.github.kverify.named.rule.set.string.NamedStringStartsWithRule
 import io.github.kverify.named.rule.set.string.NamedStringUpperCaseRule
 import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactoryProvider
+import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactorySet
+import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
+import io.github.kverify.violation.set.provider.StringViolationProvider
+import io.github.kverify.violation.set.provider.StringViolationSet
 
 @Suppress("TooManyFunctions")
 public class NamedStringRuleSet(
@@ -34,6 +38,24 @@ public class NamedStringRuleSet(
         NamedStringViolationFactoryProvider.Default,
 ) : NamedStringRuleProvider,
     NamedStringRuleWithFactoryProvider {
+    public constructor(
+        stringViolationProvider: StringViolationProvider,
+    ) : this(
+        namedStringViolationFactoryProvider =
+            NamedStringViolationFactorySet(
+                stringViolationProvider = stringViolationProvider,
+            ),
+    )
+
+    public constructor(
+        stringViolationLocalizationProvider: StringViolationLocalizationProvider,
+    ) : this(
+        stringViolationProvider =
+            StringViolationSet(
+                stringViolationLocalizationProvider = stringViolationLocalizationProvider,
+            ),
+    )
+
     override fun namedAlphabetic(): NamedRule<String> =
         NamedStringAlphabeticRule(
             violationFactory = namedStringViolationFactoryProvider.namedAlphabetic(),

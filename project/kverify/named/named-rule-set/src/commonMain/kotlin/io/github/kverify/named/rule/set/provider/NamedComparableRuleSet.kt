@@ -11,6 +11,10 @@ import io.github.kverify.named.rule.set.comparable.NamedComparableLessThanRule
 import io.github.kverify.named.rule.set.comparable.NamedComparableNotBetweenRule
 import io.github.kverify.named.rule.set.comparable.NamedComparableNotEqualToRule
 import io.github.kverify.named.violation.factory.provider.NamedComparableViolationFactoryProvider
+import io.github.kverify.named.violation.factory.provider.NamedComparableViolationFactorySet
+import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
+import io.github.kverify.violation.set.provider.ComparableViolationProvider
+import io.github.kverify.violation.set.provider.ComparableViolationSet
 
 @Suppress("TooManyFunctions")
 public class NamedComparableRuleSet(
@@ -18,6 +22,24 @@ public class NamedComparableRuleSet(
         NamedComparableViolationFactoryProvider.Default,
 ) : NamedComparableRuleProvider,
     NamedComparableRuleWithFactoryProvider {
+    public constructor(
+        comparableViolationProvider: ComparableViolationProvider,
+    ) : this(
+        namedComparableViolationFactoryProvider =
+            NamedComparableViolationFactorySet(
+                comparableViolationProvider = comparableViolationProvider,
+            ),
+    )
+
+    public constructor(
+        comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
+    ) : this(
+        comparableViolationProvider =
+            ComparableViolationSet(
+                comparableViolationLocalizationProvider = comparableViolationLocalizationProvider,
+            ),
+    )
+
     override fun <T : Comparable<T>> namedBetween(range: ClosedRange<T>): NamedRule<T> =
         NamedComparableBetweenRule(
             range = range,
