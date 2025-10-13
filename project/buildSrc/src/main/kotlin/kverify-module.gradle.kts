@@ -42,8 +42,13 @@ kotlin {
 
     mingwX64()
 
-    wasmJs()
-    wasmWasi()
+    wasmJs {
+        browser()
+        nodejs()
+    }
+    wasmWasi {
+        nodejs()
+    }
 
     applyDefaultHierarchyTemplate()
 
