@@ -109,7 +109,7 @@ public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
 /**
  * Returns `true` if `this` value does not satisfy the given [rule], stopping at the first failure.
  */
-public fun <T> T.notSatisfies(rule: Rule<T>): Boolean = !satisfies(rule)
+public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean = !satisfies(rule)
 
 /**
  * Returns `true` if `this` value does not satisfy all provided [rules], stopping at the first failure.
