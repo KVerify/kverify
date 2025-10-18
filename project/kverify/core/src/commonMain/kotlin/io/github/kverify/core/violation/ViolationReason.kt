@@ -11,7 +11,7 @@ public value class ViolationReason(
 ) : Violation
 
 /**
- * Converts a string to a [ViolationReason].
+ * Converts `this` string to a [ViolationReason].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun String.asViolationReason(): ViolationReason = ViolationReason(this)
