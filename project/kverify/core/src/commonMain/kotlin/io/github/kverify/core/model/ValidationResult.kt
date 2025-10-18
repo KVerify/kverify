@@ -74,10 +74,21 @@ public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
 /**
  * Creates a [ValidationResult.Invalid] result from a single [violation].
  */
-@Suppress("NOTHING_TO_INLINE")
-public inline fun ValidationResult(violation: Violation): ValidationResult =
+@Suppress("NOTHING_TO_INLINE", "FunctionName")
+public inline fun ValidationResult(violation: Violation): ValidationResult.Invalid =
     ValidationResult.Invalid(
         violations = listOf(violation),
+    )
+
+/**
+ * Creates a [ValidationResult] from a vararg of [violations].
+ * Returns [ValidationResult.Valid] if no violations are provided.
+ * [ValidationResult.Invalid] with the provided [violations] otherwise.
+ */
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ValidationResult(vararg violations: Violation): ValidationResult =
+    ValidationResult(
+        violations = violations.asList(),
     )
 
 /**
@@ -94,17 +105,6 @@ public inline fun ValidationResult(violations: List<Violation>): ValidationResul
             violations = violations,
         )
     }
-
-/**
- * Creates a [ValidationResult] from a vararg of [violations].
- * Returns [ValidationResult.Valid] if no violations are provided.
- * [ValidationResult.Invalid] with the provided [violations] otherwise.
- */
-@Suppress("NOTHING_TO_INLINE")
-public inline fun ValidationResult(vararg violations: Violation): ValidationResult =
-    ValidationResult(
-        violations = violations.asList(),
-    )
 
 /**
  * Merges two [ValidationResult]s into one, concatenating violations when both are invalid.
