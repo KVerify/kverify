@@ -32,6 +32,23 @@ public fun interface ValidationContext {
 
     /**
      * Applies each of the provided [rules] to `this` value within the current context and returns the value.
+     */
+    public infix fun <T> T.applyRules(rules: Iterable<Rule<T>>): T {
+        val context = this@ValidationContext
+        val value = this@applyRules
+
+        for (rule in rules) {
+            rule.runValidation(
+                context = context,
+                value = value,
+            )
+        }
+
+        return value
+    }
+
+    /**
+     * Applies each of the provided [rules] to `this` value within the current context and returns the value.
      *
      * Rules are executed in the order they are provided.
      */
@@ -48,6 +65,42 @@ public fun interface ValidationContext {
 
         return value
     }
+}
+
+/**
+ * Applies a single [rule] to `this` value within the provided [context] and returns the value.
+ */
+public fun <T> T.applyRuleUsing(
+    context: ValidationContext,
+    rule: Rule<T>,
+): T {
+    val value = this
+
+    rule.runValidation(
+        context = context,
+        value = value,
+    )
+
+    return value
+}
+
+/**
+ * Applies each of the provided [rules] to `this` value within the provided [context] and returns the value.
+ */
+public fun <T> T.applyRulesUsing(
+    context: ValidationContext,
+    rules: Iterable<Rule<T>>,
+): T {
+    val value = this
+
+    for (rule in rules) {
+        rule.runValidation(
+            context = context,
+            value = value,
+        )
+    }
+
+    return value
 }
 
 /**
