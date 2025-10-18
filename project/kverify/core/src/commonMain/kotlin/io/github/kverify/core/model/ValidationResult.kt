@@ -48,20 +48,23 @@ public sealed interface ValidationResult {
 }
 
 /**
- * Returns violations when invalid, otherwise an empty list.
+ * Returns [Violation]s when `this` result is [ValidationResult.Invalid],
+ * otherwise an empty list.
  */
-public inline val ValidationResult.violations: List<Violation>
-    get() =
-        if (this is ValidationResult.Invalid) {
-            this.violations
-        } else {
-            emptyList()
-        }
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ValidationResult.violationsOrEmpty(): List<Violation> =
+    if (this is ValidationResult.Invalid) {
+        this.violations
+    } else {
+        emptyList()
+    }
 
 /**
- * Returns violations when invalid, otherwise `null`.
+ * Returns [Violation]s when `this` result is [ValidationResult.Invalid],
+ * otherwise `null`.
  */
-public fun ValidationResult.violationsOrNull(): List<Violation>? =
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
     if (this is ValidationResult.Invalid) {
         this.violations
     } else {
@@ -79,7 +82,7 @@ public inline fun ValidationResult(violation: Violation): ValidationResult =
 
 /**
  * Creates a [ValidationResult] from a list of [violations].
- * Returns [ValidationResult.Valid] when the list is empty,
+ * Returns [ValidationResult.Valid] when the list is empty.
  * [ValidationResult.Invalid] with the provided [violations] otherwise.
  */
 @Suppress("NOTHING_TO_INLINE")
@@ -94,7 +97,7 @@ public inline fun ValidationResult(violations: List<Violation>): ValidationResul
 
 /**
  * Creates a [ValidationResult] from a vararg of [violations].
- * Returns [ValidationResult.Valid] if no violations are provided,
+ * Returns [ValidationResult.Valid] if no violations are provided.
  * [ValidationResult.Invalid] with the provided [violations] otherwise.
  */
 @Suppress("NOTHING_TO_INLINE")
@@ -236,7 +239,7 @@ public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): 
 /**
  * Throws a [ValidationException] if `this` result is invalid.
  *
- * The exception message is built from [violations] using [transform] and the provided formatting parameters.
+ * The exception message is built from [violationsOrEmpty] using [transform] and the provided formatting parameters.
  */
 @Suppress("LongParameterList")
 public fun ValidationResult.throwOnFailure(
