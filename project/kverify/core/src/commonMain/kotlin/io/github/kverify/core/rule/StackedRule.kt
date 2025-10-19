@@ -37,3 +37,27 @@ public inline fun <T> StackedRule(rule: Rule<T>): StackedRule<T> = StackedRule(l
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> StackedRule(vararg rules: Rule<T>): StackedRule<T> = StackedRule(rules.asList())
+
+/**
+ * Combines `this` [StackedRule] with another [Rule], producing a new [StackedRule]
+ * that executes all rules in sequence.
+ *
+ * If the [other] rule is itself a [StackedRule], its rules are flattened into the resulting sequence.
+ * The rules from `this` [StackedRule] are executed first, followed by the rules from [other].
+ */
+public operator fun <T> StackedRule<T>.plus(other: Rule<T>): StackedRule<T> =
+    when (other) {
+        is StackedRule<T> -> StackedRule(rules + other.rules)
+        else -> StackedRule(rules + other)
+    }
+
+/**
+ * Combines `this` [StackedRule] with another [StackedRule], producing a new [StackedRule]
+ * that executes all rules from both stacks in sequence.
+ *
+ * The rules from `this` [StackedRule] are executed first, followed by the rules from [other].
+ */
+public operator fun <T> StackedRule<T>.plus(other: StackedRule<T>): StackedRule<T> =
+    StackedRule(
+        rules + other.rules,
+    )
