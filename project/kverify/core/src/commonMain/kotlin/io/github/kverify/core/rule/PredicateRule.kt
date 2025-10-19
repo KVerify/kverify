@@ -13,10 +13,13 @@ public class PredicateRule<in T>(
     public val validationCheck: ValidationCheck<T>,
     public val violationFactory: ViolationFactory<T>,
 ) : Rule<T> {
-    override fun ValidationContext.runValidation(value: T) {
+    override fun run(
+        context: ValidationContext,
+        value: T,
+    ) {
         val isValid = validationCheck.isValid(value)
 
-        this@runValidation.failIfNot(isValid) {
+        context.failIfNot(isValid) {
             violationFactory.createViolation(value)
         }
     }

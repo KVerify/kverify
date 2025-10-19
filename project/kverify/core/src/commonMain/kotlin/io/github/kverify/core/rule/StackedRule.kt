@@ -10,10 +10,13 @@ import kotlin.jvm.JvmInline
 public value class StackedRule<in T>(
     public val rules: List<Rule<T>>,
 ) : Rule<T> {
-    override fun ValidationContext.runValidation(value: T) {
+    override fun run(
+        context: ValidationContext,
+        value: T,
+    ) {
         for (rule in rules) {
-            rule.runValidation(
-                context = this@runValidation,
+            rule.run(
+                context = context,
                 value = value,
             )
         }

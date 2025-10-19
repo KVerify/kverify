@@ -2,7 +2,6 @@ package io.github.kverify.core.context
 
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.core.rule.runValidation
 import io.github.kverify.core.violation.Violation
 
 internal object AbortValidationException : RuntimeException()
@@ -74,7 +73,7 @@ public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val context = FirstViolationValidationContext()
 
     return try {
-        rule.runValidation(
+        rule.run(
             context = context,
             value = value,
         )
@@ -94,7 +93,7 @@ public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
 
     return try {
         rules.forEach { rule ->
-            rule.runValidation(
+            rule.run(
                 context = context,
                 value = value,
             )

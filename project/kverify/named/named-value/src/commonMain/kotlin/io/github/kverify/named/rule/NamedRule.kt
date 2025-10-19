@@ -2,7 +2,6 @@ package io.github.kverify.named.rule
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.core.rule.runValidation
 import io.github.kverify.named.model.NamedValue
 import kotlin.jvm.JvmInline
 
@@ -25,8 +24,10 @@ public inline fun <T> Rule<T>.asNamedRule(): NamedRule<T> = NamedRuleAdapter(thi
 internal value class NamedRuleAdapter<T>(
     private val baseRule: Rule<T>,
 ) : NamedRule<T> {
-    override fun ValidationContext.runValidation(value: NamedValue<T>) {
-        val context = this@runValidation
-        baseRule.runValidation(context, value.value)
+    override fun run(
+        context: ValidationContext,
+        value: NamedValue<T>,
+    ) {
+        baseRule.run(context, value.value)
     }
 }
