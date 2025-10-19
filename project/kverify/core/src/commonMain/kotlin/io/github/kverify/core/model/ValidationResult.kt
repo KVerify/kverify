@@ -72,6 +72,12 @@ public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
     }
 
 /**
+ * Returns [ValidationResult.Valid].
+ */
+@Suppress("NOTHING_TO_INLINE", "FunctionName")
+public inline fun ValidationResult(): ValidationResult.Valid = ValidationResult.Valid
+
+/**
  * Creates a [ValidationResult.Invalid] result from a single [violation].
  */
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
