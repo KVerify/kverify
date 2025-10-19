@@ -48,7 +48,7 @@ public sealed interface ValidationResult {
 }
 
 /**
- * Returns [Violation]s when `this` result is [ValidationResult.Invalid],
+ * Returns list of [Violation]s when `this` result is [ValidationResult.Invalid],
  * otherwise an empty list.
  */
 @Suppress("NOTHING_TO_INLINE")
@@ -60,7 +60,7 @@ public inline fun ValidationResult.violationsOrEmpty(): List<Violation> =
     }
 
 /**
- * Returns [Violation]s when `this` result is [ValidationResult.Invalid],
+ * Returns list of [Violation]s when `this` result is [ValidationResult.Invalid],
  * otherwise `null`.
  */
 @Suppress("NOTHING_TO_INLINE")
@@ -72,7 +72,7 @@ public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
     }
 
 /**
- * Returns [ValidationResult.Valid].
+ * Always returns [ValidationResult.Valid].
  */
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
 public inline fun ValidationResult(): ValidationResult.Valid = ValidationResult.Valid
