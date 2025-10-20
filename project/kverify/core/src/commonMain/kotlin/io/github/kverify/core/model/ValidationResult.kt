@@ -4,6 +4,7 @@ package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.violation.Violation
+import kotlin.js.JsName
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmName
 
@@ -74,12 +75,14 @@ public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
 /**
  * Always returns [ValidationResult.Valid].
  */
+@JsName("ValidationResultValid")
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
 public inline fun ValidationResult(): ValidationResult.Valid = ValidationResult.Valid
 
 /**
  * Creates a [ValidationResult.Invalid] result from a single [violation].
  */
+@JsName("ValidationResultInvalidSingle")
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
 public inline fun ValidationResult(violation: Violation): ValidationResult.Invalid =
     ValidationResult.Invalid(
@@ -91,6 +94,7 @@ public inline fun ValidationResult(violation: Violation): ValidationResult.Inval
  * Returns [ValidationResult.Valid] if no violations are provided.
  * [ValidationResult.Invalid] with the provided [violations] otherwise.
  */
+@JsName("ValidationResultInvalidVararg")
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(vararg violations: Violation): ValidationResult =
     ValidationResult(
@@ -102,6 +106,7 @@ public inline fun ValidationResult(vararg violations: Violation): ValidationResu
  * Returns [ValidationResult.Valid] when the list is empty.
  * [ValidationResult.Invalid] with the provided [violations] otherwise.
  */
+@JsName("ValidationResultInvalidList")
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(violations: List<Violation>): ValidationResult =
     if (violations.isEmpty()) {
