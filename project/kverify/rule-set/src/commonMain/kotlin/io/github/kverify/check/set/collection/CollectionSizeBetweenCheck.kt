@@ -11,7 +11,7 @@ public value class CollectionSizeBetweenCheck(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionSizeBetweenCheck(
+public inline fun CollectionSizeBetweenCheck(
     minSize: Int,
     maxSize: Int,
 ): CollectionSizeBetweenCheck =
