@@ -31,6 +31,12 @@ public value class CollectionContainsAllCheck<E, C : Collection<E>>(
 }
 
 @Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsAllCheck(element: E): CollectionContainsAllCheck<E, C> =
+    CollectionContainsAllCheck(
+        elements = setOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsAllCheck(vararg elements: E): CollectionContainsAllCheck<E, C> =
     CollectionContainsAllCheck(
         elements = setOf(elements = elements),

@@ -12,6 +12,12 @@ public value class CollectionContainsNoneCheck<E, C : Collection<E>>(
 }
 
 @Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsNoneCheck(element: E): CollectionContainsNoneCheck<E, C> =
+    CollectionContainsNoneCheck(
+        elements = setOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsNoneCheck(vararg elements: E): CollectionContainsNoneCheck<E, C> =
     CollectionContainsNoneCheck(
         elements = elements.toSet(),
