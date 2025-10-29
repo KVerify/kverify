@@ -1,6 +1,7 @@
 package io.github.kverify.named.rule.set.collection
 
 import io.github.kverify.check.set.collection.CollectionContainsNoneCheck
+import io.github.kverify.core.check.ViolationFactory
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
 import io.github.kverify.named.rule.NamedRule
@@ -19,6 +20,16 @@ public class NamedCollectionContainsNoneRule<E, C : Collection<E>>(
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(
+    element: E,
+    violationFactory: NamedViolationFactory<C>,
+): NamedCollectionContainsNoneRule<E, C> =
+    NamedCollectionContainsNoneRule(
+        elements = listOf(element),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(
     vararg elements: E,
     violationFactory: NamedViolationFactory<C>,
 ): NamedCollectionContainsNoneRule<E, C> =
@@ -28,10 +39,13 @@ public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(vararg elements: E): NamedCollectionContainsNoneRule<E, C> {
-    val elementsSet = elements.toSet()
-
-    return NamedCollectionContainsNoneRule(
-        elements = elementsSet,
+public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(element: E): NamedCollectionContainsNoneRule<E, C> =
+    NamedCollectionContainsNoneRule(
+        elements = listOf(element),
     )
-}
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(vararg elements: E): NamedCollectionContainsNoneRule<E, C> =
+    NamedCollectionContainsNoneRule(
+        elements = elements.asList(),
+    )

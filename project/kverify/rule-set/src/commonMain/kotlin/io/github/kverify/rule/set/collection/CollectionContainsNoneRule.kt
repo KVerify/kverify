@@ -19,20 +19,32 @@ public class CollectionContainsNoneRule<E, C : Collection<E>>(
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(
-    vararg elements: E,
+    element: E,
     violationFactory: ViolationFactory<C>,
-): CollectionContainsNoneRule<E, C> {
-    val elementsSet = setOf(elements = elements)
-
-    return CollectionContainsNoneRule(
-        elements = elementsSet,
+): CollectionContainsNoneRule<E, C> =
+    CollectionContainsNoneRule(
+        elements = listOf(element),
         violationFactory = violationFactory,
     )
-}
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(vararg elements: E): CollectionContainsNoneRule<E, C> {
-    val elementsSet = setOf(elements = elements)
+public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(
+    vararg elements: E,
+    violationFactory: ViolationFactory<C>,
+): CollectionContainsNoneRule<E, C> =
+    CollectionContainsNoneRule(
+        elements = elements.asList(),
+        violationFactory = violationFactory,
+    )
 
-    return CollectionContainsNoneRule(elements = elementsSet)
-}
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(element: E): CollectionContainsNoneRule<E, C> =
+    CollectionContainsNoneRule(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsNoneRule(vararg elements: E): CollectionContainsNoneRule<E, C> =
+    CollectionContainsNoneRule(
+        elements = elements.asList(),
+    )

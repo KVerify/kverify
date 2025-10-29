@@ -35,3 +35,63 @@ public interface NamedCollectionViolationFactoryProvider {
         public val Default: NamedCollectionViolationFactoryProvider = NamedCollectionViolationFactorySet()
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionViolationFactoryProvider.containsAll(element: E): NamedViolationFactory<C> =
+    namedContainsAll(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionViolationFactoryProvider.namedContainsAll(
+    vararg elements: E,
+): NamedViolationFactory<C> =
+    namedContainsAll(
+        elements = elements.asList(),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionViolationFactoryProvider.namedContainsNone(element: E): NamedViolationFactory<C> =
+    namedContainsNone(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionViolationFactoryProvider.namedContainsNone(
+    vararg elements: E,
+): NamedViolationFactory<C> =
+    namedContainsNone(
+        elements = elements.asList(),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionViolationFactoryProvider.namedContainsOnly(element: E): NamedViolationFactory<C> =
+    namedContainsOnly(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> NamedCollectionViolationFactoryProvider.namedContainsOnly(
+    vararg elements: E,
+): NamedViolationFactory<C> =
+    namedContainsOnly(
+        elements = elements.asList(),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <C : Collection<*>> NamedCollectionViolationFactoryProvider.namedSizeBetween(
+    minSize: Int,
+    maxSize: Int,
+): NamedViolationFactory<C> =
+    namedSizeBetween(
+        sizeRange = minSize..maxSize,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <C : Collection<*>> NamedCollectionViolationFactoryProvider.namedSizeNotBetween(
+    minSize: Int,
+    maxSize: Int,
+): NamedViolationFactory<C> =
+    namedSizeNotBetween(
+        sizeRange = minSize..maxSize,
+    )

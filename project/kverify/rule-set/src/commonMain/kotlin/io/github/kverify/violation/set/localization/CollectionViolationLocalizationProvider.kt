@@ -82,3 +82,101 @@ public interface CollectionViolationLocalizationProvider {
         public val Default: CollectionViolationLocalizationProvider = DefaultCollectionViolationLocalizationProvider
     }
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationLocalizationProvider.containsAll(
+    value: C,
+    element: E,
+    name: String? = null,
+): String =
+    containsAll(
+        value = value,
+        elements = listOf(element),
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationLocalizationProvider.containsAll(
+    value: C,
+    vararg elements: E,
+    name: String? = null,
+): String =
+    containsAll(
+        value = value,
+        elements = elements.asList(),
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationLocalizationProvider.containsNone(
+    value: C,
+    element: E,
+    name: String? = null,
+): String =
+    containsNone(
+        value = value,
+        elements = listOf(element),
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationLocalizationProvider.containsNone(
+    value: C,
+    vararg elements: E,
+    name: String? = null,
+): String =
+    containsNone(
+        value = value,
+        elements = elements.asList(),
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationLocalizationProvider.containsOnly(
+    value: C,
+    element: E,
+    name: String? = null,
+): String =
+    containsOnly(
+        value = value,
+        elements = listOf(element),
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationLocalizationProvider.containsOnly(
+    value: C,
+    vararg elements: E,
+    name: String? = null,
+): String =
+    containsOnly(
+        value = value,
+        elements = elements.asList(),
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <C : Collection<*>> CollectionViolationLocalizationProvider.sizeBetween(
+    value: C,
+    minSize: Int,
+    maxSize: Int,
+    name: String? = null,
+): String =
+    sizeBetween(
+        value = value,
+        sizeRange = minSize..maxSize,
+        name = name,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <C : Collection<*>> CollectionViolationLocalizationProvider.sizeNotBetween(
+    value: C,
+    minSize: Int,
+    maxSize: Int,
+    name: String? = null,
+): String =
+    sizeNotBetween(
+        value = value,
+        sizeRange = minSize..maxSize,
+        name = name,
+    )

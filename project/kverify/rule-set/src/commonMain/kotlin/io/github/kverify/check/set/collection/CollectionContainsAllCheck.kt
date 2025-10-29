@@ -18,7 +18,7 @@ public value class CollectionContainsAllCheck<E, C : Collection<E>>(
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsAllCheck(element: E): CollectionContainsAllCheck<E, C> =
     CollectionContainsAllCheck(
-        elements = listOf(element),
+        elements = setOf(element),
     )
 
 @Suppress("NOTHING_TO_INLINE")

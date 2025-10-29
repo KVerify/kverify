@@ -19,20 +19,32 @@ public class CollectionContainsAllRule<E, C : Collection<E>>(
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsAllRule(
-    vararg elements: E,
+    element: E,
     violationFactory: ViolationFactory<C>,
-): CollectionContainsAllRule<E, C> {
-    val elementsSet = setOf(elements = elements)
-
-    return CollectionContainsAllRule(
-        elements = elementsSet,
+): CollectionContainsAllRule<E, C> =
+    CollectionContainsAllRule(
+        elements = listOf(element),
         violationFactory = violationFactory,
     )
-}
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsAllRule(vararg elements: E): CollectionContainsAllRule<E, C> {
-    val elementsSet = setOf(elements = elements)
+public inline fun <E, C : Collection<E>> CollectionContainsAllRule(
+    vararg elements: E,
+    violationFactory: ViolationFactory<C>,
+): CollectionContainsAllRule<E, C> =
+    CollectionContainsAllRule(
+        elements = elements.asList(),
+        violationFactory = violationFactory,
+    )
 
-    return CollectionContainsAllRule(elements = elementsSet)
-}
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsAllRule(element: E): CollectionContainsAllRule<E, C> =
+    CollectionContainsAllRule(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionContainsAllRule(vararg elements: E): CollectionContainsAllRule<E, C> =
+    CollectionContainsAllRule(
+        elements = elements.asList(),
+    )

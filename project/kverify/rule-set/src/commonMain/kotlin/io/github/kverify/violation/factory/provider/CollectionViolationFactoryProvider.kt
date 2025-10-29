@@ -35,11 +35,56 @@ public interface CollectionViolationFactoryProvider {
     }
 }
 
-public fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsAll(vararg elements: E): ViolationFactory<C> =
-    this.containsAll(elements.asList())
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsAll(element: E): ViolationFactory<C> =
+    containsAll(
+        elements = listOf(element),
+    )
 
-public fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsNone(vararg elements: E): ViolationFactory<C> =
-    this.containsNone(elements.asList())
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsAll(vararg elements: E): ViolationFactory<C> =
+    containsAll(
+        elements = elements.asList(),
+    )
 
-public fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsOnly(vararg elements: E): ViolationFactory<C> =
-    this.containsOnly(elements.asList())
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsNone(element: E): ViolationFactory<C> =
+    containsNone(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsNone(vararg elements: E): ViolationFactory<C> =
+    containsNone(
+        elements = elements.asList(),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsOnly(element: E): ViolationFactory<C> =
+    containsOnly(
+        elements = listOf(element),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <E, C : Collection<E>> CollectionViolationFactoryProvider.containsOnly(vararg elements: E): ViolationFactory<C> =
+    containsOnly(
+        elements = elements.asList(),
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <C : Collection<*>> CollectionViolationFactoryProvider.sizeBetween(
+    minSize: Int,
+    maxSize: Int,
+): ViolationFactory<C> =
+    sizeBetween(
+        sizeRange = minSize..maxSize,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <C : Collection<*>> CollectionViolationFactoryProvider.sizeNotBetween(
+    minSize: Int,
+    maxSize: Int,
+): ViolationFactory<C> =
+    sizeNotBetween(
+        sizeRange = minSize..maxSize,
+    )

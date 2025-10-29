@@ -7,7 +7,12 @@ import kotlin.jvm.JvmInline
 public value class CollectionContainsOnlyCheck<E, C : Collection<E>>(
     public val elements: Collection<E>,
 ) : ValidationCheck<C> {
-    override fun isValid(value: C): Boolean = value.all { it in elements }
+    override fun isValid(value: C): Boolean =
+        if (value.isEmpty() || elements.isEmpty()) {
+            true
+        } else {
+            elements.all { it in value }
+        }
 }
 
 @Suppress("NOTHING_TO_INLINE")
