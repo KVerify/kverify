@@ -20,5 +20,5 @@ public inline fun <E, C : Collection<E>> CollectionContainsNoneCheck(element: E)
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsNoneCheck(vararg elements: E): CollectionContainsNoneCheck<E, C> =
     CollectionContainsNoneCheck(
-        elements = elements.toSet(),
+        elements = elements.asList(),
     )

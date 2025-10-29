@@ -19,5 +19,5 @@ public inline fun <E, C : Collection<E>> CollectionContainsOnlyCheck(element: E)
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <E, C : Collection<E>> CollectionContainsOnlyCheck(vararg elements: E): CollectionContainsOnlyCheck<E, C> =
     CollectionContainsOnlyCheck(
-        elements = elements.toSet(),
+        elements = elements.asList(),
     )
