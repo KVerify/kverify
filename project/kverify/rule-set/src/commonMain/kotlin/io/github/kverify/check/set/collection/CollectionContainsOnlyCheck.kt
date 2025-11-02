@@ -14,15 +14,3 @@ public value class CollectionContainsOnlyCheck<E, C : Collection<E>>(
             elements.all { it in value }
         }
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsOnlyCheck(element: E): CollectionContainsOnlyCheck<E, C> =
-    CollectionContainsOnlyCheck(
-        elements = setOf(element),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsOnlyCheck(vararg elements: E): CollectionContainsOnlyCheck<E, C> =
-    CollectionContainsOnlyCheck(
-        elements = elements.asList(),
-    )

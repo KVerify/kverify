@@ -16,19 +16,3 @@ public class StringNotMatchesRule(
         validationCheck = StringNotMatchesCheck(regex),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotMatchesRule(
-    regexAsString: String,
-    violationFactory: ViolationFactory<String>,
-): StringNotMatchesRule =
-    StringNotMatchesRule(
-        regex = regexAsString.toRegex(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotMatchesRule(regexAsString: String): StringNotMatchesRule =
-    StringNotMatchesRule(
-        regex = regexAsString.toRegex(),
-    )

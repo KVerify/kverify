@@ -13,31 +13,3 @@ public class StringLengthNotBetweenViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringLengthNotBetweenViolation(
-    value: String,
-    minLength: Int,
-    maxLength: Int,
-    name: String? = null,
-    reason: String,
-): StringLengthNotBetweenViolation =
-    StringLengthNotBetweenViolation(
-        value = value,
-        lengthRange = minLength..maxLength,
-        name = name,
-        reason = reason,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringLengthNotBetweenViolation(
-    value: String,
-    minLength: Int,
-    maxLength: Int,
-    name: String? = null,
-): StringLengthNotBetweenViolation =
-    StringLengthNotBetweenViolation(
-        value = value,
-        lengthRange = minLength..maxLength,
-        name = name,
-    )

@@ -17,35 +17,3 @@ public class NamedCollectionContainsNoneRule<E, C : Collection<E>>(
         validationCheck = CollectionContainsNoneCheck(elements),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(
-    element: E,
-    violationFactory: NamedViolationFactory<C>,
-): NamedCollectionContainsNoneRule<E, C> =
-    NamedCollectionContainsNoneRule(
-        elements = listOf(element),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(
-    vararg elements: E,
-    violationFactory: NamedViolationFactory<C>,
-): NamedCollectionContainsNoneRule<E, C> =
-    NamedCollectionContainsNoneRule(
-        elements = elements.asList(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(element: E): NamedCollectionContainsNoneRule<E, C> =
-    NamedCollectionContainsNoneRule(
-        elements = listOf(element),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsNoneRule(vararg elements: E): NamedCollectionContainsNoneRule<E, C> =
-    NamedCollectionContainsNoneRule(
-        elements = elements.asList(),
-    )

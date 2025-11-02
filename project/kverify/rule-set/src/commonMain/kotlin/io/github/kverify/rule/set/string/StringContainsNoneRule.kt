@@ -16,19 +16,3 @@ public class StringContainsNoneRule(
         validationCheck = StringContainsNoneCheck(chars),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsNoneRule(
-    charsAsString: String,
-    violationFactory: ViolationFactory<String>,
-): StringContainsNoneRule =
-    StringContainsNoneRule(
-        chars = charsAsString.asIterable(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsNoneRule(charsAsString: String): StringContainsNoneRule =
-    StringContainsNoneRule(
-        chars = charsAsString.asIterable(),
-    )

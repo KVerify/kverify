@@ -16,19 +16,3 @@ public class StringContainsRegexRule(
         validationCheck = StringContainsRegexCheck(regex),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRegexRule(
-    stringRegex: String,
-    violationFactory: ViolationFactory<String>,
-): StringContainsRegexRule =
-    StringContainsRegexRule(
-        regex = stringRegex.toRegex(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRegexRule(stringRegex: String): StringContainsRegexRule =
-    StringContainsRegexRule(
-        regex = stringRegex.toRegex(),
-    )

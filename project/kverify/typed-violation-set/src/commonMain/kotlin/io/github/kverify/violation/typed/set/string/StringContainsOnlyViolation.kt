@@ -13,29 +13,3 @@ public class StringContainsOnlyViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyViolation(
-    value: String,
-    string: String,
-    name: String? = null,
-): StringContainsOnlyViolation =
-    StringContainsOnlyViolation(
-        value = value,
-        chars = string.asIterable(),
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyViolation(
-    value: String,
-    string: String,
-    name: String? = null,
-    reason: String,
-): StringContainsOnlyViolation =
-    StringContainsOnlyViolation(
-        value = value,
-        chars = string.asIterable(),
-        name = name,
-        reason = reason,
-    )

@@ -16,25 +16,3 @@ public class StringStartsWithViolationFactory(
             ignoreCase = ignoreCase,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringStartsWithViolationFactory(
-    prefix: Char,
-    ignoreCase: Boolean = false,
-    stringViolationProvider: StringViolationProvider,
-): StringStartsWithViolationFactory =
-    StringStartsWithViolationFactory(
-        prefix = prefix.toString(),
-        ignoreCase = ignoreCase,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringStartsWithViolationFactory(
-    prefix: Char,
-    ignoreCase: Boolean = false,
-): StringStartsWithViolationFactory =
-    StringStartsWithViolationFactory(
-        prefix = prefix.toString(),
-        ignoreCase = ignoreCase,
-    )

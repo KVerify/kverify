@@ -18,25 +18,3 @@ public class StringNotContainsRule(
         validationCheck = StringNotContainsCheck(substring, ignoreCase),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: ViolationFactory<String>,
-): StringNotContainsRule =
-    StringNotContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): StringNotContainsRule =
-    StringNotContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

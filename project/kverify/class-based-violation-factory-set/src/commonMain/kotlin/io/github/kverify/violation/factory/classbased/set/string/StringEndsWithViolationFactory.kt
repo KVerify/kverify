@@ -16,25 +16,3 @@ public class StringEndsWithViolationFactory(
             ignoreCase = ignoreCase,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithViolationFactory(
-    suffix: Char,
-    ignoreCase: Boolean = false,
-    stringViolationProvider: StringViolationProvider,
-): StringEndsWithViolationFactory =
-    StringEndsWithViolationFactory(
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithViolationFactory(
-    suffix: Char,
-    ignoreCase: Boolean = false,
-): StringEndsWithViolationFactory =
-    StringEndsWithViolationFactory(
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-    )

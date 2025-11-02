@@ -15,33 +15,3 @@ public class StringContainsViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsViolation(
-    value: String,
-    substring: Char,
-    ignoreCase: Boolean = false,
-    name: String? = null,
-): StringContainsViolation =
-    StringContainsViolation(
-        value = value,
-        substring = substring.toString(),
-        ignoreCase = ignoreCase,
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsViolation(
-    value: String,
-    substring: Char,
-    ignoreCase: Boolean = false,
-    name: String? = null,
-    reason: String,
-): StringContainsViolation =
-    StringContainsViolation(
-        value = value,
-        substring = substring.toString(),
-        ignoreCase = ignoreCase,
-        name = name,
-        reason = reason,
-    )

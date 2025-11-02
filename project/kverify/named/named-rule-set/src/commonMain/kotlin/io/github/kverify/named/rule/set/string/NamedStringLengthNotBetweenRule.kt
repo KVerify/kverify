@@ -19,23 +19,3 @@ public class NamedStringLengthNotBetweenRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringLengthNotBetweenRule(
-    minLength: Int,
-    maxLength: Int,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringLengthNotBetweenRule =
-    NamedStringLengthNotBetweenRule(
-        lengthRange = minLength..maxLength,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringLengthNotBetweenRule(
-    minLength: Int,
-    maxLength: Int,
-): NamedStringLengthNotBetweenRule =
-    NamedStringLengthNotBetweenRule(
-        lengthRange = minLength..maxLength,
-    )

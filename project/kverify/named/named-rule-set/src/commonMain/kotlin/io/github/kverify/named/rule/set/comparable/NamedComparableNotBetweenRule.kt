@@ -16,39 +16,3 @@ public class NamedComparableNotBetweenRule<T : Comparable<T>>(
         validationCheck = ComparableNotBetweenCheck(range),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> NamedComparableNotBetweenRule(
-    min: T,
-    max: T,
-    violationFactory: NamedViolationFactory<T>,
-): NamedComparableNotBetweenRule<T> =
-    NamedComparableNotBetweenRule(
-        range = min..max,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> NamedComparableNotBetweenRule(
-    min: T,
-    max: T,
-): NamedComparableNotBetweenRule<T> =
-    NamedComparableNotBetweenRule(
-        range = min..max,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> NamedComparableNotBetweenRule(
-    range: OpenEndRange<T>,
-    violationFactory: NamedViolationFactory<T>,
-): NamedComparableNotBetweenRule<T> =
-    NamedComparableNotBetweenRule(
-        range = range.start..range.endExclusive,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> NamedComparableNotBetweenRule(range: OpenEndRange<T>): NamedComparableNotBetweenRule<T> =
-    NamedComparableNotBetweenRule(
-        range = range.start..range.endExclusive,
-    )

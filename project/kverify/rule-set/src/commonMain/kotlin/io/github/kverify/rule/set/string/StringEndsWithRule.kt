@@ -18,25 +18,3 @@ public class StringEndsWithRule(
         validationCheck = StringEndsWithCheck(suffix, ignoreCase),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: ViolationFactory<String>,
-): StringEndsWithRule =
-    StringEndsWithRule(
-        suffix = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): StringEndsWithRule =
-    StringEndsWithRule(
-        suffix = char.toString(),
-        ignoreCase = ignoreCase,
-    )

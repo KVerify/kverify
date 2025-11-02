@@ -16,25 +16,3 @@ public class StringContainsViolationFactory(
             ignoreCase = ignoreCase,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsViolationFactory(
-    char: Char,
-    ignoreCase: Boolean = false,
-    stringViolationProvider: StringViolationProvider,
-): StringContainsViolationFactory =
-    StringContainsViolationFactory(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsViolationFactory(
-    char: Char,
-    ignoreCase: Boolean = false,
-): StringContainsViolationFactory =
-    StringContainsViolationFactory(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

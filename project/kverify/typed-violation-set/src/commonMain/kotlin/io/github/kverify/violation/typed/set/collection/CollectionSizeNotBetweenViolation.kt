@@ -14,31 +14,3 @@ public data class CollectionSizeNotBetweenViolation<C : Collection<*>>(
             name = name,
         ),
 ) : TypedViolation<C>
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> CollectionSizeNotBetweenViolation(
-    value: C,
-    minSize: Int,
-    maxSize: Int,
-    name: String? = null,
-    reason: String,
-): CollectionSizeNotBetweenViolation<C> =
-    CollectionSizeNotBetweenViolation(
-        value = value,
-        sizeRange = minSize..maxSize,
-        name = name,
-        reason = reason,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> CollectionSizeNotBetweenViolation(
-    value: C,
-    minSize: Int,
-    maxSize: Int,
-    name: String? = null,
-): CollectionSizeNotBetweenViolation<C> =
-    CollectionSizeNotBetweenViolation(
-        value = value,
-        sizeRange = minSize..maxSize,
-        name = name,
-    )

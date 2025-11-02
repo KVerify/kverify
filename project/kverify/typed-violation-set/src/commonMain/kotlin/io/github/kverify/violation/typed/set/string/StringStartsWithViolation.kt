@@ -15,33 +15,3 @@ public data class StringStartsWithViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringStartsWithViolation(
-    value: String,
-    prefix: Char,
-    ignoreCase: Boolean = false,
-    name: String? = null,
-): StringStartsWithViolation =
-    StringStartsWithViolation(
-        value = value,
-        prefix = prefix.toString(),
-        ignoreCase = ignoreCase,
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringStartsWithViolation(
-    value: String,
-    prefix: Char,
-    ignoreCase: Boolean = false,
-    name: String? = null,
-    reason: String,
-): StringStartsWithViolation =
-    StringStartsWithViolation(
-        value = value,
-        prefix = prefix.toString(),
-        ignoreCase = ignoreCase,
-        name = name,
-        reason = reason,
-    )

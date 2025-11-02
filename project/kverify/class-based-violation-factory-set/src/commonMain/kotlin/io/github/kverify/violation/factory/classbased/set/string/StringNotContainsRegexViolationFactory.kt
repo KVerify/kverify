@@ -14,19 +14,3 @@ public class StringNotContainsRegexViolationFactory(
             regex = regex,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotContainsRegexViolationFactory(
-    stringRegex: String,
-    stringViolationProvider: StringViolationProvider,
-): StringNotContainsRegexViolationFactory =
-    StringNotContainsRegexViolationFactory(
-        regex = stringRegex.toRegex(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotContainsRegexViolationFactory(stringRegex: String): StringNotContainsRegexViolationFactory =
-    StringNotContainsRegexViolationFactory(
-        regex = stringRegex.toRegex(),
-    )

@@ -16,21 +16,3 @@ public class NamedCollectionContainsOnlyViolationFactory<E, C : Collection<E>>(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsOnlyViolationFactory(
-    vararg elements: E,
-    collectionViolationProvider: CollectionViolationProvider,
-): NamedCollectionContainsOnlyViolationFactory<E, C> =
-    NamedCollectionContainsOnlyViolationFactory(
-        elements = elements.toSet(),
-        collectionViolationProvider = collectionViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsOnlyViolationFactory(
-    vararg elements: E,
-): NamedCollectionContainsOnlyViolationFactory<E, C> =
-    NamedCollectionContainsOnlyViolationFactory(
-        elements = elements.toSet(),
-    )

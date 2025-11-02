@@ -15,29 +15,3 @@ public data class CollectionContainsAllViolation<E, C : Collection<E>>(
             name = name,
         ),
 ) : TypedViolation<C>
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsAllViolation(
-    value: C,
-    vararg elements: E,
-    name: String? = null,
-): CollectionContainsAllViolation<E, C> =
-    CollectionContainsAllViolation(
-        value = value,
-        elements = elements.asList(),
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsAllViolation(
-    value: C,
-    vararg elements: E,
-    name: String? = null,
-    reason: String,
-): CollectionContainsAllViolation<E, C> =
-    CollectionContainsAllViolation(
-        value = value,
-        elements = elements.asList(),
-        name = name,
-        reason = reason,
-    )

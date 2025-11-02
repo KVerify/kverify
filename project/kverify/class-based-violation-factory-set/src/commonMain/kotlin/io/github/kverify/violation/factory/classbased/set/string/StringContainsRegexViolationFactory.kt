@@ -14,19 +14,3 @@ public class StringContainsRegexViolationFactory(
             regex = regex,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRegexViolationFactory(
-    stringRegex: String,
-    stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
-): StringContainsRegexViolationFactory =
-    StringContainsRegexViolationFactory(
-        regex = stringRegex.toRegex(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRegexViolationFactory(stringRegex: String): StringContainsRegexViolationFactory =
-    StringContainsRegexViolationFactory(
-        regex = stringRegex.toRegex(),
-    )

@@ -16,35 +16,3 @@ public class NamedCollectionContainsAllRule<E, C : Collection<E>>(
         validationCheck = CollectionContainsAllCheck(elements),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsAllRule(
-    element: E,
-    violationFactory: NamedViolationFactory<C>,
-): NamedCollectionContainsAllRule<E, C> =
-    NamedCollectionContainsAllRule(
-        elements = listOf(element),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsAllRule(
-    vararg elements: E,
-    violationFactory: NamedViolationFactory<C>,
-): NamedCollectionContainsAllRule<E, C> =
-    NamedCollectionContainsAllRule(
-        elements = elements.asList(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsAllRule(element: E): NamedCollectionContainsAllRule<E, C> =
-    NamedCollectionContainsAllRule(
-        elements = listOf(element),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> NamedCollectionContainsAllRule(vararg elements: E): NamedCollectionContainsAllRule<E, C> =
-    NamedCollectionContainsAllRule(
-        elements = elements.asList(),
-    )

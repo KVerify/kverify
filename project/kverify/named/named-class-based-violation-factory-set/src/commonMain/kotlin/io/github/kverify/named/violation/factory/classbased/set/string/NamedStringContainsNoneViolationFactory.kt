@@ -16,35 +16,3 @@ public class NamedStringContainsNoneViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsNoneViolationFactory(
-    vararg chars: Char,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringContainsNoneViolationFactory =
-    NamedStringContainsNoneViolationFactory(
-        chars = chars.toSet(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsNoneViolationFactory(vararg chars: Char): NamedStringContainsNoneViolationFactory =
-    NamedStringContainsNoneViolationFactory(
-        chars = chars.toSet(),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsNoneViolationFactory(
-    string: String,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringContainsNoneViolationFactory =
-    NamedStringContainsNoneViolationFactory(
-        chars = string.asIterable(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsNoneViolationFactory(string: String): NamedStringContainsNoneViolationFactory =
-    NamedStringContainsNoneViolationFactory(
-        chars = string.asIterable(),
-    )

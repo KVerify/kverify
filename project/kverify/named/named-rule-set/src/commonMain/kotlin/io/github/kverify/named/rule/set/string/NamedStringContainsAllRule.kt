@@ -19,35 +19,3 @@ public class NamedStringContainsAllRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsAllRule(
-    vararg chars: Char,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringContainsAllRule =
-    NamedStringContainsAllRule(
-        chars = chars.asList(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsAllRule(vararg chars: Char): NamedStringContainsAllRule =
-    NamedStringContainsAllRule(
-        chars = chars.asList(),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsAllRule(
-    string: String,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringContainsAllRule =
-    NamedStringContainsAllRule(
-        chars = string.asIterable(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsAllRule(string: String): NamedStringContainsAllRule =
-    NamedStringContainsAllRule(
-        chars = string.asIterable(),
-    )

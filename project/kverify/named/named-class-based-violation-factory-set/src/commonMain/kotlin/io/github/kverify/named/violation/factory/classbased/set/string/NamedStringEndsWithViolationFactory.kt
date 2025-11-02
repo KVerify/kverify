@@ -18,25 +18,3 @@ public class NamedStringEndsWithViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringEndsWithViolationFactory(
-    suffix: Char,
-    ignoreCase: Boolean = false,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringEndsWithViolationFactory =
-    NamedStringEndsWithViolationFactory(
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringEndsWithViolationFactory(
-    suffix: Char,
-    ignoreCase: Boolean = false,
-): NamedStringEndsWithViolationFactory =
-    NamedStringEndsWithViolationFactory(
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-    )

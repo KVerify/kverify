@@ -13,29 +13,3 @@ public class StringMatchesViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringMatchesViolation(
-    value: String,
-    stringRegex: String,
-    name: String? = null,
-): StringMatchesViolation =
-    StringMatchesViolation(
-        value = value,
-        regex = stringRegex.toRegex(),
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringMatchesViolation(
-    value: String,
-    stringRegex: String,
-    name: String? = null,
-    reason: String,
-): StringMatchesViolation =
-    StringMatchesViolation(
-        value = value,
-        regex = stringRegex.toRegex(),
-        name = name,
-        reason = reason,
-    )

@@ -19,23 +19,3 @@ public class NamedStringLengthBetweenRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringLengthBetweenRule(
-    minLength: Int,
-    maxLength: Int,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringLengthBetweenRule =
-    NamedStringLengthBetweenRule(
-        lengthRange = minLength..maxLength,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringLengthBetweenRule(
-    minLength: Int,
-    maxLength: Int,
-): NamedStringLengthBetweenRule =
-    NamedStringLengthBetweenRule(
-        lengthRange = minLength..maxLength,
-    )

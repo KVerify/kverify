@@ -19,19 +19,3 @@ public class NamedStringNotMatchesRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotMatchesRule(
-    stringRegex: String,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringNotMatchesRule =
-    NamedStringNotMatchesRule(
-        regex = stringRegex.toRegex(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotMatchesRule(stringRegex: String): NamedStringNotMatchesRule =
-    NamedStringNotMatchesRule(
-        regex = stringRegex.toRegex(),
-    )

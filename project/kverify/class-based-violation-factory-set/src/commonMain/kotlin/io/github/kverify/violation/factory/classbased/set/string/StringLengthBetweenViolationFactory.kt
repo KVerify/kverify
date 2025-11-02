@@ -14,23 +14,3 @@ public class StringLengthBetweenViolationFactory(
             lengthRange = lengthRange,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringLengthBetweenViolationFactory(
-    minLength: Int,
-    maxLength: Int,
-    stringViolationProvider: StringViolationProvider,
-): StringLengthBetweenViolationFactory =
-    StringLengthBetweenViolationFactory(
-        lengthRange = minLength..maxLength,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringLengthBetweenViolationFactory(
-    minLength: Int,
-    maxLength: Int,
-): StringLengthBetweenViolationFactory =
-    StringLengthBetweenViolationFactory(
-        lengthRange = minLength..maxLength,
-    )

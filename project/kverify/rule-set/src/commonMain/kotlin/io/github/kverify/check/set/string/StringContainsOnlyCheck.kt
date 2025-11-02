@@ -9,15 +9,3 @@ public value class StringContainsOnlyCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = value.all { it in chars }
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyCheck(vararg chars: Char): StringContainsOnlyCheck =
-    StringContainsOnlyCheck(
-        chars = chars.asList(),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyCheck(string: String): StringContainsOnlyCheck =
-    StringContainsOnlyCheck(
-        chars = string.asIterable(),
-    )

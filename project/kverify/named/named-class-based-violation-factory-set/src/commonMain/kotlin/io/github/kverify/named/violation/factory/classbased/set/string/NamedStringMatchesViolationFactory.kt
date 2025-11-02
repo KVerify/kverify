@@ -16,19 +16,3 @@ public class NamedStringMatchesViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringMatchesViolationFactory(
-    stringRegex: String,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringMatchesViolationFactory =
-    NamedStringMatchesViolationFactory(
-        regex = stringRegex.toRegex(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringMatchesViolationFactory(stringRegex: String): NamedStringMatchesViolationFactory =
-    NamedStringMatchesViolationFactory(
-        regex = stringRegex.toRegex(),
-    )

@@ -22,25 +22,3 @@ public class NamedStringStartsWithRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringStartsWithRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringStartsWithRule =
-    NamedStringStartsWithRule(
-        prefix = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringStartsWithRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): NamedStringStartsWithRule =
-    NamedStringStartsWithRule(
-        prefix = char.toString(),
-        ignoreCase = ignoreCase,
-    )

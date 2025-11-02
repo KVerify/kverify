@@ -22,25 +22,3 @@ public class NamedStringNotContainsRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringNotContainsRule =
-    NamedStringNotContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): NamedStringNotContainsRule =
-    NamedStringNotContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

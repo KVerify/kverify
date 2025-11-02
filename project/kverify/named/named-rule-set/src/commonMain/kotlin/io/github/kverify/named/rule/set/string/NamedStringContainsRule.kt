@@ -22,25 +22,3 @@ public class NamedStringContainsRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringContainsRule =
-    NamedStringContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): NamedStringContainsRule =
-    NamedStringContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

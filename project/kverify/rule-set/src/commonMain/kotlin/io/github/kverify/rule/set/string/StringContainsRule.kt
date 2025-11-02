@@ -18,25 +18,3 @@ public class StringContainsRule(
         validationCheck = StringContainsCheck(substring, ignoreCase),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: ViolationFactory<String>,
-): StringContainsRule =
-    StringContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): StringContainsRule =
-    StringContainsRule(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

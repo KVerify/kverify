@@ -18,25 +18,3 @@ public class NamedStringStartsWithViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringStartsWithViolationFactory(
-    prefix: Char,
-    ignoreCase: Boolean = false,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringStartsWithViolationFactory =
-    NamedStringStartsWithViolationFactory(
-        prefix = prefix.toString(),
-        ignoreCase = ignoreCase,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringStartsWithViolationFactory(
-    prefix: Char,
-    ignoreCase: Boolean = false,
-): NamedStringStartsWithViolationFactory =
-    NamedStringStartsWithViolationFactory(
-        prefix = prefix.toString(),
-        ignoreCase = ignoreCase,
-    )

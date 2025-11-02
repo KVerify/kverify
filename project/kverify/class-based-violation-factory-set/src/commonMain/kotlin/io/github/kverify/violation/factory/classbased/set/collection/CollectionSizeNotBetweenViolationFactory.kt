@@ -14,23 +14,3 @@ public class CollectionSizeNotBetweenViolationFactory<C : Collection<*>>(
             sizeRange = sizeRange,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> CollectionSizeNotBetweenViolationFactory(
-    minSize: Int,
-    maxSize: Int,
-    collectionViolationProvider: CollectionViolationProvider,
-): CollectionSizeNotBetweenViolationFactory<C> =
-    CollectionSizeNotBetweenViolationFactory(
-        sizeRange = minSize..maxSize,
-        collectionViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> CollectionSizeNotBetweenViolationFactory(
-    minSize: Int,
-    maxSize: Int,
-): CollectionSizeNotBetweenViolationFactory<C> =
-    CollectionSizeNotBetweenViolationFactory(
-        sizeRange = minSize..maxSize,
-    )

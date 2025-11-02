@@ -8,13 +8,3 @@ public class StringEndsWithCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = value.endsWith(suffix, ignoreCase)
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithCheck(
-    suffix: Char,
-    ignoreCase: Boolean = false,
-): StringEndsWithCheck =
-    StringEndsWithCheck(
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-    )

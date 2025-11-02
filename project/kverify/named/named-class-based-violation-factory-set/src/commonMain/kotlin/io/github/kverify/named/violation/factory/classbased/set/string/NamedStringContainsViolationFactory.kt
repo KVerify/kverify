@@ -18,25 +18,3 @@ public class NamedStringContainsViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsViolationFactory(
-    char: Char,
-    ignoreCase: Boolean = false,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringContainsViolationFactory =
-    NamedStringContainsViolationFactory(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringContainsViolationFactory(
-    char: Char,
-    ignoreCase: Boolean = false,
-): NamedStringContainsViolationFactory =
-    NamedStringContainsViolationFactory(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

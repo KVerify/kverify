@@ -16,19 +16,3 @@ public class StringContainsAllRule(
         validationCheck = StringContainsAllCheck(chars),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsAllRule(
-    charsAsString: String,
-    violationGenerator: ViolationFactory<String>,
-): StringContainsAllRule =
-    StringContainsAllRule(
-        chars = charsAsString.asIterable(),
-        violationFactory = violationGenerator,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsAllRule(charsAsString: String): StringContainsAllRule =
-    StringContainsAllRule(
-        chars = charsAsString.asIterable(),
-    )

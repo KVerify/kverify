@@ -14,19 +14,3 @@ public class StringNotMatchesViolationFactory(
             regex = regex,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotMatchesViolationFactory(
-    stringRegex: String,
-    stringViolationProvider: StringViolationProvider,
-): StringNotMatchesViolationFactory =
-    StringNotMatchesViolationFactory(
-        regex = stringRegex.toRegex(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotMatchesViolationFactory(stringRegex: String): StringNotMatchesViolationFactory =
-    StringNotMatchesViolationFactory(
-        regex = stringRegex.toRegex(),
-    )

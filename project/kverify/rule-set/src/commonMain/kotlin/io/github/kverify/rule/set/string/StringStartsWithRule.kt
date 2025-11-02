@@ -18,25 +18,3 @@ public class StringStartsWithRule(
         validationCheck = StringStartsWithCheck(prefix, ignoreCase),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringStartsWithRule(
-    prefixChar: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: ViolationFactory<String>,
-): StringStartsWithRule =
-    StringStartsWithRule(
-        prefix = prefixChar.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringStartsWithRule(
-    prefixChar: Char,
-    ignoreCase: Boolean = false,
-): StringStartsWithRule =
-    StringStartsWithRule(
-        prefix = prefixChar.toString(),
-        ignoreCase = ignoreCase,
-    )

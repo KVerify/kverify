@@ -14,35 +14,3 @@ public class StringContainsOnlyViolationFactory(
             chars = chars,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyViolationFactory(
-    vararg chars: Char,
-    stringViolationProvider: StringViolationProvider,
-): StringContainsOnlyViolationFactory =
-    StringContainsOnlyViolationFactory(
-        chars = chars.toSet(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyViolationFactory(vararg chars: Char): StringContainsOnlyViolationFactory =
-    StringContainsOnlyViolationFactory(
-        chars = chars.toSet(),
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyViolationFactory(
-    string: String,
-    stringViolationProvider: StringViolationProvider,
-): StringContainsOnlyViolationFactory =
-    StringContainsOnlyViolationFactory(
-        chars = string.asIterable(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsOnlyViolationFactory(string: String): StringContainsOnlyViolationFactory =
-    StringContainsOnlyViolationFactory(
-        chars = string.asIterable(),
-    )

@@ -14,39 +14,3 @@ public class ComparableBetweenViolationFactory<T : Comparable<T>>(
             range = range,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(
-    range: OpenEndRange<T>,
-    comparableViolationProvider: ComparableViolationProvider,
-): ComparableBetweenViolationFactory<T> =
-    ComparableBetweenViolationFactory(
-        range = range.start..range.endExclusive,
-        comparableViolationProvider = comparableViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(range: OpenEndRange<T>): ComparableBetweenViolationFactory<T> =
-    ComparableBetweenViolationFactory(
-        range = range.start..range.endExclusive,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(
-    min: T,
-    max: T,
-    comparableViolationProvider: ComparableViolationProvider,
-): ComparableBetweenViolationFactory<T> =
-    ComparableBetweenViolationFactory(
-        range = min..max,
-        comparableViolationProvider = comparableViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> ComparableBetweenViolationFactory(
-    min: T,
-    max: T,
-): ComparableBetweenViolationFactory<T> =
-    ComparableBetweenViolationFactory(
-        range = min..max,
-    )

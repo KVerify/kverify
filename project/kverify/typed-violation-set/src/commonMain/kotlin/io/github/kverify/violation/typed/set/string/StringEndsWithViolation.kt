@@ -15,33 +15,3 @@ public data class StringEndsWithViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithViolation(
-    value: String,
-    suffix: Char,
-    ignoreCase: Boolean = false,
-    name: String? = null,
-): StringEndsWithViolation =
-    StringEndsWithViolation(
-        value = value,
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringEndsWithViolation(
-    value: String,
-    suffix: Char,
-    ignoreCase: Boolean = false,
-    name: String? = null,
-    reason: String,
-): StringEndsWithViolation =
-    StringEndsWithViolation(
-        value = value,
-        suffix = suffix.toString(),
-        ignoreCase = ignoreCase,
-        name = name,
-        reason = reason,
-    )

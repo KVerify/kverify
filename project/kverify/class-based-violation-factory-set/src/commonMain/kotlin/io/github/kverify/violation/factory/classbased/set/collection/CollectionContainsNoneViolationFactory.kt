@@ -14,21 +14,3 @@ public class CollectionContainsNoneViolationFactory<E, C : Collection<E>>(
             elements = elements,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsNoneViolationFactory(
-    vararg elements: E,
-    collectionViolationProvider: CollectionViolationProvider,
-): CollectionContainsNoneViolationFactory<E, C> =
-    CollectionContainsNoneViolationFactory(
-        elements = elements.toSet(),
-        collectionViolationProvider = collectionViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <E, C : Collection<E>> CollectionContainsNoneViolationFactory(
-    vararg elements: E,
-): CollectionContainsNoneViolationFactory<E, C> =
-    CollectionContainsNoneViolationFactory(
-        elements = elements.toSet(),
-    )

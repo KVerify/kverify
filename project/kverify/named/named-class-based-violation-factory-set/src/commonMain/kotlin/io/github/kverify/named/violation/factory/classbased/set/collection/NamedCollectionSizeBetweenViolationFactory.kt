@@ -16,23 +16,3 @@ public class NamedCollectionSizeBetweenViolationFactory<C : Collection<*>>(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> NamedCollectionSizeBetweenViolationFactory(
-    minSize: Int,
-    maxSize: Int,
-    collectionViolationProvider: CollectionViolationProvider,
-): NamedCollectionSizeBetweenViolationFactory<C> =
-    NamedCollectionSizeBetweenViolationFactory(
-        sizeRange = minSize..maxSize,
-        collectionViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> NamedCollectionSizeBetweenViolationFactory(
-    minSize: Int,
-    maxSize: Int,
-): NamedCollectionSizeBetweenViolationFactory<C> =
-    NamedCollectionSizeBetweenViolationFactory(
-        sizeRange = minSize..maxSize,
-    )

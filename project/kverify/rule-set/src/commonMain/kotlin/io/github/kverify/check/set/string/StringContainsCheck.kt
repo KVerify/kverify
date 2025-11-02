@@ -8,13 +8,3 @@ public class StringContainsCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = value.contains(substring, ignoreCase)
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsCheck(
-    char: Char,
-    ignoreCase: Boolean = false,
-): StringContainsCheck =
-    StringContainsCheck(
-        substring = char.toString(),
-        ignoreCase = ignoreCase,
-    )

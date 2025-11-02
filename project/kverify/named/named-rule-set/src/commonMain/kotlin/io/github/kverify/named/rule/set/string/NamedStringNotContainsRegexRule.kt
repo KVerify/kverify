@@ -19,19 +19,3 @@ public class NamedStringNotContainsRegexRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotContainsRegexRule(
-    stringRegex: String,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringNotContainsRegexRule =
-    NamedStringNotContainsRegexRule(
-        regex = stringRegex.toRegex(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotContainsRegexRule(stringRegex: String): NamedStringNotContainsRegexRule =
-    NamedStringNotContainsRegexRule(
-        regex = stringRegex.toRegex(),
-    )

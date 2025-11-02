@@ -13,29 +13,3 @@ public class StringContainsRegexViolation(
             name = name,
         ),
 ) : TypedStringViolation
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRegexViolation(
-    value: String,
-    stringRegex: String,
-    name: String? = null,
-): StringContainsRegexViolation =
-    StringContainsRegexViolation(
-        value = value,
-        regex = stringRegex.toRegex(),
-        name = name,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringContainsRegexViolation(
-    value: String,
-    stringRegex: String,
-    name: String? = null,
-    reason: String,
-): StringContainsRegexViolation =
-    StringContainsRegexViolation(
-        value = value,
-        regex = stringRegex.toRegex(),
-        name = name,
-        reason = reason,
-    )

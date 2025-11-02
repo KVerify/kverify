@@ -16,23 +16,3 @@ public class NamedStringLengthBetweenViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringLengthBetweenViolationFactory(
-    minLength: Int,
-    maxLength: Int,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringLengthBetweenViolationFactory =
-    NamedStringLengthBetweenViolationFactory(
-        lengthRange = minLength..maxLength,
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringLengthBetweenViolationFactory(
-    minLength: Int,
-    maxLength: Int,
-): NamedStringLengthBetweenViolationFactory =
-    NamedStringLengthBetweenViolationFactory(
-        lengthRange = minLength..maxLength,
-    )

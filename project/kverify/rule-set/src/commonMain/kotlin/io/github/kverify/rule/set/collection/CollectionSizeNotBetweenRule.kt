@@ -16,12 +16,3 @@ public class CollectionSizeNotBetweenRule<C : Collection<*>>(
         validationCheck = CollectionSizeNotBetweenCheck(sizeRange),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <C : Collection<*>> CollectionSizeNotBetweenRule(
-    minSize: Int,
-    maxSize: Int,
-): CollectionSizeNotBetweenRule<C> =
-    CollectionSizeNotBetweenRule(
-        sizeRange = minSize..maxSize,
-    )

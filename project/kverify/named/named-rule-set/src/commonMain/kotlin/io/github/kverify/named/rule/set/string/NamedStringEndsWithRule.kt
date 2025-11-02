@@ -22,25 +22,3 @@ public class NamedStringEndsWithRule(
             ),
         violationFactory = violationFactory,
     )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringEndsWithRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-    violationFactory: NamedViolationFactory<String>,
-): NamedStringEndsWithRule =
-    NamedStringEndsWithRule(
-        suffix = char.toString(),
-        ignoreCase = ignoreCase,
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringEndsWithRule(
-    char: Char,
-    ignoreCase: Boolean = false,
-): NamedStringEndsWithRule =
-    NamedStringEndsWithRule(
-        suffix = char.toString(),
-        ignoreCase = ignoreCase,
-    )

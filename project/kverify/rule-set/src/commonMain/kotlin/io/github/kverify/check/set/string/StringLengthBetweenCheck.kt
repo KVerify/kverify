@@ -9,12 +9,3 @@ public value class StringLengthBetweenCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = value.length in lengthRange
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringLengthBetweenCheck(
-    minLength: Int,
-    maxLength: Int,
-): StringLengthBetweenCheck =
-    StringLengthBetweenCheck(
-        lengthRange = minLength..maxLength,
-    )

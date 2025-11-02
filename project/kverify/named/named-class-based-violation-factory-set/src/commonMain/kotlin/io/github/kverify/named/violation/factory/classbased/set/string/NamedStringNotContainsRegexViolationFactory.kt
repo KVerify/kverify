@@ -16,19 +16,3 @@ public class NamedStringNotContainsRegexViolationFactory(
             name = value.name,
         )
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotContainsRegexViolationFactory(
-    stringRegex: String,
-    stringViolationProvider: StringViolationProvider,
-): NamedStringNotContainsRegexViolationFactory =
-    NamedStringNotContainsRegexViolationFactory(
-        regex = stringRegex.toRegex(),
-        stringViolationProvider = stringViolationProvider,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NamedStringNotContainsRegexViolationFactory(stringRegex: String): NamedStringNotContainsRegexViolationFactory =
-    NamedStringNotContainsRegexViolationFactory(
-        regex = stringRegex.toRegex(),
-    )

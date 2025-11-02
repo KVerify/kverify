@@ -9,9 +9,3 @@ public value class StringNotMatchesCheck(
 ) : ValidationCheck<String> {
     override fun isValid(value: String): Boolean = !value.matches(regex)
 }
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringNotMatchesCheck(stringRegex: String): StringNotMatchesCheck =
-    StringNotMatchesCheck(
-        regex = stringRegex.toRegex(),
-    )
