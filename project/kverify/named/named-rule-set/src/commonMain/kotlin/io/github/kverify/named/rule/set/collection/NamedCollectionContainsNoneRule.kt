@@ -1,7 +1,6 @@
 package io.github.kverify.named.rule.set.collection
 
 import io.github.kverify.check.set.collection.CollectionContainsNoneCheck
-import io.github.kverify.core.check.ViolationFactory
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
 import io.github.kverify.named.rule.NamedRule

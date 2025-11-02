@@ -1,4 +1,4 @@
-package io.github.kverify.core.check
+package io.github.kverify.core.rule.predicate.check
 
 import kotlin.jvm.JvmInline
 

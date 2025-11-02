@@ -1,4 +1,4 @@
-package io.github.kverify.core.check
+package io.github.kverify.core.rule.predicate
 
 import io.github.kverify.core.violation.Violation
 

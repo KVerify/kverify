@@ -1,9 +1,9 @@
-package io.github.kverify.core.rule
+package io.github.kverify.core.rule.predicate
 
-import io.github.kverify.core.check.ValidationCheck
-import io.github.kverify.core.check.ViolationFactory
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.failIfNot
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.predicate.check.ValidationCheck
 
 /**
  * Rule that checks a value using a [validationCheck]

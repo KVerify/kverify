@@ -1,6 +1,6 @@
 package io.github.kverify.rule.set.provider
 
-import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.rule.set.comparable.ComparableBetweenRule
 import io.github.kverify.rule.set.comparable.ComparableEqualToRule

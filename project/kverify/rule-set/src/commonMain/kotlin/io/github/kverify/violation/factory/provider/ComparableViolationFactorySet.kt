@@ -1,6 +1,6 @@
 package io.github.kverify.violation.factory.provider
 
-import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationSet

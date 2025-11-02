@@ -1,6 +1,6 @@
 package io.github.kverify.violation.factory.classbased.set.provider
 
-import io.github.kverify.core.check.ViolationFactory
+import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.factory.classbased.set.comparable.ComparableBetweenViolationFactory
 import io.github.kverify.violation.factory.classbased.set.comparable.ComparableEqualToViolationFactory
 import io.github.kverify.violation.factory.classbased.set.comparable.ComparableGreaterThanOrEqualToViolationFactory
