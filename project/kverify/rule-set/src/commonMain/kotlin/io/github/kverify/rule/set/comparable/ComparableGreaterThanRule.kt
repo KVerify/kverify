@@ -1,9 +1,9 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.check.set.comparable.ComparableGreaterThanCheck
-import io.github.kverify.core.rule.predicate.ViolationFactory
-import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.predicate.PredicateRule
+import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.factory.provider.ComparableViolationFactoryProvider
 
 public class ComparableGreaterThanRule<T : Comparable<T>>(

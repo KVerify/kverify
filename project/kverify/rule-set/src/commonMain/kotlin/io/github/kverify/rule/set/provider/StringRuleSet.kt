@@ -1,7 +1,7 @@
 package io.github.kverify.rule.set.provider
 
-import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.rule.set.string.StringAlphabeticRule
 import io.github.kverify.rule.set.string.StringAlphanumericRule
 import io.github.kverify.rule.set.string.StringContainsAllRule

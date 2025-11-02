@@ -1,7 +1,7 @@
 package io.github.kverify.rule.set.provider
 
-import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.rule.set.collection.CollectionContainsAllRule
 import io.github.kverify.rule.set.collection.CollectionContainsNoneRule
 import io.github.kverify.rule.set.collection.CollectionContainsOnlyRule

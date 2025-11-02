@@ -2,7 +2,6 @@ package io.github.kverify.violation.typed.set.comparable
 
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.typed.set.TypedViolation
-import io.github.kverify.violation.typed.set.comparable.ComparableNotBetweenViolation
 
 public data class ComparableNotBetweenViolation<T : Comparable<T>>(
     override val value: T,

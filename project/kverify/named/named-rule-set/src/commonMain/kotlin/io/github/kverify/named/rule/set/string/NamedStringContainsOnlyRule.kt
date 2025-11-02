@@ -1,6 +1,5 @@
 package io.github.kverify.named.rule.set.string
 
-import io.github.kverify.check.set.string.StringContainsNoneCheck
 import io.github.kverify.check.set.string.StringContainsOnlyCheck
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule

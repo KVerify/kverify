@@ -2,7 +2,6 @@ package io.github.kverify.violation.typed.set.collection
 
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 import io.github.kverify.violation.typed.set.TypedViolation
-import kotlin.jvm.JvmName
 
 public data class CollectionContainsAllViolation<E, C : Collection<E>>(
     override val value: C,

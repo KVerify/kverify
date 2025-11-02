@@ -2,7 +2,6 @@ package io.github.kverify.violation.typed.set.comparable
 
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.typed.set.TypedViolation
-import kotlin.jvm.JvmInline
 
 public data class ComparableBetweenViolation<T : Comparable<T>>(
     override val value: T,
