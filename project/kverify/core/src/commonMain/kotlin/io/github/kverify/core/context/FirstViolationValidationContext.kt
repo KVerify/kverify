@@ -9,7 +9,7 @@ internal object AbortValidationException : RuntimeException()
 /**
  * Internal context that records the first [Violation] and aborts validation by throwing.
  */
-internal class FirstViolationValidationContext : ThrowingValidationContext() {
+internal class FirstViolationValidationContext : ThrowingValidationContext {
     /**
      * The first reported violation.
      */

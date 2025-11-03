@@ -7,50 +7,43 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-/**
- * [ValidationContext] that throws on the first reported [Violation].
- *
- * Provides helper inline functions that declare contracts for use in control-flow.
- */
-public open class ThrowingValidationContext : ValidationContext {
+public interface ThrowingValidationContext : ValidationContext {
+    override fun onFailure(violation: Violation): Nothing
+}
+
+@OptIn(ExperimentalContracts::class)
+public inline fun ThrowingValidationContext.failIf(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+) {
+    contract {
+        returns() implies !condition
+    }
+
+    if (condition) onFailure(lazyViolation())
+}
+
+@OptIn(ExperimentalContracts::class)
+public inline fun ThrowingValidationContext.failIfNot(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+) {
+    contract {
+        returns() implies condition
+    }
+
+    this.failIf(!condition, lazyViolation)
+}
+
+public class ThrowingValidationContextImpl : ThrowingValidationContext {
     override fun onFailure(violation: Violation): Nothing =
         throw ThrowingValidationContextException(
             violation = violation,
         )
-
-    /**
-     * Reports a [Violation] if the given [condition] is `false`.
-     */
-    @OptIn(ExperimentalContracts::class)
-    public inline fun failIf(
-        condition: Boolean,
-        lazyViolation: () -> Violation,
-    ) {
-        contract {
-            returns() implies !condition
-        }
-
-        if (condition) onFailure(lazyViolation())
-    }
-
-    /**
-     * Reports a [Violation] if the given [condition] is `true`.
-     */
-    @OptIn(ExperimentalContracts::class)
-    public inline fun failIfNot(
-        condition: Boolean,
-        lazyViolation: () -> Violation,
-    ) {
-        contract {
-            returns() implies condition
-        }
-
-        failIf(!condition, lazyViolation)
-    }
 }
 
 @PublishedApi
-internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValidationContext()
+internal val ThrowingValidationObject: ThrowingValidationContext = ThrowingValidationContextImpl()
 
 /**
  * Runs [block] in a [ThrowingValidationContext], returning the [block] result or throwing on first failure.
