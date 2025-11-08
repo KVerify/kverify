@@ -58,12 +58,7 @@ public fun <T> T.applyRuleUsing(
 ): T {
     val value = this
 
-    rule.run(
-        context = context,
-        value = value,
-    )
-
-    return value
+    return with(context) { value applyRule rule }
 }
 
 public fun <T> T.applyRulesUsing(
@@ -72,14 +67,7 @@ public fun <T> T.applyRulesUsing(
 ): T {
     val value = this
 
-    for (rule in rules) {
-        rule.run(
-            context = context,
-            value = value,
-        )
-    }
-
-    return value
+    return with(context) { value.applyRules(rules = rules) }
 }
 
 public fun <T> T.applyRulesUsing(
@@ -88,14 +76,7 @@ public fun <T> T.applyRulesUsing(
 ): T {
     val value = this
 
-    for (rule in rules) {
-        rule.run(
-            context = context,
-            value = value,
-        )
-    }
-
-    return value
+    return with(context) { value.applyRules(rules = rules) }
 }
 
 public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>) {
