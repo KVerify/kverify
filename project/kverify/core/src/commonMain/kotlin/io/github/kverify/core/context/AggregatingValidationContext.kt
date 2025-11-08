@@ -15,7 +15,7 @@ import kotlin.contracts.contract
  * Use [build] to produce a [ValidationResult] from the collected violations.
  */
 public open class AggregatingValidationContext(
-    public val violationsStorage: MutableCollection<Violation>,
+    protected val violationsStorage: MutableCollection<Violation>,
 ) : ValidationContext {
     override fun onFailure(violation: Violation) {
         violationsStorage.add(violation)
