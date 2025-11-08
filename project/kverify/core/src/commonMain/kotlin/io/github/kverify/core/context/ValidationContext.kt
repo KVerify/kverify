@@ -18,25 +18,25 @@ public interface ValidationContext {
         return value
     }
 
-    public fun <T> T.applyRules(vararg rules: Rule<T>): T {
+    public fun <T> T.applyRules(vararg rules: Rule<T>): T =
+        applyRulesInternal(
+            value = this@applyRules,
+            rulesIterator = rules.iterator(),
+        )
+
+    public infix fun <T> T.applyRules(rules: Iterable<Rule<T>>): T =
+        applyRulesInternal(
+            value = this@applyRules,
+            rulesIterator = rules.iterator(),
+        )
+
+    private fun <T> applyRulesInternal(
+        value: T,
+        rulesIterator: Iterator<Rule<T>>,
+    ): T {
         val context = this@ValidationContext
-        val value = this@applyRules
 
-        for (rule in rules) {
-            rule.run(
-                context = context,
-                value = value,
-            )
-        }
-
-        return value
-    }
-
-    public infix fun <T> T.applyRules(rules: Iterable<Rule<T>>): T {
-        val context = this@ValidationContext
-        val value = this@applyRules
-
-        for (rule in rules) {
+        for (rule in rulesIterator) {
             rule.run(
                 context = context,
                 value = value,
