@@ -66,9 +66,9 @@ public interface ValidationContext {
     }
 }
 
-public inline fun ValidationContext(crossinline block: () -> Unit): ValidationContext =
+public inline fun ValidationContext(crossinline block: (Violation) -> Unit): ValidationContext =
     object : ValidationContext {
-        override fun onFailure(violation: Violation): Unit = block()
+        override fun onFailure(violation: Violation): Unit = block(violation)
     }
 
 /**
