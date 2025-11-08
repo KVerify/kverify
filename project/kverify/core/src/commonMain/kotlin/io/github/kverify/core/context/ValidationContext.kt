@@ -79,14 +79,9 @@ public fun <T> T.applyRulesUsing(
     return with(context) { value.applyRules(rules = rules) }
 }
 
-public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>) {
-    for (rule in rules) {
-        rule.run(
-            context = this,
-            value = Unit,
-        )
-    }
-}
+public fun ValidationContext.runUnitRules(rules: Iterable<Rule<Unit>>): Unit = Unit.applyRules(rules = rules)
+
+public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>): Unit = Unit.applyRules(rules = rules)
 
 public inline fun ValidationContext.failIf(
     condition: Boolean,
