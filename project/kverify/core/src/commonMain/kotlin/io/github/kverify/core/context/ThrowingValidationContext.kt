@@ -12,7 +12,7 @@ public interface ThrowingValidationContext : ValidationContext {
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline fun ThrowingValidationContext.failIf(
+public inline fun ThrowingValidationContext.throwingFailIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
@@ -24,7 +24,7 @@ public inline fun ThrowingValidationContext.failIf(
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline fun ThrowingValidationContext.failIfNot(
+public inline fun ThrowingValidationContext.throwingFailIfNot(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
