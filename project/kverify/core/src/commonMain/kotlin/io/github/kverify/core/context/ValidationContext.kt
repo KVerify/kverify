@@ -6,31 +6,7 @@ import io.github.kverify.core.violation.Violation
 public interface ValidationContext {
     public fun onFailure(violation: Violation)
 
-    public infix fun <T> T.applyRule(rule: Rule<T>): T {
-        val context = this@ValidationContext
-        val value = this@applyRule
-
-        rule.run(
-            context = context,
-            value = value,
-        )
-
-        return value
-    }
-
-    public fun <T> T.applyRules(vararg rules: Rule<T>): T =
-        applyRulesInternal(
-            value = this@applyRules,
-            rulesIterator = rules.iterator(),
-        )
-
-    public infix fun <T> T.applyRules(rules: Iterable<Rule<T>>): T =
-        applyRulesInternal(
-            value = this@applyRules,
-            rulesIterator = rules.iterator(),
-        )
-
-    private fun <T> applyRulesInternal(
+    public fun <T> runRules(
         value: T,
         rulesIterator: Iterator<Rule<T>>,
     ): T {
@@ -45,6 +21,30 @@ public interface ValidationContext {
 
         return value
     }
+
+    public infix fun <T> T.applyRule(rule: Rule<T>): T {
+        val context = this@ValidationContext
+        val value = this@applyRule
+
+        rule.run(
+            context = context,
+            value = value,
+        )
+
+        return value
+    }
+
+    public fun <T> T.applyRules(vararg rules: Rule<T>): T =
+        runRules(
+            value = this@applyRules,
+            rulesIterator = rules.iterator(),
+        )
+
+    public infix fun <T> T.applyRules(rules: Iterable<Rule<T>>): T =
+        runRules(
+            value = this@applyRules,
+            rulesIterator = rules.iterator(),
+        )
 }
 
 public inline fun ValidationContext(crossinline block: (Violation) -> Unit): ValidationContext =
