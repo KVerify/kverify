@@ -6,13 +6,7 @@ import io.github.kverify.core.violation.Violation
 
 internal object AbortValidationException : RuntimeException()
 
-/**
- * Internal context that records the first [Violation] and aborts validation by throwing.
- */
 internal class FirstViolationValidationContext : ThrowingValidationContext {
-    /**
-     * The first reported violation.
-     */
     lateinit var firstViolation: Violation
         private set
 
@@ -23,15 +17,11 @@ internal class FirstViolationValidationContext : ThrowingValidationContext {
     }
 }
 
-/**
- * Runs [block] and returns a [ValidationResult]
- * containing only the first violation (if any).
- */
 public fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult {
     val context = FirstViolationValidationContext()
 
     return try {
-        context.apply(block)
+        context.block()
 
         ValidationResult.Valid
     } catch (_: AbortValidationException) {
@@ -41,10 +31,6 @@ public fun validateFirst(block: ThrowingValidationContext.() -> Unit): Validatio
     }
 }
 
-/**
- * Validates `this` value with a single [rule] and returns a [ValidationResult]
- * containing only the first violation (if any).
- */
 public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
     val value = this
 
@@ -53,21 +39,30 @@ public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
     return result
 }
 
-/**
- * Validates `this` value with multiple [rules] and returns a [ValidationResult]
- * containing only the first violation (if any).
- */
-public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult {
+public infix fun <T> T.validateFirstWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
-    val result = validateFirst { value.applyRules(rules = rules) }
+    val result =
+        validateFirst {
+            runRules(
+                value = value,
+                rulesIterator = rulesIterator,
+            )
+        }
 
     return result
 }
 
-/**
- * Returns `true` if `this` value satisfies the given [rule], stopping at the first failure.
- */
+public infix fun <T> T.validateFirstWithRules(rules: Iterable<Rule<T>>): ValidationResult =
+    validateFirstWithRules(
+        rulesIterator = rules.iterator(),
+    )
+
+public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
+    validateFirstWithRules(
+        rulesIterator = rules.iterator(),
+    )
+
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
     val context = FirstViolationValidationContext()
@@ -84,20 +79,15 @@ public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     }
 }
 
-/**
- * Returns `true` if `this` value satisfies all provided [rules], stopping at the first failure.
- */
-public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
+public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
     val context = FirstViolationValidationContext()
 
     return try {
-        rules.forEach { rule ->
-            rule.run(
-                context = context,
-                value = value,
-            )
-        }
+        context.runRules(
+            value = value,
+            rulesIterator = rulesIterator,
+        )
 
         true
     } catch (_: AbortValidationException) {
@@ -105,12 +95,14 @@ public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
     }
 }
 
-/**
- * Returns `true` if `this` value does not satisfy the given [rule], stopping at the first failure.
- */
-public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean = !satisfies(rule)
+public fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean = satisfies(rulesIterator = rules.iterator())
 
-/**
- * Returns `true` if `this` value does not satisfy all provided [rules], stopping at the first failure.
- */
+public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean = satisfies(rulesIterator = rules.iterator())
+
+public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean = !satisfies(rule = rule)
+
+public fun <T> T.notSatisfies(rulesIterator: Iterator<Rule<T>>): Boolean = !satisfies(rulesIterator = rulesIterator)
+
+public fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean = !satisfies(rules = rules)
+
 public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean = !satisfies(rules = rules)

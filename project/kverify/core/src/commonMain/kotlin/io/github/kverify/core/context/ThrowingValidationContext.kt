@@ -60,6 +60,27 @@ public infix fun <T> T.validateOrThrowWithRule(rule: Rule<T>): T {
     return value
 }
 
+public infix fun <T> T.validateOrThrowWithRules(rulesIterator: Iterator<Rule<T>>): T {
+    val value = this
+
+    validateOrThrow {
+        runRules(
+            value = value,
+            rulesIterator = rulesIterator,
+        )
+    }
+
+    return value
+}
+
+public infix fun <T> T.validateOrThrowWithRules(rules: Iterable<Rule<T>>): T {
+    val value = this
+
+    validateOrThrow { value.applyRules(rules = rules) }
+
+    return value
+}
+
 public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
     val value = this
 
