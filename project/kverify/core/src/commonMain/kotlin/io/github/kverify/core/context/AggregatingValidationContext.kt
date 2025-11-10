@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ValidationException
@@ -9,11 +11,6 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-/**
- * [ValidationContext] that collects all reported [Violation]s into [violationsStorage].
- *
- * Use [build] to produce a [ValidationResult] from the collected violations.
- */
 public open class AggregatingValidationContext(
     protected val violationsStorage: MutableCollection<Violation>,
 ) : ValidationContext {
@@ -21,9 +18,6 @@ public open class AggregatingValidationContext(
         violationsStorage.add(violation)
     }
 
-    /**
-     * Builds a [ValidationResult] reflecting the contents of [violationsStorage].
-     */
     public open fun build(): ValidationResult =
         ValidationResult(
             violationsStorage.toList(),
@@ -32,9 +26,6 @@ public open class AggregatingValidationContext(
 
 // ----Validate using AggregatingValidationContext with ArrayList as violationStorage----
 
-/**
- * Validates a [block] of code and returns a [ValidationResult] containing all collected [Violation]s.
- */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateAll(block: AggregatingValidationContext.() -> Unit): ValidationResult {
     contract {
@@ -44,19 +35,6 @@ public inline fun validateAll(block: AggregatingValidationContext.() -> Unit): V
     return validateAllTo(ArrayList(), block)
 }
 
-/**
- * Validates `this` value with [rules] and returns an aggregated [ValidationResult].
- */
-public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
-    this.validateAllWithRulesTo(
-        ArrayList(),
-        rules = rules,
-    )
-
-/**
- * Validates a [block] of code and returns a [Result] containing the result of the [block] or a [ValidationException]
- * if any [Violation]s were collected.
- */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> runValidatingAll(block: AggregatingValidationContext.() -> T): Result<T> {
     contract {
@@ -66,12 +44,26 @@ public inline fun <T> runValidatingAll(block: AggregatingValidationContext.() ->
     return runValidatingAllTo(ArrayList(), block)
 }
 
+public infix fun <T> T.validateAllWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult =
+    this.validateAllWithRulesTo(
+        destination = ArrayList(),
+        rulesIterator = rulesIterator,
+    )
+
+public infix fun <T> T.validateAllWithRules(rules: Iterable<Rule<T>>): ValidationResult =
+    this.validateAllWithRulesTo(
+        destination = ArrayList(),
+        rules = rules,
+    )
+
+public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
+    this.validateAllWithRulesTo(
+        ArrayList(),
+        rules = rules,
+    )
+
 // ----Validate using AggregatingValidationContext with provided destination as violationStorage----
 
-/**
- * Validates a [block] of code to the provided [destination]
- * and returns a [ValidationResult] containing all collected [Violation]s.
- */
 @OptIn(ExperimentalContracts::class)
 public inline fun validateAllTo(
     destination: MutableCollection<Violation>,
@@ -84,24 +76,6 @@ public inline fun validateAllTo(
     return validateAllUsing(AggregatingValidationContext(destination), block)
 }
 
-/**
- * Validates `this` value with [rules] to the provided [destination]
- * and returns an aggregated [ValidationResult].
- */
-public fun <T> T.validateAllWithRulesTo(
-    destination: MutableCollection<Violation>,
-    vararg rules: Rule<T>,
-): ValidationResult =
-    this.validateAllWithRulesUsing(
-        AggregatingValidationContext(destination),
-        rules = rules,
-    )
-
-/**
- * Validates a [block] of code to the provided [destination]
- * and returns a [Result] containing the result of the [block] or a [ValidationException]
- * if any [Violation]s were collected.
- */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> runValidatingAllTo(
     destination: MutableCollection<Violation>,
@@ -114,12 +88,35 @@ public inline fun <T> runValidatingAllTo(
     return runValidatingAllUsing(AggregatingValidationContext(destination), block)
 }
 
+public fun <T> T.validateAllWithRulesTo(
+    destination: MutableCollection<Violation>,
+    rulesIterator: Iterator<Rule<T>>,
+): ValidationResult =
+    this.validateAllWithRulesUsing(
+        AggregatingValidationContext(destination),
+        rulesIterator = rulesIterator,
+    )
+
+public fun <T> T.validateAllWithRulesTo(
+    destination: MutableCollection<Violation>,
+    rules: Iterable<Rule<T>>,
+): ValidationResult =
+    this.validateAllWithRulesUsing(
+        AggregatingValidationContext(destination),
+        rules = rules,
+    )
+
+public fun <T> T.validateAllWithRulesTo(
+    destination: MutableCollection<Violation>,
+    vararg rules: Rule<T>,
+): ValidationResult =
+    this.validateAllWithRulesUsing(
+        AggregatingValidationContext(destination),
+        rules = rules,
+    )
+
 // ----Validate using provided context----
 
-/**
- * Validates a [block] of code using the provided [context]
- * and returns a [ValidationResult] containing all collected [Violation]s.
- */
 @OptIn(ExperimentalContracts::class)
 public inline fun <C : AggregatingValidationContext> validateAllUsing(
     context: C,
@@ -132,26 +129,6 @@ public inline fun <C : AggregatingValidationContext> validateAllUsing(
     return context.apply(block).build()
 }
 
-/**
- * Validates `this` value with [rules] using the provided [context]
- * and returns an aggregated [ValidationResult].
- */
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
-    context: C,
-    vararg rules: Rule<T>,
-): ValidationResult {
-    val value = this
-
-    return validateAllUsing(context) {
-        value.applyRules(rules = rules)
-    }
-}
-
-/**
- * Validates a [block] of code using the provided [context]
- * and returns a [Result] containing the result of the [block] or a [ValidationException]
- * if any [Violation]s were collected.
- */
 @OptIn(ExperimentalContracts::class)
 public inline fun <T, C : AggregatingValidationContext> runValidatingAllUsing(
     context: C,
@@ -170,4 +147,38 @@ public inline fun <T, C : AggregatingValidationContext> runValidatingAllUsing(
             Result.failure(exception)
         },
     )
+}
+
+public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
+    context: C,
+    rulesIterator: Iterator<Rule<T>>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) {
+        runRules(
+            value = value,
+            rulesIterator = rulesIterator,
+        )
+    }
+}
+
+public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
+    context: C,
+    rules: Iterable<Rule<T>>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) { value applyRules rules }
+}
+
+public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
+    context: C,
+    vararg rules: Rule<T>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) {
+        value.applyRules(rules = rules)
+    }
 }
