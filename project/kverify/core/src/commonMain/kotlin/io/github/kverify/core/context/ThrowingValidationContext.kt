@@ -37,7 +37,7 @@ public inline fun ThrowingValidationContext.throwingFailIfNot(
         returns() implies condition
     }
 
-    this.failIf(!condition, lazyViolation)
+    throwingFailIf(!condition, lazyViolation)
 }
 
 @PublishedApi
