@@ -47,9 +47,9 @@ public interface ValidationContext {
         )
 }
 
-public inline fun ValidationContext(crossinline block: (Violation) -> Unit): ValidationContext =
+public inline fun ValidationContext(crossinline onFailure: (Violation) -> Unit): ValidationContext =
     object : ValidationContext {
-        override fun onFailure(violation: Violation): Unit = block(violation)
+        override fun onFailure(violation: Violation): Unit = onFailure(violation)
     }
 
 public fun <T> T.applyRuleUsing(
