@@ -11,6 +11,11 @@ public interface ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing
 }
 
+public inline fun ThrowingValidationContext(crossinline onFailure: (Violation) -> Nothing): ThrowingValidationContext =
+    object : ThrowingValidationContext {
+        override fun onFailure(violation: Violation): Nothing = onFailure(violation)
+    }
+
 @OptIn(ExperimentalContracts::class)
 public inline fun ThrowingValidationContext.throwingFailIf(
     condition: Boolean,
