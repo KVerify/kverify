@@ -60,36 +60,28 @@ public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T):
 public infix fun <T> T.validateOrThrowWithRule(rule: Rule<T>): T {
     val value = this
 
-    validateOrThrow { value applyRule rule }
-
-    return value
+    return validateOrThrow { value applyRule rule }
 }
 
 public infix fun <T> T.validateOrThrowWithRules(rulesIterator: Iterator<Rule<T>>): T {
     val value = this
 
-    validateOrThrow {
+    return validateOrThrow {
         runRules(
             value = value,
             rulesIterator = rulesIterator,
         )
     }
-
-    return value
 }
 
 public infix fun <T> T.validateOrThrowWithRules(rules: Iterable<Rule<T>>): T {
     val value = this
 
-    validateOrThrow { value.applyRules(rules = rules) }
-
-    return value
+    return validateOrThrow { value.applyRules(rules = rules) }
 }
 
 public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
     val value = this
 
-    validateOrThrow { value.applyRules(rules = rules) }
-
-    return value
+    return validateOrThrow { value.applyRules(rules = rules) }
 }
