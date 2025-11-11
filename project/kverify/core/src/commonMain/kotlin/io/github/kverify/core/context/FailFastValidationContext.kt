@@ -34,34 +34,31 @@ public fun validateFailFast(block: ThrowingValidationContext.() -> Unit): Valida
 public infix fun <T> T.validateFailFastWithRule(rule: Rule<T>): ValidationResult {
     val value = this
 
-    val result = validateFailFast { value applyRule rule }
+    return validateFailFast { value applyRule rule }
+}
 
-    return result
+public infix fun <T> T.validateFailFastWithRules(rules: Iterable<Rule<T>>): ValidationResult {
+    val value = this
+
+    return validateFailFast { value applyRules rules }
+}
+
+public fun <T> T.validateFailFastWithRules(vararg rules: Rule<T>): ValidationResult {
+    val value = this
+
+    return validateFailFast { value.applyRules(rules = rules) }
 }
 
 public infix fun <T> T.validateFailFastWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
-    val result =
-        validateFailFast {
-            runRules(
-                value = value,
-                rulesIterator = rulesIterator,
-            )
-        }
-
-    return result
+    return validateFailFast {
+        runRules(
+            value = value,
+            rulesIterator = rulesIterator,
+        )
+    }
 }
-
-public infix fun <T> T.validateFailFastWithRules(rules: Iterable<Rule<T>>): ValidationResult =
-    validateFailFastWithRules(
-        rulesIterator = rules.iterator(),
-    )
-
-public fun <T> T.validateFailFastWithRules(vararg rules: Rule<T>): ValidationResult =
-    validateFailFastWithRules(
-        rulesIterator = rules.iterator(),
-    )
 
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
