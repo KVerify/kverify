@@ -6,7 +6,7 @@ import io.github.kverify.core.violation.Violation
 
 internal object AbortValidationException : RuntimeException()
 
-internal class FirstViolationValidationContext : ThrowingValidationContext {
+internal class FailFastValidationContext : ThrowingValidationContext {
     lateinit var firstViolation: Violation
         private set
 
@@ -17,8 +17,8 @@ internal class FirstViolationValidationContext : ThrowingValidationContext {
     }
 }
 
-public fun validateFirst(block: ThrowingValidationContext.() -> Unit): ValidationResult {
-    val context = FirstViolationValidationContext()
+public fun validateFailFast(block: ThrowingValidationContext.() -> Unit): ValidationResult {
+    val context = FailFastValidationContext()
 
     return try {
         context.block()
@@ -31,19 +31,19 @@ public fun validateFirst(block: ThrowingValidationContext.() -> Unit): Validatio
     }
 }
 
-public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
+public infix fun <T> T.validateFailFastWithRule(rule: Rule<T>): ValidationResult {
     val value = this
 
-    val result = validateFirst { value applyRule rule }
+    val result = validateFailFast { value applyRule rule }
 
     return result
 }
 
-public infix fun <T> T.validateFirstWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
+public infix fun <T> T.validateFailFastWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
     val result =
-        validateFirst {
+        validateFailFast {
             runRules(
                 value = value,
                 rulesIterator = rulesIterator,
@@ -53,19 +53,19 @@ public infix fun <T> T.validateFirstWithRules(rulesIterator: Iterator<Rule<T>>):
     return result
 }
 
-public infix fun <T> T.validateFirstWithRules(rules: Iterable<Rule<T>>): ValidationResult =
-    validateFirstWithRules(
+public infix fun <T> T.validateFailFastWithRules(rules: Iterable<Rule<T>>): ValidationResult =
+    validateFailFastWithRules(
         rulesIterator = rules.iterator(),
     )
 
-public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult =
-    validateFirstWithRules(
+public fun <T> T.validateFailFastWithRules(vararg rules: Rule<T>): ValidationResult =
+    validateFailFastWithRules(
         rulesIterator = rules.iterator(),
     )
 
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
-    val context = FirstViolationValidationContext()
+    val context = FailFastValidationContext()
 
     return try {
         rule.run(
@@ -81,7 +81,7 @@ public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
 
 public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
-    val context = FirstViolationValidationContext()
+    val context = FailFastValidationContext()
 
     return try {
         context.runRules(
