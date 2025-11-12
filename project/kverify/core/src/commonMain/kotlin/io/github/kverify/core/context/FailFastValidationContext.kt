@@ -4,8 +4,10 @@ import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 
+@PublishedApi
 internal object AbortValidationException : RuntimeException()
 
+@PublishedApi
 internal class FailFastValidationContext : ThrowingValidationContext {
     lateinit var firstViolation: Violation
         private set
@@ -17,19 +19,30 @@ internal class FailFastValidationContext : ThrowingValidationContext {
     }
 }
 
-public fun validateFailFast(block: ThrowingValidationContext.() -> Unit): ValidationResult {
+@PublishedApi
+internal inline fun <T> runFailFast(
+    block: ThrowingValidationContext.() -> T,
+    onThrow: (Violation) -> T,
+): T {
     val context = FailFastValidationContext()
 
     return try {
         context.block()
-
-        ValidationResult.Valid
     } catch (_: AbortValidationException) {
-        ValidationResult.Invalid(
-            violations = listOf(context.firstViolation),
-        )
+        onThrow(context.firstViolation)
     }
 }
+
+public fun validateFailFast(block: ThrowingValidationContext.() -> Unit): ValidationResult =
+    runFailFast(
+        block = {
+            block()
+            ValidationResult.Valid
+        },
+        onThrow = {
+            ValidationResult.Invalid(listOf(it))
+        },
+    )
 
 public infix fun <T> T.validateFailFastWithRule(rule: Rule<T>): ValidationResult {
     val value = this
@@ -60,41 +73,43 @@ public infix fun <T> T.validateFailFastWithRules(rulesIterator: Iterator<Rule<T>
     }
 }
 
+private inline fun failFastThrows(block: ThrowingValidationContext.() -> Unit): Boolean =
+    runFailFast(
+        block = {
+            block()
+            false
+        },
+        onThrow = { true },
+    )
+
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
-    val context = FailFastValidationContext()
 
-    return try {
-        rule.run(
-            context = context,
-            value = value,
-        )
+    return !failFastThrows { value applyRule rule }
+}
 
-        true
-    } catch (_: AbortValidationException) {
-        false
-    }
+public fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
+    val value = this
+
+    return !failFastThrows { value applyRules rules }
+}
+
+public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
+    val value = this
+
+    return !failFastThrows { value.applyRules(rules = rules) }
 }
 
 public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
-    val context = FailFastValidationContext()
 
-    return try {
-        context.runRules(
+    return !failFastThrows {
+        runRules(
             value = value,
             rulesIterator = rulesIterator,
         )
-
-        true
-    } catch (_: AbortValidationException) {
-        false
     }
 }
-
-public fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean = satisfies(rulesIterator = rules.iterator())
-
-public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean = satisfies(rulesIterator = rules.iterator())
 
 public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean = !satisfies(rule = rule)
 
