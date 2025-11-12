@@ -15,10 +15,26 @@ internal open class FirstViolationValidationContext : ValidationContext {
         if (firstViolation == null) firstViolation = violation
     }
 
+    override fun <T> T.applyRule(rule: Rule<T>): T {
+        val value = this
+        val context = this@FirstViolationValidationContext
+
+        if (firstViolation != null) return value
+
+        rule.run(
+            context = context,
+            value = value,
+        )
+
+        return this
+    }
+
     override fun <T> runRules(
         value: T,
         rulesIterator: Iterator<Rule<T>>,
     ): T {
+        if (firstViolation != null) return value
+
         for (rule in rulesIterator) {
             rule.run(
                 context = this,
