@@ -82,25 +82,25 @@ private inline fun failFastThrows(block: ThrowingValidationContext.() -> Unit): 
         onThrow = { true },
     )
 
-public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
+public infix fun <T> T.satisfiesFailFast(rule: Rule<T>): Boolean {
     val value = this
 
     return !failFastThrows { value applyRule rule }
 }
 
-public fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
+public fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
     return !failFastThrows { value applyRules rules }
 }
 
-public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
+public fun <T> T.satisfiesFailFast(vararg rules: Rule<T>): Boolean {
     val value = this
 
     return !failFastThrows { value.applyRules(rules = rules) }
 }
 
-public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
+public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
 
     return !failFastThrows {
@@ -111,10 +111,10 @@ public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     }
 }
 
-public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean = !satisfies(rule = rule)
+public infix fun <T> T.notSatisfiesFailFast(rule: Rule<T>): Boolean = !satisfiesFailFast(rule = rule)
 
-public fun <T> T.notSatisfies(rulesIterator: Iterator<Rule<T>>): Boolean = !satisfies(rulesIterator = rulesIterator)
+public fun <T> T.notSatisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean = !satisfiesFailFast(rulesIterator = rulesIterator)
 
-public fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean = !satisfies(rules = rules)
+public fun <T> T.notSatisfiesFailFast(rules: Iterable<Rule<T>>): Boolean = !satisfiesFailFast(rules = rules)
 
-public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean = !satisfies(rules = rules)
+public fun <T> T.notSatisfiesFailFast(vararg rules: Rule<T>): Boolean = !satisfiesFailFast(rules = rules)
