@@ -11,7 +11,7 @@ import kotlin.coroutines.CoroutineContext
 @PublishedApi
 internal object AbortValidationException : RuntimeException()
 
-internal class FirstViolationValidationCoroutineScope(
+internal class FailFastValidationCoroutineScope(
     coroutineScope: CoroutineScope,
 ) : ThrowingValidationCoroutineScope {
     override val coroutineContext: CoroutineContext = coroutineScope.coroutineContext
@@ -28,9 +28,9 @@ internal class FirstViolationValidationCoroutineScope(
     }
 }
 
-public suspend fun validateFirstSuspending(block: suspend ThrowingValidationCoroutineScope.() -> Unit): ValidationResult =
+public suspend fun validateFailFastSuspending(block: suspend ThrowingValidationCoroutineScope.() -> Unit): ValidationResult =
     supervisorScope {
-        val context = FirstViolationValidationCoroutineScope(this)
+        val context = FailFastValidationCoroutineScope(this)
 
         try {
             context.block()
