@@ -6,14 +6,8 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-@PublishedApi
-internal open class FirstViolationValidationContext : ValidationContext {
-    var firstViolation: Violation? = null
-        protected set
-
-    override fun onFailure(violation: Violation) {
-        if (firstViolation == null) firstViolation = violation
-    }
+public interface FirstViolationValidationContext : ValidationContext {
+    public val firstViolation: Violation?
 
     override fun <T> T.applyRule(rule: Rule<T>): T {
         val value = this
@@ -49,20 +43,64 @@ internal open class FirstViolationValidationContext : ValidationContext {
 }
 
 @PublishedApi
-internal inline fun FirstViolationValidationContext(init: FirstViolationValidationContext.() -> Unit): FirstViolationValidationContext {
+internal open class FirstViolationValidationContextImpl : FirstViolationValidationContext {
+    override var firstViolation: Violation? = null
+        protected set
+
+    override fun onFailure(violation: Violation) {
+        if (firstViolation == null) firstViolation = violation
+    }
+
+    override fun <T> T.applyRule(rule: Rule<T>): T {
+        val value = this
+        val context = this@FirstViolationValidationContextImpl
+
+        if (firstViolation != null) return value
+
+        rule.run(
+            context = context,
+            value = value,
+        )
+
+        return this
+    }
+
+    override fun <T> runRules(
+        value: T,
+        rulesIterator: Iterator<Rule<T>>,
+    ): T {
+        if (firstViolation != null) return value
+
+        for (rule in rulesIterator) {
+            rule.run(
+                context = this,
+                value = value,
+            )
+
+            if (firstViolation != null) break
+        }
+
+        return value
+    }
+}
+
+@PublishedApi
+internal inline fun FirstViolationValidationContextImpl(
+    init: FirstViolationValidationContextImpl.() -> Unit,
+): FirstViolationValidationContextImpl {
     contract {
         callsInPlace(init, InvocationKind.EXACTLY_ONCE)
     }
 
-    return FirstViolationValidationContext().apply(init)
+    return FirstViolationValidationContextImpl().apply(init)
 }
 
-public inline fun validateFirst(block: ValidationContext.() -> Unit): ValidationResult {
+public inline fun validateFirst(block: FirstViolationValidationContext.() -> Unit): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val firstViolation = FirstViolationValidationContext(block).firstViolation
+    val firstViolation = FirstViolationValidationContextImpl(block).firstViolation
 
     return if (firstViolation == null) {
         ValidationResult.Valid
@@ -103,25 +141,25 @@ public infix fun <T> T.validateFirstWithRules(rulesIterator: Iterator<Rule<T>>):
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
 
-    return FirstViolationValidationContext { value applyRule rule }.firstViolation == null
+    return FirstViolationValidationContextImpl { value applyRule rule }.firstViolation == null
 }
 
 public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
-    return FirstViolationValidationContext { value applyRules rules }.firstViolation == null
+    return FirstViolationValidationContextImpl { value applyRules rules }.firstViolation == null
 }
 
 public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
     val value = this
 
-    return FirstViolationValidationContext { value.applyRules(rules = rules) }.firstViolation == null
+    return FirstViolationValidationContextImpl { value.applyRules(rules = rules) }.firstViolation == null
 }
 
 public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
 
-    return FirstViolationValidationContext {
+    return FirstViolationValidationContextImpl {
         runRules(
             value = value,
             rulesIterator = rulesIterator,
