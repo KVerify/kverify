@@ -43,44 +43,12 @@ public interface FirstViolationValidationContext : ValidationContext {
 }
 
 @PublishedApi
-internal open class FirstViolationValidationContextImpl : FirstViolationValidationContext {
+internal class FirstViolationValidationContextImpl : FirstViolationValidationContext {
     override var firstViolation: Violation? = null
-        protected set
+        private set
 
     override fun onFailure(violation: Violation) {
         if (firstViolation == null) firstViolation = violation
-    }
-
-    override fun <T> T.applyRule(rule: Rule<T>): T {
-        val value = this
-        val context = this@FirstViolationValidationContextImpl
-
-        if (firstViolation != null) return value
-
-        rule.run(
-            context = context,
-            value = value,
-        )
-
-        return this
-    }
-
-    override fun <T> runRules(
-        value: T,
-        rulesIterator: Iterator<Rule<T>>,
-    ): T {
-        if (firstViolation != null) return value
-
-        for (rule in rulesIterator) {
-            rule.run(
-                context = this,
-                value = value,
-            )
-
-            if (firstViolation != null) break
-        }
-
-        return value
     }
 }
 
