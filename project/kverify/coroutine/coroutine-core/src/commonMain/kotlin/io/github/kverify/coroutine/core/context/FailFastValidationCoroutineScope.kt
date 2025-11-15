@@ -28,6 +28,6 @@ public suspend fun validateFailFastSuspending(block: suspend ThrowingValidationC
 
             ValidationResult.Valid
         } catch (_: AbortValidationException) {
-            ValidationResult(context.firstViolation!!)
+            ValidationResult.Invalid(context.firstViolation!!)
         }
     }

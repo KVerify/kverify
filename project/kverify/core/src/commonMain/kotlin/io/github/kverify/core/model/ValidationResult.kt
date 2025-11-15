@@ -41,6 +41,9 @@ public sealed interface ValidationResult {
     public value class Invalid(
         public val violations: List<Violation>,
     ) : ValidationResult {
+        public constructor(violation: Violation) : this(listOf(violation))
+        public constructor(vararg violations: Violation) : this(violations.asList())
+
         override val isValid: Boolean get() = false
         override val isInvalid: Boolean get() = true
 
@@ -84,10 +87,7 @@ public inline fun ValidationResult(): ValidationResult.Valid = ValidationResult.
  */
 @JsName("ValidationResultInvalidSingle")
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
-public inline fun ValidationResult(violation: Violation): ValidationResult.Invalid =
-    ValidationResult.Invalid(
-        violations = listOf(violation),
-    )
+public inline fun ValidationResult(violation: Violation): ValidationResult.Invalid = ValidationResult.Invalid(violation)
 
 /**
  * Creates a [ValidationResult] from a vararg of [violations].

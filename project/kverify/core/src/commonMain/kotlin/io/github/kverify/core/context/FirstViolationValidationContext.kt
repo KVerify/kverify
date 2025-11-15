@@ -73,7 +73,7 @@ public inline fun validateFirst(block: FirstViolationValidationContext.() -> Uni
     return if (firstViolation == null) {
         ValidationResult.Valid
     } else {
-        ValidationResult.Invalid(listOf(firstViolation))
+        ValidationResult.Invalid(firstViolation)
     }
 }
 

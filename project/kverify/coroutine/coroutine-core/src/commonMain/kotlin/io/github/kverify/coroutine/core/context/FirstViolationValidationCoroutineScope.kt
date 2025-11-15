@@ -39,6 +39,6 @@ public suspend fun validateFirstSuspending(block: suspend FirstViolationValidati
         if (firstViolation == null) {
             ValidationResult.Valid
         } else {
-            ValidationResult.Invalid(listOf(firstViolation))
+            ValidationResult.Invalid(firstViolation)
         }
     }

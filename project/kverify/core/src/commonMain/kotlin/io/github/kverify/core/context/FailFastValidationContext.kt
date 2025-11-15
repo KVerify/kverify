@@ -40,7 +40,7 @@ public fun validateFailFast(block: ThrowingValidationContext.() -> Unit): Valida
             ValidationResult.Valid
         },
         onThrow = {
-            ValidationResult.Invalid(listOf(it))
+            ValidationResult.Invalid(it)
         },
     )
 
