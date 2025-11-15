@@ -9,14 +9,6 @@ public interface Rule<in T> {
     )
 }
 
-public inline fun <T> Rule(crossinline block: ValidationContext.(T) -> Unit): Rule<T> =
-    object : Rule<T> {
-        override fun run(
-            context: ValidationContext,
-            value: T,
-        ): Unit = context.block(value)
-    }
-
 /**
  * Combines `this` rule with another [Rule], producing a composite rule
  * that applies both in sequence.
