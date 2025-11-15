@@ -53,7 +53,7 @@ internal class FirstViolationValidationContextImpl : FirstViolationValidationCon
 }
 
 @PublishedApi
-internal inline fun FirstViolationValidationContextImpl(
+internal inline fun initFirstViolationValidationContext(
     init: FirstViolationValidationContextImpl.() -> Unit,
 ): FirstViolationValidationContextImpl {
     contract {
@@ -68,7 +68,7 @@ public inline fun validateFirst(block: FirstViolationValidationContext.() -> Uni
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val firstViolation = FirstViolationValidationContextImpl(block).firstViolation
+    val firstViolation = initFirstViolationValidationContext(block).firstViolation
 
     return if (firstViolation == null) {
         ValidationResult.Valid
@@ -109,25 +109,25 @@ public infix fun <T> T.validateFirstWithRules(rulesIterator: Iterator<Rule<T>>):
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
 
-    return FirstViolationValidationContextImpl { value applyRule rule }.firstViolation == null
+    return initFirstViolationValidationContext { value applyRule rule }.firstViolation == null
 }
 
 public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
-    return FirstViolationValidationContextImpl { value applyRules rules }.firstViolation == null
+    return initFirstViolationValidationContext { value applyRules rules }.firstViolation == null
 }
 
 public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
     val value = this
 
-    return FirstViolationValidationContextImpl { value.applyRules(rules = rules) }.firstViolation == null
+    return initFirstViolationValidationContext { value.applyRules(rules = rules) }.firstViolation == null
 }
 
 public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
 
-    return FirstViolationValidationContextImpl {
+    return initFirstViolationValidationContext {
         runRules(
             value = value,
             rulesIterator = rulesIterator,
