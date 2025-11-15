@@ -25,7 +25,7 @@ public inline fun <T> Rule(crossinline block: ValidationContext.(T) -> Unit): Ru
  */
 public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     when {
-        this is StackedRule && other is StackedRule -> StackedRule(this.rules + other.rules)
-        this is StackedRule -> StackedRule(this.rules + other)
-        else -> StackedRule(listOf(this, other))
+        this is RuleList && other is RuleList -> RuleList(this.rules + other.rules)
+        this is RuleList -> RuleList(this.rules + other)
+        else -> RuleList(this, other)
     }
