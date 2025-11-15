@@ -13,7 +13,7 @@ public interface ValidationContext {
         val context = this@ValidationContext
 
         for (rule in rulesIterator) {
-            rule.run(
+            rule.execute(
                 context = context,
                 value = value,
             )
@@ -26,7 +26,7 @@ public interface ValidationContext {
         val context = this@ValidationContext
         val value = this@applyRule
 
-        rule.run(
+        rule.execute(
             context = context,
             value = value,
         )

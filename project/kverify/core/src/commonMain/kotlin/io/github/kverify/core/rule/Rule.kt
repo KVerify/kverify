@@ -3,7 +3,7 @@ package io.github.kverify.core.rule
 import io.github.kverify.core.context.ValidationContext
 
 public interface Rule<in T> {
-    public fun run(
+    public fun execute(
         context: ValidationContext,
         value: T,
     )

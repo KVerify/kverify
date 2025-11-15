@@ -15,7 +15,7 @@ public interface FirstViolationValidationContext : ValidationContext {
 
         if (firstViolation != null) return value
 
-        rule.run(
+        rule.execute(
             context = context,
             value = value,
         )
@@ -30,7 +30,7 @@ public interface FirstViolationValidationContext : ValidationContext {
         if (firstViolation != null) return value
 
         for (rule in rulesIterator) {
-            rule.run(
+            rule.execute(
                 context = this,
                 value = value,
             )

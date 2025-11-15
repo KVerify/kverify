@@ -24,10 +24,10 @@ public inline fun <T> Rule<T>.asNamedRule(): NamedRule<T> = NamedRuleAdapter(thi
 internal value class NamedRuleAdapter<T>(
     private val baseRule: Rule<T>,
 ) : NamedRule<T> {
-    override fun run(
+    override fun execute(
         context: ValidationContext,
         value: NamedValue<T>,
     ) {
-        baseRule.run(context, value.value)
+        baseRule.execute(context, value.value)
     }
 }

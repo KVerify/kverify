@@ -10,12 +10,12 @@ import kotlin.jvm.JvmInline
 public value class RuleList<in T>(
     public val rules: List<Rule<T>>,
 ) : Rule<T> {
-    override fun run(
+    override fun execute(
         context: ValidationContext,
         value: T,
     ) {
         for (rule in rules) {
-            rule.run(
+            rule.execute(
                 context = context,
                 value = value,
             )

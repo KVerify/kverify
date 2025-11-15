@@ -13,7 +13,7 @@ public class PredicateRule<in T>(
     public val validationCheck: ValidationCheck<T>,
     public val violationFactory: ViolationFactory<T>,
 ) : Rule<T> {
-    override fun run(
+    override fun execute(
         context: ValidationContext,
         value: T,
     ) {

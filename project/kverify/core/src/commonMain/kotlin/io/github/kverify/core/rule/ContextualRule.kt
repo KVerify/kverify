@@ -5,7 +5,7 @@ import io.github.kverify.core.context.ValidationContext
 public interface ContextualRule<in T> : Rule<T> {
     public fun ValidationContext.verify(value: T)
 
-    override fun run(
+    override fun execute(
         context: ValidationContext,
         value: T,
     ): Unit = context.verify(value)
