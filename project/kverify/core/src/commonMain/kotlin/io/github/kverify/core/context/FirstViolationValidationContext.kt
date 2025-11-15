@@ -1,5 +1,8 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kverify.core.context
 
+import io.github.kverify.core.exception.ThrowingValidationContextException
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
@@ -74,6 +77,23 @@ public inline fun validateFirst(block: FirstViolationValidationContext.() -> Uni
         ValidationResult.Valid
     } else {
         ValidationResult.Invalid(firstViolation)
+    }
+}
+
+public inline fun <T> runValidatingFirst(block: FirstViolationValidationContext.() -> T): Result<T> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    val context = FirstViolationValidationContextImpl()
+
+    val result = block(context)
+    val firstViolation = context.firstViolation
+
+    return if (firstViolation == null) {
+        Result.success(result)
+    } else {
+        Result.failure(ThrowingValidationContextException(firstViolation))
     }
 }
 
