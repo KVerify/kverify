@@ -1,6 +1,9 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kverify.core.context
 
 import io.github.kverify.core.exception.ThrowingValidationContextException
+import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
@@ -48,6 +51,9 @@ internal object ThrowingValidationObject : ThrowingValidationContext {
         )
 }
 
+// ============================================================
+// Throw on failure
+// ============================================================
 @OptIn(ExperimentalContracts::class)
 public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T): T {
     contract {
@@ -84,4 +90,103 @@ public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
     val value = this
 
     return validateOrThrow { value.applyRules(rules = rules) }
+}
+
+// ============================================================
+// Throw and catch on failure
+// ============================================================
+@PublishedApi
+internal inline fun <T> runFailFast(
+    block: ThrowingValidationContext.() -> T,
+    onFailure: (ThrowingValidationContextException) -> T,
+): T =
+    try {
+        block(ThrowingValidationObject)
+    } catch (e: ThrowingValidationContextException) {
+        onFailure(e)
+    }
+
+public inline fun validateFailFast(block: ThrowingValidationContext.() -> Unit): ValidationResult =
+    runFailFast({
+        ThrowingValidationObject.block()
+        ValidationResult.Valid
+    }) {
+        ValidationResult.Invalid(it.violation)
+    }
+
+public inline fun <T> runValidatingFailFast(block: ThrowingValidationContext.() -> T): Result<T> =
+    runFailFast({
+        Result.success(block())
+    }) {
+        Result.failure(it)
+    }
+
+public infix fun <T> T.validateFailFastWithRule(rule: Rule<T>): ValidationResult {
+    val value = this
+
+    return validateFailFast { value applyRule rule }
+}
+
+public infix fun <T> T.validateFailFastWithRules(rules: Iterable<Rule<T>>): ValidationResult {
+    val value = this
+
+    return validateFailFast { value.applyRules(rules = rules) }
+}
+
+public fun <T> T.validateFailFastWithRules(vararg rules: Rule<T>): ValidationResult {
+    val value = this
+
+    return validateFailFast { value.applyRules(rules = rules) }
+}
+
+public infix fun <T> T.validateFailFastWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
+    val value = this
+
+    return validateFailFast {
+        runRules(
+            value = value,
+            rulesIterator = rulesIterator,
+        )
+    }
+}
+
+// ============================================================
+// Satisfies
+// ============================================================
+@PublishedApi
+internal inline fun failFastThrows(block: ThrowingValidationContext.() -> Unit): Boolean =
+    runFailFast({
+        ThrowingValidationObject.block()
+        false
+    }) {
+        true
+    }
+
+public infix fun <T> T.satisfiesFailFast(rule: Rule<T>): Boolean {
+    val value = this
+
+    return !failFastThrows { value applyRule rule }
+}
+
+public infix fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
+    val value = this
+
+    return !failFastThrows { value applyRules rules }
+}
+
+public fun <T> T.satisfiesFailFast(vararg rules: Rule<T>): Boolean {
+    val value = this
+
+    return !failFastThrows { value.applyRules(rules = rules) }
+}
+
+public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
+    val value = this
+
+    return !failFastThrows {
+        runRules(
+            value = value,
+            rulesIterator = rulesIterator,
+        )
+    }
 }
