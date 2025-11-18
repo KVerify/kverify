@@ -24,8 +24,9 @@ public open class AggregatingValidationContext(
         )
 }
 
-// ----Validate using AggregatingValidationContext with ArrayList as violationStorage----
-
+// ============================================================
+// Validate using AggregatingValidationContext with ArrayList as violationStorage
+// ============================================================
 @OptIn(ExperimentalContracts::class)
 public inline fun validateAll(block: AggregatingValidationContext.() -> Unit): ValidationResult {
     contract {
@@ -62,8 +63,9 @@ public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
         rules = rules,
     )
 
-// ----Validate using AggregatingValidationContext with provided destination as violationStorage----
-
+// ============================================================
+// Validate using AggregatingValidationContext with provided destination as violationStorage
+// ============================================================
 @OptIn(ExperimentalContracts::class)
 public inline fun validateAllTo(
     destination: MutableCollection<Violation>,
@@ -115,8 +117,9 @@ public fun <T> T.validateAllWithRulesTo(
         rules = rules,
     )
 
-// ----Validate using provided context----
-
+// ============================================================
+// Validate using provided context
+// ============================================================
 @OptIn(ExperimentalContracts::class)
 public inline fun <C : AggregatingValidationContext> validateAllUsing(
     context: C,
