@@ -15,3 +15,9 @@ public value class ViolationReason(
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun String.asViolationReason(): ViolationReason = ViolationReason(this)
+
+/**
+ * Creates new [ViolationReason]
+ */
+@Suppress("NOTHING_TO_INLINE")
+public inline fun violation(reason: String): ViolationReason = ViolationReason(reason)
