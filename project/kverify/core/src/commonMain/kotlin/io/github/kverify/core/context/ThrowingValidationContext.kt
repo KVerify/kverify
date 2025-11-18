@@ -190,3 +190,23 @@ public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
         )
     }
 }
+
+public infix fun <T> T.notSatisfiesFailFast(rule: Rule<T>): Boolean =
+    !satisfiesFailFast(
+        rule = rule,
+    )
+
+public infix fun <T> T.notSatisfiesFailFast(rules: Iterable<Rule<T>>): Boolean =
+    !satisfiesFailFast(
+        rules = rules,
+    )
+
+public fun <T> T.notSatisfiesFailFast(vararg rules: Rule<T>): Boolean =
+    !satisfiesFailFast(
+        rules = rules,
+    )
+
+public fun <T> T.notSatisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean =
+    !satisfiesFailFast(
+        rulesIterator = rulesIterator,
+    )
