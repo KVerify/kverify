@@ -152,3 +152,23 @@ public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
         )
     } == null
 }
+
+public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean =
+    !satisfies(
+        rule = rule,
+    )
+
+public infix fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean =
+    !satisfies(
+        rules = rules,
+    )
+
+public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean =
+    !satisfies(
+        rules = rules,
+    )
+
+public fun <T> T.notSatisfies(rulesIterator: Iterator<Rule<T>>): Boolean =
+    !satisfies(
+        rulesIterator = rulesIterator,
+    )
