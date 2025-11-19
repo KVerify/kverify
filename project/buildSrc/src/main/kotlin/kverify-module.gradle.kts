@@ -53,11 +53,11 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     sourceSets {
-        commonTest {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(project(":test-kit"))
-            }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(kotlin("test-common"))
+            implementation(kotlin("test-annotations-common"))
+            implementation(project(":test-kit"))
         }
     }
 }
