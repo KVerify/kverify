@@ -12,7 +12,8 @@ public interface ScopedRule<in T> : Rule<T> {
     ): Unit = with(context) { executeScoped(value) }
 }
 
-public inline fun <T> rule(crossinline execute: ValidationContext.(T) -> Unit): ScopedRule<T> =
+@Suppress("FunctionName")
+public inline fun <T> Rule(crossinline execute: ValidationContext.(T) -> Unit): ScopedRule<T> =
     object : ScopedRule<T> {
         override fun ValidationContext.executeScoped(value: T): Unit = execute(value)
     }
