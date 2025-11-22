@@ -45,6 +45,12 @@ public inline fun <T> runValidatingAll(block: AggregatingValidationContext.() ->
     return runValidatingAllTo(ArrayList(), block)
 }
 
+public infix fun <T> T.validateAllWithRule(rule: Rule<T>): ValidationResult =
+    this.validateAllWithRuleTo(
+        destination = ArrayList(),
+        rule = rule,
+    )
+
 public infix fun <T> T.validateAllWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult =
     this.validateAllWithRulesTo(
         destination = ArrayList(),
@@ -57,9 +63,20 @@ public infix fun <T> T.validateAllWithRules(rules: Iterable<Rule<T>>): Validatio
         rules = rules,
     )
 
+public fun <T> T.validateAllWithRules(): ValidationResult =
+    this.validateAllWithRulesTo(
+        destination = ArrayList(),
+    )
+
+public fun <T> T.validateAllWithRules(rule: Rule<T>): ValidationResult =
+    this.validateAllWithRulesTo(
+        destination = ArrayList(),
+        rule = rule,
+    )
+
 public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
     this.validateAllWithRulesTo(
-        ArrayList(),
+        destination = ArrayList(),
         rules = rules,
     )
 
@@ -75,7 +92,10 @@ public inline fun validateAllTo(
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return validateAllUsing(AggregatingValidationContext(destination), block)
+    return validateAllUsing(
+        context = AggregatingValidationContext(destination),
+        block,
+    )
 }
 
 @OptIn(ExperimentalContracts::class)
@@ -87,15 +107,24 @@ public inline fun <T> runValidatingAllTo(
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return runValidatingAllUsing(AggregatingValidationContext(destination), block)
+    return runValidatingAllUsing(context = AggregatingValidationContext(destination), block)
 }
+
+public fun <T> T.validateAllWithRuleTo(
+    destination: MutableCollection<Violation>,
+    rule: Rule<T>,
+): ValidationResult =
+    this.validateAllWithRuleUsing(
+        context = AggregatingValidationContext(destination),
+        rule = rule,
+    )
 
 public fun <T> T.validateAllWithRulesTo(
     destination: MutableCollection<Violation>,
     rulesIterator: Iterator<Rule<T>>,
 ): ValidationResult =
     this.validateAllWithRulesUsing(
-        AggregatingValidationContext(destination),
+        context = AggregatingValidationContext(destination),
         rulesIterator = rulesIterator,
     )
 
@@ -104,8 +133,22 @@ public fun <T> T.validateAllWithRulesTo(
     rules: Iterable<Rule<T>>,
 ): ValidationResult =
     this.validateAllWithRulesUsing(
-        AggregatingValidationContext(destination),
+        context = AggregatingValidationContext(destination),
         rules = rules,
+    )
+
+public fun <T> T.validateAllWithRulesTo(destination: MutableCollection<Violation>): ValidationResult =
+    this.validateAllWithRulesUsing(
+        context = AggregatingValidationContext(destination),
+    )
+
+public fun <T> T.validateAllWithRulesTo(
+    destination: MutableCollection<Violation>,
+    rule: Rule<T>,
+): ValidationResult =
+    this.validateAllWithRulesUsing(
+        context = AggregatingValidationContext(destination),
+        rule = rule,
     )
 
 public fun <T> T.validateAllWithRulesTo(
@@ -113,7 +156,7 @@ public fun <T> T.validateAllWithRulesTo(
     vararg rules: Rule<T>,
 ): ValidationResult =
     this.validateAllWithRulesUsing(
-        AggregatingValidationContext(destination),
+        context = AggregatingValidationContext(destination),
         rules = rules,
     )
 
@@ -152,6 +195,15 @@ public inline fun <T, C : AggregatingValidationContext> runValidatingAllUsing(
     )
 }
 
+public fun <T, C : AggregatingValidationContext> T.validateAllWithRuleUsing(
+    context: C,
+    rule: Rule<T>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) { value applyRule rule }
+}
+
 public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
     context: C,
     rulesIterator: Iterator<Rule<T>>,
@@ -173,6 +225,18 @@ public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
     val value = this
 
     return validateAllUsing(context) { value applyRules rules }
+}
+
+@Suppress("UnusedReceiverParameter")
+public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(context: C): ValidationResult = context.build()
+
+public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
+    context: C,
+    rule: Rule<T>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) { value applyRule rule }
 }
 
 public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
