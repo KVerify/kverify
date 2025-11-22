@@ -3,7 +3,7 @@ package io.github.kverify.core.context
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 
-public interface ValidationContext {
+public fun interface ValidationContext {
     public fun onFailure(violation: Violation)
 
     public fun <T> runRules(
@@ -46,11 +46,6 @@ public interface ValidationContext {
             rulesIterator = rules.iterator(),
         )
 }
-
-public inline fun ValidationContext(crossinline onFailure: (Violation) -> Unit): ValidationContext =
-    object : ValidationContext {
-        override fun onFailure(violation: Violation): Unit = onFailure(violation)
-    }
 
 public fun <T> T.applyRuleUsing(
     context: ValidationContext,
