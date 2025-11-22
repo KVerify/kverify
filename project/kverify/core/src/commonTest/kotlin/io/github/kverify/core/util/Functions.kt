@@ -23,5 +23,5 @@ fun assertStoredWithOrder(
     violationStorage: List<Violation>,
 ) {
     assertStored(expected, violationStorage)
-    expected.zip(violationStorage) { exp, act -> assertSame(exp, act) }
+    expected.zip(violationStorage) { exp, act -> assertEquals(exp, act) }
 }

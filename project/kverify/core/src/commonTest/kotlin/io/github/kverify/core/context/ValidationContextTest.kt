@@ -7,17 +7,20 @@ import io.github.kverify.core.util.toFailingRules
 import io.github.kverify.core.util.violations
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.ViolationReason
-import io.github.kverify.core.violation.asViolationReason
 import io.github.kverify.core.violation.violation
 import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class ValidationContextTest {
     private lateinit var violationStorage: MutableList<Violation>
     private lateinit var context: ValidationContext
+
+    val violations = violations("error1", "error2", "error3")
+    val rules = violations.toFailingRules<String>()
 
     @BeforeTest
     fun setUp() {
@@ -30,7 +33,7 @@ class ValidationContextTest {
         ValidationContext {
             @Suppress("USELESS_IS_CHECK")
             if (it !is Violation) fail("Expected violation, but got ${it::class}")
-        }
+        }.onFailure(violation("error"))
     }
 
     @Test
@@ -66,81 +69,50 @@ class ValidationContextTest {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
-        val result = with(context) { "test".applyRule(rule) }
-
-        assertEquals("test", result)
-        assertStoredWithOrder(listOf(violation), violationStorage)
+        assertRunContextAndReturnsUnchanged(violation) { it applyRule rule }
     }
 
     @Test
-    fun `runRules executes all rules and returns value unchanged`() {
-        val violations = violations("error1", "error2", "error3")
-        val rules = violations.toFailingRules<String>()
-
-        val value = "test"
-        val result = context.runRules(value, rules.iterator())
-
-        assertEquals(value, result)
-        assertStoredWithOrder(violations, violationStorage)
-    }
+    fun `runRules executes all rules and returns value unchanged`() =
+        assertRunContextAndReturnsUnchanged {
+            runRules(it, rules.iterator())
+        }
 
     @Test
-    fun `applyRules vararg executes all rules and returns value unchanged`() {
-        val violations = violations("error1", "error2")
-        val rules = violations.toFailingRules<String>().toTypedArray()
-
-        val result =
-            with(context) {
-                "test".applyRules(*rules)
-            }
-
-        assertEquals("test", result)
-        assertStoredWithOrder(violations, violationStorage)
-    }
+    fun `applyRules vararg executes all rules and returns value unchanged`() =
+        assertRunContextAndReturnsUnchanged {
+            "test".applyRules(*rules.toTypedArray())
+        }
 
     @Test
-    fun `applyRules iterable executes all rules`() {
-        val violations = violations("error1", "error2")
-        val rules: Iterable<Rule<String>> = violations.toFailingRules()
-
-        val result = with(context) { "test".applyRules(rules) }
-
-        assertEquals("test", result)
-        assertStoredWithOrder(violations, violationStorage)
-    }
+    fun `applyRules iterable executes all rules and returns value unchanged`() =
+        assertRunContextAndReturnsUnchanged {
+            val rules: Iterable<Rule<String>> = rules
+            it applyRules rules
+        }
 
     @Test
-    fun `applyRuleUsing applies rule with given context`() {
+    fun `applyRuleUsing applies rule with given context and returns value unchanged`() {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
-        val result = "test".applyRuleUsing(context, rule)
-
-        assertEquals("test", result)
-        assertStoredWithOrder(listOf(violation), violationStorage)
+        assertRunContextAndReturnsUnchanged(violation) {
+            it.applyRuleUsing(this, rule)
+        }
     }
 
     @Test
-    fun `applyRulesUsing vararg applies rules with given context`() {
-        val violations = violations("error1", "error2")
-        val rules = violations.toFailingRules<String>().toTypedArray()
-
-        val result = "test".applyRulesUsing(context, *rules)
-
-        assertEquals("test", result)
-        assertStoredWithOrder(violations, violationStorage)
-    }
+    fun `applyRulesUsing vararg applies rules with given context`() =
+        assertRunContextAndReturnsUnchanged {
+            it.applyRulesUsing(this, *rules.toTypedArray())
+        }
 
     @Test
-    fun `applyRulesUsing iterable applies rules with given context`() {
-        val violations = violations("error1", "error2")
-        val rules: Iterable<Rule<String>> = violations.toFailingRules()
-
-        val result = "test".applyRulesUsing(context, rules)
-
-        assertEquals("test", result)
-        assertStoredWithOrder(violations, violationStorage)
-    }
+    fun `applyRulesUsing iterable applies rules with given context`() =
+        assertRunContextAndReturnsUnchanged {
+            val rules: Iterable<Rule<String>> = rules
+            it.applyRulesUsing(this, rules)
+        }
 
     @Test
     fun `applyRule variations work with any type`() {
@@ -160,28 +132,24 @@ class ValidationContextTest {
         value.applyRulesUsing(context, *arrayOf(rule))
         value.applyRulesUsing(context, listOf(rule))
 
-        assertEquals(3, violationStorage.size)
+        assertEquals(7, violationStorage.size)
     }
 
     @Test
-    fun `runUnitRules iterable executes rules on Unit`() {
-        val violations = violations("error1", "error2")
-        val rules: Iterable<Rule<Unit>> = violations.toFailingRules()
+    fun `runUnitRules iterable executes rules on Unit`() =
+        assertRunContext {
+            val rules = violations.toFailingRules<Unit>()
 
-        context.runUnitRules(rules)
-
-        assertStoredWithOrder(violations, violationStorage)
-    }
+            runUnitRules(rules)
+        }
 
     @Test
-    fun `runUnitRules vararg executes rules on Unit`() {
-        val violations = violations("error1", "error2")
-        val rules = violations.toFailingRules<Unit>().toTypedArray()
+    fun `runUnitRules vararg executes rules on Unit`() =
+        assertRunContext {
+            val rules = violations.toFailingRules<Unit>().toTypedArray()
 
-        context.runUnitRules(*rules)
-
-        assertStoredWithOrder(violations, violationStorage)
-    }
+            runUnitRules(*rules)
+        }
 
     @Test
     fun `failIf calls onFailure when condition is true`() {
@@ -227,7 +195,7 @@ class ValidationContextTest {
             violation
         }
 
-        assertEquals(false, evaluated)
+        assertFalse(evaluated)
 
         context.failIf(true) {
             evaluated = true
@@ -244,20 +212,50 @@ class ValidationContextTest {
 
         val violation = violation("error")
 
-        context.failIfNot(false) {
+        context.failIfNot(true) {
             evaluated = true
             violation
         }
 
-        assertEquals(false, evaluated)
+        assertFalse(evaluated)
 
-        context.failIfNot(true) {
+        context.failIfNot(false) {
             evaluated = true
             violation
         }
 
         assertTrue(evaluated)
     }
+
+    private inline fun assertRunContext(
+        violations: List<Violation> = this.violations,
+        block: ValidationContext.() -> Unit,
+    ) {
+        context.block()
+
+        assertStoredWithOrder(violations, violationStorage)
+    }
+
+    private inline fun assertRunContext(
+        vararg violations: Violation,
+        block: ValidationContext.() -> Unit,
+    ) = assertRunContext(violations.asList(), block)
+
+    private inline fun assertRunContextAndReturnsUnchanged(
+        violations: List<Violation> = this.violations,
+        block: ValidationContext.(String) -> String,
+    ) {
+        val value = "test"
+        val result = with(context) { block(value) }
+
+        assertEquals(value, result)
+        assertStoredWithOrder(violations, violationStorage)
+    }
+
+    private fun assertRunContextAndReturnsUnchanged(
+        vararg violations: Violation,
+        block: ValidationContext.(String) -> String,
+    ) = assertRunContextAndReturnsUnchanged(violations.asList(), block)
 }
 
 @Suppress("UnusedPrivateClass", "Unused")
