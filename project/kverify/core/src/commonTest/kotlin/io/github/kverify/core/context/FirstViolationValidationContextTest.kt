@@ -81,9 +81,10 @@ class FirstViolationValidationContextTest {
     fun runRulesStopsAtFirstViolation() {
         val context = FirstViolationValidationContextImpl()
         val value = "test"
+        val violation = violations.first()
         val rules =
             listOf<Rule<String>>(
-                FailingRule("error 1"),
+                FailingRule(violation),
                 Rule { fail("Rules should not be executed when first violation exists") },
             )
 
@@ -93,7 +94,7 @@ class FirstViolationValidationContextTest {
             }
 
         assertEquals(value, result)
-        assertEquals(violations.first(), context.firstViolation)
+        assertEquals(violation, context.firstViolation)
     }
 
     @Test
