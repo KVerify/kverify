@@ -10,14 +10,9 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public interface ThrowingValidationContext : ValidationContext {
+public fun interface ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing
 }
-
-public inline fun ThrowingValidationContext(crossinline onFailure: (Violation) -> Nothing): ThrowingValidationContext =
-    object : ThrowingValidationContext {
-        override fun onFailure(violation: Violation): Nothing = onFailure(violation)
-    }
 
 @OptIn(ExperimentalContracts::class)
 public inline fun ThrowingValidationContext.throwingFailIf(
