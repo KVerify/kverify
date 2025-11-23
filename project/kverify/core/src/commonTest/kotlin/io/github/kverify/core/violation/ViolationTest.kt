@@ -5,7 +5,7 @@ import kotlin.test.assertEquals
 
 class ViolationTest {
     @Test
-    fun `Violation interface can be implemented`() {
+    fun violationInterfaceCanBeImplemented() {
         val reason = "test violation"
 
         val violation =

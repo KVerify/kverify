@@ -29,7 +29,7 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `ValidationContext is functional interface`() {
+    fun validationContextIsFunctionalInterface() {
         ValidationContext {
             @Suppress("USELESS_IS_CHECK")
             if (it !is Violation) fail("Expected violation, but got ${it::class}")
@@ -37,7 +37,7 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `ValidationContext all methods are overridable`() {
+    fun validationContextAllMethodsAreOverridable() {
         object : ValidationContext {
             override fun onFailure(violation: Violation): Unit = Unit
 
@@ -55,7 +55,7 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `ValidationContext factory creates context`() {
+    fun validationContextFactoryCreatesContext() {
         var capturedViolation: Violation? = null
         val context = ValidationContext { capturedViolation = it }
         val violation = ViolationReason("test")
@@ -65,7 +65,7 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `applyRule executes rule and returns value`() {
+    fun applyRuleExecutesRuleAndReturnsValue() {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
@@ -73,26 +73,26 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `runRules executes all rules and returns value unchanged`() =
+    fun runRulesExecutesAllRulesAndReturnsValueUnchanged() =
         assertRunContextAndReturnsUnchanged {
             runRules(it, rules.iterator())
         }
 
     @Test
-    fun `applyRules vararg executes all rules and returns value unchanged`() =
+    fun applyRulesVarargExecutesAllRulesAndReturnsValueUnchanged() =
         assertRunContextAndReturnsUnchanged {
             "test".applyRules(*rules.toTypedArray())
         }
 
     @Test
-    fun `applyRules iterable executes all rules and returns value unchanged`() =
+    fun applyRulesIterableExecutesAllRulesAndReturnsValueUnchanged() =
         assertRunContextAndReturnsUnchanged {
             val rules: Iterable<Rule<String>> = rules
             it applyRules rules
         }
 
     @Test
-    fun `applyRuleUsing applies rule with given context and returns value unchanged`() {
+    fun applyRuleUsingAppliesRuleWithGivenContextAndReturnsValueUnchanged() {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
@@ -102,20 +102,20 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `applyRulesUsing vararg applies rules with given context`() =
+    fun applyRulesUsingVarargAppliesRulesWithGivenContext() =
         assertRunContextAndReturnsUnchanged {
             it.applyRulesUsing(this, *rules.toTypedArray())
         }
 
     @Test
-    fun `applyRulesUsing iterable applies rules with given context`() =
+    fun applyRulesUsingIterableAppliesRulesWithGivenContext() =
         assertRunContextAndReturnsUnchanged {
             val rules: Iterable<Rule<String>> = rules
             it.applyRulesUsing(this, rules)
         }
 
     @Test
-    fun `applyRule variations work with any type`() {
+    fun applyRuleVariationsWorkWithAnyType() {
         val value: Any? = null
         val rule = FailingRule<Any?>("error")
 
@@ -136,7 +136,7 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `runUnitRules iterable executes rules on Unit`() =
+    fun runUnitRulesIterableExecutesRulesOnUnit() =
         assertRunContext {
             val rules = violations.toFailingRules<Unit>()
 
@@ -144,7 +144,7 @@ class ValidationContextTest {
         }
 
     @Test
-    fun `runUnitRules vararg executes rules on Unit`() =
+    fun runUnitRulesVarargExecutesRulesOnUnit() =
         assertRunContext {
             val rules = violations.toFailingRules<Unit>().toTypedArray()
 
@@ -152,7 +152,7 @@ class ValidationContextTest {
         }
 
     @Test
-    fun `failIf calls onFailure when condition is true`() {
+    fun failIfCallsOnFailureWhenConditionIsTrue() {
         val violation = violation("error")
         context.failIf(true) { violation }
 
@@ -161,14 +161,14 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `failIf does not call onFailure when condition is false`() {
+    fun failIfDoesNotCallOnFailureWhenConditionIsFalse() {
         context.failIf(false) { violation("error") }
 
         assertTrue(violationStorage.isEmpty())
     }
 
     @Test
-    fun `failIfNot calls onFailure when condition is false`() {
+    fun failIfNotCallsOnFailureWhenConditionIsFalse() {
         val violation = violation("error")
         context.failIfNot(false) { violation }
 
@@ -177,14 +177,14 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `failIfNot does not call onFailure when condition is true`() {
+    fun failIfNotDoesNotCallOnFailureWhenConditionIsTrue() {
         context.failIfNot(true) { violation("error") }
 
         assertTrue(violationStorage.isEmpty())
     }
 
     @Test
-    fun `failIf lazy violation is only evaluated when condition is true`() {
+    fun failIfLazyViolationIsOnlyEvaluatedWhenConditionIsTrue() {
         var evaluated = false
         val context = ValidationContext { }
 
@@ -206,7 +206,7 @@ class ValidationContextTest {
     }
 
     @Test
-    fun `failIfNot lazy violation is only evaluated when condition is true`() {
+    fun failIfNotLazyViolationIsOnlyEvaluatedWhenConditionIsTrue() {
         var evaluated = false
         val context = ValidationContext { }
 

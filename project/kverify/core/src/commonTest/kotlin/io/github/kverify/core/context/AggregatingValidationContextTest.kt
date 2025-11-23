@@ -29,7 +29,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `onFailure adds violation to storage`() {
+    fun onFailureAddsViolationToStorage() {
         val violation = violation("error")
         context.onFailure(violation)
 
@@ -38,21 +38,21 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `onFailure adds multiple violations to storage`() {
+    fun onFailureAddsMultipleViolationsToStorage() {
         violations.forEach(context::onFailure)
 
         assertStoredWithOrder(violations, violationStorage)
     }
 
     @Test
-    fun `build returns Valid when no violations`() {
+    fun buildReturnsValidWhenNoViolations() {
         val result = context.build()
 
         assertIs<ValidationResult.Valid>(result)
     }
 
     @Test
-    fun `build returns Invalid when violations exist`() {
+    fun buildReturnsInvalidWhenViolationsExist() {
         violations.forEach(context::onFailure)
 
         val result = context.build()
@@ -62,14 +62,14 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAll returns Valid when no violations`() {
+    fun validateAllReturnsValidWhenNoViolations() {
         val result = validateAll { /* No violations */ }
 
         assertIs<ValidationResult.Valid>(result)
     }
 
     @Test
-    fun `validateAll returns Invalid when violations exist`() {
+    fun validateAllReturnsInvalidWhenViolationsExist() {
         val violation = violation("error")
         val result = validateAll { onFailure(violation) }
 
@@ -78,7 +78,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAll executes rules and collects violations`() {
+    fun validateAllExecutesRulesAndCollectsViolations() {
         val result = validateAll { "test" applyRules rules }
 
         assertIs<ValidationResult.Invalid>(result)
@@ -86,7 +86,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `runValidatingAll returns success when no violations`() {
+    fun runValidatingAllReturnsSuccessWhenNoViolations() {
         val value = "test value"
         val result = runValidatingAll { value }
 
@@ -95,7 +95,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `runValidatingAll returns failure when violations exist`() {
+    fun runValidatingAllReturnsFailureWhenViolationsExist() {
         val violation = violation("error")
         val result =
             runValidatingAll {
@@ -110,7 +110,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRule validates single rule`() {
+    fun validateAllWithRuleValidatesSingleRule() {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
@@ -121,7 +121,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRules with iterator validates all rules`() {
+    fun validateAllWithRulesWithIteratorValidatesAllRules() {
         val result = "test" validateAllWithRules rules.iterator()
 
         assertIs<ValidationResult.Invalid>(result)
@@ -129,7 +129,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRules with iterable validates all rules`() {
+    fun validateAllWithRulesWithIterableValidatesAllRules() {
         val rules: Iterable<Rule<String>> = violations.toFailingRules()
 
         val result = "test" validateAllWithRules rules
@@ -139,14 +139,14 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRules with no arguments returns Valid`() {
+    fun validateAllWithRulesWithNoArgumentsReturnsValid() {
         val result = "test".validateAllWithRules()
 
         assertIs<ValidationResult.Valid>(result)
     }
 
     @Test
-    fun `validateAllWithRules with single rule validates rule`() {
+    fun validateAllWithRulesWithSingleRuleValidatesRule() {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
@@ -157,7 +157,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRules with vararg validates all rules`() {
+    fun validateAllWithRulesWithVarargValidatesAllRules() {
         val result = "test".validateAllWithRules(*rules.toTypedArray())
 
         assertIs<ValidationResult.Invalid>(result)
@@ -165,7 +165,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllTo uses provided destination`() {
+    fun validateAllToUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
         val violation = violation("error")
 
@@ -179,7 +179,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `runValidatingAllTo uses provided destination`() {
+    fun runValidatingAllToUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
         val violation = violation("error")
 
@@ -194,7 +194,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRuleTo uses provided destination`() {
+    fun validateAllWithRuleToUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
@@ -206,7 +206,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesTo with iterator uses provided destination`() {
+    fun validateAllWithRulesToWithIteratorUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
 
         val result = "test".validateAllWithRulesTo(destination, rules.iterator())
@@ -216,7 +216,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesTo with iterable uses provided destination`() {
+    fun validateAllWithRulesToWithIterableUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
         val rules: Iterable<Rule<String>> = violations.toFailingRules()
 
@@ -227,7 +227,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesTo with no rules uses provided destination`() {
+    fun validateAllWithRulesToWithNoRulesUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
 
         val result = "test".validateAllWithRulesTo(destination)
@@ -237,7 +237,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesTo with single rule uses provided destination`() {
+    fun validateAllWithRulesToWithSingleRuleUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
@@ -249,7 +249,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesTo with vararg uses provided destination`() {
+    fun validateAllWithRulesToWithVarargUsesProvidedDestination() {
         val destination = mutableListOf<Violation>()
 
         val result = "test".validateAllWithRulesTo(destination, *rules.toTypedArray())
@@ -259,7 +259,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllUsing uses provided context`() {
+    fun validateAllUsingUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
         val violation = violation("error")
 
@@ -273,7 +273,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `runValidatingAllUsing uses provided context`() {
+    fun runValidatingAllUsingUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
         val violation = violation("error")
 
@@ -289,7 +289,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRuleUsing uses provided context`() {
+    fun validateAllWithRuleUsingUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
@@ -301,7 +301,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesUsing with iterator uses provided context`() {
+    fun validateAllWithRulesUsingWithIteratorUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
 
         val result = "test".validateAllWithRulesUsing(customContext, rules.iterator())
@@ -311,7 +311,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesUsing with iterable uses provided context`() {
+    fun validateAllWithRulesUsingWithIterableUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
         val rules: Iterable<Rule<String>> = violations.toFailingRules()
 
@@ -322,7 +322,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesUsing with no rules returns Valid`() {
+    fun validateAllWithRulesUsingWithNoRulesReturnsValid() {
         val customContext = AggregatingValidationContext(mutableListOf())
 
         val result = "test".validateAllWithRulesUsing(customContext)
@@ -331,7 +331,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesUsing with single rule uses provided context`() {
+    fun validateAllWithRulesUsingWithSingleRuleUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
@@ -343,7 +343,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAllWithRulesUsing with vararg uses provided context`() {
+    fun validateAllWithRulesUsingWithVarargUsesProvidedContext() {
         val customContext = AggregatingValidationContext(mutableListOf())
 
         val result = "test".validateAllWithRulesUsing(customContext, *rules.toTypedArray())
@@ -353,7 +353,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `AggregatingValidationContext can be extended`() {
+    fun aggregatingValidationContextCanBeExtended() {
         val customContext =
             object : AggregatingValidationContext(mutableListOf()) {
                 override fun build(): ValidationResult = super.build()
@@ -367,7 +367,7 @@ class AggregatingValidationContextTest {
     }
 
     @Test
-    fun `validateAll works with any type including null`() {
+    fun validateAllWorksWithAnyTypeIncludingNull() {
         val value: Any? = null
         val violation = violation("error")
         val rule = FailingRule<Any?>(violation)

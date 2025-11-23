@@ -5,28 +5,28 @@ import kotlin.test.assertEquals
 
 class ViolationReasonTest {
     @Test
-    fun `ViolationReason can be created using constructor`() {
+    fun violationReasonCanBeCreatedUsingConstructor() {
         val reason = "test violation reason"
         val violationReason = ViolationReason(reason)
         assertEquals(reason, violationReason.reason)
     }
 
     @Test
-    fun `ViolationReason toString returns correct string`() {
+    fun violationReasonToStringReturnsCorrectString() {
         val reason = "test violation reason"
         val violationReason = ViolationReason(reason)
         assertEquals("ViolationReason(reason=$reason)", violationReason.toString())
     }
 
     @Test
-    fun `ViolationReason can be created using asViolationReason function`() {
+    fun violationReasonCanBeCreatedUsingAsViolationReasonFunction() {
         val reason = "test violation reason"
         val violationReason = reason.asViolationReason()
         assertEquals(reason, violationReason.reason)
     }
 
     @Test
-    fun `ViolationReason can be created using violation function`() {
+    fun violationReasonCanBeCreatedUsingViolationFunction() {
         val reason = "test violation reason"
         val violationReason = violation(reason)
         assertEquals(reason, violationReason.reason)
