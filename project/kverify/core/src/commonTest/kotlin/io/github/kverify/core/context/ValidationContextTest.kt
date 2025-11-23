@@ -157,7 +157,7 @@ class ValidationContextTest {
         context.failIf(true) { violation }
 
         assertEquals(1, violationStorage.size)
-        assertEquals(violation, violationStorage.first())
+        assertEquals(violation, violationStorage.single())
     }
 
     @Test
@@ -173,7 +173,7 @@ class ValidationContextTest {
         context.failIfNot(false) { violation }
 
         assertEquals(1, violationStorage.size)
-        assertEquals(violation, violationStorage.first())
+        assertEquals(violation, violationStorage.single())
     }
 
     @Test

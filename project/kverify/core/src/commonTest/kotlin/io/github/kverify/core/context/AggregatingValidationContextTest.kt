@@ -34,7 +34,7 @@ class AggregatingValidationContextTest {
         context.onFailure(violation)
 
         assertEquals(1, violationStorage.size)
-        assertEquals(listOf(violation), violationStorage.toList())
+        assertEquals(violation, violationStorage.single())
     }
 
     @Test
@@ -74,7 +74,7 @@ class AggregatingValidationContextTest {
         val result = validateAll { onFailure(violation) }
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 
     @Test
@@ -106,7 +106,7 @@ class AggregatingValidationContextTest {
         assertTrue(result.isFailure)
         val exception = result.exceptionOrNull()
         assertIs<ValidationException>(exception)
-        assertEquals(violation, exception.violations.first())
+        assertEquals(violation, exception.violations.single())
     }
 
     @Test
@@ -117,7 +117,7 @@ class AggregatingValidationContextTest {
         val result = "test" validateAllWithRule rule
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 
     @Test
@@ -153,7 +153,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRules(rule)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 
     @Test
@@ -175,7 +175,7 @@ class AggregatingValidationContextTest {
             }
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), destination.toList())
+        assertEquals(violation, destination.single())
     }
 
     @Test
@@ -190,7 +190,7 @@ class AggregatingValidationContextTest {
             }
 
         assertTrue(result.isFailure)
-        assertEquals(listOf(violation), destination.toList())
+        assertEquals(violation, destination.single())
     }
 
     @Test
@@ -202,7 +202,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRuleTo(destination, rule)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), destination.toList())
+        assertEquals(violation, destination.single())
     }
 
     @Test
@@ -245,7 +245,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesTo(destination, rule)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), destination.toList())
+        assertEquals(violation, destination.single())
     }
 
     @Test
@@ -269,7 +269,7 @@ class AggregatingValidationContextTest {
             }
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 
     @Test
@@ -297,7 +297,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRuleUsing(customContext, rule)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 
     @Test
@@ -339,7 +339,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesUsing(customContext, rule)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 
     @Test
@@ -378,7 +378,7 @@ class AggregatingValidationContextTest {
             }
 
         assertIs<ValidationResult.Invalid>(result)
-        assertEquals(listOf(violation), result.violations)
+        assertEquals(violation, result.violations.single())
     }
 }
 
