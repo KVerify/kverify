@@ -4,7 +4,7 @@ import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.util.FailingRule
-import io.github.kverify.core.util.assertStoredWithOrder
+import io.github.kverify.core.util.assertContainsAllWithOrder
 import io.github.kverify.core.util.toFailingRules
 import io.github.kverify.core.util.violations
 import io.github.kverify.core.violation.Violation
@@ -41,7 +41,7 @@ class AggregatingValidationContextTest {
     fun onFailureAddsMultipleViolationsToStorage() {
         violations.forEach(context::onFailure)
 
-        assertStoredWithOrder(violations, violationStorage)
+        assertContainsAllWithOrder(violations, violationStorage)
     }
 
     @Test
@@ -58,7 +58,7 @@ class AggregatingValidationContextTest {
         val result = context.build()
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -82,7 +82,7 @@ class AggregatingValidationContextTest {
         val result = validateAll { "test" applyRules rules }
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -125,7 +125,7 @@ class AggregatingValidationContextTest {
         val result = "test" validateAllWithRules rules.iterator()
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -135,7 +135,7 @@ class AggregatingValidationContextTest {
         val result = "test" validateAllWithRules rules
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -161,7 +161,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRules(*rules.toTypedArray())
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -212,7 +212,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesTo(destination, rules.iterator())
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, destination)
+        assertContainsAllWithOrder(violations, destination)
     }
 
     @Test
@@ -223,7 +223,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesTo(destination, rules)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, destination)
+        assertContainsAllWithOrder(violations, destination)
     }
 
     @Test
@@ -255,7 +255,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesTo(destination, *rules.toTypedArray())
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, destination)
+        assertContainsAllWithOrder(violations, destination)
     }
 
     @Test
@@ -307,7 +307,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesUsing(customContext, rules.iterator())
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -318,7 +318,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesUsing(customContext, rules)
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test
@@ -349,7 +349,7 @@ class AggregatingValidationContextTest {
         val result = "test".validateAllWithRulesUsing(customContext, *rules.toTypedArray())
 
         assertIs<ValidationResult.Invalid>(result)
-        assertStoredWithOrder(violations, result.violations)
+        assertContainsAllWithOrder(violations, result.violations)
     }
 
     @Test

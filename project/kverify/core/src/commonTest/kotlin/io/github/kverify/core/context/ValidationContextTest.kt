@@ -2,7 +2,7 @@ package io.github.kverify.core.context
 
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.util.FailingRule
-import io.github.kverify.core.util.assertStoredWithOrder
+import io.github.kverify.core.util.assertContainsAllWithOrder
 import io.github.kverify.core.util.toFailingRules
 import io.github.kverify.core.util.violations
 import io.github.kverify.core.violation.Violation
@@ -233,7 +233,7 @@ class ValidationContextTest {
     ) {
         context.block()
 
-        assertStoredWithOrder(violations, violationStorage)
+        assertContainsAllWithOrder(violations, violationStorage)
     }
 
     private inline fun assertRunContext(
@@ -249,7 +249,7 @@ class ValidationContextTest {
         val result = with(context) { block(value) }
 
         assertEquals(value, result)
-        assertStoredWithOrder(violations, violationStorage)
+        assertContainsAllWithOrder(violations, violationStorage)
     }
 
     private fun assertRunContextAndReturnsUnchanged(
