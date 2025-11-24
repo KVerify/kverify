@@ -9,18 +9,15 @@ fun violations(vararg names: String): List<Violation> = names.map { it.asViolati
 
 fun <T> List<Violation>.toFailingRules(): List<FailingRule<T>> = this.map { FailingRule(it) }
 
-fun assertContainsAll(
-    expected: List<Violation>,
-    violationStorage: List<Violation>,
+fun <T> assertContainsAll(
+    expected: List<T>,
+    actual: List<T>,
 ) {
-    assertEquals(expected.size, violationStorage.size)
-    assertTrue(violationStorage.containsAll(expected))
+    assertEquals(expected.size, actual.size)
+    assertTrue(actual.containsAll(expected))
 }
 
-fun assertContainsAllWithOrder(
-    expected: List<Violation>,
-    violationStorage: List<Violation>,
-) {
-    assertContainsAll(expected, violationStorage)
-    expected.zip(violationStorage) { exp, act -> assertEquals(exp, act) }
-}
+fun <T> assertContainsAllWithOrder(
+    expected: List<T>,
+    actual: List<T>,
+) = assertEquals(expected, actual)
