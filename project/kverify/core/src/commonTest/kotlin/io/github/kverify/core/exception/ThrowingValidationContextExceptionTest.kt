@@ -4,6 +4,7 @@ import io.github.kverify.core.violation.ViolationReason
 import io.github.kverify.core.violation.violation
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertIs
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
@@ -120,14 +121,14 @@ class ThrowingValidationContextExceptionTest {
     fun exceptionIsValidationException() {
         val exception = ThrowingValidationContextException(violation("error"))
 
-        assertTrue(exception is ValidationException)
+        assertIs<ValidationException>(exception)
     }
 
     @Test
     fun exceptionIsThrowable() {
         val exception = ThrowingValidationContextException(violation("error"))
 
-        assertTrue(exception is Throwable)
+        assertIs<Throwable>(exception)
     }
 
     @Test
