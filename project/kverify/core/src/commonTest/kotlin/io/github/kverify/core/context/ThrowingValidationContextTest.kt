@@ -63,7 +63,6 @@ class ThrowingValidationContextTest {
     fun throwingFailIfDoesNotThrowWhenConditionIsFalse() {
         val context = ThrowingValidationObject
 
-        // Should not throw
         context.throwingFailIf(false) { violation("error") }
     }
 
@@ -84,7 +83,6 @@ class ThrowingValidationContextTest {
     fun throwingFailIfNotDoesNotThrowWhenConditionIsTrue() {
         val context = ThrowingValidationObject
 
-        // Should not throw
         context.throwingFailIfNot(true) { violation("error") }
     }
 
@@ -252,7 +250,6 @@ class ThrowingValidationContextTest {
             }
 
         assertIs<ValidationResult.Invalid>(result)
-        // Should only have the first violation due to fail-fast behavior
         assertEquals(violations.first(), result.violations.single())
     }
 

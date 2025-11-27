@@ -516,7 +516,6 @@ class ValidationResultTest {
     fun throwOnFailureDoesNotThrowForValid() {
         val result: ValidationResult = ValidationResult.Valid
 
-        // Should not throw
         result.throwOnFailure()
     }
 

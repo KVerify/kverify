@@ -285,7 +285,6 @@ class ScopedRuleTest {
 
         val scoped = originalRule.asScoped()
 
-        // The adapter should wrap the original rule
         assertIs<ScopedRule<String>>(scoped)
     }
 
@@ -296,7 +295,6 @@ class ScopedRuleTest {
 
         val rule =
             Rule<String> { value ->
-                // Can use both 'this' (ValidationContext) and 'value'
                 this.onFailure(violation("error from $value"))
             }
 
@@ -355,7 +353,5 @@ class ScopedRuleTest {
 
 @Suppress("UnusedPrivateClass", "Unused")
 private class ScopedRuleCanBeImplemented : ScopedRule<String> {
-    override fun ValidationContext.executeScoped(value: String) {
-        // Implementation
-    }
+    override fun ValidationContext.executeScoped(value: String): Unit = Unit
 }
