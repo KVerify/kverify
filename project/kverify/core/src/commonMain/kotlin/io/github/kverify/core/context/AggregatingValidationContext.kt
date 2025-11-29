@@ -45,39 +45,31 @@ public inline fun <T> runValidatingAll(block: AggregatingValidationContext.() ->
     return runValidatingAllTo(ArrayList(), block)
 }
 
-public infix fun <T> T.validateAllWithRule(rule: Rule<T>): ValidationResult =
-    this.validateAllWithRuleTo(
+@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T> T.validateAll(): ValidationResult.Valid = ValidationResult.Valid
+
+public infix fun <T> T.validateAll(rule: Rule<T>): ValidationResult =
+    this.validateAllTo(
         destination = ArrayList(),
         rule = rule,
     )
 
-public infix fun <T> T.validateAllWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult =
-    this.validateAllWithRulesTo(
+public fun <T> T.validateAll(vararg rules: Rule<T>): ValidationResult =
+    this.validateAllTo(
+        destination = ArrayList(),
+        rules = rules,
+    )
+
+public infix fun <T> T.validateAll(rules: Iterable<Rule<T>>): ValidationResult =
+    this.validateAllTo(
+        destination = ArrayList(),
+        rules = rules,
+    )
+
+public infix fun <T> T.validateAll(rulesIterator: Iterator<Rule<T>>): ValidationResult =
+    this.validateAllTo(
         destination = ArrayList(),
         rulesIterator = rulesIterator,
-    )
-
-public infix fun <T> T.validateAllWithRules(rules: Iterable<Rule<T>>): ValidationResult =
-    this.validateAllWithRulesTo(
-        destination = ArrayList(),
-        rules = rules,
-    )
-
-public fun <T> T.validateAllWithRules(): ValidationResult =
-    this.validateAllWithRulesTo(
-        destination = ArrayList(),
-    )
-
-public fun <T> T.validateAllWithRules(rule: Rule<T>): ValidationResult =
-    this.validateAllWithRulesTo(
-        destination = ArrayList(),
-        rule = rule,
-    )
-
-public fun <T> T.validateAllWithRules(vararg rules: Rule<T>): ValidationResult =
-    this.validateAllWithRulesTo(
-        destination = ArrayList(),
-        rules = rules,
     )
 
 // ============================================================
@@ -110,54 +102,43 @@ public inline fun <T> runValidatingAllTo(
     return runValidatingAllUsing(context = AggregatingValidationContext(destination), block)
 }
 
-public fun <T> T.validateAllWithRuleTo(
+@Suppress("UnusedParameter", "UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T> T.validateAllTo(destination: MutableCollection<Violation>): ValidationResult.Valid = ValidationResult.Valid
+
+public fun <T> T.validateAllTo(
     destination: MutableCollection<Violation>,
     rule: Rule<T>,
 ): ValidationResult =
-    this.validateAllWithRuleUsing(
+    this.validateAllUsing(
         context = AggregatingValidationContext(destination),
         rule = rule,
     )
 
-public fun <T> T.validateAllWithRulesTo(
-    destination: MutableCollection<Violation>,
-    rulesIterator: Iterator<Rule<T>>,
-): ValidationResult =
-    this.validateAllWithRulesUsing(
-        context = AggregatingValidationContext(destination),
-        rulesIterator = rulesIterator,
-    )
-
-public fun <T> T.validateAllWithRulesTo(
-    destination: MutableCollection<Violation>,
-    rules: Iterable<Rule<T>>,
-): ValidationResult =
-    this.validateAllWithRulesUsing(
-        context = AggregatingValidationContext(destination),
-        rules = rules,
-    )
-
-public fun <T> T.validateAllWithRulesTo(destination: MutableCollection<Violation>): ValidationResult =
-    this.validateAllWithRulesUsing(
-        context = AggregatingValidationContext(destination),
-    )
-
-public fun <T> T.validateAllWithRulesTo(
-    destination: MutableCollection<Violation>,
-    rule: Rule<T>,
-): ValidationResult =
-    this.validateAllWithRulesUsing(
-        context = AggregatingValidationContext(destination),
-        rule = rule,
-    )
-
-public fun <T> T.validateAllWithRulesTo(
+public fun <T> T.validateAllTo(
     destination: MutableCollection<Violation>,
     vararg rules: Rule<T>,
 ): ValidationResult =
-    this.validateAllWithRulesUsing(
+    this.validateAllUsing(
         context = AggregatingValidationContext(destination),
         rules = rules,
+    )
+
+public fun <T> T.validateAllTo(
+    destination: MutableCollection<Violation>,
+    rules: Iterable<Rule<T>>,
+): ValidationResult =
+    this.validateAllUsing(
+        context = AggregatingValidationContext(destination),
+        rules = rules,
+    )
+
+public fun <T> T.validateAllTo(
+    destination: MutableCollection<Violation>,
+    rulesIterator: Iterator<Rule<T>>,
+): ValidationResult =
+    this.validateAllUsing(
+        context = AggregatingValidationContext(destination),
+        rulesIterator = rulesIterator,
     )
 
 // ============================================================
@@ -195,7 +176,10 @@ public inline fun <T, C : AggregatingValidationContext> runValidatingAllUsing(
     )
 }
 
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRuleUsing(
+@Suppress("UnusedReceiverParameter")
+public fun <T, C : AggregatingValidationContext> T.validateAllUsing(context: C): ValidationResult = context.build()
+
+public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
     context: C,
     rule: Rule<T>,
 ): ValidationResult {
@@ -204,7 +188,27 @@ public fun <T, C : AggregatingValidationContext> T.validateAllWithRuleUsing(
     return validateAllUsing(context) { value applyRule rule }
 }
 
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
+public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
+    context: C,
+    vararg rules: Rule<T>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) {
+        value.applyRules(rules = rules)
+    }
+}
+
+public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
+    context: C,
+    rules: Iterable<Rule<T>>,
+): ValidationResult {
+    val value = this
+
+    return validateAllUsing(context) { value applyRules rules }
+}
+
+public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
     context: C,
     rulesIterator: Iterator<Rule<T>>,
 ): ValidationResult {
@@ -215,37 +219,5 @@ public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
             value = value,
             rulesIterator = rulesIterator,
         )
-    }
-}
-
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
-    context: C,
-    rules: Iterable<Rule<T>>,
-): ValidationResult {
-    val value = this
-
-    return validateAllUsing(context) { value applyRules rules }
-}
-
-@Suppress("UnusedReceiverParameter")
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(context: C): ValidationResult = context.build()
-
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
-    context: C,
-    rule: Rule<T>,
-): ValidationResult {
-    val value = this
-
-    return validateAllUsing(context) { value applyRule rule }
-}
-
-public fun <T, C : AggregatingValidationContext> T.validateAllWithRulesUsing(
-    context: C,
-    vararg rules: Rule<T>,
-): ValidationResult {
-    val value = this
-
-    return validateAllUsing(context) {
-        value.applyRules(rules = rules)
     }
 }

@@ -63,10 +63,25 @@ public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T):
     return ThrowingValidationObject.run(block)
 }
 
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.validateOrThrow(): T = this
+
 public infix fun <T> T.validateOrThrow(rule: Rule<T>): T {
     val value = this
 
     return validateOrThrow { value applyRule rule }
+}
+
+public fun <T> T.validateOrThrow(vararg rules: Rule<T>): T {
+    val value = this
+
+    return validateOrThrow { value.applyRules(rules = rules) }
+}
+
+public infix fun <T> T.validateOrThrow(rules: Iterable<Rule<T>>): T {
+    val value = this
+
+    return validateOrThrow { value.applyRules(rules = rules) }
 }
 
 public infix fun <T> T.validateOrThrow(rulesIterator: Iterator<Rule<T>>): T {
@@ -78,18 +93,6 @@ public infix fun <T> T.validateOrThrow(rulesIterator: Iterator<Rule<T>>): T {
             rulesIterator = rulesIterator,
         )
     }
-}
-
-public infix fun <T> T.validateOrThrow(rules: Iterable<Rule<T>>): T {
-    val value = this
-
-    return validateOrThrow { value.applyRules(rules = rules) }
-}
-
-public fun <T> T.validateOrThrow(vararg rules: Rule<T>): T {
-    val value = this
-
-    return validateOrThrow { value.applyRules(rules = rules) }
 }
 
 // ============================================================
@@ -121,19 +124,22 @@ public inline fun <T> runValidatingFailFast(block: ThrowingValidationContext.() 
         Result.failure(it)
     }
 
+@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T> T.validateFailFast(): ValidationResult = ValidationResult.Valid
+
 public infix fun <T> T.validateFailFast(rule: Rule<T>): ValidationResult {
     val value = this
 
     return validateFailFast { value applyRule rule }
 }
 
-public infix fun <T> T.validateFailFast(rules: Iterable<Rule<T>>): ValidationResult {
+public fun <T> T.validateFailFast(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return validateFailFast { value.applyRules(rules = rules) }
 }
 
-public fun <T> T.validateFailFast(vararg rules: Rule<T>): ValidationResult {
+public infix fun <T> T.validateFailFast(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFailFast { value.applyRules(rules = rules) }
@@ -162,22 +168,25 @@ internal inline fun failFastThrows(block: ThrowingValidationContext.() -> Unit):
         true
     }
 
+@Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
+public inline fun <T> T.satisfiesFailFast(): Boolean = true
+
 public infix fun <T> T.satisfiesFailFast(rule: Rule<T>): Boolean {
     val value = this
 
     return !failFastThrows { value applyRule rule }
 }
 
-public infix fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
-    val value = this
-
-    return !failFastThrows { value applyRules rules }
-}
-
 public fun <T> T.satisfiesFailFast(vararg rules: Rule<T>): Boolean {
     val value = this
 
     return !failFastThrows { value.applyRules(rules = rules) }
+}
+
+public infix fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
+    val value = this
+
+    return !failFastThrows { value applyRules rules }
 }
 
 public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
@@ -191,17 +200,20 @@ public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
     }
 }
 
+@Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
+public inline fun <T> T.notSatisfiesFailFast(): Boolean = true
+
 public infix fun <T> T.notSatisfiesFailFast(rule: Rule<T>): Boolean =
     !satisfiesFailFast(
         rule = rule,
     )
 
-public infix fun <T> T.notSatisfiesFailFast(rules: Iterable<Rule<T>>): Boolean =
+public fun <T> T.notSatisfiesFailFast(vararg rules: Rule<T>): Boolean =
     !satisfiesFailFast(
         rules = rules,
     )
 
-public fun <T> T.notSatisfiesFailFast(vararg rules: Rule<T>): Boolean =
+public infix fun <T> T.notSatisfiesFailFast(rules: Iterable<Rule<T>>): Boolean =
     !satisfiesFailFast(
         rules = rules,
     )
