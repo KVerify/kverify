@@ -9,13 +9,18 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
+import kotlin.js.JsName
 
 public fun interface ThrowingValidationContext : ValidationContext {
     override fun onFailure(violation: Violation): Nothing
 }
 
+@Suppress("NOTHING_TO_INLINE")
+@JsName("ThrowingValidationContextFactory")
+public inline fun ThrowingValidationContext(): ThrowingValidationContext = ThrowingValidationObject
+
 @OptIn(ExperimentalContracts::class)
-public inline fun ThrowingValidationContext.throwingFailIf(
+public inline fun ThrowingValidationContext.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
@@ -27,7 +32,7 @@ public inline fun ThrowingValidationContext.throwingFailIf(
 }
 
 @OptIn(ExperimentalContracts::class)
-public inline fun ThrowingValidationContext.throwingFailIfNot(
+public inline fun ThrowingValidationContext.failIfNot(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
@@ -35,7 +40,7 @@ public inline fun ThrowingValidationContext.throwingFailIfNot(
         returns() implies condition
     }
 
-    throwingFailIf(!condition, lazyViolation)
+    failIf(!condition, lazyViolation)
 }
 
 @PublishedApi

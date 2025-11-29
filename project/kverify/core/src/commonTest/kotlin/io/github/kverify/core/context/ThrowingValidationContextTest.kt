@@ -47,52 +47,52 @@ class ThrowingValidationContextTest {
     }
 
     @Test
-    fun throwingFailIfThrowsWhenConditionIsTrue() {
+    fun failIfThrowsWhenConditionIsTrue() {
         val violation = violation("error")
         val context = ThrowingValidationObject
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                context.throwingFailIf(true) { violation }
+                context.failIf(true) { violation }
             }
 
         assertEquals(violation, exception.violation)
     }
 
     @Test
-    fun throwingFailIfDoesNotThrowWhenConditionIsFalse() {
+    fun failIfDoesNotThrowWhenConditionIsFalse() {
         val context = ThrowingValidationObject
 
-        context.throwingFailIf(false) { violation("error") }
+        context.failIf(false) { violation("error") }
     }
 
     @Test
-    fun throwingFailIfNotThrowsWhenConditionIsFalse() {
+    fun failIfNotThrowsWhenConditionIsFalse() {
         val violation = violation("error")
         val context = ThrowingValidationObject
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                context.throwingFailIfNot(false) { violation }
+                context.failIfNot(false) { violation }
             }
 
         assertEquals(violation, exception.violation)
     }
 
     @Test
-    fun throwingFailIfNotDoesNotThrowWhenConditionIsTrue() {
+    fun failIfNotDoesNotThrowWhenConditionIsTrue() {
         val context = ThrowingValidationObject
 
-        context.throwingFailIfNot(true) { violation("error") }
+        context.failIfNot(true) { violation("error") }
     }
 
     @Test
-    fun throwingFailIfLazyViolationIsOnlyEvaluatedWhenConditionIsTrue() {
+    fun failIfLazyViolationIsOnlyEvaluatedWhenConditionIsTrue() {
         var evaluated = false
         val context = ThrowingValidationObject
         val violation = violation("error")
 
-        context.throwingFailIf(false) {
+        context.failIf(false) {
             evaluated = true
             violation
         }
@@ -100,7 +100,7 @@ class ThrowingValidationContextTest {
         assertFalse(evaluated)
 
         assertFailsWith<ThrowingValidationContextException> {
-            context.throwingFailIf(true) {
+            context.failIf(true) {
                 evaluated = true
                 violation
             }
@@ -110,12 +110,12 @@ class ThrowingValidationContextTest {
     }
 
     @Test
-    fun throwingFailIfNotLazyViolationIsOnlyEvaluatedWhenConditionIsFalse() {
+    fun failIfNotLazyViolationIsOnlyEvaluatedWhenConditionIsFalse() {
         var evaluated = false
         val context = ThrowingValidationObject
         val violation = violation("error")
 
-        context.throwingFailIfNot(true) {
+        context.failIfNot(true) {
             evaluated = true
             violation
         }
@@ -123,7 +123,7 @@ class ThrowingValidationContextTest {
         assertFalse(evaluated)
 
         assertFailsWith<ThrowingValidationContextException> {
-            context.throwingFailIfNot(false) {
+            context.failIfNot(false) {
                 evaluated = true
                 violation
             }
@@ -133,21 +133,21 @@ class ThrowingValidationContextTest {
     }
 
     @Test
-    fun throwingFailIfSmartCast() {
+    fun failIfSmartCast() {
         val context = ThrowingValidationObject
         val value: Any? = "string"
 
-        context.throwingFailIf(value !is String) { violation("error") }
+        context.failIf(value !is String) { violation("error") }
 
         val test: String = value
     }
 
     @Test
-    fun throwingFailIfNotSmartCast() {
+    fun failIfNotSmartCast() {
         val context = ThrowingValidationObject
         val value: Any? = "string"
 
-        context.throwingFailIfNot(value is String) { violation("error") }
+        context.failIfNot(value is String) { violation("error") }
 
         val test: String = value
     }
