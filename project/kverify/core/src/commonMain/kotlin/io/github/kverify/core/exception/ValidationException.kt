@@ -2,11 +2,6 @@ package io.github.kverify.core.exception
 
 import io.github.kverify.core.violation.Violation
 
-/**
- * Exception representing validation failures.
- *
- * Contains the list of [violations] and an optional message and cause.
- */
 public open class ValidationException(
     message: String? = null,
     public val violations: List<Violation> = emptyList(),
@@ -30,6 +25,14 @@ public open class ValidationException(
                 }"
             },
         violations = violations,
+        cause = cause,
+    )
+
+    public constructor(
+        violation: Violation,
+        cause: Throwable? = null,
+    ) : this(
+        violations = listOf(violation),
         cause = cause,
     )
 

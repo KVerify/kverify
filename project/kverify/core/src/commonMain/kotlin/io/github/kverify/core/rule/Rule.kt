@@ -9,12 +9,6 @@ public interface Rule<in T> {
     )
 }
 
-/**
- * Combines `this` rule with another [Rule], producing a composite rule
- * that applies both in sequence.
- *
- * When multiple rules are combined, they are executed in the order they were added.
- */
 public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     when {
         this is RuleList && other is RuleList -> RuleList(this.rules + other.rules)
