@@ -176,7 +176,7 @@ class ThrowingValidationContextTest {
     fun validateOrThrowWithRuleReturnsValueWhenRulePasses() {
         val value = "test"
 
-        val result = value validateOrThrowWithRule PassingRule
+        val result = value validateOrThrow PassingRule
 
         assertEquals(value, result)
     }
@@ -188,39 +188,39 @@ class ThrowingValidationContextTest {
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test" validateOrThrowWithRule rule
+                "test" validateOrThrow rule
             }
 
         assertEquals(violation, exception.violation)
     }
 
     @Test
-    fun validateOrThrowWithRulesIteratorThrowsOnFirstFailure() {
+    fun validateOrThrowWithIteratorThrowsOnFirstFailure() {
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test" validateOrThrowWithRules rules.iterator()
+                "test" validateOrThrow rules.iterator()
             }
 
         assertEquals(violations.first(), exception.violation)
     }
 
     @Test
-    fun validateOrThrowWithRulesIterableThrowsOnFirstFailure() {
+    fun validateOrThrowWithIterableThrowsOnFirstFailure() {
         val rules: Iterable<Rule<String>> = violations.toFailingRules()
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test" validateOrThrowWithRules rules
+                "test" validateOrThrow rules
             }
 
         assertEquals(violations.first(), exception.violation)
     }
 
     @Test
-    fun validateOrThrowWithRulesVarargThrowsOnFirstFailure() {
+    fun validateOrThrowWithVarargThrowsOnFirstFailure() {
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test".validateOrThrowWithRules(*rules.toTypedArray())
+                "test".validateOrThrow(*rules.toTypedArray())
             }
 
         assertEquals(violations.first(), exception.violation)
@@ -279,7 +279,7 @@ class ThrowingValidationContextTest {
 
     @Test
     fun validateFailFastWithRuleReturnsValidWhenRulePasses() {
-        val result = "test" validateFailFastWithRule PassingRule
+        val result = "test" validateFailFast PassingRule
 
         assertIs<ValidationResult.Valid>(result)
     }
@@ -289,33 +289,33 @@ class ThrowingValidationContextTest {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
-        val result = "test" validateFailFastWithRule rule
+        val result = "test" validateFailFast rule
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violation, result.violations.single())
     }
 
     @Test
-    fun validateFailFastWithRulesIterableReturnsInvalidOnFirstFailure() {
+    fun validateFailFastWithIterableReturnsInvalidOnFirstFailure() {
         val rules: Iterable<Rule<String>> = violations.toFailingRules()
 
-        val result = "test" validateFailFastWithRules rules
+        val result = "test" validateFailFast rules
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violations.first(), result.violations.single())
     }
 
     @Test
-    fun validateFailFastWithRulesVarargReturnsInvalidOnFirstFailure() {
-        val result = "test".validateFailFastWithRules(*rules.toTypedArray())
+    fun validateFailFastWithVarargReturnsInvalidOnFirstFailure() {
+        val result = "test".validateFailFast(*rules.toTypedArray())
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violations.first(), result.violations.single())
     }
 
     @Test
-    fun validateFailFastWithRulesIteratorReturnsInvalidOnFirstFailure() {
-        val result = "test" validateFailFastWithRules rules.iterator()
+    fun validateFailFastWithIteratorReturnsInvalidOnFirstFailure() {
+        val result = "test" validateFailFast rules.iterator()
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violations.first(), result.violations.single())

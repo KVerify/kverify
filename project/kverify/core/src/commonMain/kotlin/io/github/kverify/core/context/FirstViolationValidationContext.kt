@@ -95,25 +95,25 @@ public inline fun <T> runValidatingFirst(block: FirstViolationValidationContext.
     }
 }
 
-public infix fun <T> T.validateFirstWithRule(rule: Rule<T>): ValidationResult {
+public infix fun <T> T.validateFirst(rule: Rule<T>): ValidationResult {
     val value = this
 
     return validateFirst { value applyRule rule }
 }
 
-public infix fun <T> T.validateFirstWithRules(rules: Iterable<Rule<T>>): ValidationResult {
+public infix fun <T> T.validateFirst(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFirst { value applyRules rules }
 }
 
-public fun <T> T.validateFirstWithRules(vararg rules: Rule<T>): ValidationResult {
+public fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return validateFirst { value.applyRules(rules = rules) }
 }
 
-public infix fun <T> T.validateFirstWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
+public infix fun <T> T.validateFirst(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFirst {
