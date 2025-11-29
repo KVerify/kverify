@@ -63,13 +63,13 @@ public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T):
     return ThrowingValidationObject.run(block)
 }
 
-public infix fun <T> T.validateOrThrowWithRule(rule: Rule<T>): T {
+public infix fun <T> T.validateOrThrow(rule: Rule<T>): T {
     val value = this
 
     return validateOrThrow { value applyRule rule }
 }
 
-public infix fun <T> T.validateOrThrowWithRules(rulesIterator: Iterator<Rule<T>>): T {
+public infix fun <T> T.validateOrThrow(rulesIterator: Iterator<Rule<T>>): T {
     val value = this
 
     return validateOrThrow {
@@ -80,13 +80,13 @@ public infix fun <T> T.validateOrThrowWithRules(rulesIterator: Iterator<Rule<T>>
     }
 }
 
-public infix fun <T> T.validateOrThrowWithRules(rules: Iterable<Rule<T>>): T {
+public infix fun <T> T.validateOrThrow(rules: Iterable<Rule<T>>): T {
     val value = this
 
     return validateOrThrow { value.applyRules(rules = rules) }
 }
 
-public fun <T> T.validateOrThrowWithRules(vararg rules: Rule<T>): T {
+public fun <T> T.validateOrThrow(vararg rules: Rule<T>): T {
     val value = this
 
     return validateOrThrow { value.applyRules(rules = rules) }
@@ -121,25 +121,25 @@ public inline fun <T> runValidatingFailFast(block: ThrowingValidationContext.() 
         Result.failure(it)
     }
 
-public infix fun <T> T.validateFailFastWithRule(rule: Rule<T>): ValidationResult {
+public infix fun <T> T.validateFailFast(rule: Rule<T>): ValidationResult {
     val value = this
 
     return validateFailFast { value applyRule rule }
 }
 
-public infix fun <T> T.validateFailFastWithRules(rules: Iterable<Rule<T>>): ValidationResult {
+public infix fun <T> T.validateFailFast(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFailFast { value.applyRules(rules = rules) }
 }
 
-public fun <T> T.validateFailFastWithRules(vararg rules: Rule<T>): ValidationResult {
+public fun <T> T.validateFailFast(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return validateFailFast { value.applyRules(rules = rules) }
 }
 
-public infix fun <T> T.validateFailFastWithRules(rulesIterator: Iterator<Rule<T>>): ValidationResult {
+public infix fun <T> T.validateFailFast(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFailFast {

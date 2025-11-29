@@ -166,33 +166,33 @@ class FirstViolationValidationContextTest {
         val violation = violation("error")
         val rule = FailingRule<String>(violation)
 
-        val result = "test" validateFirstWithRule rule
+        val result = "test" validateFirst rule
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violation, result.violations.single())
     }
 
     @Test
-    fun validateFirstWithRulesIterableStopsAtFirstViolation() {
+    fun validateFirstWithIterableStopsAtFirstViolation() {
         val rules: Iterable<Rule<String>> = violations.toFailingRules()
 
-        val result = "test" validateFirstWithRules rules
+        val result = "test" validateFirst rules
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violations.first(), result.violations.single())
     }
 
     @Test
-    fun validateFirstWithRulesVarargStopsAtFirstViolation() {
-        val result = "test".validateFirstWithRules(*rules.toTypedArray())
+    fun validateFirstWithVarargStopsAtFirstViolation() {
+        val result = "test".validateFirst(*rules.toTypedArray())
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violations.first(), result.violations.single())
     }
 
     @Test
-    fun validateFirstWithRulesIteratorStopsAtFirstViolation() {
-        val result = "test" validateFirstWithRules rules.iterator()
+    fun validateFirstWithIteratorStopsAtFirstViolation() {
+        val result = "test" validateFirst rules.iterator()
 
         assertIs<ValidationResult.Invalid>(result)
         assertEquals(violations.first(), result.violations.single())
