@@ -95,22 +95,25 @@ public inline fun <T> runValidatingFirst(block: FirstViolationValidationContext.
     }
 }
 
+@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T> T.validateFirst(): ValidationResult.Valid = ValidationResult.Valid
+
 public infix fun <T> T.validateFirst(rule: Rule<T>): ValidationResult {
     val value = this
 
     return validateFirst { value applyRule rule }
 }
 
-public infix fun <T> T.validateFirst(rules: Iterable<Rule<T>>): ValidationResult {
-    val value = this
-
-    return validateFirst { value applyRules rules }
-}
-
 public fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return validateFirst { value.applyRules(rules = rules) }
+}
+
+public infix fun <T> T.validateFirst(rules: Iterable<Rule<T>>): ValidationResult {
+    val value = this
+
+    return validateFirst { value applyRules rules }
 }
 
 public infix fun <T> T.validateFirst(rulesIterator: Iterator<Rule<T>>): ValidationResult {
@@ -124,22 +127,25 @@ public infix fun <T> T.validateFirst(rulesIterator: Iterator<Rule<T>>): Validati
     }
 }
 
+@Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
+public inline fun <T> T.satisfies(): Boolean = true
+
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
 
     return runFirstViolation { value applyRule rule } == null
 }
 
-public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
-    val value = this
-
-    return runFirstViolation { value applyRules rules } == null
-}
-
 public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
     val value = this
 
     return runFirstViolation { value.applyRules(rules = rules) } == null
+}
+
+public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
+    val value = this
+
+    return runFirstViolation { value applyRules rules } == null
 }
 
 public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
@@ -153,17 +159,20 @@ public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     } == null
 }
 
+@Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
+public inline fun <T> T.notSatisfies(): Boolean = false
+
 public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean =
     !satisfies(
         rule = rule,
     )
 
-public infix fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean =
+public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean =
     !satisfies(
         rules = rules,
     )
 
-public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean =
+public infix fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean =
     !satisfies(
         rules = rules,
     )
