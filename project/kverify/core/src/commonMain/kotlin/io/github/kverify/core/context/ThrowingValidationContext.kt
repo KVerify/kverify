@@ -55,7 +55,7 @@ internal object ThrowingValidationObject : ThrowingValidationContext {
 // Throw on failure
 // ============================================================
 @OptIn(ExperimentalContracts::class)
-public inline fun <T> validateThrowing(block: ThrowingValidationContext.() -> T): T {
+public inline fun <T> verifyThrowing(block: ThrowingValidationContext.() -> T): T {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -64,24 +64,24 @@ public inline fun <T> validateThrowing(block: ThrowingValidationContext.() -> T)
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.validateThrowing(): T = this
+public inline fun <T> T.verifyThrowing(): T = this
 
-public infix fun <T> T.validateThrowing(rule: Rule<T>): T {
+public infix fun <T> T.verifyThrowing(rule: Rule<T>): T {
     val value = this
 
-    return validateThrowing { value verifyWith rule }
+    return verifyThrowing { value verifyWith rule }
 }
 
-public fun <T> T.validateThrowing(vararg rules: Rule<T>): T {
+public fun <T> T.verifyThrowing(vararg rules: Rule<T>): T {
     val value = this
 
-    return validateThrowing { value.verifyWith(rules = rules) }
+    return verifyThrowing { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.validateThrowing(rules: Iterable<Rule<T>>): T {
+public infix fun <T> T.verifyThrowing(rules: Iterable<Rule<T>>): T {
     val value = this
 
-    return validateThrowing { value.verifyWith(rules = rules) }
+    return verifyThrowing { value.verifyWith(rules = rules) }
 }
 
 // ============================================================
@@ -98,7 +98,7 @@ internal inline fun <T> runFailFast(
         onFailure(e)
     }
 
-public inline fun validateFailFast(block: ThrowingValidationContext.() -> Unit): ValidationResult =
+public inline fun verifyFailFast(block: ThrowingValidationContext.() -> Unit): ValidationResult =
     runFailFast({
         ThrowingValidationObject.block()
         ValidationResult.Valid
@@ -106,7 +106,7 @@ public inline fun validateFailFast(block: ThrowingValidationContext.() -> Unit):
         ValidationResult.Invalid(it.violation)
     }
 
-public inline fun <T> runValidatingFailFast(block: ThrowingValidationContext.() -> T): Result<T> =
+public inline fun <T> runVerifyingFailFast(block: ThrowingValidationContext.() -> T): Result<T> =
     runFailFast({
         Result.success(block())
     }) {
@@ -114,24 +114,24 @@ public inline fun <T> runValidatingFailFast(block: ThrowingValidationContext.() 
     }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.validateFailFast(): ValidationResult = ValidationResult.Valid
+public inline fun <T> T.verifyFailFast(): ValidationResult = ValidationResult.Valid
 
-public infix fun <T> T.validateFailFast(rule: Rule<T>): ValidationResult {
+public infix fun <T> T.verifyFailFast(rule: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFailFast { value verifyWith rule }
+    return verifyFailFast { value verifyWith rule }
 }
 
-public fun <T> T.validateFailFast(vararg rules: Rule<T>): ValidationResult {
+public fun <T> T.verifyFailFast(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFailFast { value.verifyWith(rules = rules) }
+    return verifyFailFast { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.validateFailFast(rules: Iterable<Rule<T>>): ValidationResult {
+public infix fun <T> T.verifyFailFast(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
-    return validateFailFast { value.verifyWith(rules = rules) }
+    return verifyFailFast { value.verifyWith(rules = rules) }
 }
 
 // ============================================================

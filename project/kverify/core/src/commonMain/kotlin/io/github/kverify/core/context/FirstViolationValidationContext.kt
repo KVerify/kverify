@@ -6,7 +6,6 @@ import io.github.kverify.core.exception.ThrowingValidationContextException
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
-import kotlin.collections.iterator
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -65,7 +64,7 @@ internal inline fun getFirstViolation(init: FirstViolationValidationContextImpl.
     return FirstViolationValidationContextImpl().apply(init).firstViolation
 }
 
-public inline fun validateFirst(block: FirstViolationValidationContext.() -> Unit): ValidationResult {
+public inline fun verifyFirst(block: FirstViolationValidationContext.() -> Unit): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -79,7 +78,7 @@ public inline fun validateFirst(block: FirstViolationValidationContext.() -> Uni
     }
 }
 
-public inline fun <T> runValidatingFirst(block: FirstViolationValidationContext.() -> T): Result<T> {
+public inline fun <T> runVerifyingFirst(block: FirstViolationValidationContext.() -> T): Result<T> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -97,24 +96,24 @@ public inline fun <T> runValidatingFirst(block: FirstViolationValidationContext.
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.validateFirst(): ValidationResult.Valid = ValidationResult.Valid
+public inline fun <T> T.verifyFirst(): ValidationResult.Valid = ValidationResult.Valid
 
-public infix fun <T> T.validateFirst(rule: Rule<T>): ValidationResult {
+public infix fun <T> T.verifyFirst(rule: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFirst { value verifyWith rule }
+    return verifyFirst { value verifyWith rule }
 }
 
-public fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult {
+public fun <T> T.verifyFirst(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFirst { value.verifyWith(rules = rules) }
+    return verifyFirst { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.validateFirst(rules: Iterable<Rule<T>>): ValidationResult {
+public infix fun <T> T.verifyFirst(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
-    return validateFirst { value verifyWith rules }
+    return verifyFirst { value verifyWith rules }
 }
 
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
