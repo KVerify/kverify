@@ -84,17 +84,6 @@ public infix fun <T> T.validateThrowing(rules: Iterable<Rule<T>>): T {
     return validateThrowing { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.validateThrowing(rulesIterator: Iterator<Rule<T>>): T {
-    val value = this
-
-    return validateThrowing {
-        verify(
-            value = value,
-            rulesIterator = rulesIterator,
-        )
-    }
-}
-
 // ============================================================
 // Throw and catch on failure
 // ============================================================
@@ -145,17 +134,6 @@ public infix fun <T> T.validateFailFast(rules: Iterable<Rule<T>>): ValidationRes
     return validateFailFast { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.validateFailFast(rulesIterator: Iterator<Rule<T>>): ValidationResult {
-    val value = this
-
-    return validateFailFast {
-        verify(
-            value = value,
-            rulesIterator = rulesIterator,
-        )
-    }
-}
-
 // ============================================================
 // Satisfies
 // ============================================================
@@ -189,17 +167,6 @@ public infix fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
     return !failFastThrows { value verifyWith rules }
 }
 
-public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
-    val value = this
-
-    return !failFastThrows {
-        verify(
-            value = value,
-            rulesIterator = rulesIterator,
-        )
-    }
-}
-
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
 public inline fun <T> T.notSatisfiesFailFast(): Boolean = true
 
@@ -216,9 +183,4 @@ public fun <T> T.notSatisfiesFailFast(vararg rules: Rule<T>): Boolean =
 public infix fun <T> T.notSatisfiesFailFast(rules: Iterable<Rule<T>>): Boolean =
     !satisfiesFailFast(
         rules = rules,
-    )
-
-public fun <T> T.notSatisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean =
-    !satisfiesFailFast(
-        rulesIterator = rulesIterator,
     )
