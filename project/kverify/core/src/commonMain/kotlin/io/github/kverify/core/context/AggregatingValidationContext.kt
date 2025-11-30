@@ -66,12 +66,6 @@ public infix fun <T> T.validateAll(rules: Iterable<Rule<T>>): ValidationResult =
         rules = rules,
     )
 
-public infix fun <T> T.validateAll(rulesIterator: Iterator<Rule<T>>): ValidationResult =
-    this.validateAllTo(
-        destination = ArrayList(),
-        rulesIterator = rulesIterator,
-    )
-
 // ============================================================
 // Validate using AggregatingValidationContext with provided destination as violationStorage
 // ============================================================
@@ -130,15 +124,6 @@ public fun <T> T.validateAllTo(
     this.validateAllUsing(
         context = AggregatingValidationContext(destination),
         rules = rules,
-    )
-
-public fun <T> T.validateAllTo(
-    destination: MutableCollection<Violation>,
-    rulesIterator: Iterator<Rule<T>>,
-): ValidationResult =
-    this.validateAllUsing(
-        context = AggregatingValidationContext(destination),
-        rulesIterator = rulesIterator,
     )
 
 // ============================================================
@@ -206,18 +191,4 @@ public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
     val value = this
 
     return validateAllUsing(context) { value verifyWith rules }
-}
-
-public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
-    context: C,
-    rulesIterator: Iterator<Rule<T>>,
-): ValidationResult {
-    val value = this
-
-    return validateAllUsing(context) {
-        verify(
-            value = value,
-            rulesIterator = rulesIterator,
-        )
-    }
 }

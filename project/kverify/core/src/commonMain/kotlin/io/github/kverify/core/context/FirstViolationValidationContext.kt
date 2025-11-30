@@ -6,6 +6,7 @@ import io.github.kverify.core.exception.ThrowingValidationContextException
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
+import kotlin.collections.iterator
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
@@ -26,15 +27,15 @@ public interface FirstViolationValidationContext : ValidationContext {
         return this
     }
 
-    override fun <T> verify(
-        value: T,
-        rulesIterator: Iterator<Rule<T>>,
-    ): T {
+    override fun <T> T.verifyWith(rules: Iterable<Rule<T>>): T {
+        val value = this@verifyWith
+        val context = this@FirstViolationValidationContext
+
         if (firstViolation != null) return value
 
-        for (rule in rulesIterator) {
+        for (rule in rules) {
             rule.execute(
-                context = this,
+                context = context,
                 value = value,
             )
 
@@ -116,17 +117,6 @@ public infix fun <T> T.validateFirst(rules: Iterable<Rule<T>>): ValidationResult
     return validateFirst { value verifyWith rules }
 }
 
-public infix fun <T> T.validateFirst(rulesIterator: Iterator<Rule<T>>): ValidationResult {
-    val value = this
-
-    return validateFirst {
-        verify(
-            value = value,
-            rulesIterator = rulesIterator,
-        )
-    }
-}
-
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
 public inline fun <T> T.satisfies(): Boolean = true
 
@@ -148,17 +138,6 @@ public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
     return getFirstViolation { value verifyWith rules } == null
 }
 
-public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
-    val value = this
-
-    return getFirstViolation {
-        verify(
-            value = value,
-            rulesIterator = rulesIterator,
-        )
-    } == null
-}
-
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
 public inline fun <T> T.notSatisfies(): Boolean = false
 
@@ -175,9 +154,4 @@ public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean =
 public infix fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean =
     !satisfies(
         rules = rules,
-    )
-
-public fun <T> T.notSatisfies(rulesIterator: Iterator<Rule<T>>): Boolean =
-    !satisfies(
-        rulesIterator = rulesIterator,
     )
