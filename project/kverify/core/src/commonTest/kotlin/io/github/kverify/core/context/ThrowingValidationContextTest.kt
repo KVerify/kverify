@@ -15,7 +15,6 @@ import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertIs
 import kotlin.test.assertTrue
-import kotlin.test.fail
 
 class ThrowingValidationContextTest {
     private val violations = violations("error1", "error2", "error3")
@@ -155,7 +154,7 @@ class ThrowingValidationContextTest {
     @Test
     fun validateOrThrowReturnsValueWhenNoViolations() {
         val value = "test value"
-        val result = validateOrThrow { value }
+        val result = validateThrowing { value }
 
         assertEquals(value, result)
     }
@@ -166,7 +165,7 @@ class ThrowingValidationContextTest {
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                validateOrThrow { onFailure(violation) }
+                validateThrowing { onFailure(violation) }
             }
 
         assertEquals(violation, exception.violation)
@@ -176,7 +175,7 @@ class ThrowingValidationContextTest {
     fun validateOrThrowWithRuleReturnsValueWhenRulePasses() {
         val value = "test"
 
-        val result = value validateOrThrow PassingRule
+        val result = value validateThrowing PassingRule
 
         assertEquals(value, result)
     }
@@ -188,7 +187,7 @@ class ThrowingValidationContextTest {
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test" validateOrThrow rule
+                "test" validateThrowing rule
             }
 
         assertEquals(violation, exception.violation)
@@ -198,7 +197,7 @@ class ThrowingValidationContextTest {
     fun validateOrThrowWithIteratorThrowsOnFirstFailure() {
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test" validateOrThrow rules.iterator()
+                "test" validateThrowing rules.iterator()
             }
 
         assertEquals(violations.first(), exception.violation)
@@ -210,7 +209,7 @@ class ThrowingValidationContextTest {
 
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test" validateOrThrow rules
+                "test" validateThrowing rules
             }
 
         assertEquals(violations.first(), exception.violation)
@@ -220,7 +219,7 @@ class ThrowingValidationContextTest {
     fun validateOrThrowWithVarargThrowsOnFirstFailure() {
         val exception =
             assertFailsWith<ThrowingValidationContextException> {
-                "test".validateOrThrow(*rules.toTypedArray())
+                "test".validateThrowing(*rules.toTypedArray())
             }
 
         assertEquals(violations.first(), exception.violation)
@@ -487,7 +486,7 @@ class ThrowingValidationContextTest {
             }
 
         assertFailsWith<ThrowingValidationContextException> {
-            validateOrThrow {
+            validateThrowing {
                 "test" applyRule failingRule
             }
         }
