@@ -69,26 +69,26 @@ public inline fun <T> T.validateThrowing(): T = this
 public infix fun <T> T.validateThrowing(rule: Rule<T>): T {
     val value = this
 
-    return validateThrowing { value applyRule rule }
+    return validateThrowing { value verifyWith rule }
 }
 
 public fun <T> T.validateThrowing(vararg rules: Rule<T>): T {
     val value = this
 
-    return validateThrowing { value.applyRules(rules = rules) }
+    return validateThrowing { value.verifyWith(rules = rules) }
 }
 
 public infix fun <T> T.validateThrowing(rules: Iterable<Rule<T>>): T {
     val value = this
 
-    return validateThrowing { value.applyRules(rules = rules) }
+    return validateThrowing { value.verifyWith(rules = rules) }
 }
 
 public infix fun <T> T.validateThrowing(rulesIterator: Iterator<Rule<T>>): T {
     val value = this
 
     return validateThrowing {
-        runRules(
+        verify(
             value = value,
             rulesIterator = rulesIterator,
         )
@@ -130,26 +130,26 @@ public inline fun <T> T.validateFailFast(): ValidationResult = ValidationResult.
 public infix fun <T> T.validateFailFast(rule: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFailFast { value applyRule rule }
+    return validateFailFast { value verifyWith rule }
 }
 
 public fun <T> T.validateFailFast(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFailFast { value.applyRules(rules = rules) }
+    return validateFailFast { value.verifyWith(rules = rules) }
 }
 
 public infix fun <T> T.validateFailFast(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
-    return validateFailFast { value.applyRules(rules = rules) }
+    return validateFailFast { value.verifyWith(rules = rules) }
 }
 
 public infix fun <T> T.validateFailFast(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFailFast {
-        runRules(
+        verify(
             value = value,
             rulesIterator = rulesIterator,
         )
@@ -174,26 +174,26 @@ public inline fun <T> T.satisfiesFailFast(): Boolean = true
 public infix fun <T> T.satisfiesFailFast(rule: Rule<T>): Boolean {
     val value = this
 
-    return !failFastThrows { value applyRule rule }
+    return !failFastThrows { value verifyWith rule }
 }
 
 public fun <T> T.satisfiesFailFast(vararg rules: Rule<T>): Boolean {
     val value = this
 
-    return !failFastThrows { value.applyRules(rules = rules) }
+    return !failFastThrows { value.verifyWith(rules = rules) }
 }
 
 public infix fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
-    return !failFastThrows { value applyRules rules }
+    return !failFastThrows { value verifyWith rules }
 }
 
 public fun <T> T.satisfiesFailFast(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
 
     return !failFastThrows {
-        runRules(
+        verify(
             value = value,
             rulesIterator = rulesIterator,
         )

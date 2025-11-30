@@ -185,7 +185,7 @@ public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
 ): ValidationResult {
     val value = this
 
-    return validateAllUsing(context) { value applyRule rule }
+    return validateAllUsing(context) { value verifyWith rule }
 }
 
 public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
@@ -195,7 +195,7 @@ public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
     val value = this
 
     return validateAllUsing(context) {
-        value.applyRules(rules = rules)
+        value.verifyWith(rules = rules)
     }
 }
 
@@ -205,7 +205,7 @@ public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
 ): ValidationResult {
     val value = this
 
-    return validateAllUsing(context) { value applyRules rules }
+    return validateAllUsing(context) { value verifyWith rules }
 }
 
 public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
@@ -215,7 +215,7 @@ public fun <T, C : AggregatingValidationContext> T.validateAllUsing(
     val value = this
 
     return validateAllUsing(context) {
-        runRules(
+        verify(
             value = value,
             rulesIterator = rulesIterator,
         )

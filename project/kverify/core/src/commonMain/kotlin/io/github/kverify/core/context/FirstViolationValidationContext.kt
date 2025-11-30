@@ -12,7 +12,7 @@ import kotlin.contracts.contract
 public interface FirstViolationValidationContext : ValidationContext {
     public val firstViolation: Violation?
 
-    override fun <T> T.applyRule(rule: Rule<T>): T {
+    override fun <T> T.verifyWith(rule: Rule<T>): T {
         val value = this
         val context = this@FirstViolationValidationContext
 
@@ -26,7 +26,7 @@ public interface FirstViolationValidationContext : ValidationContext {
         return this
     }
 
-    override fun <T> runRules(
+    override fun <T> verify(
         value: T,
         rulesIterator: Iterator<Rule<T>>,
     ): T {
@@ -101,26 +101,26 @@ public inline fun <T> T.validateFirst(): ValidationResult.Valid = ValidationResu
 public infix fun <T> T.validateFirst(rule: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFirst { value applyRule rule }
+    return validateFirst { value verifyWith rule }
 }
 
 public fun <T> T.validateFirst(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
-    return validateFirst { value.applyRules(rules = rules) }
+    return validateFirst { value.verifyWith(rules = rules) }
 }
 
 public infix fun <T> T.validateFirst(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
-    return validateFirst { value applyRules rules }
+    return validateFirst { value verifyWith rules }
 }
 
 public infix fun <T> T.validateFirst(rulesIterator: Iterator<Rule<T>>): ValidationResult {
     val value = this
 
     return validateFirst {
-        runRules(
+        verify(
             value = value,
             rulesIterator = rulesIterator,
         )
@@ -133,26 +133,26 @@ public inline fun <T> T.satisfies(): Boolean = true
 public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
     val value = this
 
-    return runFirstViolation { value applyRule rule } == null
+    return runFirstViolation { value verifyWith rule } == null
 }
 
 public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
     val value = this
 
-    return runFirstViolation { value.applyRules(rules = rules) } == null
+    return runFirstViolation { value.verifyWith(rules = rules) } == null
 }
 
 public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
-    return runFirstViolation { value applyRules rules } == null
+    return runFirstViolation { value verifyWith rules } == null
 }
 
 public fun <T> T.satisfies(rulesIterator: Iterator<Rule<T>>): Boolean {
     val value = this
 
     return runFirstViolation {
-        runRules(
+        verify(
             value = value,
             rulesIterator = rulesIterator,
         )
