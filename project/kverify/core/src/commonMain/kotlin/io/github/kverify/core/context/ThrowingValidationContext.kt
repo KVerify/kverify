@@ -55,7 +55,7 @@ internal object ThrowingValidationObject : ThrowingValidationContext {
 // Throw on failure
 // ============================================================
 @OptIn(ExperimentalContracts::class)
-public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T): T {
+public inline fun <T> validateThrowing(block: ThrowingValidationContext.() -> T): T {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
@@ -64,30 +64,30 @@ public inline fun <T> validateOrThrow(block: ThrowingValidationContext.() -> T):
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.validateOrThrow(): T = this
+public inline fun <T> T.validateThrowing(): T = this
 
-public infix fun <T> T.validateOrThrow(rule: Rule<T>): T {
+public infix fun <T> T.validateThrowing(rule: Rule<T>): T {
     val value = this
 
-    return validateOrThrow { value applyRule rule }
+    return validateThrowing { value applyRule rule }
 }
 
-public fun <T> T.validateOrThrow(vararg rules: Rule<T>): T {
+public fun <T> T.validateThrowing(vararg rules: Rule<T>): T {
     val value = this
 
-    return validateOrThrow { value.applyRules(rules = rules) }
+    return validateThrowing { value.applyRules(rules = rules) }
 }
 
-public infix fun <T> T.validateOrThrow(rules: Iterable<Rule<T>>): T {
+public infix fun <T> T.validateThrowing(rules: Iterable<Rule<T>>): T {
     val value = this
 
-    return validateOrThrow { value.applyRules(rules = rules) }
+    return validateThrowing { value.applyRules(rules = rules) }
 }
 
-public infix fun <T> T.validateOrThrow(rulesIterator: Iterator<Rule<T>>): T {
+public infix fun <T> T.validateThrowing(rulesIterator: Iterator<Rule<T>>): T {
     val value = this
 
-    return validateOrThrow {
+    return validateThrowing {
         runRules(
             value = value,
             rulesIterator = rulesIterator,
