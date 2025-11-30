@@ -6,7 +6,7 @@ import io.github.kverify.core.violation.Violation
 public fun interface ValidationContext {
     public fun onFailure(violation: Violation)
 
-    public fun <T> runRules(
+    public fun <T> verify(
         value: T,
         rulesIterator: Iterator<Rule<T>>,
     ): T {
@@ -22,9 +22,9 @@ public fun interface ValidationContext {
         return value
     }
 
-    public infix fun <T> T.applyRule(rule: Rule<T>): T {
+    public infix fun <T> T.verifyWith(rule: Rule<T>): T {
         val context = this@ValidationContext
-        val value = this@applyRule
+        val value = this@verifyWith
 
         rule.execute(
             context = context,
@@ -34,49 +34,45 @@ public fun interface ValidationContext {
         return value
     }
 
-    public fun <T> T.applyRules(vararg rules: Rule<T>): T =
-        runRules(
-            value = this@applyRules,
+    public fun <T> T.verifyWith(vararg rules: Rule<T>): T =
+        verify(
+            value = this@verifyWith,
             rulesIterator = rules.iterator(),
         )
 
-    public infix fun <T> T.applyRules(rules: Iterable<Rule<T>>): T =
-        runRules(
-            value = this@applyRules,
+    public infix fun <T> T.verifyWith(rules: Iterable<Rule<T>>): T =
+        verify(
+            value = this@verifyWith,
             rulesIterator = rules.iterator(),
         )
 }
 
-public fun <T> T.applyRuleUsing(
+public fun <T> T.verifyWith(
     context: ValidationContext,
     rule: Rule<T>,
 ): T {
     val value = this
 
-    return with(context) { value applyRule rule }
+    return with(context) { value verifyWith rule }
 }
 
-public fun <T> T.applyRulesUsing(
+public fun <T> T.verifyWith(
     context: ValidationContext,
     vararg rules: Rule<T>,
 ): T {
     val value = this
 
-    return with(context) { value.applyRules(rules = rules) }
+    return with(context) { value.verifyWith(rules = rules) }
 }
 
-public fun <T> T.applyRulesUsing(
+public fun <T> T.verifyWith(
     context: ValidationContext,
     rules: Iterable<Rule<T>>,
 ): T {
     val value = this
 
-    return with(context) { value.applyRules(rules = rules) }
+    return with(context) { value.verifyWith(rules = rules) }
 }
-
-public fun ValidationContext.runUnitRules(rules: Iterable<Rule<Unit>>): Unit = Unit.applyRules(rules = rules)
-
-public fun ValidationContext.runUnitRules(vararg rules: Rule<Unit>): Unit = Unit.applyRules(rules = rules)
 
 public inline fun ValidationContext.failIf(
     condition: Boolean,
