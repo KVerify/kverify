@@ -48,19 +48,22 @@ public inline fun <T> runVerifyingAll(block: AggregatingValidationContext.() -> 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
 public inline fun <T> T.verifyAll(): ValidationResult.Valid = ValidationResult.Valid
 
-public infix fun <T> T.verifyAll(rule: Rule<T>): ValidationResult =
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.verifyAll(rule: Rule<T>): ValidationResult =
     this.verifyAllTo(
         destination = ArrayList(),
         rule = rule,
     )
 
-public fun <T> T.verifyAll(vararg rules: Rule<T>): ValidationResult =
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyAll(vararg rules: Rule<T>): ValidationResult =
     this.verifyAllTo(
         destination = ArrayList(),
         rules = rules,
     )
 
-public infix fun <T> T.verifyAll(rules: Iterable<Rule<T>>): ValidationResult =
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.verifyAll(rules: Iterable<Rule<T>>): ValidationResult =
     this.verifyAllTo(
         destination = ArrayList(),
         rules = rules,
@@ -99,7 +102,8 @@ public inline fun <T> runVerifyingAllTo(
 @Suppress("UnusedParameter", "UnusedReceiverParameter", "NOTHING_TO_INLINE")
 public inline fun <T> T.verifyAllTo(destination: MutableCollection<Violation>): ValidationResult.Valid = ValidationResult.Valid
 
-public fun <T> T.verifyAllTo(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyAllTo(
     destination: MutableCollection<Violation>,
     rule: Rule<T>,
 ): ValidationResult =
@@ -108,7 +112,8 @@ public fun <T> T.verifyAllTo(
         rule = rule,
     )
 
-public fun <T> T.verifyAllTo(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyAllTo(
     destination: MutableCollection<Violation>,
     vararg rules: Rule<T>,
 ): ValidationResult =
@@ -117,7 +122,8 @@ public fun <T> T.verifyAllTo(
         rules = rules,
     )
 
-public fun <T> T.verifyAllTo(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyAllTo(
     destination: MutableCollection<Violation>,
     rules: Iterable<Rule<T>>,
 ): ValidationResult =
@@ -161,10 +167,11 @@ public inline fun <T, C : AggregatingValidationContext> runVerifyingAllUsing(
     )
 }
 
-@Suppress("UnusedReceiverParameter")
-public fun <T, C : AggregatingValidationContext> T.verifyAllUsing(context: C): ValidationResult = context.build()
+@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(context: C): ValidationResult = context.build()
 
-public fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
     context: C,
     rule: Rule<T>,
 ): ValidationResult {
@@ -173,7 +180,8 @@ public fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
     return verifyAllUsing(context) { value verifyWith rule }
 }
 
-public fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
     context: C,
     vararg rules: Rule<T>,
 ): ValidationResult {
@@ -184,7 +192,8 @@ public fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
     }
 }
 
-public fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
     context: C,
     rules: Iterable<Rule<T>>,
 ): ValidationResult {
