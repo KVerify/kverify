@@ -177,7 +177,7 @@ public inline infix fun <T> T.passesFailFast(rules: Iterable<Rule<T>>): Boolean 
 }
 
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
-public inline fun <T> T.notPassesFailFast(): Boolean = true
+public inline fun <T> T.notPassesFailFast(): Boolean = false
 
 @Suppress("NOTHING_TO_INLINE")
 public inline infix fun <T> T.notPassesFailFast(rule: Rule<T>): Boolean =
