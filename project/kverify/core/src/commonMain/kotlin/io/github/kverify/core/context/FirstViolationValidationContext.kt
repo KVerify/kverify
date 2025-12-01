@@ -98,19 +98,22 @@ public inline fun <T> runVerifyingFirst(block: FirstViolationValidationContext.(
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
 public inline fun <T> T.verifyFirst(): ValidationResult.Valid = ValidationResult.Valid
 
-public infix fun <T> T.verifyFirst(rule: Rule<T>): ValidationResult {
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.verifyFirst(rule: Rule<T>): ValidationResult {
     val value = this
 
     return verifyFirst { value verifyWith rule }
 }
 
-public fun <T> T.verifyFirst(vararg rules: Rule<T>): ValidationResult {
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyFirst(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return verifyFirst { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.verifyFirst(rules: Iterable<Rule<T>>): ValidationResult {
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.verifyFirst(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
     return verifyFirst { value verifyWith rules }
@@ -119,19 +122,22 @@ public infix fun <T> T.verifyFirst(rules: Iterable<Rule<T>>): ValidationResult {
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
 public inline fun <T> T.passes(): Boolean = true
 
-public infix fun <T> T.passes(rule: Rule<T>): Boolean {
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.passes(rule: Rule<T>): Boolean {
     val value = this
 
     return getFirstViolation { value verifyWith rule } == null
 }
 
-public fun <T> T.passes(vararg rules: Rule<T>): Boolean {
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.passes(vararg rules: Rule<T>): Boolean {
     val value = this
 
     return getFirstViolation { value.verifyWith(rules = rules) } == null
 }
 
-public infix fun <T> T.passes(rules: Iterable<Rule<T>>): Boolean {
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.passes(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
     return getFirstViolation { value verifyWith rules } == null
@@ -140,17 +146,20 @@ public infix fun <T> T.passes(rules: Iterable<Rule<T>>): Boolean {
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
 public inline fun <T> T.notPasses(): Boolean = false
 
-public infix fun <T> T.notPasses(rule: Rule<T>): Boolean =
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.notPasses(rule: Rule<T>): Boolean =
     !passes(
         rule = rule,
     )
 
-public fun <T> T.notPasses(vararg rules: Rule<T>): Boolean =
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.notPasses(vararg rules: Rule<T>): Boolean =
     !passes(
         rules = rules,
     )
 
-public infix fun <T> T.notPasses(rules: Iterable<Rule<T>>): Boolean =
+@Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> T.notPasses(rules: Iterable<Rule<T>>): Boolean =
     !passes(
         rules = rules,
     )

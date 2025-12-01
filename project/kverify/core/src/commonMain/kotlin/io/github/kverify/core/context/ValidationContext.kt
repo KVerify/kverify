@@ -38,28 +38,32 @@ public fun interface ValidationContext {
         )
 }
 
-@Suppress("UnusedReceiverParameter")
-public fun <T> ValidationContext.verify(value: T): T = value
+@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T> ValidationContext.verify(value: T): T = value
 
-public fun <T> ValidationContext.verify(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationContext.verify(
     value: T,
     rule: Rule<T>,
 ): T = value verifyWith rule
 
-public fun <T> ValidationContext.verify(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationContext.verify(
     value: T,
     vararg rules: Rule<T>,
 ): T = value.verifyWith(rules = rules)
 
-public fun <T> ValidationContext.verify(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationContext.verify(
     value: T,
     rules: Iterable<Rule<T>>,
 ): T = value verifyWith rules
 
-@Suppress("UnusedParameter")
-public fun <T> T.verifyWith(context: ValidationContext): T = this
+@Suppress("UnusedParameter", "NOTHING_TO_INLINE")
+public inline fun <T> T.verifyWith(context: ValidationContext): T = this
 
-public fun <T> T.verifyWith(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyWith(
     context: ValidationContext,
     rule: Rule<T>,
 ): T {
@@ -68,7 +72,8 @@ public fun <T> T.verifyWith(
     return with(context) { value verifyWith rule }
 }
 
-public fun <T> T.verifyWith(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyWith(
     context: ValidationContext,
     vararg rules: Rule<T>,
 ): T {
@@ -77,7 +82,8 @@ public fun <T> T.verifyWith(
     return with(context) { value.verifyWith(rules = rules) }
 }
 
-public fun <T> T.verifyWith(
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> T.verifyWith(
     context: ValidationContext,
     rules: Iterable<Rule<T>>,
 ): T {
