@@ -119,26 +119,33 @@ public operator fun ValidationResult.plus(violations: List<Violation>): Validati
 
 @JvmName("plusValidationResultList")
 public operator fun ValidationResult.plus(validationResults: List<ValidationResult>): ValidationResult {
-    if (validationResults.isEmpty()) return this
-
     val violations =
         validationResults
-            .filterIsInstance<ValidationResult.Invalid>()
-            .flatMap { it.violations }
+            .getViolations()
+            .ifEmpty { return this }
 
     return this + violations
 }
 
 public fun List<ValidationResult>.mergeValidationResults(): ValidationResult {
-    if (this.isEmpty()) return ValidationResult.Valid
-
     val violations =
-        this
-            .filterIsInstance<ValidationResult.Invalid>()
-            .flatMap { it.violations }
+        getViolations()
+            .ifEmpty { return ValidationResult.Valid }
 
     return ValidationResult(violations)
 }
+
+@Suppress("NOTHING_TO_INLINE")
+private inline fun List<ValidationResult>.getViolations(): List<Violation> =
+    if (this.isEmpty()) {
+        emptyList()
+    } else {
+        buildList {
+            for (result in this@getViolations) {
+                if (result is ValidationResult.Invalid) addAll(result.violations)
+            }
+        }
+    }
 
 public inline fun <T> ValidationResult.ifValid(block: () -> T): T? =
     if (this.isValid) {
