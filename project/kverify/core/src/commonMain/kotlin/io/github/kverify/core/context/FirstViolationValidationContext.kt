@@ -117,40 +117,40 @@ public infix fun <T> T.verifyFirst(rules: Iterable<Rule<T>>): ValidationResult {
 }
 
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
-public inline fun <T> T.satisfies(): Boolean = true
+public inline fun <T> T.passes(): Boolean = true
 
-public infix fun <T> T.satisfies(rule: Rule<T>): Boolean {
+public infix fun <T> T.passes(rule: Rule<T>): Boolean {
     val value = this
 
     return getFirstViolation { value verifyWith rule } == null
 }
 
-public fun <T> T.satisfies(vararg rules: Rule<T>): Boolean {
+public fun <T> T.passes(vararg rules: Rule<T>): Boolean {
     val value = this
 
     return getFirstViolation { value.verifyWith(rules = rules) } == null
 }
 
-public infix fun <T> T.satisfies(rules: Iterable<Rule<T>>): Boolean {
+public infix fun <T> T.passes(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
     return getFirstViolation { value verifyWith rules } == null
 }
 
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
-public inline fun <T> T.notSatisfies(): Boolean = false
+public inline fun <T> T.notPasses(): Boolean = false
 
-public infix fun <T> T.notSatisfies(rule: Rule<T>): Boolean =
-    !satisfies(
+public infix fun <T> T.notPasses(rule: Rule<T>): Boolean =
+    !passes(
         rule = rule,
     )
 
-public fun <T> T.notSatisfies(vararg rules: Rule<T>): Boolean =
-    !satisfies(
+public fun <T> T.notPasses(vararg rules: Rule<T>): Boolean =
+    !passes(
         rules = rules,
     )
 
-public infix fun <T> T.notSatisfies(rules: Iterable<Rule<T>>): Boolean =
-    !satisfies(
+public infix fun <T> T.notPasses(rules: Iterable<Rule<T>>): Boolean =
+    !passes(
         rules = rules,
     )

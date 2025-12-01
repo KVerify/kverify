@@ -147,40 +147,40 @@ internal inline fun failFastThrows(block: ThrowingValidationContext.() -> Unit):
     }
 
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
-public inline fun <T> T.satisfiesFailFast(): Boolean = true
+public inline fun <T> T.passesFailFast(): Boolean = true
 
-public infix fun <T> T.satisfiesFailFast(rule: Rule<T>): Boolean {
+public infix fun <T> T.passesFailFast(rule: Rule<T>): Boolean {
     val value = this
 
     return !failFastThrows { value verifyWith rule }
 }
 
-public fun <T> T.satisfiesFailFast(vararg rules: Rule<T>): Boolean {
+public fun <T> T.passesFailFast(vararg rules: Rule<T>): Boolean {
     val value = this
 
     return !failFastThrows { value.verifyWith(rules = rules) }
 }
 
-public infix fun <T> T.satisfiesFailFast(rules: Iterable<Rule<T>>): Boolean {
+public infix fun <T> T.passesFailFast(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
     return !failFastThrows { value verifyWith rules }
 }
 
 @Suppress("UnusedReceiverParameter", "FunctionOnlyReturningConstant", "NOTHING_TO_INLINE")
-public inline fun <T> T.notSatisfiesFailFast(): Boolean = true
+public inline fun <T> T.notPassesFailFast(): Boolean = true
 
-public infix fun <T> T.notSatisfiesFailFast(rule: Rule<T>): Boolean =
-    !satisfiesFailFast(
+public infix fun <T> T.notPassesFailFast(rule: Rule<T>): Boolean =
+    !passesFailFast(
         rule = rule,
     )
 
-public fun <T> T.notSatisfiesFailFast(vararg rules: Rule<T>): Boolean =
-    !satisfiesFailFast(
+public fun <T> T.notPassesFailFast(vararg rules: Rule<T>): Boolean =
+    !passesFailFast(
         rules = rules,
     )
 
-public infix fun <T> T.notSatisfiesFailFast(rules: Iterable<Rule<T>>): Boolean =
-    !satisfiesFailFast(
+public infix fun <T> T.notPassesFailFast(rules: Iterable<Rule<T>>): Boolean =
+    !passesFailFast(
         rules = rules,
     )
