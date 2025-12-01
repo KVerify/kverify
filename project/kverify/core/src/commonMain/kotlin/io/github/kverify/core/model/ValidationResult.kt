@@ -127,13 +127,10 @@ public operator fun ValidationResult.plus(validationResults: List<ValidationResu
     return this + violations
 }
 
-public fun List<ValidationResult>.mergeValidationResults(): ValidationResult {
-    val violations =
-        getViolations()
-            .ifEmpty { return ValidationResult.Valid }
-
-    return ValidationResult(violations)
-}
+public fun List<ValidationResult>.mergeValidationResults(): ValidationResult =
+    ValidationResult(
+        violations = this.getViolations(),
+    )
 
 @Suppress("NOTHING_TO_INLINE")
 private inline fun List<ValidationResult>.getViolations(): List<Violation> =
