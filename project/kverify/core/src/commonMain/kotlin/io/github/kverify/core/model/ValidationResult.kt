@@ -167,17 +167,15 @@ public inline fun <T> ValidationResult.fold(
         is ValidationResult.Invalid -> ifInvalid(this.violations)
     }
 
-public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult {
-    if (this.isValid) block()
+public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult =
+    apply {
+        if (this.isValid) block()
+    }
 
-    return this
-}
-
-public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult {
-    if (this is ValidationResult.Invalid) block(this.violations)
-
-    return this
-}
+public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult =
+    apply {
+        if (this is ValidationResult.Invalid) block(this.violations)
+    }
 
 @Suppress("LongParameterList")
 public fun ValidationResult.throwOnFailure(
