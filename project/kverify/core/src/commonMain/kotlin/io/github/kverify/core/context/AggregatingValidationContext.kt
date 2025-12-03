@@ -35,25 +35,25 @@ public inline fun verifyAll(block: AggregatingValidationContext.() -> Unit): Val
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.verifyAll(): ValidationResult.Valid = ValidationResult.Valid
+public inline fun <T> T.verifyWithAll(): ValidationResult.Valid = ValidationResult.Valid
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyAll(rule: Rule<T>): ValidationResult =
-    this.verifyAllTo(
+public inline infix fun <T> T.verifyWithAll(rule: Rule<T>): ValidationResult =
+    this.verifyWithAllTo(
         destination = ArrayList(),
         rule = rule,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyAll(vararg rules: Rule<T>): ValidationResult =
-    this.verifyAllTo(
+public inline fun <T> T.verifyWithAll(vararg rules: Rule<T>): ValidationResult =
+    this.verifyWithAllTo(
         destination = ArrayList(),
         rules = rules,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyAll(rules: Iterable<Rule<T>>): ValidationResult =
-    this.verifyAllTo(
+public inline infix fun <T> T.verifyWithAll(rules: Iterable<Rule<T>>): ValidationResult =
+    this.verifyWithAllTo(
         destination = ArrayList(),
         rules = rules,
     )
@@ -77,34 +77,34 @@ public inline fun verifyAllTo(
 }
 
 @Suppress("UnusedParameter", "UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.verifyAllTo(destination: MutableCollection<Violation>): ValidationResult.Valid = ValidationResult.Valid
+public inline fun <T> T.verifyWithAllTo(destination: MutableCollection<Violation>): ValidationResult.Valid = ValidationResult.Valid
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyAllTo(
+public inline fun <T> T.verifyWithAllTo(
     destination: MutableCollection<Violation>,
     rule: Rule<T>,
 ): ValidationResult =
-    this.verifyAllUsing(
+    this.verifyWithAllUsing(
         context = AggregatingValidationContext(destination),
         rule = rule,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyAllTo(
+public inline fun <T> T.verifyWithAllTo(
     destination: MutableCollection<Violation>,
     vararg rules: Rule<T>,
 ): ValidationResult =
-    this.verifyAllUsing(
+    this.verifyWithAllUsing(
         context = AggregatingValidationContext(destination),
         rules = rules,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyAllTo(
+public inline fun <T> T.verifyWithAllTo(
     destination: MutableCollection<Violation>,
     rules: Iterable<Rule<T>>,
 ): ValidationResult =
-    this.verifyAllUsing(
+    this.verifyWithAllUsing(
         context = AggregatingValidationContext(destination),
         rules = rules,
     )
@@ -125,10 +125,10 @@ public inline fun <C : AggregatingValidationContext> verifyAllUsing(
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(context: C): ValidationResult = context.build()
+public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(context: C): ValidationResult = context.build()
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
+public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(
     context: C,
     rule: Rule<T>,
 ): ValidationResult {
@@ -138,7 +138,7 @@ public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
+public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(
     context: C,
     vararg rules: Rule<T>,
 ): ValidationResult {
@@ -150,7 +150,7 @@ public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyAllUsing(
+public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(
     context: C,
     rules: Iterable<Rule<T>>,
 ): ValidationResult {
