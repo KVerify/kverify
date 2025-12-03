@@ -9,7 +9,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public open class AggregatingValidationContext(
+public open class CollectingValidationContext(
     protected val violationsStorage: MutableCollection<Violation>,
 ) : ValidationContext {
     override fun onFailure(violation: Violation) {
@@ -26,34 +26,34 @@ public open class AggregatingValidationContext(
 // Validate using AggregatingValidationContext with ArrayList as violationStorage
 // ============================================================
 @OptIn(ExperimentalContracts::class)
-public inline fun verifyAll(block: AggregatingValidationContext.() -> Unit): ValidationResult {
+public inline fun verifyCollecting(block: CollectingValidationContext.() -> Unit): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return verifyAllTo(ArrayList(), block)
+    return verifyCollectingTo(ArrayList(), block)
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.verifyWithAll(): ValidationResult.Valid = ValidationResult.Valid
+public inline fun <T> T.verifyWithCollecting(): ValidationResult.Valid = ValidationResult.Valid
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyWithAll(rule: Rule<T>): ValidationResult =
-    this.verifyWithAllTo(
+public inline infix fun <T> T.verifyWithCollecting(rule: Rule<T>): ValidationResult =
+    this.verifyWithCollectingTo(
         destination = ArrayList(),
         rule = rule,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyWithAll(vararg rules: Rule<T>): ValidationResult =
-    this.verifyWithAllTo(
+public inline fun <T> T.verifyWithCollecting(vararg rules: Rule<T>): ValidationResult =
+    this.verifyWithCollectingTo(
         destination = ArrayList(),
         rules = rules,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyWithAll(rules: Iterable<Rule<T>>): ValidationResult =
-    this.verifyWithAllTo(
+public inline infix fun <T> T.verifyWithCollecting(rules: Iterable<Rule<T>>): ValidationResult =
+    this.verifyWithCollectingTo(
         destination = ArrayList(),
         rules = rules,
     )
@@ -62,50 +62,50 @@ public inline infix fun <T> T.verifyWithAll(rules: Iterable<Rule<T>>): Validatio
 // Validate using AggregatingValidationContext with provided destination as violationStorage
 // ============================================================
 @OptIn(ExperimentalContracts::class)
-public inline fun verifyAllTo(
+public inline fun verifyCollectingTo(
     destination: MutableCollection<Violation>,
-    block: AggregatingValidationContext.() -> Unit,
+    block: CollectingValidationContext.() -> Unit,
 ): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return verifyAllUsing(
-        context = AggregatingValidationContext(destination),
+    return verifyCollectingUsing(
+        context = CollectingValidationContext(destination),
         block,
     )
 }
 
 @Suppress("UnusedParameter", "UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.verifyWithAllTo(destination: MutableCollection<Violation>): ValidationResult.Valid = ValidationResult.Valid
+public inline fun <T> T.verifyWithCollectingTo(destination: MutableCollection<Violation>): ValidationResult.Valid = ValidationResult.Valid
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyWithAllTo(
+public inline fun <T> T.verifyWithCollectingTo(
     destination: MutableCollection<Violation>,
     rule: Rule<T>,
 ): ValidationResult =
-    this.verifyWithAllUsing(
-        context = AggregatingValidationContext(destination),
+    this.verifyWithCollectingUsing(
+        context = CollectingValidationContext(destination),
         rule = rule,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyWithAllTo(
+public inline fun <T> T.verifyWithCollectingTo(
     destination: MutableCollection<Violation>,
     vararg rules: Rule<T>,
 ): ValidationResult =
-    this.verifyWithAllUsing(
-        context = AggregatingValidationContext(destination),
+    this.verifyWithCollectingUsing(
+        context = CollectingValidationContext(destination),
         rules = rules,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyWithAllTo(
+public inline fun <T> T.verifyWithCollectingTo(
     destination: MutableCollection<Violation>,
     rules: Iterable<Rule<T>>,
 ): ValidationResult =
-    this.verifyWithAllUsing(
-        context = AggregatingValidationContext(destination),
+    this.verifyWithCollectingUsing(
+        context = CollectingValidationContext(destination),
         rules = rules,
     )
 
@@ -113,7 +113,7 @@ public inline fun <T> T.verifyWithAllTo(
 // Validate using provided context
 // ============================================================
 @OptIn(ExperimentalContracts::class)
-public inline fun <C : AggregatingValidationContext> verifyAllUsing(
+public inline fun <C : CollectingValidationContext> verifyCollectingUsing(
     context: C,
     block: C.() -> Unit,
 ): ValidationResult {
@@ -125,36 +125,36 @@ public inline fun <C : AggregatingValidationContext> verifyAllUsing(
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(context: C): ValidationResult = context.build()
+public inline fun <T, C : CollectingValidationContext> T.verifyWithCollectingUsing(context: C): ValidationResult = context.build()
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(
+public inline fun <T, C : CollectingValidationContext> T.verifyWithCollectingUsing(
     context: C,
     rule: Rule<T>,
 ): ValidationResult {
     val value = this
 
-    return verifyAllUsing(context) { value verifyWith rule }
+    return verifyCollectingUsing(context) { value verifyWith rule }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(
+public inline fun <T, C : CollectingValidationContext> T.verifyWithCollectingUsing(
     context: C,
     vararg rules: Rule<T>,
 ): ValidationResult {
     val value = this
 
-    return verifyAllUsing(context) {
+    return verifyCollectingUsing(context) {
         value.verifyWith(rules = rules)
     }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T, C : AggregatingValidationContext> T.verifyWithAllUsing(
+public inline fun <T, C : CollectingValidationContext> T.verifyWithCollectingUsing(
     context: C,
     rules: Iterable<Rule<T>>,
 ): ValidationResult {
     val value = this
 
-    return verifyAllUsing(context) { value verifyWith rules }
+    return verifyCollectingUsing(context) { value verifyWith rules }
 }
