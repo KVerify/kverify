@@ -64,24 +64,24 @@ public inline fun <T> verifyThrowing(block: ThrowingValidationContext.() -> T): 
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyThrowing(): T = this
+public inline fun <T> T.verifyWithThrowing(): T = this
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyThrowing(rule: Rule<T>): T {
+public inline infix fun <T> T.verifyWithThrowing(rule: Rule<T>): T {
     val value = this
 
     return verifyThrowing { value verifyWith rule }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyThrowing(vararg rules: Rule<T>): T {
+public inline fun <T> T.verifyWithThrowing(vararg rules: Rule<T>): T {
     val value = this
 
     return verifyThrowing { value.verifyWith(rules = rules) }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyThrowing(rules: Iterable<Rule<T>>): T {
+public inline infix fun <T> T.verifyWithThrowing(rules: Iterable<Rule<T>>): T {
     val value = this
 
     return verifyThrowing { value.verifyWith(rules = rules) }
@@ -110,24 +110,24 @@ public inline fun verifyFailFast(block: ThrowingValidationContext.() -> Unit): V
     }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.verifyFailFast(): ValidationResult = ValidationResult.Valid
+public inline fun <T> T.verifyWithFailFast(): ValidationResult = ValidationResult.Valid
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyFailFast(rule: Rule<T>): ValidationResult {
+public inline infix fun <T> T.verifyWithFailFast(rule: Rule<T>): ValidationResult {
     val value = this
 
     return verifyFailFast { value verifyWith rule }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyFailFast(vararg rules: Rule<T>): ValidationResult {
+public inline fun <T> T.verifyWithFailFast(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return verifyFailFast { value.verifyWith(rules = rules) }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyFailFast(rules: Iterable<Rule<T>>): ValidationResult {
+public inline infix fun <T> T.verifyWithFailFast(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
     return verifyFailFast { value.verifyWith(rules = rules) }

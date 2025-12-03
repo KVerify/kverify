@@ -2,7 +2,6 @@
 
 package io.github.kverify.core.context
 
-import io.github.kverify.core.exception.ThrowingValidationContextException
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
@@ -79,24 +78,24 @@ public inline fun verifyFirst(block: FirstViolationValidationContext.() -> Unit)
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> T.verifyFirst(): ValidationResult.Valid = ValidationResult.Valid
+public inline fun <T> T.verifyWithFirst(): ValidationResult.Valid = ValidationResult.Valid
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyFirst(rule: Rule<T>): ValidationResult {
+public inline infix fun <T> T.verifyWithFirst(rule: Rule<T>): ValidationResult {
     val value = this
 
     return verifyFirst { value verifyWith rule }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> T.verifyFirst(vararg rules: Rule<T>): ValidationResult {
+public inline fun <T> T.verifyWithFirst(vararg rules: Rule<T>): ValidationResult {
     val value = this
 
     return verifyFirst { value.verifyWith(rules = rules) }
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> T.verifyFirst(rules: Iterable<Rule<T>>): ValidationResult {
+public inline infix fun <T> T.verifyWithFirst(rules: Iterable<Rule<T>>): ValidationResult {
     val value = this
 
     return verifyFirst { value verifyWith rules }
