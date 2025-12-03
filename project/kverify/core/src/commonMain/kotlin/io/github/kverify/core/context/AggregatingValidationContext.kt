@@ -2,9 +2,7 @@
 
 package io.github.kverify.core.context
 
-import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.model.ValidationResult
-import io.github.kverify.core.model.fold
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalContracts
@@ -34,15 +32,6 @@ public inline fun verifyAll(block: AggregatingValidationContext.() -> Unit): Val
     }
 
     return verifyAllTo(ArrayList(), block)
-}
-
-@OptIn(ExperimentalContracts::class)
-public inline fun <T> runVerifyingAll(block: AggregatingValidationContext.() -> T): Result<T> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return runVerifyingAllTo(ArrayList(), block)
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
@@ -85,18 +74,6 @@ public inline fun verifyAllTo(
         context = AggregatingValidationContext(destination),
         block,
     )
-}
-
-@OptIn(ExperimentalContracts::class)
-public inline fun <T> runVerifyingAllTo(
-    destination: MutableCollection<Violation>,
-    block: AggregatingValidationContext.() -> T,
-): Result<T> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return runVerifyingAllUsing(context = AggregatingValidationContext(destination), block)
 }
 
 @Suppress("UnusedParameter", "UnusedReceiverParameter", "NOTHING_TO_INLINE")
@@ -145,26 +122,6 @@ public inline fun <C : AggregatingValidationContext> verifyAllUsing(
     }
 
     return context.apply(block).build()
-}
-
-@OptIn(ExperimentalContracts::class)
-public inline fun <T, C : AggregatingValidationContext> runVerifyingAllUsing(
-    context: C,
-    block: C.() -> T,
-): Result<T> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    val result = context.run(block)
-
-    return context.build().fold(
-        ifValid = { Result.success(result) },
-        ifInvalid = {
-            val exception = ValidationException(it)
-            Result.failure(exception)
-        },
-    )
 }
 
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")

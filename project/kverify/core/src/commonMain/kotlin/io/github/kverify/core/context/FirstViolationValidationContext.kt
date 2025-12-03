@@ -78,23 +78,6 @@ public inline fun verifyFirst(block: FirstViolationValidationContext.() -> Unit)
     }
 }
 
-public inline fun <T> runVerifyingFirst(block: FirstViolationValidationContext.() -> T): Result<T> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    val context = FirstViolationValidationContextImpl()
-
-    val result = context.block()
-    val firstViolation = context.firstViolation
-
-    return if (firstViolation == null) {
-        Result.success(result)
-    } else {
-        Result.failure(ThrowingValidationContextException(firstViolation))
-    }
-}
-
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
 public inline fun <T> T.verifyFirst(): ValidationResult.Valid = ValidationResult.Valid
 
