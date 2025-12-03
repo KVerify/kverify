@@ -109,13 +109,6 @@ public inline fun verifyFailFast(block: ThrowingValidationContext.() -> Unit): V
         ValidationResult.Invalid(it.violation)
     }
 
-public inline fun <T> runVerifyingFailFast(block: ThrowingValidationContext.() -> T): Result<T> =
-    runFailFast({
-        Result.success(block())
-    }) {
-        Result.failure(it)
-    }
-
 @Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
 public inline fun <T> T.verifyFailFast(): ValidationResult = ValidationResult.Valid
 
