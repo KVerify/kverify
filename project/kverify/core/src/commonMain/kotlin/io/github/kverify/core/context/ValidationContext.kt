@@ -1,8 +1,10 @@
 package io.github.kverify.core.context
 
+import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 
+@KverifyDsl
 public fun interface ValidationContext {
     public fun onFailure(violation: Violation)
 
