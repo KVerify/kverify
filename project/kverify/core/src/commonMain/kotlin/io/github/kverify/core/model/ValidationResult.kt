@@ -8,11 +8,26 @@ import kotlin.js.JsName
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmName
 
+/**
+ * The result of a validation operation.
+ *
+ * @see Valid
+ * @see Invalid
+ */
 public sealed interface ValidationResult {
+    /**
+     * Returns `true` if `this` result is [Valid].
+     */
     public val isValid: Boolean
 
+    /**
+     * Returns `true` if `this` result is [Invalid].
+     */
     public val isInvalid: Boolean
 
+    /**
+     * Represents a successful validation with no violations.
+     */
     public data object Valid : ValidationResult {
         override val isValid: Boolean = true
         override val isInvalid: Boolean = false
@@ -20,6 +35,11 @@ public sealed interface ValidationResult {
         override fun toString(): String = "ValidationResult.Valid"
     }
 
+    /**
+     * Represents a failed validation with a list of [violations].
+     *
+     * @param violations The list of violations that caused the validation to fail.
+     */
     @JvmInline
     public value class Invalid(
         public val violations: List<Violation>,
@@ -34,6 +54,10 @@ public sealed interface ValidationResult {
     }
 }
 
+/**
+ * Returns the [ValidationResult.Invalid.violations] if `this` is [ValidationResult.Invalid],
+ * or an empty list otherwise.
+ */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult.violationsOrEmpty(): List<Violation> =
     if (this is ValidationResult.Invalid) {
@@ -42,6 +66,10 @@ public inline fun ValidationResult.violationsOrEmpty(): List<Violation> =
         emptyList()
     }
 
+/**
+ * Returns the [violations][ValidationResult.Invalid.violations] if `this` is [ValidationResult.Invalid],
+ * or `null` otherwise.
+ */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
     if (this is ValidationResult.Invalid) {
@@ -50,14 +78,23 @@ public inline fun ValidationResult.violationsOrNull(): List<Violation>? =
         null
     }
 
+/**
+ * Returns [ValidationResult.Valid].
+ */
 @JsName("ValidationResultValid")
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
 public inline fun ValidationResult(): ValidationResult.Valid = ValidationResult.Valid
 
+/**
+ * Creates a [ValidationResult.Invalid] result with a single [violation].
+ */
 @JsName("ValidationResultInvalidSingle")
 @Suppress("NOTHING_TO_INLINE", "FunctionName")
 public inline fun ValidationResult(violation: Violation): ValidationResult.Invalid = ValidationResult.Invalid(violation)
 
+/**
+ * Creates a [ValidationResult.Invalid] result with the given [violations].
+ */
 @JsName("ValidationResultInvalidVararg")
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(vararg violations: Violation): ValidationResult =
@@ -65,6 +102,9 @@ public inline fun ValidationResult(vararg violations: Violation): ValidationResu
         violations = violations.asList(),
     )
 
+/**
+ * Returns [ValidationResult.Valid] if [violations] is empty, otherwise [ValidationResult.Invalid].
+ */
 @JsName("ValidationResultInvalidList")
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ValidationResult(violations: List<Violation>): ValidationResult =
@@ -76,47 +116,158 @@ public inline fun ValidationResult(violations: List<Violation>): ValidationResul
         )
     }
 
+/**
+ * Combines `this` result with [other] result.
+ *
+ * 1. If both results are [ValidationResult.Invalid], returns a new [ValidationResult.Invalid] with combined violations.
+ * 2. If one result is [ValidationResult.Valid], returns the other result.
+ * 3. If both results are [ValidationResult.Valid], returns [ValidationResult.Valid].
+ *
+ * ### Example:
+ * ```kt
+ * val violation = violation("invalid")
+ * val invalid = ValidationResult.Invalid(violation("invalid"))
+ * val valid = ValidationResult.Valid
+ *
+ * invalid + invalid // ValidationResult.Invalid(violation, violation)
+ * invalid + valid // invalid
+ * valid + invalid // invalid
+ * valid + valid // valid
+ * ```
+ *
+ * @param other The [ValidationResult] to combine with
+ * @return The combined [ValidationResult]
+ */
 public operator fun ValidationResult.plus(other: ValidationResult): ValidationResult =
     when (this) {
-        is ValidationResult.Invalid ->
+        is ValidationResult.Invalid -> {
             when (other) {
                 is ValidationResult.Invalid -> ValidationResult.Invalid(this.violations + other.violations)
                 is ValidationResult.Valid -> this
             }
+        }
 
-        is ValidationResult.Valid -> other
+        is ValidationResult.Valid -> {
+            other
+        }
     }
 
+/**
+ * Adds a [violation] to `this` result.
+ *
+ * Returns a new [ValidationResult.Invalid] with the [violation] added to the violations list.
+ * If `this` is [ValidationResult.Valid], returns a new [ValidationResult.Invalid]
+ * with the [violation] as the only violation.
+ *
+ * ### Example:
+ * ```kt
+ * val violation = violation("invalid")
+ * val invalid = ValidationResult.Invalid(violation("invalid"))
+ * val valid = ValidationResult.Valid
+ *
+ * // ValidationResult.Invalid with 2 violations total - 1 from original, 1 from added violation
+ * invalid + violation
+ *
+ * // ValidationResult.Invalid with 1 violation total - 1 from added violation
+ * valid + violation
+ * ```
+ *
+ * @param violation The [Violation] to add
+ * @return A [ValidationResult.Invalid] with the added violation
+ */
 public operator fun ValidationResult.plus(violation: Violation): ValidationResult.Invalid =
     when (this) {
-        is ValidationResult.Invalid ->
+        is ValidationResult.Invalid -> {
             ValidationResult.Invalid(
                 violations = this.violations + violation,
             )
+        }
 
-        is ValidationResult.Valid ->
+        is ValidationResult.Valid -> {
             ValidationResult.Invalid(
                 violations = listOf(violation),
             )
+        }
     }
 
+/**
+ * Adds a list of [violations] to `this` result.
+ *
+ * 1. If [violations] is empty, returns `this` result unchanged.
+ *
+ * 2. If `this` is [ValidationResult.Invalid], returns a new [ValidationResult.Invalid]
+ * with the original [ValidationResult.Invalid.violations] combined with the given [violations].
+ *
+ * 3. If `this` is [ValidationResult.Valid], returns a new [ValidationResult.Invalid]
+ * with given [violations].
+ *
+ * ### Example:
+ * ```kt
+ * val violation = violation("invalid")
+ * val violations = listOf(violation, violation)
+ * val invalid = ValidationResult.Invalid(violations)
+ * val valid = ValidationResult.Valid
+ *
+ * // ValidationResult.Invalid with 4 violations total - 2 from original, 2 from added violations
+ * invalid + violations
+ *
+ * // ValidationResult.Invalid with 2 violations total - 2 from added violations
+ * valid + violations
+ * ```
+ *
+ * @param violations The list of [Violation]s to add
+ * @return The updated [ValidationResult]
+ */
 @JvmName("plusViolationList")
 public operator fun ValidationResult.plus(violations: List<Violation>): ValidationResult {
     if (violations.isEmpty()) return this
 
     return when (this) {
-        is ValidationResult.Invalid ->
+        is ValidationResult.Invalid -> {
             ValidationResult.Invalid(
                 violations = this.violations + violations,
             )
+        }
 
-        is ValidationResult.Valid ->
+        is ValidationResult.Valid -> {
             ValidationResult.Invalid(
                 violations = violations,
             )
+        }
     }
 }
 
+/**
+ * Adds all violations from a list of [validationResults] to `this` result.
+ *
+ * Flattens all violations from [validationResults] and adds them to `this` result.
+ * 1. If [validationResults] is empty, returns `this` result unchanged.
+ *
+ * 2. If `this` is [ValidationResult.Invalid], returns a new [ValidationResult.Invalid]
+ * with the original [ValidationResult.Invalid.violations]
+ * combined with the flattened violations from [validationResults].
+ *
+ * 3. If `this` is [ValidationResult.Valid], returns a new [ValidationResult.Invalid]
+ * with the flattened violations from [validationResults].
+ *
+ * ### Example:
+ * ```kt
+ * val violation = violation("invalid")
+ * val violations = listOf(violation, violation)
+ * val invalid = ValidationResult.Invalid(violations)
+ * val valid = ValidationResult.Valid
+ * val validationResults = listOf(invalid, valid, invalid)
+ *
+ * // ValidationResult.Invalid with 6 violations total - 2 from original, 4 from added validationResults
+ * invalid + validationResults
+ *
+ * // ValidationResult.Invalid with 4 violations total - 4 from added validationResults
+ * valid + validationResults
+ * ```
+ *
+ * @param validationResults The list of [ValidationResult]s to extract violations from
+ * @return The updated [ValidationResult]
+ */
 @JvmName("plusValidationResultList")
 public operator fun ValidationResult.plus(validationResults: List<ValidationResult>): ValidationResult {
     val violations =
@@ -127,11 +278,44 @@ public operator fun ValidationResult.plus(validationResults: List<ValidationResu
     return this + violations
 }
 
+/**
+ * Merges all [ValidationResult]s in `this` list into a single [ValidationResult].
+ *
+ * 1. If `this` list is empty, returns [ValidationResult.Valid].
+ *
+ * 2. If `this` list contains only [ValidationResult.Valid], returns [ValidationResult.Valid].
+ *
+ * 3. If `this` contains [ValidationResult.Invalid], flattens all violations into a single list
+ * and creates new [ValidationResult.Invalid] with all flattened violations.
+ *
+ * ### Example:
+ * ```kt
+ * val violation = violation("invalid")
+ * val violations = listOf(violation, violation)
+ * val invalid = ValidationResult.Invalid(violations)
+ * val valid = ValidationResult.Valid
+ *
+ *
+ * // ValidationResult.Valid
+ * emptyList<ValidationResult>().mergeValidationResults()
+ *
+ * // ValidationResult.Valid
+ * listOf(valid, valid).mergeValidationResults()
+ *
+ * // ValidationResult.Invalid with 4 violations
+ * listOf(invalid, valid, invalid).mergeValidationResults()
+ * ```
+ *
+ * @return The merged [ValidationResult]
+ */
 public fun List<ValidationResult>.mergeValidationResults(): ValidationResult =
     ValidationResult(
         violations = this.getViolations(),
     )
 
+/**
+ * Returns a flattened list of all [ValidationResult.Invalid.violations] from `this` list.
+ */
 @Suppress("NOTHING_TO_INLINE")
 private inline fun List<ValidationResult>.getViolations(): List<Violation> =
     if (this.isEmpty()) {
@@ -144,6 +328,12 @@ private inline fun List<ValidationResult>.getViolations(): List<Violation> =
         }
     }
 
+/**
+ * Executes [block] if `this` result is [ValidationResult.Valid].
+ *
+ * @param block The block to execute
+ * @return The result of [block], or `null` if `this` is [ValidationResult.Invalid]
+ */
 public inline fun <T> ValidationResult.ifValid(block: () -> T): T? =
     if (this.isValid) {
         block()
@@ -151,6 +341,12 @@ public inline fun <T> ValidationResult.ifValid(block: () -> T): T? =
         null
     }
 
+/**
+ * Executes [block] if `this` result is [ValidationResult.Invalid].
+ *
+ * @param block The block to execute with the list of violations
+ * @return The result of [block], or `null` if `this` is [ValidationResult.Valid]
+ */
 public inline fun <T> ValidationResult.ifInvalid(block: (List<Violation>) -> T): T? =
     if (this is ValidationResult.Invalid) {
         block(this.violations)
@@ -158,6 +354,13 @@ public inline fun <T> ValidationResult.ifInvalid(block: (List<Violation>) -> T):
         null
     }
 
+/**
+ * Applies [ifValid] if `this` is [ValidationResult.Valid], or [ifInvalid] if `this` is [ValidationResult.Invalid].
+ *
+ * @param ifValid The block to execute if the result is valid
+ * @param ifInvalid The block to execute if the result is invalid
+ * @return The result of the executed block
+ */
 public inline fun <T> ValidationResult.fold(
     ifValid: () -> T,
     ifInvalid: (List<Violation>) -> T,
@@ -167,16 +370,43 @@ public inline fun <T> ValidationResult.fold(
         is ValidationResult.Invalid -> ifInvalid(this.violations)
     }
 
+/**
+ * Executes [block] if `this` result is [ValidationResult.Valid], then returns `this`.
+ *
+ * @param block The block to execute
+ * @return This [ValidationResult]
+ */
 public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult =
     apply {
         if (this.isValid) block()
     }
 
+/**
+ * Executes [block] if `this` result is [ValidationResult.Invalid], then returns `this`.
+ *
+ * @param block The block to execute with the list of violations
+ * @return This [ValidationResult]
+ */
 public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult =
     apply {
         if (this is ValidationResult.Invalid) block(this.violations)
     }
 
+/**
+ * Throws a [ValidationException] if `this` result is [ValidationResult.Invalid].
+ *
+ * The exception message is constructed by joining the violations using the provided formatting parameters.
+ *
+ * @param separator The separator between violations
+ * @param prefix The prefix to add before the violations list if there are any violations present
+ * @param postfix The postfix to add after the violations list
+ * @param limit The maximum number of violations to include, or -1 for unlimited
+ * @param truncated The text to show when violations are truncated
+ * @param prefixOnEmpty The prefix to use when the violations list is empty
+ * @param cause The optional cause of the exception
+ * @param transform The function to transform each violation into a string
+ * @throws ValidationException if `this` is [ValidationResult.Invalid]
+ */
 @Suppress("LongParameterList")
 public fun ValidationResult.throwOnFailure(
     separator: CharSequence = "\n",
@@ -184,7 +414,7 @@ public fun ValidationResult.throwOnFailure(
     postfix: CharSequence = "",
     limit: Int = -1,
     truncated: CharSequence = "...",
-    onEmptyPrefix: CharSequence = "Validation failed",
+    prefixOnEmpty: CharSequence = "Validation failed",
     cause: Throwable? = null,
     transform: (Violation) -> String = { "\t- ${it.reason}" },
 ) {
@@ -192,7 +422,7 @@ public fun ValidationResult.throwOnFailure(
 
     val prefix =
         if (violations.isEmpty()) {
-            onEmptyPrefix
+            prefixOnEmpty
         } else {
             prefix
         }
