@@ -461,7 +461,7 @@ class ValidationResultTest {
         val result = ValidationResult.Invalid(emptyList())
 
         try {
-            result.throwOnFailure(onEmptyPrefix = "No violations found")
+            result.throwOnFailure(prefixOnEmpty = "No violations found")
             error("Expected ValidationException to be thrown")
         } catch (e: ValidationException) {
             assertTrue(e.message!!.contains("No violations found"))
