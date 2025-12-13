@@ -15,13 +15,13 @@ public value class ViolationReason(
 ) : Violation
 
 /**
- * Wraps `this` [String] into a [ViolationReason].
+ * @return [ViolationReason] with `this` string as the [reason][ViolationReason.reason].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun String.asViolationReason(): ViolationReason = ViolationReason(this)
 
 /**
- * Wraps given [reason] into a [ViolationReason].
+ * @return [ViolationReason] with the given [reason].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun violation(reason: String): ViolationReason = ViolationReason(reason)

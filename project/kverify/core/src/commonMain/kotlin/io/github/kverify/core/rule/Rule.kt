@@ -32,8 +32,20 @@ public inline fun <T> Rule(crossinline execute: ValidationContext.(T) -> Unit): 
 /**
  * Combines `this` rule with another rule for sequential execution.
  *
- * If either rule is a [RuleList], its rules are flattened into the result.
+ * If either rule is a [RuleList], its [rules][RuleList.rules] are flattened into the result.
  * Otherwise, both rules are combined into a new [RuleList].
+ *
+ * ### Example:
+ * ```kt
+ * val ruleList1 = RuleList(rule1, rule2)
+ * val ruleList2 = RuleList(rule3, rule4)
+ *
+ * // RuleList(rule1, rule2, rule3)
+ * ruleList1 + rule3
+ *
+ * // RuleList(rule1, rule2, rule3, rule4)
+ * ruleList1 + ruleList2
+ * ```
  *
  * @param other The [Rule] to combine with
  * @return A new [RuleList] containing all rules
