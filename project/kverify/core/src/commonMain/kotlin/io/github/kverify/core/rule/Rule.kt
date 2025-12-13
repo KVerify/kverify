@@ -6,7 +6,6 @@ import io.github.kverify.core.context.ValidationContext
  * A unit of validation logic.
  *
  * @see RuleList
- * @see ScopedRule
  * @see io.github.kverify.core.rule.predicate.PredicateRule
  */
 public interface Rule<in T> {
@@ -18,6 +17,17 @@ public interface Rule<in T> {
         value: T,
     )
 }
+
+/**
+ * @return a new anonymous object that implements [Rule] interface with given [execute] lambda.
+ */
+public inline fun <T> Rule(crossinline execute: ValidationContext.(T) -> Unit): Rule<T> =
+    object : Rule<T> {
+        override fun execute(
+            context: ValidationContext,
+            value: T,
+        ): Unit = execute(context, value)
+    }
 
 /**
  * Combines `this` rule with another rule for sequential execution.
