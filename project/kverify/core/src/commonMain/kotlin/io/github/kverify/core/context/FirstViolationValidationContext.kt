@@ -63,7 +63,7 @@ internal inline fun getFirstViolation(init: FirstViolationValidationContextImpl.
     return FirstViolationValidationContextImpl().apply(init).firstViolation
 }
 
-public inline fun verifyFirst(block: FirstViolationValidationContext.() -> Unit): ValidationResult {
+public inline fun verifyFirst(crossinline block: FirstViolationValidationContext.() -> Unit): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
