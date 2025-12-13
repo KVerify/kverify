@@ -1,9 +1,7 @@
 package io.github.kverify.core.violation
 
 /**
- * Represents a validation failure with a description of why it failed.
- *
- * Implementations provide a [reason] describing what constraint was violated.
+ * Represents a validation failure with a [reason] of why it failed.
  *
  * @see ViolationReason
  */

@@ -24,9 +24,7 @@ public value class ValidationCheckList<in T>(
 }
 
 /**
- * Creates an empty [ValidationCheckList].
- *
- * An empty check list validates all values as `true`.
+ * @return empty [ValidationCheckList].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationCheckList(): ValidationCheckList<T> =
@@ -35,7 +33,7 @@ public inline fun <T> ValidationCheckList(): ValidationCheckList<T> =
     )
 
 /**
- * Creates a [ValidationCheckList] containing a single [check].
+ * @return [ValidationCheckList] containing a single [check].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationCheckList(check: ValidationCheck<T>): ValidationCheckList<T> =
@@ -44,7 +42,7 @@ public inline fun <T> ValidationCheckList(check: ValidationCheck<T>): Validation
     )
 
 /**
- * Creates a [ValidationCheckList] containing the given [checks].
+ * @return [ValidationCheckList] containing the given [checks].
  */
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationCheckList(vararg checks: ValidationCheck<T>): ValidationCheckList<T> =
@@ -55,8 +53,20 @@ public inline fun <T> ValidationCheckList(vararg checks: ValidationCheck<T>): Va
 /**
  * Combines `this` check list with another [ValidationCheck].
  *
- * If [other] is a [ValidationCheckList], its checks are flattened into the result.
+ * If [other] is a [ValidationCheckList], its [checks][ValidationCheckList.checks] are flattened into the result.
  * Otherwise, [other] is appended as a single check.
+ *
+ * ### Example:
+ * ```kt
+ * val checkList1 = ValidationCheckList(check1, check2)
+ * val checkList2 = ValidationCheckList(check3, check4)
+ *
+ * // ValidationCheckList(check1, check2, check3)
+ * checkList1 + check3
+ *
+ * // ValidationCheckList(check1, check2, check3, check4)
+ * checkList1 + checkList2
+ * ```
  *
  * @param other The check to add
  * @return A new check list containing all checks
@@ -70,7 +80,16 @@ public operator fun <T> ValidationCheckList<T>.plus(other: ValidationCheck<T>): 
 /**
  * Combines `this` check list with another [ValidationCheckList].
  *
- * The checks from both lists are flattened into a single list.
+ * The [checks][ValidationCheckList.checks] from both lists are flattened into a single list.
+ *
+ * ### Example:
+ * ```kt
+ * val checkList1 = ValidationCheckList(check1, check2)
+ * val checkList2 = ValidationCheckList(check3, check4)
+ *
+ * // ValidationCheckList(check1, check2, check3, check4)
+ * checkList1 + checkList2
+ * ```
  *
  * @param other The check list to add
  * @return A new check list containing all checks from both lists
