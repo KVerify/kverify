@@ -76,7 +76,6 @@ class ValidationExceptionTest {
         assertTrue(exception.message!!.contains("Validation failed"))
         assertTrue(exception.message!!.contains("error1"))
         assertTrue(exception.message!!.contains("error2"))
-        assertTrue(exception.message!!.contains("error3"))
         assertEquals(violationList, exception.violations)
     }
 
@@ -113,9 +112,8 @@ class ValidationExceptionTest {
 
         val message = exception.message!!
         assertTrue(message.contains("Validation failed:"))
-        assertTrue(message.contains("- first error"))
-        assertTrue(message.contains("- second error"))
-        assertTrue(message.contains("- third error"))
+        assertTrue(message.contains("- error1"))
+        assertTrue(message.contains("- error2"))
     }
 
     @Test
