@@ -54,5 +54,6 @@ public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     when {
         this is RuleList && other is RuleList -> RuleList(this.rules + other.rules)
         this is RuleList -> RuleList(this.rules + other)
+        other is RuleList -> RuleList(listOf(this) + other.rules)
         else -> RuleList(this, other)
     }
