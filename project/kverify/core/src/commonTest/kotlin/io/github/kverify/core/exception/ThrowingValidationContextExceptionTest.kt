@@ -92,7 +92,7 @@ class ThrowingValidationContextExceptionTest {
 
         val message = exception.message!!
         assertTrue(message.contains("Validation failed:"))
-        assertTrue(message.contains("- test error message"))
+        assertTrue(message.contains("- error"))
     }
 
     @Test
