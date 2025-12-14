@@ -4,16 +4,19 @@ kotest = "5.9.1"
 publish = "0.28.0"
 coroutine = "1.9.0"
 atomicfu = "0.26.1"
+dokka = "2.0.0"
 
 [libraries]
 coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutine" }
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 vanniktech-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
+dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
 
 [bundles]
 pluginsForBuildSrc = [
     "kotlin-gradle-plugin",
     "vanniktech-maven-publish",
+    "dokka-gradle-plugin",
 ]
 
 [plugins]
