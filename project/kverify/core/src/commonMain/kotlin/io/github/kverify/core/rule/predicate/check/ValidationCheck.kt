@@ -1,8 +1,5 @@
 package io.github.kverify.core.rule.predicate.check
 
-import kotlin.collections.plus
-import kotlin.jvm.JvmInline
-
 /**
  * A predicate that determines whether a value is valid.
  *
@@ -39,43 +36,99 @@ public inline operator fun <T> ValidationCheck<T>.not(): ValidationCheck<T> = In
 /**
  * Combines `this` check with another check using `AND` logic.
  *
- * If either check is a [ValidationCheckList], its [checks][ValidationCheckList.checks] are flattened into the result.
- * Otherwise, both checks are combined into a new [ValidationCheckList].
+ * If either check is a [AllValidationCheckList],
+ * its [checks][AllValidationCheckList.checks] are flattened into the result.
+ * Otherwise, both checks are combined into a new [AllValidationCheckList].
  *
  * ### Example:
  * ```kt
- * val checkList1 = ValidationCheckList(check1, check2)
- * val checkList2 = ValidationCheckList(check3, check4)
+ * val checkList1 = AllValidationCheckList(check1, check2)
+ * val checkList2 = AllValidationCheckList(check3, check4)
  *
- * // ValidationCheckList(check1, check2, check3)
- * checkList1 + check3
+ * // AllValidationCheckList(check1, check2, check3)
+ * checkList1 and check3
  *
- * // ValidationCheckList(check1, check2, check3, check4)
- * checkList1 + checkList2
+ * // AllValidationCheckList(check1, check2, check3, check4)
+ * checkList1 and checkList2
+ *
+ * val isPositiveCheck = ValidationCheck<Int> { it > 0 }
+ * val lessThanTenCheck = ValidationCheck<Int> { it < 10 }
+ *
+ * val combinedCheck = isPositiveCheck and lessThanTenCheck
+ *
+ * (1..10).all { combinedCheck.isValid(it) } // true
+ * combinedCheck.isValid(0) // false
+ * combinedCheck.isValid(11) // false
  * ```
  *
  * @param other The check to combine with
- * @return A new [ValidationCheckList] that passes only if all checks pass
+ * @return A new [AllValidationCheckList] that passes only if all checks pass
  */
-public operator fun <T> ValidationCheck<T>.plus(other: ValidationCheck<T>): ValidationCheck<T> =
+public infix fun <T> ValidationCheck<T>.and(other: ValidationCheck<T>): AllValidationCheckList<T> =
     when {
-        this is ValidationCheckList && other is ValidationCheckList -> ValidationCheckList(this.checks + other.checks)
-        this is ValidationCheckList -> ValidationCheckList(this.checks + other)
-        else -> ValidationCheckList(this, other)
+        this is AllValidationCheckList && other is AllValidationCheckList -> {
+            AllValidationCheckList(this.checks + other.checks)
+        }
+
+        this is AllValidationCheckList -> {
+            AllValidationCheckList(this.checks + other)
+        }
+
+        other is AllValidationCheckList -> {
+            AllValidationCheckList(listOf(this) + other.checks)
+        }
+
+        else -> {
+            AllValidationCheckList(this, other)
+        }
     }
 
 /**
- * Wraps [originalCheck] to invert its validation logic.
+ * Combines `this` check with another check using `OR` logic.
  *
- * @see ValidationCheck
+ * If either check is a [AnyValidationCheckList],
+ * its [checks][AnyValidationCheckList.checks] are flattened into the result.
+ * Otherwise, both checks are combined into a new [AnyValidationCheckList].
+ *
+ * ### Example:
+ * ```kt
+ * val checkList1 = AnyValidationCheckList(check1, check2)
+ * val checkList2 = AnyValidationCheckList(check3, check4)
+ *
+ * // AnyValidationCheckList(check1, check2, check3)
+ * checkList1 or check3
+ *
+ * // AnyValidationCheckList(check1, check2, check3, check4)
+ * checkList1 or checkList2
+ *
+ * val isNegativeCheck = ValidationCheck<Int> { it < 0 }
+ * val greaterThanTenCheck = ValidationCheck<Int> { it > 10 }
+ *
+ * val combinedCheck = isNegativeCheck or greaterThanTenCheck
+ *
+ * combinedCheck.isValid(-5) // true
+ * combinedCheck.isValid(15) // true
+ * combinedCheck.isValid(5) // false
+ * ```
+ *
+ * @param other The check to combine with
+ * @return A new [AnyValidationCheckList] that passes if at least one check passes
  */
-@PublishedApi
-@JvmInline
-internal value class InvertedValidationCheck<in T>(
-    private val originalCheck: ValidationCheck<T>,
-) : ValidationCheck<T> {
-    /**
-     * Returns the inverse of the original check's result.
-     */
-    override fun isValid(value: T): Boolean = !originalCheck.isValid(value)
-}
+public infix fun <T> ValidationCheck<T>.or(other: ValidationCheck<T>): AnyValidationCheckList<T> =
+    when {
+        this is AnyValidationCheckList && other is AnyValidationCheckList -> {
+            AnyValidationCheckList(this.checks + other.checks)
+        }
+
+        this is AnyValidationCheckList -> {
+            AnyValidationCheckList(this.checks + other)
+        }
+
+        other is AnyValidationCheckList -> {
+            AnyValidationCheckList(listOf(this) + other.checks)
+        }
+
+        else -> {
+            AnyValidationCheckList(this, other)
+        }
+    }
