@@ -229,6 +229,4 @@ public open class CollectionRuleSet(
             sizeRange = sizeRange,
             violationFactory = violationFactory,
         )
-
-    public companion object : CollectionRuleSet()
 }
