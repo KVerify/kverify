@@ -33,7 +33,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 import io.github.kverify.violation.set.provider.StringViolationSet
 
 @Suppress("TooManyFunctions")
-public open class StringRuleSet(
+public open class DefaultStringRuleProvider(
     public val stringViolationFactoryProvider: StringViolationFactoryProvider =
         StringViolationFactoryProvider.Default,
 ) : StringRuleProvider,

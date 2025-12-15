@@ -3,15 +3,15 @@ package io.github.kverify.violation.factory.provider
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
-import io.github.kverify.violation.set.provider.ComparableViolationSet
+import io.github.kverify.violation.set.provider.DefaultComparableViolationProvider
 
-public class ComparableViolationFactorySet(
+public class DefaultComparableViolationFactoryProvider(
     public val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
 ) : ComparableViolationFactoryProvider {
     public constructor(
         comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
     ) : this(
-        comparableViolationProvider = ComparableViolationSet(comparableViolationLocalizationProvider),
+        comparableViolationProvider = DefaultComparableViolationProvider(comparableViolationLocalizationProvider),
     )
 
     override fun <T : Comparable<T>> between(range: ClosedRange<T>): ViolationFactory<T> =

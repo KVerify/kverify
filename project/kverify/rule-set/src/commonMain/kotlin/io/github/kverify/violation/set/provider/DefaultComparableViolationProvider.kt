@@ -4,7 +4,7 @@ import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.asViolationReason
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 
-public class ComparableViolationSet(
+public class DefaultComparableViolationProvider(
     public val comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider =
         ComparableViolationLocalizationProvider.Default,
 ) : ComparableViolationProvider {

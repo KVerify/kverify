@@ -32,7 +32,7 @@ public interface NamedCollectionViolationFactoryProvider {
     public fun <C : Collection<*>> namedSizeNotBetween(sizeRange: IntRange): NamedViolationFactory<C>
 
     public companion object {
-        public val Default: NamedCollectionViolationFactoryProvider = NamedCollectionViolationFactorySet()
+        public val Default: NamedCollectionViolationFactoryProvider = DefaultNamedCollectionViolationFactoryProvider()
     }
 }
 

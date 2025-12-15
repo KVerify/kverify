@@ -26,14 +26,14 @@ import io.github.kverify.named.rule.set.string.NamedStringNumericRule
 import io.github.kverify.named.rule.set.string.NamedStringOfLengthRule
 import io.github.kverify.named.rule.set.string.NamedStringStartsWithRule
 import io.github.kverify.named.rule.set.string.NamedStringUpperCaseRule
+import io.github.kverify.named.violation.factory.provider.DefaultNamedStringViolationFactoryProvider
 import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactoryProvider
-import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactorySet
 import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
+import io.github.kverify.violation.set.provider.DefaultStringViolationProvider
 import io.github.kverify.violation.set.provider.StringViolationProvider
-import io.github.kverify.violation.set.provider.StringViolationSet
 
 @Suppress("TooManyFunctions")
-public class NamedStringRuleSet(
+public class DefaultNamedStringRuleProvider(
     public val namedStringViolationFactoryProvider: NamedStringViolationFactoryProvider =
         NamedStringViolationFactoryProvider.Default,
 ) : NamedStringRuleProvider,
@@ -42,7 +42,7 @@ public class NamedStringRuleSet(
         stringViolationProvider: StringViolationProvider,
     ) : this(
         namedStringViolationFactoryProvider =
-            NamedStringViolationFactorySet(
+            DefaultNamedStringViolationFactoryProvider(
                 stringViolationProvider = stringViolationProvider,
             ),
     )
@@ -51,7 +51,7 @@ public class NamedStringRuleSet(
         stringViolationLocalizationProvider: StringViolationLocalizationProvider,
     ) : this(
         stringViolationProvider =
-            StringViolationSet(
+            DefaultStringViolationProvider(
                 stringViolationLocalizationProvider = stringViolationLocalizationProvider,
             ),
     )

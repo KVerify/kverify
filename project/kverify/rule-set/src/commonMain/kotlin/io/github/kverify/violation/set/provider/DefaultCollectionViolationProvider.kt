@@ -5,7 +5,7 @@ import io.github.kverify.core.violation.asViolationReason
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 
 @Suppress("TooManyFunctions")
-public class CollectionViolationSet(
+public class DefaultCollectionViolationProvider(
     private val collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider =
         CollectionViolationLocalizationProvider.Default,
 ) : CollectionViolationProvider {

@@ -15,14 +15,14 @@ import io.github.kverify.named.rule.set.collection.NamedCollectionNotOfSizeRule
 import io.github.kverify.named.rule.set.collection.NamedCollectionOfSizeRule
 import io.github.kverify.named.rule.set.collection.NamedCollectionSizeBetweenRule
 import io.github.kverify.named.rule.set.collection.NamedCollectionSizeNotBetweenRule
+import io.github.kverify.named.violation.factory.provider.DefaultNamedCollectionViolationFactoryProvider
 import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactoryProvider
-import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactorySet
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
-import io.github.kverify.violation.set.provider.CollectionViolationSet
+import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvider
 
 @Suppress("TooManyFunctions")
-public class NamedCollectionRuleSet(
+public class DefaultNamedCollectionRuleProvider(
     public val namedCollectionViolationFactoryProvider: NamedCollectionViolationFactoryProvider =
         NamedCollectionViolationFactoryProvider.Default,
 ) : NamedCollectionRuleProvider,
@@ -31,7 +31,7 @@ public class NamedCollectionRuleSet(
         collectionViolationProvider: CollectionViolationProvider,
     ) : this(
         namedCollectionViolationFactoryProvider =
-            NamedCollectionViolationFactorySet(
+            DefaultNamedCollectionViolationFactoryProvider(
                 collectionViolationProvider = collectionViolationProvider,
             ),
     )
@@ -40,7 +40,7 @@ public class NamedCollectionRuleSet(
         collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider,
     ) : this(
         collectionViolationProvider =
-            CollectionViolationSet(
+            DefaultCollectionViolationProvider(
                 collectionViolationLocalizationProvider = collectionViolationLocalizationProvider,
             ),
     )

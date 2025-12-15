@@ -20,6 +20,6 @@ public interface NamedComparableViolationFactoryProvider {
     public fun <T : Comparable<T>> namedNotEqualTo(other: T): NamedViolationFactory<T>
 
     public companion object {
-        public val Default: NamedComparableViolationFactoryProvider = NamedComparableViolationFactorySet()
+        public val Default: NamedComparableViolationFactoryProvider = DefaultNamedComparableViolationFactoryProvider()
     }
 }

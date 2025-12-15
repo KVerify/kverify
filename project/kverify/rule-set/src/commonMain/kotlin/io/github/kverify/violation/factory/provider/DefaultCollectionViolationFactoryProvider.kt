@@ -3,16 +3,16 @@ package io.github.kverify.violation.factory.provider
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
-import io.github.kverify.violation.set.provider.CollectionViolationSet
+import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvider
 
 @Suppress("TooManyFunctions")
-public class CollectionViolationFactorySet(
+public class DefaultCollectionViolationFactoryProvider(
     private val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
 ) : CollectionViolationFactoryProvider {
     public constructor(
         collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider,
     ) : this(
-        collectionViolationProvider = CollectionViolationSet(collectionViolationLocalizationProvider),
+        collectionViolationProvider = DefaultCollectionViolationProvider(collectionViolationLocalizationProvider),
     )
 
     override fun <E, C : Collection<E>> containsAll(elements: Collection<E>): ViolationFactory<C> =
