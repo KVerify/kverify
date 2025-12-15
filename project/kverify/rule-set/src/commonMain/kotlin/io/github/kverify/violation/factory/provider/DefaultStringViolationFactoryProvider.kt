@@ -2,17 +2,17 @@ package io.github.kverify.violation.factory.provider
 
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
+import io.github.kverify.violation.set.provider.DefaultStringViolationProvider
 import io.github.kverify.violation.set.provider.StringViolationProvider
-import io.github.kverify.violation.set.provider.StringViolationSet
 
 @Suppress("TooManyFunctions")
-public class StringViolationFactorySet(
+public class DefaultStringViolationFactoryProvider(
     public val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
 ) : StringViolationFactoryProvider {
     public constructor(
         stringViolationLocalizationProvider: StringViolationLocalizationProvider,
     ) : this(
-        stringViolationProvider = StringViolationSet(stringViolationLocalizationProvider),
+        stringViolationProvider = DefaultStringViolationProvider(stringViolationLocalizationProvider),
     )
 
     override fun alphabetic(): ViolationFactory<String> =

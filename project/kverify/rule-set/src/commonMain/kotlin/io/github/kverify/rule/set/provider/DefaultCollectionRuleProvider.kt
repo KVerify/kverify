@@ -22,7 +22,7 @@ import io.github.kverify.violation.set.provider.CollectionViolationProvider
 import io.github.kverify.violation.set.provider.CollectionViolationSet
 
 @Suppress("TooManyFunctions")
-public open class CollectionRuleSet(
+public open class DefaultCollectionRuleProvider(
     public val collectionViolationFactoryProvider: CollectionViolationFactoryProvider =
         CollectionViolationFactoryProvider.Default,
 ) : CollectionRuleProvider,

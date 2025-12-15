@@ -17,7 +17,7 @@ import io.github.kverify.violation.set.provider.ComparableViolationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationSet
 
 @Suppress("TooManyFunctions")
-public open class ComparableRuleSet(
+public open class DefaultComparableRuleProvider(
     public val comparableViolationFactoryProvider: ComparableViolationFactoryProvider =
         ComparableViolationFactoryProvider.Default,
 ) : ComparableRuleProvider,

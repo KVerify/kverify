@@ -4,7 +4,7 @@ import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 
 @Suppress("TooManyFunctions")
-public class NamedCollectionViolationFactorySet(
+public class DefaultNamedCollectionViolationFactoryProvider(
     public val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
 ) : NamedCollectionViolationFactoryProvider {
     override fun <E, C : Collection<E>> namedContainsAll(elements: Collection<E>): NamedViolationFactory<C> =

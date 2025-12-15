@@ -12,7 +12,7 @@ import io.github.kverify.named.violation.factory.classbased.set.comparable.Named
 import io.github.kverify.named.violation.factory.provider.NamedComparableViolationFactoryProvider
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
 
-public class NamedClassBasedComparableViolationFactorySet(
+public class NamedClassBasedComparableViolationFactoryProvider(
     public val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
 ) : NamedComparableViolationFactoryProvider {
     override fun <T : Comparable<T>> namedBetween(range: ClosedRange<T>): NamedViolationFactory<T> =

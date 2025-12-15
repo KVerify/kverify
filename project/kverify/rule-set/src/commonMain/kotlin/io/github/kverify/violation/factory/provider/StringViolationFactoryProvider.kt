@@ -65,6 +65,6 @@ public interface StringViolationFactoryProvider {
     public fun upperCase(): ViolationFactory<String>
 
     public companion object {
-        public val Default: StringViolationFactoryProvider = StringViolationFactorySet()
+        public val Default: StringViolationFactoryProvider = DefaultStringViolationFactoryProvider()
     }
 }
