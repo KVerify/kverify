@@ -159,6 +159,4 @@ public open class ComparableRuleSet(
             other = other,
             violationFactory = violationFactory,
         )
-
-    public companion object : ComparableRuleSet()
 }

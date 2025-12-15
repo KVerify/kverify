@@ -404,6 +404,4 @@ public open class StringRuleSet(
         StringUpperCaseRule(
             violationFactory = violationFactory,
         )
-
-    public companion object : StringRuleSet()
 }
