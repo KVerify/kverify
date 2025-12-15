@@ -14,11 +14,14 @@ public interface FirstViolationValidationCoroutineScope :
     FirstViolationValidationContext
 
 internal open class FirstViolationValidationCoroutineScopeImpl(
+@PublishedApi
+internal class FirstViolationValidationCoroutineScopeImpl(
     coroutineScope: CoroutineScope,
 ) : FirstViolationValidationCoroutineScope {
     override val coroutineContext: CoroutineContext = coroutineScope.coroutineContext
 
     protected val atomicFirstViolation: AtomicRef<Violation?> = atomic(null)
+    private val atomicFirstViolation: AtomicRef<Violation?> = atomic(null)
 
     override val firstViolation: Violation?
         get() = atomicFirstViolation.value
@@ -29,6 +32,9 @@ internal open class FirstViolationValidationCoroutineScopeImpl(
 }
 
 public suspend fun validateFirstSuspending(block: suspend FirstViolationValidationCoroutineScope.() -> Unit): ValidationResult =
+public suspend inline fun verifyFirstSuspending(
+    crossinline block: suspend FirstViolationValidationCoroutineScope.() -> Unit,
+): ValidationResult =
     coroutineScope {
         val context = FirstViolationValidationCoroutineScopeImpl(this)
 
