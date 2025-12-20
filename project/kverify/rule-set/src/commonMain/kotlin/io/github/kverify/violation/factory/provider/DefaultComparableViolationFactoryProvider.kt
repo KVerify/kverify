@@ -11,7 +11,10 @@ public class DefaultComparableViolationFactoryProvider(
     public constructor(
         comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
     ) : this(
-        comparableViolationProvider = DefaultComparableViolationProvider(comparableViolationLocalizationProvider),
+        comparableViolationProvider =
+            DefaultComparableViolationProvider(
+                comparableViolationLocalizationProvider = comparableViolationLocalizationProvider,
+            ),
     )
 
     override fun <T : Comparable<T>> between(range: ClosedRange<T>): ViolationFactory<T> =

@@ -12,7 +12,10 @@ public class DefaultStringViolationFactoryProvider(
     public constructor(
         stringViolationLocalizationProvider: StringViolationLocalizationProvider,
     ) : this(
-        stringViolationProvider = DefaultStringViolationProvider(stringViolationLocalizationProvider),
+        stringViolationProvider =
+            DefaultStringViolationProvider(
+                stringViolationLocalizationProvider = stringViolationLocalizationProvider,
+            ),
     )
 
     override fun alphabetic(): ViolationFactory<String> =
