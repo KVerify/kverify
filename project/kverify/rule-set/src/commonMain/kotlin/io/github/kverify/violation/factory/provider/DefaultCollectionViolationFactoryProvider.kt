@@ -12,7 +12,10 @@ public class DefaultCollectionViolationFactoryProvider(
     public constructor(
         collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider,
     ) : this(
-        collectionViolationProvider = DefaultCollectionViolationProvider(collectionViolationLocalizationProvider),
+        collectionViolationProvider =
+            DefaultCollectionViolationProvider(
+                collectionViolationLocalizationProvider = collectionViolationLocalizationProvider,
+            ),
     )
 
     override fun <E, C : Collection<E>> containsAll(elements: Collection<E>): ViolationFactory<C> =
