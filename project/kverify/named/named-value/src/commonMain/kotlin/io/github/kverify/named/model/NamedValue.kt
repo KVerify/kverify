@@ -5,10 +5,23 @@ import kotlin.reflect.KProperty
 /**
  *  Represents a [value] paired with its [name].
  */
-public data class NamedValue<out T>(
-    val name: String,
-    val value: T,
-)
+public value class NamedValue<out T>(
+    public val pair: Pair<String, T>,
+) {
+    public constructor(
+        name: String,
+        value: T,
+    ) : this(name to value)
+
+    public inline val name: String get() = pair.first
+    public inline val value: T get() = pair.second
+
+    @Suppress("NOTHING_TO_INLINE")
+    public inline operator fun component1(): String = name
+
+    @Suppress("NOTHING_TO_INLINE")
+    public inline operator fun component2(): T = value
+}
 
 /**
  * Creates a [NamedValue] with `this` value and the given [name].
@@ -40,11 +53,7 @@ public fun <T> KProperty<T>.toNamed(value: T): NamedValue<T> =
 /**
  * Converts `this` pair into a [NamedValue], using [Pair.first] as the name and [Pair.second] as the value.
  */
-public fun <T> Pair<String, T>.toNamed(): NamedValue<T> =
-    NamedValue(
-        name = first,
-        value = second,
-    )
+public fun <T> Pair<String, T>.toNamed(): NamedValue<T> = NamedValue(this)
 
 /**
  * Invokes [block] if `this` [NamedValue.value] is not `null`.
