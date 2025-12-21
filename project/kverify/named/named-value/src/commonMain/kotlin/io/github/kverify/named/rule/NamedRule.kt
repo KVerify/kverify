@@ -11,6 +11,17 @@ import kotlin.jvm.JvmInline
 public typealias NamedRule<T> = Rule<NamedValue<T>>
 
 /**
+ * @return a new anonymous object that implements [NamedRule] interface with given [execute] lambda.
+ */
+public inline fun <T> NamedRule(crossinline execute: ValidationContext.(NamedValue<T>) -> Unit): NamedRule<T> =
+    object : NamedRule<T> {
+        override fun execute(
+            context: ValidationContext,
+            value: NamedValue<T>,
+        ): Unit = execute(context, value)
+    }
+
+/**
  * Wraps `this` [Rule] to work with [NamedValue].
  */
 @Suppress("NOTHING_TO_INLINE")
