@@ -11,6 +11,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.between(
                 value = value,
                 range = range,
+                name = name,
             )
         }
 
@@ -19,6 +20,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.equalTo(
                 value = value,
                 other = other,
+                name = name,
             )
         }
 
@@ -27,6 +29,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.greaterThanOrEqualTo(
                 value = value,
                 other = other,
+                name = name,
             )
         }
 
@@ -35,6 +38,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.greaterThan(
                 value = value,
                 other = other,
+                name = name,
             )
         }
 
@@ -43,6 +47,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.lessThanOrEqualTo(
                 value = value,
                 other = other,
+                name = name,
             )
         }
 
@@ -51,6 +56,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.lessThan(
                 value = value,
                 other = other,
+                name = name,
             )
         }
 
@@ -59,6 +65,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.notBetween(
                 value = value,
                 range = range,
+                name = name,
             )
         }
 
@@ -67,6 +74,7 @@ public class DefaultNamedComparableViolationFactoryProvider(
             comparableViolationProvider.notEqualTo(
                 value = value,
                 other = other,
+                name = name,
             )
         }
 }
