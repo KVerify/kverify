@@ -1,18 +1,7 @@
 package io.github.kverify.rule.set.provider
 
-import io.github.kverify.check.set.collection.CollectionContainsAllCheck
-import io.github.kverify.check.set.collection.CollectionContainsCheck
-import io.github.kverify.check.set.collection.CollectionContainsNoneCheck
-import io.github.kverify.check.set.collection.CollectionContainsOnlyCheck
-import io.github.kverify.check.set.collection.CollectionDistinctCheck
-import io.github.kverify.check.set.collection.CollectionMaxSizeCheck
-import io.github.kverify.check.set.collection.CollectionMinSizeCheck
-import io.github.kverify.check.set.collection.CollectionNotContainsCheck
-import io.github.kverify.check.set.collection.CollectionNotEmptyCheck
-import io.github.kverify.check.set.collection.CollectionNotOfSizeCheck
-import io.github.kverify.check.set.collection.CollectionOfSizeCheck
-import io.github.kverify.check.set.collection.CollectionSizeBetweenCheck
-import io.github.kverify.check.set.collection.CollectionSizeNotBetweenCheck
+import io.github.kverify.check.set.provider.CollectionCheckProvider
+import io.github.kverify.check.set.provider.DefaultCollectionCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.factory.provider.CollectionViolationFactoryProvider
@@ -23,6 +12,7 @@ import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvid
 
 @Suppress("TooManyFunctions")
 public class DefaultCollectionRuleProvider(
+    public val collectionCheckProvider: CollectionCheckProvider = DefaultCollectionCheckProvider(),
     override val collectionViolationFactoryProvider: CollectionViolationFactoryProvider =
         CollectionViolationFactoryProvider.Default,
 ) : CollectionRuleProvider {
@@ -49,7 +39,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionContainsAllCheck(elements),
+            validationCheck = collectionCheckProvider.containsAll(elements),
             violationFactory = violationFactory,
         )
 
@@ -58,7 +48,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionContainsNoneCheck(elements),
+            validationCheck = collectionCheckProvider.containsNone(elements),
             violationFactory = violationFactory,
         )
 
@@ -67,7 +57,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionContainsOnlyCheck(elements),
+            validationCheck = collectionCheckProvider.containsOnly(elements),
             violationFactory = violationFactory,
         )
 
@@ -76,13 +66,13 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionContainsCheck(element),
+            validationCheck = collectionCheckProvider.contains(element),
             violationFactory = violationFactory,
         )
 
     override fun <C : Collection<*>> distinct(violationFactory: ViolationFactory<C>): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionDistinctCheck,
+            validationCheck = collectionCheckProvider.distinct(),
             violationFactory = violationFactory,
         )
 
@@ -91,7 +81,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionMaxSizeCheck(maxSize),
+            validationCheck = collectionCheckProvider.maxSize(maxSize),
             violationFactory = violationFactory,
         )
 
@@ -100,7 +90,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionMinSizeCheck(minSize),
+            validationCheck = collectionCheckProvider.minSize(minSize),
             violationFactory = violationFactory,
         )
 
@@ -109,13 +99,13 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionNotContainsCheck(element),
+            validationCheck = collectionCheckProvider.notContains(element),
             violationFactory = violationFactory,
         )
 
     override fun <C : Collection<*>> notEmpty(violationFactory: ViolationFactory<C>): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionNotEmptyCheck,
+            validationCheck = collectionCheckProvider.notEmpty(),
             violationFactory = violationFactory,
         )
 
@@ -124,7 +114,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionNotOfSizeCheck(size),
+            validationCheck = collectionCheckProvider.notOfSize(size),
             violationFactory = violationFactory,
         )
 
@@ -133,7 +123,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionOfSizeCheck(size),
+            validationCheck = collectionCheckProvider.ofSize(size),
             violationFactory = violationFactory,
         )
 
@@ -142,7 +132,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionSizeBetweenCheck(sizeRange),
+            validationCheck = collectionCheckProvider.sizeBetween(sizeRange),
             violationFactory = violationFactory,
         )
 
@@ -151,7 +141,7 @@ public class DefaultCollectionRuleProvider(
         violationFactory: ViolationFactory<C>,
     ): PredicateRule<C> =
         PredicateRule(
-            validationCheck = CollectionSizeNotBetweenCheck(sizeRange),
+            validationCheck = collectionCheckProvider.sizeNotBetween(sizeRange),
             violationFactory = violationFactory,
         )
 }
