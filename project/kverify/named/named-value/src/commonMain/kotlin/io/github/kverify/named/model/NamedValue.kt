@@ -1,5 +1,6 @@
 package io.github.kverify.named.model
 
+import kotlin.jvm.JvmInline
 import kotlin.reflect.KProperty
 
 /**
@@ -10,6 +11,7 @@ import kotlin.reflect.KProperty
  *
  * @param pair The underlying pair containing the [name] and [value]
  */
+@JvmInline
 public value class NamedValue<out T>(
     public val pair: Pair<String, T>,
 ) {
