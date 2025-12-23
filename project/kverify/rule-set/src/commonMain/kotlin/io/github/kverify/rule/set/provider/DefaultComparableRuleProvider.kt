@@ -1,13 +1,7 @@
 package io.github.kverify.rule.set.provider
 
-import io.github.kverify.check.set.comparable.ComparableBetweenCheck
-import io.github.kverify.check.set.comparable.ComparableEqualToCheck
-import io.github.kverify.check.set.comparable.ComparableGreaterThanCheck
-import io.github.kverify.check.set.comparable.ComparableGreaterThanOrEqualToCheck
-import io.github.kverify.check.set.comparable.ComparableLessThanCheck
-import io.github.kverify.check.set.comparable.ComparableLessThanOrEqualToCheck
-import io.github.kverify.check.set.comparable.ComparableNotBetweenCheck
-import io.github.kverify.check.set.comparable.ComparableNotEqualToCheck
+import io.github.kverify.check.set.provider.ComparableCheckProvider
+import io.github.kverify.check.set.provider.DefaultComparableCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.factory.provider.ComparableViolationFactoryProvider
@@ -17,6 +11,7 @@ import io.github.kverify.violation.set.provider.ComparableViolationProvider
 import io.github.kverify.violation.set.provider.DefaultComparableViolationProvider
 
 public class DefaultComparableRuleProvider(
+    public val comparableCheckProvider: ComparableCheckProvider = DefaultComparableCheckProvider(),
     override val comparableViolationFactoryProvider: ComparableViolationFactoryProvider =
         ComparableViolationFactoryProvider.Default,
 ) : ComparableRuleProvider {
@@ -43,7 +38,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableBetweenCheck(range),
+            validationCheck = comparableCheckProvider.between(range),
             violationFactory = violationFactory,
         )
 
@@ -52,7 +47,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableEqualToCheck(other),
+            validationCheck = comparableCheckProvider.equalTo(other),
             violationFactory = violationFactory,
         )
 
@@ -61,7 +56,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableGreaterThanOrEqualToCheck(other),
+            validationCheck = comparableCheckProvider.greaterThanOrEqualTo(other),
             violationFactory = violationFactory,
         )
 
@@ -70,7 +65,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableGreaterThanCheck(other),
+            validationCheck = comparableCheckProvider.greaterThan(other),
             violationFactory = violationFactory,
         )
 
@@ -79,7 +74,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableLessThanOrEqualToCheck(other),
+            validationCheck = comparableCheckProvider.lessThanOrEqualTo(other),
             violationFactory = violationFactory,
         )
 
@@ -88,7 +83,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableLessThanCheck(other),
+            validationCheck = comparableCheckProvider.lessThan(other),
             violationFactory = violationFactory,
         )
 
@@ -97,7 +92,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableNotBetweenCheck(range),
+            validationCheck = comparableCheckProvider.notBetween(range),
             violationFactory = violationFactory,
         )
 
@@ -106,7 +101,7 @@ public class DefaultComparableRuleProvider(
         violationFactory: ViolationFactory<T>,
     ): PredicateRule<T> =
         PredicateRule(
-            validationCheck = ComparableNotEqualToCheck(other),
+            validationCheck = comparableCheckProvider.notEqualTo(other),
             violationFactory = violationFactory,
         )
 }

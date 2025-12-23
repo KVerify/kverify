@@ -1,29 +1,7 @@
 package io.github.kverify.rule.set.provider
 
-import io.github.kverify.check.set.string.StringAlphabeticCheck
-import io.github.kverify.check.set.string.StringAlphanumericCheck
-import io.github.kverify.check.set.string.StringContainsAllCheck
-import io.github.kverify.check.set.string.StringContainsCheck
-import io.github.kverify.check.set.string.StringContainsNoneCheck
-import io.github.kverify.check.set.string.StringContainsOnlyCheck
-import io.github.kverify.check.set.string.StringContainsRegexCheck
-import io.github.kverify.check.set.string.StringEndsWithCheck
-import io.github.kverify.check.set.string.StringLengthBetweenCheck
-import io.github.kverify.check.set.string.StringLengthNotBetweenCheck
-import io.github.kverify.check.set.string.StringLowerCaseCheck
-import io.github.kverify.check.set.string.StringMatchesCheck
-import io.github.kverify.check.set.string.StringMaxLengthCheck
-import io.github.kverify.check.set.string.StringMinLengthCheck
-import io.github.kverify.check.set.string.StringNotBlankCheck
-import io.github.kverify.check.set.string.StringNotContainsCheck
-import io.github.kverify.check.set.string.StringNotContainsRegexCheck
-import io.github.kverify.check.set.string.StringNotEmptyCheck
-import io.github.kverify.check.set.string.StringNotMatchesCheck
-import io.github.kverify.check.set.string.StringNotOfLengthCheck
-import io.github.kverify.check.set.string.StringNumericCheck
-import io.github.kverify.check.set.string.StringOfLengthCheck
-import io.github.kverify.check.set.string.StringStartsWithCheck
-import io.github.kverify.check.set.string.StringUpperCaseCheck
+import io.github.kverify.check.set.provider.DefaultStringCheckProvider
+import io.github.kverify.check.set.provider.StringCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.factory.provider.DefaultStringViolationFactoryProvider
@@ -34,6 +12,7 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 
 @Suppress("TooManyFunctions")
 public class DefaultStringRuleProvider(
+    public val stringCheckProvider: StringCheckProvider = DefaultStringCheckProvider(),
     override val stringViolationFactoryProvider: StringViolationFactoryProvider =
         StringViolationFactoryProvider.Default,
 ) : StringRuleProvider {
@@ -57,13 +36,13 @@ public class DefaultStringRuleProvider(
 
     override fun alphabetic(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringAlphabeticCheck,
+            validationCheck = stringCheckProvider.alphabetic(),
             violationFactory = violationFactory,
         )
 
     override fun alphanumeric(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringAlphanumericCheck,
+            validationCheck = stringCheckProvider.alphanumeric(),
             violationFactory = violationFactory,
         )
 
@@ -72,7 +51,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringContainsAllCheck(chars),
+            validationCheck = stringCheckProvider.containsAll(chars),
             violationFactory = violationFactory,
         )
 
@@ -81,7 +60,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringContainsNoneCheck(chars),
+            validationCheck = stringCheckProvider.containsNone(chars),
             violationFactory = violationFactory,
         )
 
@@ -90,7 +69,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringContainsOnlyCheck(chars),
+            validationCheck = stringCheckProvider.containsOnly(chars),
             violationFactory = violationFactory,
         )
 
@@ -99,7 +78,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringContainsRegexCheck(regex),
+            validationCheck = stringCheckProvider.containsRegex(regex),
             violationFactory = violationFactory,
         )
 
@@ -109,7 +88,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringContainsCheck(substring, ignoreCase),
+            validationCheck = stringCheckProvider.contains(substring, ignoreCase),
             violationFactory = violationFactory,
         )
 
@@ -119,7 +98,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringEndsWithCheck(suffix, ignoreCase),
+            validationCheck = stringCheckProvider.endsWith(suffix, ignoreCase),
             violationFactory = violationFactory,
         )
 
@@ -128,7 +107,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringLengthBetweenCheck(lengthRange),
+            validationCheck = stringCheckProvider.lengthBetween(lengthRange),
             violationFactory = violationFactory,
         )
 
@@ -137,13 +116,13 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringLengthNotBetweenCheck(lengthRange),
+            validationCheck = stringCheckProvider.lengthNotBetween(lengthRange),
             violationFactory = violationFactory,
         )
 
     override fun lowerCase(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringLowerCaseCheck,
+            validationCheck = stringCheckProvider.lowerCase(),
             violationFactory = violationFactory,
         )
 
@@ -152,7 +131,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringMatchesCheck(regex),
+            validationCheck = stringCheckProvider.matches(regex),
             violationFactory = violationFactory,
         )
 
@@ -161,7 +140,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringMaxLengthCheck(maxLength),
+            validationCheck = stringCheckProvider.maxLength(maxLength),
             violationFactory = violationFactory,
         )
 
@@ -170,13 +149,13 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringMinLengthCheck(minLength),
+            validationCheck = stringCheckProvider.minLength(minLength),
             violationFactory = violationFactory,
         )
 
     override fun notBlank(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNotBlankCheck,
+            validationCheck = stringCheckProvider.notBlank(),
             violationFactory = violationFactory,
         )
 
@@ -186,7 +165,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNotContainsCheck(substring, ignoreCase),
+            validationCheck = stringCheckProvider.notContains(substring, ignoreCase),
             violationFactory = violationFactory,
         )
 
@@ -195,13 +174,13 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNotContainsRegexCheck(regex),
+            validationCheck = stringCheckProvider.notContainsRegex(regex),
             violationFactory = violationFactory,
         )
 
     override fun notEmpty(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNotEmptyCheck,
+            validationCheck = stringCheckProvider.notEmpty(),
             violationFactory = violationFactory,
         )
 
@@ -210,7 +189,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNotMatchesCheck(regex),
+            validationCheck = stringCheckProvider.notMatches(regex),
             violationFactory = violationFactory,
         )
 
@@ -219,13 +198,13 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNotOfLengthCheck(length),
+            validationCheck = stringCheckProvider.notOfLength(length),
             violationFactory = violationFactory,
         )
 
     override fun numeric(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringNumericCheck,
+            validationCheck = stringCheckProvider.numeric(),
             violationFactory = violationFactory,
         )
 
@@ -234,7 +213,7 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringOfLengthCheck(length),
+            validationCheck = stringCheckProvider.ofLength(length),
             violationFactory = violationFactory,
         )
 
@@ -244,13 +223,13 @@ public class DefaultStringRuleProvider(
         violationFactory: ViolationFactory<String>,
     ): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringStartsWithCheck(prefix, ignoreCase),
+            validationCheck = stringCheckProvider.startsWith(prefix, ignoreCase),
             violationFactory = violationFactory,
         )
 
     override fun upperCase(violationFactory: ViolationFactory<String>): PredicateRule<String> =
         PredicateRule(
-            validationCheck = StringUpperCaseCheck,
+            validationCheck = stringCheckProvider.upperCase(),
             violationFactory = violationFactory,
         )
 }

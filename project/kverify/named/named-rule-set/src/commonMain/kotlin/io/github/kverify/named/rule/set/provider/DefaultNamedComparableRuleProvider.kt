@@ -1,13 +1,7 @@
 package io.github.kverify.named.rule.set.provider
 
-import io.github.kverify.check.set.comparable.ComparableBetweenCheck
-import io.github.kverify.check.set.comparable.ComparableEqualToCheck
-import io.github.kverify.check.set.comparable.ComparableGreaterThanCheck
-import io.github.kverify.check.set.comparable.ComparableGreaterThanOrEqualToCheck
-import io.github.kverify.check.set.comparable.ComparableLessThanCheck
-import io.github.kverify.check.set.comparable.ComparableLessThanOrEqualToCheck
-import io.github.kverify.check.set.comparable.ComparableNotBetweenCheck
-import io.github.kverify.check.set.comparable.ComparableNotEqualToCheck
+import io.github.kverify.check.set.provider.ComparableCheckProvider
+import io.github.kverify.check.set.provider.DefaultComparableCheckProvider
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
 import io.github.kverify.named.violation.factory.provider.DefaultNamedComparableViolationFactoryProvider
@@ -18,6 +12,7 @@ import io.github.kverify.violation.set.provider.DefaultComparableViolationProvid
 
 @Suppress("TooManyFunctions")
 public class DefaultNamedComparableRuleProvider(
+    public val comparableCheckProvider: ComparableCheckProvider = DefaultComparableCheckProvider(),
     public override val namedComparableViolationFactoryProvider: NamedComparableViolationFactoryProvider =
         NamedComparableViolationFactoryProvider.Default,
 ) : NamedComparableRuleProvider {
@@ -44,7 +39,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableBetweenCheck(range),
+            validationCheck = comparableCheckProvider.between(range),
             violationFactory = violationFactory,
         )
 
@@ -53,7 +48,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableEqualToCheck(other),
+            validationCheck = comparableCheckProvider.equalTo(other),
             violationFactory = violationFactory,
         )
 
@@ -62,7 +57,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableGreaterThanOrEqualToCheck(other),
+            validationCheck = comparableCheckProvider.greaterThanOrEqualTo(other),
             violationFactory = violationFactory,
         )
 
@@ -71,7 +66,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableGreaterThanCheck(other),
+            validationCheck = comparableCheckProvider.greaterThan(other),
             violationFactory = violationFactory,
         )
 
@@ -80,7 +75,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableLessThanOrEqualToCheck(other),
+            validationCheck = comparableCheckProvider.lessThanOrEqualTo(other),
             violationFactory = violationFactory,
         )
 
@@ -89,7 +84,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableLessThanCheck(other),
+            validationCheck = comparableCheckProvider.lessThan(other),
             violationFactory = violationFactory,
         )
 
@@ -98,7 +93,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableNotBetweenCheck(range),
+            validationCheck = comparableCheckProvider.notBetween(range),
             violationFactory = violationFactory,
         )
 
@@ -107,7 +102,7 @@ public class DefaultNamedComparableRuleProvider(
         violationFactory: NamedViolationFactory<T>,
     ): NamedPredicateRule<T> =
         NamedPredicateRule(
-            validationCheck = ComparableNotEqualToCheck(other),
+            validationCheck = comparableCheckProvider.notEqualTo(other),
             violationFactory = violationFactory,
         )
 }

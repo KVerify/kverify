@@ -1,18 +1,7 @@
 package io.github.kverify.named.rule.set.provider
 
-import io.github.kverify.check.set.collection.CollectionContainsAllCheck
-import io.github.kverify.check.set.collection.CollectionContainsCheck
-import io.github.kverify.check.set.collection.CollectionContainsNoneCheck
-import io.github.kverify.check.set.collection.CollectionContainsOnlyCheck
-import io.github.kverify.check.set.collection.CollectionDistinctCheck
-import io.github.kverify.check.set.collection.CollectionMaxSizeCheck
-import io.github.kverify.check.set.collection.CollectionMinSizeCheck
-import io.github.kverify.check.set.collection.CollectionNotContainsCheck
-import io.github.kverify.check.set.collection.CollectionNotEmptyCheck
-import io.github.kverify.check.set.collection.CollectionNotOfSizeCheck
-import io.github.kverify.check.set.collection.CollectionOfSizeCheck
-import io.github.kverify.check.set.collection.CollectionSizeBetweenCheck
-import io.github.kverify.check.set.collection.CollectionSizeNotBetweenCheck
+import io.github.kverify.check.set.provider.CollectionCheckProvider
+import io.github.kverify.check.set.provider.DefaultCollectionCheckProvider
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
 import io.github.kverify.named.violation.factory.provider.DefaultNamedCollectionViolationFactoryProvider
@@ -23,6 +12,7 @@ import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvid
 
 @Suppress("TooManyFunctions")
 public class DefaultNamedCollectionRuleProvider(
+    public val collectionCheckProvider: CollectionCheckProvider = DefaultCollectionCheckProvider(),
     public override val namedCollectionViolationFactoryProvider: NamedCollectionViolationFactoryProvider =
         NamedCollectionViolationFactoryProvider.Default,
 ) : NamedCollectionRuleProvider {
@@ -49,7 +39,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionContainsAllCheck(elements),
+            validationCheck = collectionCheckProvider.containsAll(elements),
             violationFactory = violationFactory,
         )
 
@@ -58,7 +48,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionContainsNoneCheck(elements),
+            validationCheck = collectionCheckProvider.containsNone(elements),
             violationFactory = violationFactory,
         )
 
@@ -67,7 +57,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionContainsOnlyCheck(elements),
+            validationCheck = collectionCheckProvider.containsOnly(elements),
             violationFactory = violationFactory,
         )
 
@@ -76,13 +66,13 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionContainsCheck(element),
+            validationCheck = collectionCheckProvider.contains(element),
             violationFactory = violationFactory,
         )
 
     override fun <C : Collection<*>> namedDistinct(violationFactory: NamedViolationFactory<C>): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionDistinctCheck,
+            validationCheck = collectionCheckProvider.distinct(),
             violationFactory = violationFactory,
         )
 
@@ -91,7 +81,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionMaxSizeCheck(maxSize),
+            validationCheck = collectionCheckProvider.maxSize(maxSize),
             violationFactory = violationFactory,
         )
 
@@ -100,7 +90,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionMinSizeCheck(minSize),
+            validationCheck = collectionCheckProvider.minSize(minSize),
             violationFactory = violationFactory,
         )
 
@@ -109,13 +99,13 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionNotContainsCheck(element),
+            validationCheck = collectionCheckProvider.notContains(element),
             violationFactory = violationFactory,
         )
 
     override fun <C : Collection<*>> namedNotEmpty(violationFactory: NamedViolationFactory<C>): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionNotEmptyCheck,
+            validationCheck = collectionCheckProvider.notEmpty(),
             violationFactory = violationFactory,
         )
 
@@ -124,7 +114,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionNotOfSizeCheck(size),
+            validationCheck = collectionCheckProvider.notOfSize(size),
             violationFactory = violationFactory,
         )
 
@@ -133,7 +123,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionOfSizeCheck(size),
+            validationCheck = collectionCheckProvider.ofSize(size),
             violationFactory = violationFactory,
         )
 
@@ -142,7 +132,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionSizeBetweenCheck(sizeRange),
+            validationCheck = collectionCheckProvider.sizeBetween(sizeRange),
             violationFactory = violationFactory,
         )
 
@@ -151,7 +141,7 @@ public class DefaultNamedCollectionRuleProvider(
         violationFactory: NamedViolationFactory<C>,
     ): NamedPredicateRule<C> =
         NamedPredicateRule(
-            validationCheck = CollectionSizeNotBetweenCheck(sizeRange),
+            validationCheck = collectionCheckProvider.sizeNotBetween(sizeRange),
             violationFactory = violationFactory,
         )
 }
