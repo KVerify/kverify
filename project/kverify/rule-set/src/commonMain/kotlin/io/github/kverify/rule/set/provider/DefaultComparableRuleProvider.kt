@@ -4,26 +4,14 @@ import io.github.kverify.check.set.provider.ComparableCheckProvider
 import io.github.kverify.check.set.provider.DefaultComparableCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
-import io.github.kverify.violation.factory.provider.ComparableViolationFactoryProvider
-import io.github.kverify.violation.factory.provider.DefaultComparableViolationFactoryProvider
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
 import io.github.kverify.violation.set.provider.DefaultComparableViolationProvider
 
 public class DefaultComparableRuleProvider(
     public val comparableCheckProvider: ComparableCheckProvider = DefaultComparableCheckProvider(),
-    override val comparableViolationFactoryProvider: ComparableViolationFactoryProvider =
-        ComparableViolationFactoryProvider.Default,
+    override val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
 ) : ComparableRuleProvider {
-    public constructor(
-        comparableViolationProvider: ComparableViolationProvider,
-    ) : this(
-        comparableViolationFactoryProvider =
-            DefaultComparableViolationFactoryProvider(
-                comparableViolationProvider = comparableViolationProvider,
-            ),
-    )
-
     public constructor(
         comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
     ) : this(

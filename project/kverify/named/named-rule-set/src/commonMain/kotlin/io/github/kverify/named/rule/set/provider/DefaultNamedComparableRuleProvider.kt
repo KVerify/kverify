@@ -4,35 +4,13 @@ import io.github.kverify.check.set.provider.ComparableCheckProvider
 import io.github.kverify.check.set.provider.DefaultComparableCheckProvider
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
-import io.github.kverify.named.violation.factory.provider.DefaultNamedComparableViolationFactoryProvider
-import io.github.kverify.named.violation.factory.provider.NamedComparableViolationFactoryProvider
-import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.ComparableViolationProvider
-import io.github.kverify.violation.set.provider.DefaultComparableViolationProvider
 
 @Suppress("TooManyFunctions")
 public class DefaultNamedComparableRuleProvider(
     public val comparableCheckProvider: ComparableCheckProvider = DefaultComparableCheckProvider(),
-    public override val namedComparableViolationFactoryProvider: NamedComparableViolationFactoryProvider =
-        NamedComparableViolationFactoryProvider.Default,
+    override val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
 ) : NamedComparableRuleProvider {
-    public constructor(
-        comparableViolationProvider: ComparableViolationProvider,
-    ) : this(
-        namedComparableViolationFactoryProvider =
-            DefaultNamedComparableViolationFactoryProvider(
-                comparableViolationProvider = comparableViolationProvider,
-            ),
-    )
-
-    public constructor(
-        comparableViolationLocalizationProvider: ComparableViolationLocalizationProvider,
-    ) : this(
-        comparableViolationProvider =
-            DefaultComparableViolationProvider(
-                comparableViolationLocalizationProvider = comparableViolationLocalizationProvider,
-            ),
-    )
 
     override fun <T : Comparable<T>> namedBetween(
         range: ClosedRange<T>,
