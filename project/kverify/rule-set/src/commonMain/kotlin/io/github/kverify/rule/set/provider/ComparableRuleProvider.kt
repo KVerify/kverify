@@ -96,3 +96,69 @@ public interface ComparableRuleProvider {
             },
     ): Rule<T>
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableRuleProvider.between(
+    min: T,
+    max: T,
+    violationFactory: ViolationFactory<T> =
+        ViolationFactory { value ->
+            comparableViolationProvider.between(
+                value = value,
+                range = min..max,
+            )
+        },
+): Rule<T> =
+    between(
+        range = min..max,
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableRuleProvider.between(
+    range: OpenEndRange<T>,
+    violationFactory: ViolationFactory<T> =
+        ViolationFactory { value ->
+            comparableViolationProvider.between(
+                value = value,
+                range = range.start..range.endExclusive,
+            )
+        },
+): Rule<T> =
+    between(
+        range = range.start..range.endExclusive,
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableRuleProvider.notBetween(
+    min: T,
+    max: T,
+    violationFactory: ViolationFactory<T> =
+        ViolationFactory { value ->
+            comparableViolationProvider.notBetween(
+                value = value,
+                range = min..max,
+            )
+        },
+): Rule<T> =
+    notBetween(
+        range = min..max,
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> ComparableRuleProvider.notBetween(
+    range: OpenEndRange<T>,
+    violationFactory: ViolationFactory<T> =
+        ViolationFactory { value ->
+            comparableViolationProvider.notBetween(
+                value = value,
+                range = range.start..range.endExclusive,
+            )
+        },
+): Rule<T> =
+    notBetween(
+        range = range.start..range.endExclusive,
+        violationFactory = violationFactory,
+    )
