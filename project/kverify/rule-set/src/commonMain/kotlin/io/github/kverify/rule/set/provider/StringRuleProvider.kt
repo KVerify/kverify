@@ -2,113 +2,268 @@ package io.github.kverify.rule.set.provider
 
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.rule.predicate.ViolationFactory
-import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
+import io.github.kverify.violation.set.provider.StringViolationProvider
 
 @Suppress("TooManyFunctions")
 public interface StringRuleProvider {
-    public val stringViolationFactoryProvider: StringViolationFactoryProvider
-        get() = StringViolationFactoryProvider.Default
+    public val stringViolationProvider: StringViolationProvider
+        get() = StringViolationProvider.Default
 
-    public fun alphabetic(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.alphabetic()): Rule<String>
+    public fun alphabetic(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.alphabetic(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 
-    public fun alphanumeric(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.alphanumeric()): Rule<String>
+    public fun alphanumeric(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.alphanumeric(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 
     public fun containsAll(
         chars: Iterable<Char>,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.containsAll(chars),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.containsAll(
+                    value = value,
+                    chars = chars,
+                )
+            },
     ): Rule<String>
 
     public fun containsNone(
         chars: Iterable<Char>,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.containsNone(chars),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.containsNone(
+                    value = value,
+                    chars = chars,
+                )
+            },
     ): Rule<String>
 
     public fun containsOnly(
         chars: Iterable<Char>,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.containsOnly(chars),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.containsOnly(
+                    value = value,
+                    chars = chars,
+                )
+            },
     ): Rule<String>
 
     public fun containsRegex(
         regex: Regex,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.containsRegex(regex),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.containsRegex(
+                    value = value,
+                    regex = regex,
+                )
+            },
     ): Rule<String>
 
     public fun contains(
         substring: String,
         ignoreCase: Boolean = false,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.contains(substring, ignoreCase),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.contains(
+                    value = value,
+                    substring = substring,
+                    ignoreCase = ignoreCase,
+                )
+            },
     ): Rule<String>
 
     public fun endsWith(
         suffix: String,
         ignoreCase: Boolean = false,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.endsWith(suffix, ignoreCase),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.endsWith(
+                    value = value,
+                    suffix = suffix,
+                    ignoreCase = ignoreCase,
+                )
+            },
     ): Rule<String>
 
     public fun lengthBetween(
         lengthRange: IntRange,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.lengthBetween(lengthRange),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.lengthBetween(
+                    value = value,
+                    lengthRange = lengthRange,
+                )
+            },
     ): Rule<String>
 
     public fun lengthNotBetween(
         lengthRange: IntRange,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.lengthNotBetween(lengthRange),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.lengthNotBetween(
+                    value = value,
+                    lengthRange = lengthRange,
+                )
+            },
     ): Rule<String>
 
-    public fun lowerCase(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.lowerCase()): Rule<String>
+    public fun lowerCase(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.lowerCase(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 
     public fun matches(
         regex: Regex,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.matches(regex),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.matches(
+                    value = value,
+                    regex = regex,
+                )
+            },
     ): Rule<String>
 
     public fun maxLength(
         maxLength: Int,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.maxLength(maxLength),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.maxLength(
+                    value = value,
+                    maxLength = maxLength,
+                )
+            },
     ): Rule<String>
 
     public fun minLength(
         minLength: Int,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.minLength(minLength),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.minLength(
+                    value = value,
+                    minLength = minLength,
+                )
+            },
     ): Rule<String>
 
-    public fun notBlank(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.notBlank()): Rule<String>
+    public fun notBlank(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.notBlank(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 
     public fun notContains(
         substring: String,
         ignoreCase: Boolean = false,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.notContains(substring, ignoreCase),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.notContains(
+                    value = value,
+                    substring = substring,
+                    ignoreCase = ignoreCase,
+                )
+            },
     ): Rule<String>
 
     public fun notContainsRegex(
         regex: Regex,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.notContainsRegex(regex),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.notContainsRegex(
+                    value = value,
+                    regex = regex,
+                )
+            },
     ): Rule<String>
 
-    public fun notEmpty(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.notEmpty()): Rule<String>
+    public fun notEmpty(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.notEmpty(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 
     public fun notMatches(
         regex: Regex,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.notMatches(regex),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.notMatches(
+                    value = value,
+                    regex = regex,
+                )
+            },
     ): Rule<String>
 
     public fun notOfLength(
         length: Int,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.notOfLength(length),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.notOfLength(
+                    value = value,
+                    length = length,
+                )
+            },
     ): Rule<String>
 
-    public fun numeric(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.numeric()): Rule<String>
+    public fun numeric(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.numeric(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 
     public fun ofLength(
         length: Int,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.ofLength(length),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.ofLength(
+                    value = value,
+                    length = length,
+                )
+            },
     ): Rule<String>
 
     public fun startsWith(
         prefix: String,
         ignoreCase: Boolean = false,
-        violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.startsWith(prefix, ignoreCase),
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.startsWith(
+                    value = value,
+                    prefix = prefix,
+                    ignoreCase = ignoreCase,
+                )
+            },
     ): Rule<String>
 
-    public fun upperCase(violationFactory: ViolationFactory<String> = stringViolationFactoryProvider.upperCase()): Rule<String>
+    public fun upperCase(
+        violationFactory: ViolationFactory<String> =
+            ViolationFactory { value ->
+                stringViolationProvider.upperCase(
+                    value = value,
+                )
+            },
+    ): Rule<String>
 }

@@ -4,35 +4,13 @@ import io.github.kverify.check.set.provider.DefaultStringCheckProvider
 import io.github.kverify.check.set.provider.StringCheckProvider
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
-import io.github.kverify.named.violation.factory.provider.DefaultNamedStringViolationFactoryProvider
-import io.github.kverify.named.violation.factory.provider.NamedStringViolationFactoryProvider
-import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
-import io.github.kverify.violation.set.provider.DefaultStringViolationProvider
 import io.github.kverify.violation.set.provider.StringViolationProvider
 
 @Suppress("TooManyFunctions")
 public class DefaultNamedStringRuleProvider(
     public val stringCheckProvider: StringCheckProvider = DefaultStringCheckProvider(),
-    public override val namedStringViolationFactoryProvider: NamedStringViolationFactoryProvider =
-        NamedStringViolationFactoryProvider.Default,
+    override val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
 ) : NamedStringRuleProvider {
-    public constructor(
-        stringViolationProvider: StringViolationProvider,
-    ) : this(
-        namedStringViolationFactoryProvider =
-            DefaultNamedStringViolationFactoryProvider(
-                stringViolationProvider = stringViolationProvider,
-            ),
-    )
-
-    public constructor(
-        stringViolationLocalizationProvider: StringViolationLocalizationProvider,
-    ) : this(
-        stringViolationProvider =
-            DefaultStringViolationProvider(
-                stringViolationLocalizationProvider = stringViolationLocalizationProvider,
-            ),
-    )
 
     override fun namedAlphabetic(violationFactory: NamedViolationFactory<String>): NamedPredicateRule<String> =
         NamedPredicateRule(

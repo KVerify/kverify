@@ -4,8 +4,6 @@ import io.github.kverify.check.set.provider.CollectionCheckProvider
 import io.github.kverify.check.set.provider.DefaultCollectionCheckProvider
 import io.github.kverify.named.check.NamedViolationFactory
 import io.github.kverify.named.rule.NamedPredicateRule
-import io.github.kverify.named.violation.factory.provider.DefaultNamedCollectionViolationFactoryProvider
-import io.github.kverify.named.violation.factory.provider.NamedCollectionViolationFactoryProvider
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.CollectionViolationProvider
 import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvider
@@ -13,18 +11,8 @@ import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvid
 @Suppress("TooManyFunctions")
 public class DefaultNamedCollectionRuleProvider(
     public val collectionCheckProvider: CollectionCheckProvider = DefaultCollectionCheckProvider(),
-    public override val namedCollectionViolationFactoryProvider: NamedCollectionViolationFactoryProvider =
-        NamedCollectionViolationFactoryProvider.Default,
+    override val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
 ) : NamedCollectionRuleProvider {
-    public constructor(
-        collectionViolationProvider: CollectionViolationProvider,
-    ) : this(
-        namedCollectionViolationFactoryProvider =
-            DefaultNamedCollectionViolationFactoryProvider(
-                collectionViolationProvider = collectionViolationProvider,
-            ),
-    )
-
     public constructor(
         collectionViolationLocalizationProvider: CollectionViolationLocalizationProvider,
     ) : this(

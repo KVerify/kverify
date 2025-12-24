@@ -4,8 +4,6 @@ import io.github.kverify.check.set.provider.DefaultStringCheckProvider
 import io.github.kverify.check.set.provider.StringCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
-import io.github.kverify.violation.factory.provider.DefaultStringViolationFactoryProvider
-import io.github.kverify.violation.factory.provider.StringViolationFactoryProvider
 import io.github.kverify.violation.set.localization.StringViolationLocalizationProvider
 import io.github.kverify.violation.set.provider.DefaultStringViolationProvider
 import io.github.kverify.violation.set.provider.StringViolationProvider
@@ -13,18 +11,8 @@ import io.github.kverify.violation.set.provider.StringViolationProvider
 @Suppress("TooManyFunctions")
 public class DefaultStringRuleProvider(
     public val stringCheckProvider: StringCheckProvider = DefaultStringCheckProvider(),
-    override val stringViolationFactoryProvider: StringViolationFactoryProvider =
-        StringViolationFactoryProvider.Default,
+    override val stringViolationProvider: StringViolationProvider = StringViolationProvider.Default,
 ) : StringRuleProvider {
-    public constructor(
-        stringViolationProvider: StringViolationProvider,
-    ) : this(
-        stringViolationFactoryProvider =
-            DefaultStringViolationFactoryProvider(
-                stringViolationProvider = stringViolationProvider,
-            ),
-    )
-
     public constructor(
         stringViolationLocalizationProvider: StringViolationLocalizationProvider,
     ) : this(
