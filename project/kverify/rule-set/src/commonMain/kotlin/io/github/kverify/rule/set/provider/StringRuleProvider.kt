@@ -267,3 +267,133 @@ public interface StringRuleProvider {
             },
     ): Rule<String>
 }
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.containsAll(
+    char: Char,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.containsAll(
+                value = value,
+                chars = listOf(char),
+            )
+        },
+): Rule<String> =
+    containsAll(
+        chars = listOf(char),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.containsAll(
+    chars: String,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.containsAll(
+                value = value,
+                chars = chars.asIterable(),
+            )
+        },
+): Rule<String> =
+    containsAll(
+        chars = chars.asIterable(),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.containsNone(
+    char: Char,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.containsNone(
+                value = value,
+                chars = listOf(char),
+            )
+        },
+): Rule<String> =
+    containsNone(
+        chars = listOf(char),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.containsNone(
+    chars: String,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.containsNone(
+                value = value,
+                chars = chars.asIterable(),
+            )
+        },
+): Rule<String> =
+    containsNone(
+        chars = chars.asIterable(),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.containsOnly(
+    char: Char,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.containsOnly(
+                value = value,
+                chars = listOf(char),
+            )
+        },
+): Rule<String> =
+    containsOnly(
+        chars = listOf(char),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.containsOnly(
+    chars: String,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.containsOnly(
+                value = value,
+                chars = chars.asIterable(),
+            )
+        },
+): Rule<String> =
+    containsOnly(
+        chars = chars.asIterable(),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.lengthBetween(
+    minLength: Int,
+    maxLength: Int,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.lengthBetween(
+                value = value,
+                lengthRange = minLength..maxLength,
+            )
+        },
+): Rule<String> =
+    lengthBetween(
+        lengthRange = minLength..maxLength,
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun StringRuleProvider.lengthNotBetween(
+    minLength: Int,
+    maxLength: Int,
+    violationFactory: ViolationFactory<String> =
+        ViolationFactory { value ->
+            stringViolationProvider.lengthNotBetween(
+                value = value,
+                lengthRange = minLength..maxLength,
+            )
+        },
+): Rule<String> =
+    lengthNotBetween(
+        lengthRange = minLength..maxLength,
+        violationFactory = violationFactory,
+    )
