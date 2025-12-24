@@ -32,7 +32,7 @@ public class DefaultCollectionCheckProvider : CollectionCheckProvider {
             if (value.isEmpty() || elements.isEmpty()) {
                 true
             } else {
-                elements.all { it in value }
+                value.all { it in elements }
             }
         }
 
