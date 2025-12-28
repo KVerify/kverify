@@ -72,7 +72,7 @@ public class DefaultCollectionCheckProvider : CollectionCheckProvider {
 
     override fun minSize(minSize: Int): ValidationCheck<Collection<*>> =
         ValidationCheck { value ->
-            value.size <= minSize
+            value.size >= minSize
         }
 
     override fun maxSize(maxSize: Int): ValidationCheck<Collection<*>> =

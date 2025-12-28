@@ -188,15 +188,15 @@ class DefaultCollectionCheckProviderTest {
     }
 
     @Test
-    fun minSizeReturnsTrueWhenSizeBelowMinimum() {
+    fun minSizeReturnsFalseWhenSizeBelowMinimum() {
         val check = provider.minSize(5)
-        assertTrue(check.isValid(listOf("a", "b", "c")))
+        assertFalse(check.isValid(listOf("a", "b", "c")))
     }
 
     @Test
-    fun minSizeReturnsFalseWhenSizeAboveMinimum() {
+    fun minSizeReturnsTrueWhenSizeAboveMinimum() {
         val check = provider.minSize(2)
-        assertFalse(check.isValid(listOf("a", "b", "c")))
+        assertTrue(check.isValid(listOf("a", "b", "c")))
     }
 
     @Test
