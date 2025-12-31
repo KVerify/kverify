@@ -28,13 +28,17 @@ public inline fun <T> NamedRule(crossinline execute: ValidationContext.(NamedVal
 public inline fun <T> Rule<T>.asNamedRule(): NamedRule<T> = NamedRuleAdapter(this)
 
 /**
- * Internal adapter delegating validation of [NamedValue] to an underlying [Rule].
+ * Wraps [baseRule] to execute validation on [NamedValue] instances.
+ *
+ * @see Rule
  */
 @JvmInline
-@PublishedApi
-internal value class NamedRuleAdapter<T>(
-    private val baseRule: Rule<T>,
+public value class NamedRuleAdapter<T>(
+    public val baseRule: Rule<T>,
 ) : NamedRule<T> {
+    /**
+     * Extracts the value from [NamedValue] and delegates to [baseRule].
+     */
     override fun execute(
         context: ValidationContext,
         value: NamedValue<T>,
