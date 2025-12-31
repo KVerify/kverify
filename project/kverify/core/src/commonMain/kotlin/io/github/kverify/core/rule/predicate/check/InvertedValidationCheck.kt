@@ -7,10 +7,9 @@ import kotlin.jvm.JvmInline
  *
  * @see ValidationCheck
  */
-@PublishedApi
 @JvmInline
-internal value class InvertedValidationCheck<in T>(
-    private val originalCheck: ValidationCheck<T>,
+public value class InvertedValidationCheck<in T>(
+    public val originalCheck: ValidationCheck<T>,
 ) : ValidationCheck<T> {
     /**
      * Returns the inverse of the original check's result.

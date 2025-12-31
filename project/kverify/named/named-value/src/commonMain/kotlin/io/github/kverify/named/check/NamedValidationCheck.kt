@@ -19,12 +19,16 @@ public inline fun <T> ValidationCheck<T>.asNamedValidationCheck(): NamedValidati
     )
 
 /**
- * Internal adapter delegating validity checks to an underlying [ValidationCheck].
+ * Wraps [baseCheck] to validate [NamedValue] instances.
+ *
+ * @see ValidationCheck
  */
-@PublishedApi
 @JvmInline
-internal value class NamedValidationCheckAdapter<in T>(
-    val baseCheck: ValidationCheck<T>,
+public value class NamedValidationCheckAdapter<in T>(
+    public val baseCheck: ValidationCheck<T>,
 ) : NamedValidationCheck<T> {
+    /**
+     * Extracts the value from [NamedValue] and delegates to [baseCheck].
+     */
     override fun isValid(value: NamedValue<T>): Boolean = baseCheck.isValid(value.value)
 }

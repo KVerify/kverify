@@ -20,12 +20,16 @@ public inline fun <T> ViolationFactory<T>.asNamedViolationFactory(): NamedViolat
     )
 
 /**
- * Internal adapter delegating violation creation to an underlying [ViolationFactory].
+ * Wraps [baseFactory] to create violations for [NamedValue] instances.
+ *
+ * @see ViolationFactory
  */
-@PublishedApi
 @JvmInline
-internal value class NamedViolationFactoryAdapter<T>(
-    private val baseFactory: ViolationFactory<T>,
+public value class NamedViolationFactoryAdapter<T>(
+    public val baseFactory: ViolationFactory<T>,
 ) : NamedViolationFactory<T> {
+    /**
+     * Extracts the value from [NamedValue] and delegates to [baseFactory].
+     */
     override fun createViolation(value: NamedValue<T>): Violation = baseFactory.createViolation(value.value)
 }
