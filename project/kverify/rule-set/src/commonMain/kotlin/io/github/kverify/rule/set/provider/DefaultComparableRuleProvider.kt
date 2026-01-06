@@ -1,7 +1,6 @@
 package io.github.kverify.rule.set.provider
 
 import io.github.kverify.check.set.provider.ComparableCheckProvider
-import io.github.kverify.check.set.provider.DefaultComparableCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.set.localization.ComparableViolationLocalizationProvider
@@ -9,7 +8,7 @@ import io.github.kverify.violation.set.provider.ComparableViolationProvider
 import io.github.kverify.violation.set.provider.DefaultComparableViolationProvider
 
 public class DefaultComparableRuleProvider(
-    public val comparableCheckProvider: ComparableCheckProvider = DefaultComparableCheckProvider(),
+    public val comparableCheckProvider: ComparableCheckProvider = ComparableCheckProvider.Default,
     override val comparableViolationProvider: ComparableViolationProvider = ComparableViolationProvider.Default,
 ) : ComparableRuleProvider {
     public constructor(

@@ -1,7 +1,6 @@
 package io.github.kverify.rule.set.provider
 
 import io.github.kverify.check.set.provider.CollectionCheckProvider
-import io.github.kverify.check.set.provider.DefaultCollectionCheckProvider
 import io.github.kverify.core.rule.predicate.PredicateRule
 import io.github.kverify.core.rule.predicate.ViolationFactory
 import io.github.kverify.violation.set.localization.CollectionViolationLocalizationProvider
@@ -10,7 +9,7 @@ import io.github.kverify.violation.set.provider.DefaultCollectionViolationProvid
 
 @Suppress("TooManyFunctions")
 public class DefaultCollectionRuleProvider(
-    public val collectionCheckProvider: CollectionCheckProvider = DefaultCollectionCheckProvider(),
+    public val collectionCheckProvider: CollectionCheckProvider = CollectionCheckProvider.Default,
     override val collectionViolationProvider: CollectionViolationProvider = CollectionViolationProvider.Default,
 ) : CollectionRuleProvider {
     public constructor(

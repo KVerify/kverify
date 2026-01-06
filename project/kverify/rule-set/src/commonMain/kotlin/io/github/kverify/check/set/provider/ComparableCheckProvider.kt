@@ -18,4 +18,8 @@ public interface ComparableCheckProvider {
     public fun <T : Comparable<T>> between(range: ClosedRange<T>): ValidationCheck<T>
 
     public fun <T : Comparable<T>> notBetween(range: ClosedRange<T>): ValidationCheck<T>
+
+    public companion object {
+        public val Default: ComparableCheckProvider = DefaultComparableCheckProvider()
+    }
 }
