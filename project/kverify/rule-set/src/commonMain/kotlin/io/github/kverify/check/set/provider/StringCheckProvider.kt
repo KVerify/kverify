@@ -62,4 +62,8 @@ public interface StringCheckProvider {
     public fun lengthBetween(lengthRange: IntRange): ValidationCheck<String>
 
     public fun lengthNotBetween(lengthRange: IntRange): ValidationCheck<String>
+
+    public companion object {
+        public val Default: StringCheckProvider = DefaultStringCheckProvider()
+    }
 }

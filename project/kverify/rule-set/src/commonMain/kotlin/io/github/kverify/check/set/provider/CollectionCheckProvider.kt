@@ -28,4 +28,8 @@ public interface CollectionCheckProvider {
     public fun sizeBetween(sizeRange: IntRange): ValidationCheck<Collection<*>>
 
     public fun sizeNotBetween(sizeRange: IntRange): ValidationCheck<Collection<*>>
+
+    public companion object {
+        public val Default: CollectionCheckProvider = DefaultCollectionCheckProvider()
+    }
 }
