@@ -270,22 +270,6 @@ public interface StringRuleProvider {
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun StringRuleProvider.containsAll(
-    char: Char,
-    violationFactory: ViolationFactory<String> =
-        ViolationFactory { value ->
-            stringViolationProvider.containsAll(
-                value = value,
-                chars = listOf(char),
-            )
-        },
-): Rule<String> =
-    containsAll(
-        chars = listOf(char),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringRuleProvider.containsAll(
     chars: String,
     violationFactory: ViolationFactory<String> =
         ViolationFactory { value ->
@@ -302,22 +286,6 @@ public inline fun StringRuleProvider.containsAll(
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun StringRuleProvider.containsNone(
-    char: Char,
-    violationFactory: ViolationFactory<String> =
-        ViolationFactory { value ->
-            stringViolationProvider.containsNone(
-                value = value,
-                chars = listOf(char),
-            )
-        },
-): Rule<String> =
-    containsNone(
-        chars = listOf(char),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringRuleProvider.containsNone(
     chars: String,
     violationFactory: ViolationFactory<String> =
         ViolationFactory { value ->
@@ -329,22 +297,6 @@ public inline fun StringRuleProvider.containsNone(
 ): Rule<String> =
     containsNone(
         chars = chars.asIterable(),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun StringRuleProvider.containsOnly(
-    char: Char,
-    violationFactory: ViolationFactory<String> =
-        ViolationFactory { value ->
-            stringViolationProvider.containsOnly(
-                value = value,
-                chars = listOf(char),
-            )
-        },
-): Rule<String> =
-    containsOnly(
-        chars = listOf(char),
         violationFactory = violationFactory,
     )
 
