@@ -18,7 +18,7 @@ import kotlin.contracts.contract
  * @see verifyCollectingUsing
  */
 public open class CollectingValidationContext(
-    protected val violationStorage: MutableCollection<Violation>,
+    protected val violationStorage: MutableCollection<Violation> = ArrayList(),
 ) : ValidationContext {
     /**
      * Adds the given [violation] to the [violationStorage].
