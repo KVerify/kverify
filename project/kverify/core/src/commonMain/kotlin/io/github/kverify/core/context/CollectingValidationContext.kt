@@ -10,21 +10,21 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 /**
- * A [ValidationContext] that collects all violations into a [mutable collection][violationsStorage].
+ * A [ValidationContext] that collects all violations into a [mutable collection][violationStorage].
  *
- * @param violationsStorage The mutable collection to store violations in
+ * @param violationStorage The mutable collection to store violations in
  * @see verifyCollecting
  * @see verifyCollectingTo
  * @see verifyCollectingUsing
  */
 public open class CollectingValidationContext(
-    protected val violationsStorage: MutableCollection<Violation>,
+    protected val violationStorage: MutableCollection<Violation>,
 ) : ValidationContext {
     /**
-     * Adds the given [violation] to the [violationsStorage].
+     * Adds the given [violation] to the [violationStorage].
      */
     override fun onFailure(violation: Violation) {
-        violationsStorage.add(violation)
+        violationStorage.add(violation)
     }
 
     /**
@@ -34,7 +34,7 @@ public open class CollectingValidationContext(
      */
     public open fun build(): ValidationResult =
         ValidationResult(
-            violationsStorage.toList(),
+            violationStorage.toList(),
         )
 }
 
