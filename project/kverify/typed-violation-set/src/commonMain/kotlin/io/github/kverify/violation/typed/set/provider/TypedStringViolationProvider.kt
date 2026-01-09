@@ -29,7 +29,7 @@ import io.github.kverify.violation.typed.set.string.StringStartsWithViolation
 import io.github.kverify.violation.typed.set.string.StringUpperCaseViolation
 
 @Suppress("TooManyFunctions")
-public class StringTypedViolationProvider(
+public class TypedStringViolationProvider(
     public val localization: StringViolationLocalizationProvider = StringViolationLocalizationProvider.Default,
 ) : StringViolationProvider {
     override fun alphabetic(
@@ -432,6 +432,6 @@ public class StringTypedViolationProvider(
         )
 
     public companion object {
-        public val Default: StringTypedViolationProvider = StringTypedViolationProvider()
+        public val Default: TypedStringViolationProvider = TypedStringViolationProvider()
     }
 }
