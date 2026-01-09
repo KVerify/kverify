@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
  * combining the validation DSL with coroutine capabilities.
  *
  * @see FirstViolationValidationCoroutineScope
- * @see ThrowingValidationCoroutineScope
  */
 public interface ValidationCoroutineScope :
     ValidationContext,
