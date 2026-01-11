@@ -8,7 +8,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be between '${range.start}' and '${range.endInclusive}', but it is '$value'."
+        return "$displayName must be between '${range.start}' and '${range.endInclusive}', but is '$value'."
     }
 
     override fun <T : Comparable<T>> equalTo(
@@ -18,7 +18,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be equal to '$other', but it is '$value'."
+        return "$displayName must equal '$other', but is '$value'."
     }
 
     override fun <T : Comparable<T>> greaterThanOrEqualTo(
@@ -28,7 +28,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be greater than or equal to '$other', but it is '$value'."
+        return "$displayName must be >= '$other', but is '$value'."
     }
 
     override fun <T : Comparable<T>> greaterThan(
@@ -38,7 +38,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be greater than '$other', but it is '$value'."
+        return "$displayName must be > '$other', but is '$value'."
     }
 
     override fun <T : Comparable<T>> lessThanOrEqualTo(
@@ -48,7 +48,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be less than or equal to '$other', but it is '$value'."
+        return "$displayName must be <= '$other', but is '$value'."
     }
 
     override fun <T : Comparable<T>> lessThan(
@@ -58,7 +58,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must be less than '$other', but it is '$value'."
+        return "$displayName must be < '$other', but is '$value'."
     }
 
     override fun <T : Comparable<T>> notBetween(
@@ -68,7 +68,7 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must not be between '${range.start}' and '${range.endInclusive}', but it is '$value'."
+        return "$displayName must NOT be between '${range.start}' and '${range.endInclusive}', but is '$value'."
     }
 
     override fun <T : Comparable<T>> notEqualTo(
@@ -78,6 +78,6 @@ internal object DefaultComparableViolationLocalizationProvider : ComparableViola
     ): String {
         val displayName = resolveComparableName(name)
 
-        return "$displayName must not be equal to '$other', but it is."
+        return "$displayName must NOT equal '$other'."
     }
 }

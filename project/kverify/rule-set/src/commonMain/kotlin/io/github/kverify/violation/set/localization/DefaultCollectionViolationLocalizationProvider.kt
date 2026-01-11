@@ -8,10 +8,10 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
         name: String?,
     ): String {
         val displayName = resolveCollectionName(name)
-        val elementsAsString = elements.joinWithLimitAndBrackets()
         val missingElements = elements.filterNot { it in value }.joinWithLimitAndBrackets()
+        val elements = elements.joinWithLimitAndBrackets()
 
-        return "$displayName must contain all of the following elements: $elementsAsString, but these are missing: $missingElements."
+        return "$displayName must contain all elements: $elements, but missing: $missingElements."
     }
 
     override fun <E, C : Collection<E>> containsNone(
@@ -20,10 +20,10 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
         name: String?,
     ): String {
         val displayName = resolveCollectionName(name)
-        val elementsAsString = elements.joinWithLimitAndBrackets()
         val forbiddenElements = value.filter { it in elements }.joinWithLimitAndBrackets()
+        val elements = elements.joinWithLimitAndBrackets()
 
-        return "$displayName must not contain these elements: $elementsAsString, but these are present: $forbiddenElements."
+        return "$displayName must not contain elements: $elements, but found: $forbiddenElements."
     }
 
     override fun <E, C : Collection<E>> containsOnly(
@@ -32,10 +32,10 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
         name: String?,
     ): String {
         val displayName = resolveCollectionName(name)
-        val elementsAsString = elements.joinWithLimitAndBrackets()
         val unexpectedElements = value.filter { it !in elements }.joinWithLimitAndBrackets()
+        val elements = elements.joinWithLimitAndBrackets()
 
-        return "$displayName must contain only the elements: $elementsAsString, but it also contains: $unexpectedElements."
+        return "$displayName must contain only elements: $elements, but also contains: $unexpectedElements."
     }
 
     override fun <E, C : Collection<E>> contains(
@@ -45,7 +45,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must contain the element: '$element', but it does not."
+        return "$displayName must contain element: '$element'."
     }
 
     override fun <C : Collection<*>> distinct(
@@ -61,7 +61,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
                 .keys
                 .joinWithLimitAndBrackets()
 
-        return "$displayName must be distinct, but it has duplicates: $duplicates"
+        return "$displayName must be distinct, but has duplicates: $duplicates."
     }
 
     override fun <C : Collection<*>> maxSize(
@@ -71,7 +71,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must have $maxSize elements at most, but it has ${value.size}."
+        return "$displayName size must be at most $maxSize, but is ${value.size}."
     }
 
     override fun <C : Collection<*>> minSize(
@@ -81,7 +81,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must have at least $minSize elements, but it has ${value.size}."
+        return "$displayName size must be at least $minSize, but is ${value.size}."
     }
 
     override fun <E, C : Collection<E>> notContains(
@@ -91,7 +91,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must not contain the element: '$element', but it does."
+        return "$displayName must NOT contain element: '$element'."
     }
 
     override fun <C : Collection<*>> notEmpty(
@@ -100,7 +100,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must not be empty, but it is."
+        return "$displayName must not be empty."
     }
 
     override fun <C : Collection<*>> notOfSize(
@@ -110,7 +110,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must not have exactly $size elements, but it does."
+        return "$displayName size must NOT be $size."
     }
 
     override fun <C : Collection<*>> ofSize(
@@ -120,7 +120,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName must have exactly $size elements, but it has ${value.size}."
+        return "$displayName size must be exactly $size, but is ${value.size}."
     }
 
     override fun <C : Collection<*>> sizeBetween(
@@ -130,7 +130,8 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName size must be between ${sizeRange.start} and ${sizeRange.endInclusive} (inclusive), but it is ${value.size}."
+        return "$displayName size must be between ${sizeRange.first} and ${sizeRange.last}, " +
+            "but is ${value.size}."
     }
 
     override fun <C : Collection<*>> sizeNotBetween(
@@ -140,6 +141,7 @@ internal object DefaultCollectionViolationLocalizationProvider : CollectionViola
     ): String {
         val displayName = resolveCollectionName(name)
 
-        return "$displayName size must NOT be between ${sizeRange.start} and ${sizeRange.endInclusive} (inclusive), but it is ${value.size}."
+        return "$displayName size must NOT be between ${sizeRange.first} and ${sizeRange.last}, " +
+            "but is ${value.size}."
     }
 }
