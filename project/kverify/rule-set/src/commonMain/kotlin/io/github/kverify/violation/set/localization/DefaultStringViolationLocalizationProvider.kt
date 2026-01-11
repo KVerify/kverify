@@ -1,14 +1,19 @@
 package io.github.kverify.violation.set.localization
 
+@Suppress("TooManyFunctions")
 internal object DefaultStringViolationLocalizationProvider : StringViolationLocalizationProvider {
     override fun alphabetic(
         value: String,
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
-        val unexpectedChars = value.asIterable().filterNot { it.isLetter() }.joinWithLimitAndBrackets()
+        val unexpectedChars =
+            value
+                .asIterable()
+                .filterNot { it.isLetter() }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must contain only letters, but it also contains: $unexpectedChars."
+        return "$displayName must contain only letters, but also contains: $unexpectedChars."
     }
 
     override fun alphanumeric(
@@ -16,9 +21,13 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
-        val unexpectedChars = value.asIterable().filterNot { it.isLetterOrDigit() }.joinWithLimitAndBrackets()
+        val unexpectedChars =
+            value
+                .asIterable()
+                .filterNot { it.isLetterOrDigit() }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must contain only numbers and letters, but it also contains: $unexpectedChars."
+        return "$displayName must contain only letters and digits, but also contains: $unexpectedChars."
     }
 
     override fun containsAll(
@@ -28,9 +37,13 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
         val charsAsString = chars.joinWithLimitAndBrackets()
-        val missingChars = value.asIterable().filterNot { it in chars }.joinWithLimitAndBrackets()
+        val missingChars =
+            value
+                .asIterable()
+                .filterNot { it in chars }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must contain all of the following characters: $charsAsString, but these are missing: $missingChars."
+        return "$displayName must contain all characters: $charsAsString, but missing: $missingChars."
     }
 
     override fun containsNone(
@@ -38,11 +51,15 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
         chars: Iterable<Char>,
         name: String?,
     ): String {
-        val displayName = resolveStringName(name ?: "comparable")
+        val displayName = resolveStringName(name)
         val charsAsString = chars.joinWithLimitAndBrackets()
-        val forbiddenChars = value.asIterable().filter { it in chars }.joinWithLimitAndBrackets()
+        val forbiddenChars =
+            value
+                .asIterable()
+                .filter { it in chars }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must not contain any of the following characters: $charsAsString, but these are present: $forbiddenChars."
+        return "$displayName must not contain characters: $charsAsString, but found: $forbiddenChars."
     }
 
     override fun containsOnly(
@@ -52,9 +69,13 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
         val allowedChars = chars.joinWithLimitAndBrackets()
-        val unexpectedChars = value.asIterable().filterNot { it in chars }.joinWithLimitAndBrackets()
+        val unexpectedChars =
+            value
+                .asIterable()
+                .filterNot { it in chars }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must contain only the following characters: $allowedChars, but it also contains: $unexpectedChars."
+        return "$displayName must contain only characters: $allowedChars, but also contains: $unexpectedChars."
     }
 
     override fun containsRegex(
@@ -62,9 +83,9 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
         regex: Regex,
         name: String?,
     ): String {
-        val displayName = resolveComparableName(name)
+        val displayName = resolveStringName(name)
 
-        return "$displayName must contain the following regex pattern: '${regex.pattern}', but it does not."
+        return "$displayName must contain regex pattern: '${regex.pattern}'."
     }
 
     override fun contains(
@@ -75,7 +96,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must contain the following substring (ignoreCase=$ignoreCase): '$substring', but it does not."
+        return "$displayName must contain substring (ignoreCase=$ignoreCase): '$substring'."
     }
 
     override fun endsWith(
@@ -86,7 +107,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must end with the following suffix (ignoreCase=$ignoreCase): $suffix, but it does not."
+        return "$displayName must end with suffix (ignoreCase=$ignoreCase): '$suffix'."
     }
 
     override fun lengthBetween(
@@ -96,7 +117,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must have a length between ${lengthRange.start} and ${lengthRange.endInclusive} (inclusive), but its length is ${value.length}."
+        return "$displayName length must be between ${lengthRange.start} and ${lengthRange.endInclusive}, but is ${value.length}."
     }
 
     override fun lengthNotBetween(
@@ -106,7 +127,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must NOT have a length between ${lengthRange.start} and ${lengthRange.endInclusive} (inclusive), but its length is ${value.length}."
+        return "$displayName length must NOT be between ${lengthRange.start} and ${lengthRange.endInclusive}, but is ${value.length}."
     }
 
     override fun lowerCase(
@@ -114,9 +135,13 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
-        val upperCaseChars = value.asIterable().filterNot { it.isLowerCase() }.joinWithLimitAndBrackets()
+        val upperCaseChars =
+            value
+                .asIterable()
+                .filterNot { it.isLowerCase() }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must be entirely lower case, but it also contains upper case characters: $upperCaseChars."
+        return "$displayName must be lowercase, but also contains uppercase: $upperCaseChars."
     }
 
     override fun matches(
@@ -126,7 +151,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must match the regular expression: '${regex.pattern}'."
+        return "$displayName must match regex: '${regex.pattern}'."
     }
 
     override fun maxLength(
@@ -136,7 +161,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName length must be $maxLength at most, but it is ${value.length}."
+        return "$displayName length must be at most $maxLength, but is ${value.length}."
     }
 
     override fun minLength(
@@ -146,7 +171,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName length must be at least $minLength, but it is ${value.length}."
+        return "$displayName length must be at least $minLength, but is ${value.length}."
     }
 
     override fun notBlank(
@@ -166,7 +191,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must NOT contain the following substring (ignoreCase=$ignoreCase): '$substring', but it does."
+        return "$displayName must NOT contain substring (ignoreCase=$ignoreCase): '$substring'."
     }
 
     override fun notContainsRegex(
@@ -176,7 +201,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must NOT contain the following regex pattern: '${regex.pattern}', but it does."
+        return "$displayName must NOT contain regex pattern: '${regex.pattern}'."
     }
 
     override fun notEmpty(
@@ -195,7 +220,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must not match the regex pattern: '${regex.pattern}'."
+        return "$displayName must NOT match regex: '${regex.pattern}'."
     }
 
     override fun notOfLength(
@@ -205,7 +230,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must NOT be of length $length, but it is."
+        return "$displayName length must NOT be $length."
     }
 
     override fun numeric(
@@ -213,9 +238,13 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
-        val unexpectedChars = value.asIterable().filterNot { it.isDigit() }.joinWithLimitAndBrackets()
+        val unexpectedChars =
+            value
+                .asIterable()
+                .filterNot { it.isDigit() }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must contain only digits, but it also contains: $unexpectedChars"
+        return "$displayName must contain only digits, but also contains: $unexpectedChars."
     }
 
     override fun ofLength(
@@ -225,7 +254,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName length must be exactly $length, but it is ${value.length}."
+        return "$displayName length must be exactly $length, but is ${value.length}."
     }
 
     override fun startsWith(
@@ -236,7 +265,7 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
     ): String {
         val displayName = resolveStringName(name)
 
-        return "$displayName must start with the following prefix (ignoreCase=$ignoreCase): '$prefix', but it does not."
+        return "$displayName must start with prefix (ignoreCase=$ignoreCase): '$prefix'."
     }
 
     override fun upperCase(
@@ -244,8 +273,12 @@ internal object DefaultStringViolationLocalizationProvider : StringViolationLoca
         name: String?,
     ): String {
         val displayName = resolveStringName(name)
-        val lowercaseChars = value.asIterable().filter { it.isLowerCase() }.joinWithLimitAndBrackets()
+        val lowercaseChars =
+            value
+                .asIterable()
+                .filter { it.isLowerCase() }
+                .joinWithLimitAndBrackets()
 
-        return "$displayName must be entirely upper case, but it also contains lowercase characters: $lowercaseChars."
+        return "$displayName must be uppercase, but also contains lowercase: $lowercaseChars."
     }
 }
