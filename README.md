@@ -100,9 +100,9 @@ dependencies {
 
 ```kotlin
 import io.github.kverify.core.context.verifyCollecting
-import io.github.kverify.rule.set.provider.*
+import io.github.kverify.named.rule.set.provider.*
 
-object StringRules : StringRuleProvider by DefaultStringRuleProvider()
+object NamedStringRules : NamedStringRuleProvider by DefaultNamedStringRuleProvider()
 
 data class SignUpRequest(
     val username: String,
