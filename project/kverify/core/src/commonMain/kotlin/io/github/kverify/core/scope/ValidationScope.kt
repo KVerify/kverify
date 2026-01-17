@@ -1,0 +1,97 @@
+@file:Suppress("TooManyFunctions")
+
+package io.github.kverify.core.scope
+
+import io.github.kverify.core.annotation.KverifyDsl
+import io.github.kverify.core.context.EmptyValidationContext
+import io.github.kverify.core.context.ValidationContext
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.violation.Violation
+
+@KverifyDsl
+public interface ValidationScope {
+    public val validationContext: ValidationContext
+
+    public fun onFailure(violation: Violation)
+
+    public infix fun <T> T.verifyWith(rule: Rule<T>): T {
+        val scope = this@ValidationScope
+        val value = this@verifyWith
+
+        rule.execute(
+            scope = scope,
+            value = value,
+        )
+
+        return value
+    }
+
+    public infix fun <T> T.verifyWith(rules: Iterable<Rule<T>>): T {
+        val value = this@verifyWith
+        val scope = this@ValidationScope
+
+        for (rule in rules) {
+            rule.execute(
+                scope = scope,
+                value = value,
+            )
+        }
+
+        return value
+    }
+
+    public fun <T> T.verifyWith(vararg rules: Rule<T>): T =
+        this.verifyWith(
+            rules = rules.asIterable(),
+        )
+}
+
+public inline fun ValidationScope(
+    validationContext: ValidationContext = EmptyValidationContext,
+    crossinline onFailure: (Violation) -> Unit,
+): ValidationScope =
+    object : ValidationScope {
+        override val validationContext: ValidationContext = validationContext
+
+        override fun onFailure(violation: Violation): Unit = onFailure(violation)
+    }
+
+@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
+public inline fun <T> ValidationScope.verify(value: T): T = value
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationScope.verify(
+    value: T,
+    rule: Rule<T>,
+): T = value verifyWith rule
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationScope.verify(
+    value: T,
+    vararg rules: Rule<T>,
+): T = value.verifyWith(rules = rules)
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationScope.verify(
+    value: T,
+    rules: Iterable<Rule<T>>,
+): T = value verifyWith rules
+
+public inline fun ValidationScope.failIf(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+) {
+    if (condition) {
+        val violation = lazyViolation()
+        onFailure(violation)
+    }
+}
+
+public inline fun ValidationScope.failIfNot(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+): Unit =
+    failIf(
+        condition = !condition,
+        lazyViolation = lazyViolation,
+    )
