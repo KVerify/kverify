@@ -8,3 +8,6 @@ public interface ValidationScopeDecorator<out T : ValidationScope> : ValidationS
 
     override fun onFailure(violation: Violation): Unit = originalValidationScope.onFailure(violation)
 }
+
+public inline fun <T : ValidationScope> ValidationScopeDecorator<T>.originalValidationScope(block: T.() -> Unit): Unit =
+    originalValidationScope.block()
