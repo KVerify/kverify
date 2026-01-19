@@ -1,7 +1,7 @@
 package io.github.kverify.core.scope.decorator
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.model.PropertyPathSegment
+import io.github.kverify.core.context.element.ValidationPathElement
 import io.github.kverify.core.scope.ValidationScope
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -11,10 +11,7 @@ public class PropertyValidationScope<out T : ValidationScope>(
     propertyName: String,
     public override val originalValidationScope: T,
 ) : ValidationScopeDecorator<T> {
-    override val validationContext: ValidationContext =
-        validationContext.derive(
-            PropertyPathSegment(propertyName),
-        )
+    override val validationContext: ValidationContext = validationContext + ValidationPathElement.property(propertyName)
 }
 
 public inline fun <T : ValidationScope> T.property(

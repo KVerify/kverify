@@ -1,7 +1,7 @@
 package io.github.kverify.core.scope.decorator
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.model.IndexPathSegment
+import io.github.kverify.core.context.element.ValidationPathElement
 import io.github.kverify.core.scope.ValidationScope
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -11,10 +11,7 @@ public class IndexValidationScope<out T : ValidationScope>(
     index: Int,
     public override val originalValidationScope: T,
 ) : ValidationScopeDecorator<T> {
-    override val validationContext: ValidationContext =
-        validationContext.derive(
-            IndexPathSegment(index),
-        )
+    override val validationContext: ValidationContext = validationContext + ValidationPathElement.index(index)
 }
 
 public inline fun <T : ValidationScope> T.index(
