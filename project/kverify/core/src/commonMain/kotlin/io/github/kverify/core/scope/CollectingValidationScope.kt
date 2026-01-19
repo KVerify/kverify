@@ -35,35 +35,3 @@ public inline fun verifyWithCollecting(
         .apply(block)
         .build()
 }
-
-public infix fun <T> T.verifyWithCollecting(rule: Rule<T>): ValidationResult {
-    val value = this
-
-    return verifyWithCollecting { value verifyWith rule }
-}
-
-public infix fun <T> T.verifyWithCollecting(rules: Iterable<Rule<T>>): ValidationResult {
-    val value = this
-
-    return verifyWithCollecting { value verifyWith rules }
-}
-
-public fun <T> T.verifyWithCollecting(
-    rules: Iterable<Rule<T>>,
-    violationStorage: MutableCollection<Violation> = ArrayList(),
-    validationContext: ValidationContext = EmptyValidationContext,
-): ValidationResult {
-    val value = this
-
-    return verifyWithCollecting(violationStorage, validationContext) { value verifyWith rules }
-}
-
-public fun <T> T.verifyWithCollecting(
-    vararg rules: Rule<T>,
-    violationStorage: MutableCollection<Violation> = ArrayList(),
-    validationContext: ValidationContext = EmptyValidationContext,
-): ValidationResult {
-    val value = this
-
-    return verifyWithCollecting(violationStorage, validationContext) { value.verifyWith(rules = rules) }
-}
