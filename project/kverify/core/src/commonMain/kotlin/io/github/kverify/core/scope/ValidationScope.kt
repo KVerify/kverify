@@ -46,18 +46,13 @@ public interface ValidationScope {
         )
 }
 
-public inline fun ValidationScope(
-    validationContext: ValidationContext = EmptyValidationContext,
-    crossinline onFailure: (Violation) -> Unit,
-): ValidationScope =
-    object : ValidationScope {
-        override val validationContext: ValidationContext = validationContext
-
-        override fun onFailure(violation: Violation): Unit = onFailure(violation)
+public operator fun ValidationScope.plus(other: ValidationScope): ValidationScopeList =
+    when {
+        this is ValidationScopeList && other is ValidationScopeList -> ValidationScopeList(validationScopes + other.validationScopes)
+        this is ValidationScopeList -> ValidationScopeList(validationScopes + other)
+        other is ValidationScopeList -> ValidationScopeList(listOf(this) + other.validationScopes)
+        else -> ValidationScopeList(listOf(this, other))
     }
-
-@Suppress("UnusedReceiverParameter", "NOTHING_TO_INLINE")
-public inline fun <T> ValidationScope.verify(value: T): T = value
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(
@@ -68,14 +63,14 @@ public inline fun <T> ValidationScope.verify(
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(
     value: T,
-    vararg rules: Rule<T>,
-): T = value.verifyWith(rules = rules)
+    rules: Iterable<Rule<T>>,
+): T = value verifyWith rules
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(
     value: T,
-    rules: Iterable<Rule<T>>,
-): T = value verifyWith rules
+    vararg rules: Rule<T>,
+): T = value.verifyWith(rules = rules)
 
 public inline fun ValidationScope.failIf(
     condition: Boolean,
