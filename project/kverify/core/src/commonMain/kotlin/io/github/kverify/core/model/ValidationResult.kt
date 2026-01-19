@@ -117,6 +117,23 @@ public inline fun ValidationResult(violations: List<Violation>): ValidationResul
     }
 
 /**
+ * @return A new [ValidationResult.Invalid] result with `this` [Violation].
+ */
+@Suppress("NOTHING_TO_INLINE")
+public inline fun Violation.toValidationResult(): ValidationResult.Invalid = ValidationResult.Invalid(this)
+
+/**
+ * @return [ValidationResult.Valid] if `this` is `null`, otherwise [ValidationResult.Invalid].
+ */
+@Suppress("NOTHING_TO_INLINE")
+public inline fun Violation?.toValidationResult(): ValidationResult =
+    if (this == null) {
+        ValidationResult.Valid
+    } else {
+        ValidationResult.Invalid(this)
+    }
+
+/**
  * Combines `this` result with [other] result.
  *
  * 1. If both results are [ValidationResult.Invalid], returns a new [ValidationResult.Invalid]
