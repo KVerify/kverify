@@ -5,7 +5,7 @@ import io.github.kverify.core.violation.Violation
 /**
  * A [ValidationException] that carries a single [violation].
  */
-public open class ThrowingValidationContextException(
+public open class ThrowingValidationScopeException(
     message: String? = null,
     public val violation: Violation,
     cause: Throwable? = null,
