@@ -81,12 +81,3 @@ public inline fun ValidationScope.failIf(
         onFailure(violation)
     }
 }
-
-public inline fun ValidationScope.failIfNot(
-    condition: Boolean,
-    lazyViolation: () -> Violation,
-): Unit =
-    failIf(
-        condition = !condition,
-        lazyViolation = lazyViolation,
-    )

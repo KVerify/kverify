@@ -3,7 +3,7 @@ package io.github.kverify.core.rule.predicate
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.rule.predicate.check.ValidationCheck
 import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.core.scope.failIfNot
+import io.github.kverify.core.scope.failIf
 
 public class PredicateRule<in T>(
     public val validationCheck: ValidationCheck<T>,
@@ -15,7 +15,7 @@ public class PredicateRule<in T>(
     ) {
         val isValid = validationCheck.isValid(scope, value)
 
-        scope.failIfNot(isValid) {
+        scope.failIf(!isValid) {
             violationFactory.createViolation(scope, value)
         }
     }
