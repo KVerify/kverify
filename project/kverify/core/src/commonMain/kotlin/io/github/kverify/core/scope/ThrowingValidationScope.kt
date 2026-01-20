@@ -25,17 +25,6 @@ public inline fun ThrowingValidationScope.failIf(
     }
 }
 
-public inline fun ThrowingValidationScope.failIfNot(
-    condition: Boolean,
-    lazyViolation: () -> Violation,
-) {
-    contract {
-        returns() implies condition
-    }
-
-    failIf(!condition, lazyViolation)
-}
-
 public class DefaultThrowingValidationScope(
     override val validationContext: ValidationContext = EmptyValidationContext,
 ) : ThrowingValidationScope {
