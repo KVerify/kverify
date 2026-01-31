@@ -10,7 +10,7 @@ internal class ExtendedValidationScope<out T : ValidationScope>(
     override val validationContext: ValidationContext = originalValidationScope.validationContext + newValidationContext
 }
 
-public operator fun <T : ValidationScope> T.plus(validationContext: ValidationContext): ValidationScopeDecorator<T> =
+public operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
     ExtendedValidationScope(
         originalValidationScope = this,
         newValidationContext = validationContext,
