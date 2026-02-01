@@ -1,0 +1,13 @@
+package io.github.kverify.violation.set.string
+
+import io.github.kverify.core.context.element.ValidationPathElement
+import io.github.kverify.core.violation.Violation
+import io.github.kverify.violation.set.PathAwareViolation
+
+public data class MinLengthViolation(
+    val minLengthAllowed: Int,
+    val actualLength: Int,
+    override val validationPath: List<ValidationPathElement>,
+    override val reason: String =
+        "Value must be at least $minLengthAllowed characters long. Actual length: $actualLength.",
+) : PathAwareViolation
