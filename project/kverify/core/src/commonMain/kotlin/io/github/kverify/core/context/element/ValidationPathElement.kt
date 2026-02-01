@@ -18,3 +18,14 @@ public class ValidationPathElement(
             )
     }
 }
+
+public fun ValidationContext.filterPathElements(): List<ValidationPathElement> {
+    val context = this
+
+    return buildList {
+        context.fold(this) { acc, element ->
+            if (element is ValidationPathElement) acc.add(element)
+            acc
+        }
+    }
+}
