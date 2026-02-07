@@ -12,3 +12,17 @@ public class EqualToRule<T : Comparable<T>>(
         validationCheck = EqualToCheck(expected),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> EqualToRule(
+    expected: T,
+    reason: String,
+): EqualToRule<T> =
+    EqualToRule(
+        expected = expected,
+        violationFactory =
+            EqualToViolationFactory(
+                expected = expected,
+                reason = reason,
+            ),
+    )

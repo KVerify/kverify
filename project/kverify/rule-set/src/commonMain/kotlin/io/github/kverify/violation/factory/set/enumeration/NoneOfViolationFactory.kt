@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.enumeration.NoneOfViolation
 
 public class NoneOfViolationFactory<T>(
     public val forbidden: Set<T>,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -16,5 +17,6 @@ public class NoneOfViolationFactory<T>(
             forbidden = forbidden,
             actual = value,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must not be one of $forbidden. Actual: $value",
         )
 }

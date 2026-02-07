@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.comparable.GreaterThanViolation
 
 public class GreaterThanViolationFactory<T : Comparable<T>>(
     public val min: T,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -16,5 +17,6 @@ public class GreaterThanViolationFactory<T : Comparable<T>>(
             minExclusive = min,
             actual = value,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be greater than $min. Actual: $value",
         )
 }

@@ -7,14 +7,18 @@ import io.github.kverify.violation.set.string.MaxLengthViolation
 
 public class MaxLengthViolationFactory(
     public val max: Int,
+    public val reason: String? = null,
 ) : ViolationFactory<String> {
     override fun createViolation(
         scope: ValidationScope,
         value: String,
-    ): MaxLengthViolation =
-        MaxLengthViolation(
+    ): MaxLengthViolation {
+        val actualLength = value.length
+        return MaxLengthViolation(
             maxLengthAllowed = max,
-            actualLength = value.length,
+            actualLength = actualLength,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be at most $max characters long. Actual length: $actualLength",
         )
+    }
 }

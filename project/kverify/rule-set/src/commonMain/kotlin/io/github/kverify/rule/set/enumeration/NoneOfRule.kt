@@ -12,3 +12,17 @@ public class NoneOfRule<T>(
         validationCheck = NoneOfCheck(forbidden),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> NoneOfRule(
+    forbidden: Set<T>,
+    reason: String,
+): NoneOfRule<T> =
+    NoneOfRule(
+        forbidden = forbidden,
+        violationFactory =
+            NoneOfViolationFactory(
+                forbidden = forbidden,
+                reason = reason,
+            ),
+    )

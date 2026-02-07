@@ -13,3 +13,20 @@ public class LengthRangeRule(
         validationCheck = LengthRangeCheck(min, max),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun LengthRangeRule(
+    min: Int,
+    max: Int,
+    reason: String,
+): LengthRangeRule =
+    LengthRangeRule(
+        min = min,
+        max = max,
+        violationFactory =
+            LengthRangeViolationFactory(
+                min = min,
+                max = max,
+                reason = reason,
+            ),
+    )

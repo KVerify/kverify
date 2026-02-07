@@ -5,5 +5,5 @@ import io.github.kverify.violation.set.PathAwareViolation
 
 public data class NotBlankViolation(
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String = "Value must not be blank.",
+    override val reason: String,
 ) : PathAwareViolation

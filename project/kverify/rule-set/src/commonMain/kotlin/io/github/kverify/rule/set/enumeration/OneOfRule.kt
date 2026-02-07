@@ -12,3 +12,17 @@ public class OneOfRule<T>(
         validationCheck = OneOfCheck(allowed),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> OneOfRule(
+    allowed: Set<T>,
+    reason: String,
+): OneOfRule<T> =
+    OneOfRule(
+        allowed = allowed,
+        violationFactory =
+            OneOfViolationFactory(
+                allowed = allowed,
+                reason = reason,
+            ),
+    )

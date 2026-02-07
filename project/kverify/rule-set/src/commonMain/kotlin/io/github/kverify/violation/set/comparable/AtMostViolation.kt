@@ -7,5 +7,5 @@ public data class AtMostViolation<T : Comparable<T>>(
     val maxAllowed: T,
     val actual: T,
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String = "Value must be at most $maxAllowed. Actual: $actual",
+    override val reason: String,
 ) : PathAwareViolation

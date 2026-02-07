@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.string.PatternViolation
 
 public class PatternViolationFactory(
     public val regex: Regex,
+    public val reason: String? = null,
 ) : ViolationFactory<String> {
     override fun createViolation(
         scope: ValidationScope,
@@ -15,5 +16,6 @@ public class PatternViolationFactory(
         PatternViolation(
             regex = regex,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must match the pattern: $regex",
         )
 }
