@@ -13,3 +13,20 @@ public class BetweenRule<T : Comparable<T>>(
         validationCheck = BetweenCheck(min, max),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> BetweenRule(
+    min: T,
+    max: T,
+    reason: String,
+): BetweenRule<T> =
+    BetweenRule(
+        min = min,
+        max = max,
+        violationFactory =
+            BetweenViolationFactory(
+                min = min,
+                max = max,
+                reason = reason,
+            ),
+    )

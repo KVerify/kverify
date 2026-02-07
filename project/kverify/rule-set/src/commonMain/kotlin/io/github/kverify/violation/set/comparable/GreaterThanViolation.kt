@@ -7,5 +7,5 @@ public data class GreaterThanViolation<T : Comparable<T>>(
     val minExclusive: T,
     val actual: T,
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String = "Value must be greater than $minExclusive. Actual: $actual",
+    override val reason: String,
 ) : PathAwareViolation

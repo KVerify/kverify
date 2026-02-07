@@ -8,6 +8,5 @@ public data class LengthRangeViolation(
     val maxLengthAllowed: Int,
     val actualLength: Int,
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String =
-        "Value must be between $minLengthAllowed and $maxLengthAllowed characters long. Actual length: $actualLength.",
+    override val reason: String,
 ) : PathAwareViolation

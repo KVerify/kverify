@@ -7,14 +7,18 @@ import io.github.kverify.violation.set.string.MinLengthViolation
 
 public class MinLengthViolationFactory(
     public val min: Int,
+    public val reason: String? = null,
 ) : ViolationFactory<String> {
     override fun createViolation(
         scope: ValidationScope,
         value: String,
-    ): MinLengthViolation =
-        MinLengthViolation(
+    ): MinLengthViolation {
+        val actualLength = value.length
+        return MinLengthViolation(
             minLengthAllowed = min,
-            actualLength = value.length,
+            actualLength = actualLength,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be at least $min characters long. Actual length: $actualLength",
         )
+    }
 }

@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.comparable.NotEqualToViolation
 
 public class NotEqualToViolationFactory<T : Comparable<T>>(
     public val forbidden: T,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -15,5 +16,6 @@ public class NotEqualToViolationFactory<T : Comparable<T>>(
         NotEqualToViolation(
             forbidden = forbidden,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must not be equal to $forbidden",
         )
 }

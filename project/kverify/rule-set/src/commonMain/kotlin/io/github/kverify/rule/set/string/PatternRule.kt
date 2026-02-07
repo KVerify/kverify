@@ -12,3 +12,17 @@ public class PatternRule(
         validationCheck = PatternCheck(regex),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun PatternRule(
+    regex: Regex,
+    reason: String,
+): PatternRule =
+    PatternRule(
+        regex = regex,
+        violationFactory =
+            PatternViolationFactory(
+                regex = regex,
+                reason = reason,
+            ),
+    )

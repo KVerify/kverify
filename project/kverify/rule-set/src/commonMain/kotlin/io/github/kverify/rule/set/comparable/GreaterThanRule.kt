@@ -12,3 +12,17 @@ public class GreaterThanRule<T : Comparable<T>>(
         validationCheck = GreaterThanCheck(min),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> GreaterThanRule(
+    min: T,
+    reason: String,
+): GreaterThanRule<T> =
+    GreaterThanRule(
+        min = min,
+        violationFactory =
+            GreaterThanViolationFactory(
+                min = min,
+                reason = reason,
+            ),
+    )

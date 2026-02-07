@@ -6,5 +6,5 @@ import io.github.kverify.violation.set.PathAwareViolation
 public data class PatternViolation(
     val regex: Regex,
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String = "Value must match the pattern: $regex.",
+    override val reason: String,
 ) : PathAwareViolation

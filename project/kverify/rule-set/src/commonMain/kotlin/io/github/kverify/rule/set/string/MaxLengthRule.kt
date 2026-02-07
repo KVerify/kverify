@@ -12,3 +12,17 @@ public class MaxLengthRule(
         validationCheck = MaxLengthCheck(max),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun MaxLengthRule(
+    max: Int,
+    reason: String,
+): MaxLengthRule =
+    MaxLengthRule(
+        max = max,
+        violationFactory =
+            MaxLengthViolationFactory(
+                max = max,
+                reason = reason,
+            ),
+    )

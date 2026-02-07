@@ -8,6 +8,7 @@ import io.github.kverify.violation.set.comparable.BetweenViolation
 public class BetweenViolationFactory<T : Comparable<T>>(
     public val min: T,
     public val max: T,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -18,5 +19,6 @@ public class BetweenViolationFactory<T : Comparable<T>>(
             max = max,
             actual = value,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be between $min and $max. Actual: $value",
         )
 }

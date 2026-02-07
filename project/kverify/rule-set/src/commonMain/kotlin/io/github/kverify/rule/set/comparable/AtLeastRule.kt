@@ -12,3 +12,17 @@ public class AtLeastRule<T : Comparable<T>>(
         validationCheck = AtLeastCheck(min),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> AtLeastRule(
+    min: T,
+    reason: String,
+): AtLeastRule<T> =
+    AtLeastRule(
+        min = min,
+        violationFactory =
+            AtLeastViolationFactory(
+                min = min,
+                reason = reason,
+            ),
+    )

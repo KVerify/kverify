@@ -12,3 +12,17 @@ public class MinLengthRule(
         validationCheck = MinLengthCheck(min),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun MinLengthRule(
+    min: Int,
+    reason: String,
+): MinLengthRule =
+    MinLengthRule(
+        min = min,
+        violationFactory =
+            MinLengthViolationFactory(
+                min = min,
+                reason = reason,
+            ),
+    )

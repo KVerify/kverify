@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.comparable.AtMostViolation
 
 public class AtMostViolationFactory<T : Comparable<T>>(
     public val max: T,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -16,5 +17,6 @@ public class AtMostViolationFactory<T : Comparable<T>>(
             maxAllowed = max,
             actual = value,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be at most $max. Actual: $value",
         )
 }

@@ -8,5 +8,5 @@ public data class BetweenViolation<T : Comparable<T>>(
     val max: T,
     val actual: T,
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String = "Value must be between $min and $max. Actual: $actual",
+    override val reason: String,
 ) : PathAwareViolation

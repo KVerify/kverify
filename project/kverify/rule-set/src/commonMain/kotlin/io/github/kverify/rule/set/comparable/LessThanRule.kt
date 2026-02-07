@@ -12,3 +12,17 @@ public class LessThanRule<T : Comparable<T>>(
         validationCheck = LessThanCheck(max),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> LessThanRule(
+    max: T,
+    reason: String,
+): LessThanRule<T> =
+    LessThanRule(
+        max = max,
+        violationFactory =
+            LessThanViolationFactory(
+                max = max,
+                reason = reason,
+            ),
+    )

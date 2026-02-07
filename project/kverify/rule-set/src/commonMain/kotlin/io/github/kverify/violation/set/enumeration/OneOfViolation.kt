@@ -7,5 +7,5 @@ public data class OneOfViolation<T>(
     val allowed: Set<T>,
     val actual: T,
     override val validationPath: List<ValidationPathElement>,
-    override val reason: String = "Value must be one of $allowed. Actual: $actual",
+    override val reason: String,
 ) : PathAwareViolation

@@ -12,3 +12,17 @@ public class AtMostRule<T : Comparable<T>>(
         validationCheck = AtMostCheck(max),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> AtMostRule(
+    max: T,
+    reason: String,
+): AtMostRule<T> =
+    AtMostRule(
+        max = max,
+        violationFactory =
+            AtMostViolationFactory(
+                max = max,
+                reason = reason,
+            ),
+    )

@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.enumeration.OneOfViolation
 
 public class OneOfViolationFactory<T>(
     public val allowed: Set<T>,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -16,5 +17,6 @@ public class OneOfViolationFactory<T>(
             allowed = allowed,
             actual = value,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be one of $allowed. Actual: $value",
         )
 }

@@ -12,3 +12,17 @@ public class NotEqualToRule<T : Comparable<T>>(
         validationCheck = NotEqualToCheck(forbidden),
         violationFactory = violationFactory,
     )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> NotEqualToRule(
+    forbidden: T,
+    reason: String,
+): NotEqualToRule<T> =
+    NotEqualToRule(
+        forbidden = forbidden,
+        violationFactory =
+            NotEqualToViolationFactory(
+                forbidden = forbidden,
+                reason = reason,
+            ),
+    )

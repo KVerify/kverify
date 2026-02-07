@@ -7,6 +7,7 @@ import io.github.kverify.violation.set.comparable.EqualToViolation
 
 public class EqualToViolationFactory<T : Comparable<T>>(
     public val expected: T,
+    public val reason: String? = null,
 ) : ViolationFactory<T> {
     override fun createViolation(
         scope: ValidationScope,
@@ -16,5 +17,6 @@ public class EqualToViolationFactory<T : Comparable<T>>(
             expected = expected,
             actual = value,
             validationPath = scope.validationContext.filterPathElements(),
+            reason = reason ?: "Value must be equal to $expected. Actual: $value",
         )
 }
