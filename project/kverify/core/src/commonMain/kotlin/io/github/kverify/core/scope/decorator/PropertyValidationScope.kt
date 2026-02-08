@@ -23,7 +23,7 @@ public inline fun <T : ValidationScope> T.property(
     }
 
     return PropertyValidationScope(
-        validationContext,
+        validationContext = validationContext,
         propertyName = name,
         originalValidationScope = this,
     ).apply(block)
@@ -38,7 +38,7 @@ public inline fun <T : ValidationScope> ValidationScopeDecorator<T>.property(
     }
 
     return PropertyValidationScope(
-        validationContext,
+        validationContext = validationContext,
         propertyName = name,
         originalValidationScope = originalValidationScope,
     ).apply(block)

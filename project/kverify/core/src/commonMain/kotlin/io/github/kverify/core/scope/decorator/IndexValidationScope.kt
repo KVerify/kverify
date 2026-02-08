@@ -23,7 +23,7 @@ public inline fun <T : ValidationScope> T.index(
     }
 
     return IndexValidationScope(
-        validationContext,
+        validationContext = validationContext,
         index = index,
         originalValidationScope = this,
     ).apply(block)
@@ -38,7 +38,7 @@ public inline fun <T : ValidationScope> ValidationScopeDecorator<T>.index(
     }
 
     return IndexValidationScope(
-        validationContext,
+        validationContext = validationContext,
         index = index,
         originalValidationScope = originalValidationScope,
     ).apply(block)

@@ -16,7 +16,10 @@ public interface ValidationContext {
 
             if (removed === EmptyValidationContext) return@fold element
 
-            CombinedValidationContext(removed, element)
+            CombinedValidationContext(
+                left = removed,
+                element = element,
+            )
         }
     }
 
