@@ -6,8 +6,11 @@ internal class CombinedValidationContext(
 ) : ValidationContext {
     override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? {
         var cur = this
+
         while (true) {
-            cur.element[key]?.let { return it }
+            cur.element[key]?.let {
+                return it
+            }
 
             val next = cur.left
 
@@ -25,12 +28,27 @@ internal class CombinedValidationContext(
     ): R = operation(left.fold(initial, operation), element)
 
     override fun minusKey(key: ValidationContext.Key<*>): ValidationContext {
-        element[key]?.let { return left }
+        element[key]?.let {
+            return left
+        }
+
         val newLeft = left.minusKey(key)
+
         return when {
-            newLeft === left -> this
-            newLeft === EmptyValidationContext -> element
-            else -> CombinedValidationContext(newLeft, element)
+            newLeft === left -> {
+                this
+            }
+
+            newLeft === EmptyValidationContext -> {
+                element
+            }
+
+            else -> {
+                CombinedValidationContext(
+                    left = newLeft,
+                    element = element,
+                )
+            }
         }
     }
 }
