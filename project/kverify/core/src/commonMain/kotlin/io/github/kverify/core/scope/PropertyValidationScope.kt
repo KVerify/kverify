@@ -1,22 +1,21 @@
-package io.github.kverify.core.scope.decorator
+package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.element.ValidationPathElement
-import io.github.kverify.core.scope.ValidationScope
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 public class PropertyValidationScope<out T : ValidationScope>(
     validationContext: ValidationContext,
     propertyName: String,
-    public override val originalValidationScope: T,
-) : ValidationScopeDecorator<T> {
+    originalValidationScope: T,
+) : ValidationScope by originalValidationScope {
     override val validationContext: ValidationContext = validationContext + ValidationPathElement.property(propertyName)
 }
 
 public inline fun <T : ValidationScope> T.property(
     name: String,
-    block: PropertyValidationScope<T>.() -> Unit,
+    block: PropertyValidationScope<T>.() -> Unit = {},
 ): PropertyValidationScope<T> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
@@ -26,20 +25,5 @@ public inline fun <T : ValidationScope> T.property(
         validationContext = validationContext,
         propertyName = name,
         originalValidationScope = this,
-    ).apply(block)
-}
-
-public inline fun <T : ValidationScope> ValidationScopeDecorator<T>.property(
-    name: String,
-    block: PropertyValidationScope<T>.() -> Unit,
-): PropertyValidationScope<T> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return PropertyValidationScope(
-        validationContext = validationContext,
-        propertyName = name,
-        originalValidationScope = originalValidationScope,
     ).apply(block)
 }
