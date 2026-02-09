@@ -5,18 +5,18 @@ import io.github.kverify.core.context.element.ValidationPathElement
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public class IndexValidationScope<out T : ValidationScope>(
+public class IndexValidationScope(
     validationContext: ValidationContext,
     index: Int,
-    originalValidationScope: T,
+    originalValidationScope: ValidationScope,
 ) : ValidationScope by originalValidationScope {
     override val validationContext: ValidationContext = validationContext + ValidationPathElement.index(index)
 }
 
 public inline fun <T : ValidationScope> T.index(
     index: Int,
-    block: IndexValidationScope<T>.() -> Unit = {},
-): IndexValidationScope<T> {
+    block: IndexValidationScope.() -> Unit = {},
+): IndexValidationScope {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }

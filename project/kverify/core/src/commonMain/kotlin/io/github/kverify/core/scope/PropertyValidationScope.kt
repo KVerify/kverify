@@ -5,18 +5,18 @@ import io.github.kverify.core.context.element.ValidationPathElement
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public class PropertyValidationScope<out T : ValidationScope>(
+public class PropertyValidationScope(
     validationContext: ValidationContext,
     propertyName: String,
-    originalValidationScope: T,
+    originalValidationScope: ValidationScope,
 ) : ValidationScope by originalValidationScope {
     override val validationContext: ValidationContext = validationContext + ValidationPathElement.property(propertyName)
 }
 
 public inline fun <T : ValidationScope> T.property(
     name: String,
-    block: PropertyValidationScope<T>.() -> Unit = {},
-): PropertyValidationScope<T> {
+    block: PropertyValidationScope.() -> Unit = {},
+): PropertyValidationScope {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
