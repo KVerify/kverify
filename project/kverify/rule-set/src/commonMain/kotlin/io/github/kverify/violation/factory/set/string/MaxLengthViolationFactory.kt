@@ -1,7 +1,7 @@
 package io.github.kverify.violation.factory.set.string
 
 import io.github.kverify.core.context.filterPathElements
-import io.github.kverify.core.rule.predicate.ViolationFactory
+import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.violation.set.string.MaxLengthViolation
 
