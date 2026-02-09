@@ -1,7 +1,7 @@
 package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.element.ValidationPathElement
+import io.github.kverify.core.context.ValidationPathElement
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
