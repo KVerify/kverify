@@ -1,6 +1,6 @@
 package io.github.kverify.violation.set.string
 
-import io.github.kverify.core.context.element.ValidationPathElement
+import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.violation.set.PathAwareViolation
 
 public data class LengthRangeViolation(

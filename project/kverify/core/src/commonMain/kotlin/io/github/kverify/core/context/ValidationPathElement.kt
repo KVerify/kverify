@@ -1,7 +1,4 @@
-package io.github.kverify.core.context.element
-
-import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.key.ValidationPathKey
+package io.github.kverify.core.context
 
 public class ValidationPathElement(
     override val key: ValidationPathKey,
@@ -17,6 +14,16 @@ public class ValidationPathElement(
                 key = ValidationPathKey.Index(index),
             )
     }
+}
+
+public sealed interface ValidationPathKey : ValidationContext.Key<ValidationPathElement> {
+    public data class Property(
+        public val name: String,
+    ) : ValidationPathKey
+
+    public data class Index(
+        public val index: Int,
+    ) : ValidationPathKey
 }
 
 public fun ValidationContext.filterPathElements(): List<ValidationPathElement> {
