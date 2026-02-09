@@ -1,8 +1,8 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.check.set.comparable.NotEqualToCheck
-import io.github.kverify.core.rule.predicate.PredicateRule
-import io.github.kverify.core.rule.predicate.ViolationFactory
+import io.github.kverify.core.rule.PredicateRule
+import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.violation.factory.set.comparable.NotEqualToViolationFactory
 
 public class NotEqualToRule<T : Comparable<T>>(
