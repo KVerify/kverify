@@ -1,6 +1,6 @@
 package io.github.kverify.violation.factory.set.string
 
-import io.github.kverify.core.context.filterPathElements
+import io.github.kverify.core.model.pathElements
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.violation.set.string.ExactLengthViolation
@@ -17,7 +17,7 @@ public class ExactLengthViolationFactory(
         return ExactLengthViolation(
             expectedLength = length,
             actualLength = actualLength,
-            validationPath = scope.validationContext.filterPathElements(),
+            validationPath = scope.validationContext.pathElements(),
             reason = reason ?: "Value must be exactly $length characters long. Actual length: $actualLength",
         )
     }
