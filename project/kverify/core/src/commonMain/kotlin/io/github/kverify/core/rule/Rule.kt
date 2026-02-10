@@ -9,14 +9,6 @@ public interface Rule<in T> {
     )
 }
 
-public inline fun <T> Rule(crossinline execute: ValidationScope.(T) -> Unit): Rule<T> =
-    object : Rule<T> {
-        override fun execute(
-            scope: ValidationScope,
-            value: T,
-        ): Unit = execute(scope, value)
-    }
-
 public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
     when {
         this is RuleList && other is RuleList -> RuleList(this.rules + other.rules)
