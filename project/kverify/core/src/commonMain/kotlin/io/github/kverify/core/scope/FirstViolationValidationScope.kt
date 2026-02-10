@@ -9,38 +9,6 @@ import kotlin.contracts.contract
 
 public interface FirstViolationValidationScope : ValidationScope {
     public val firstViolation: Violation?
-
-    override fun <T> T.verifyWith(rule: Rule<T>): T {
-        val value = this
-        val scope = this@FirstViolationValidationScope
-
-        if (firstViolation != null) return value
-
-        rule.execute(
-            scope = scope,
-            value = value,
-        )
-
-        return this
-    }
-
-    override fun <T> T.verifyWith(rules: Iterable<Rule<T>>): T {
-        val value = this@verifyWith
-        val scope = this@FirstViolationValidationScope
-
-        if (firstViolation != null) return value
-
-        for (rule in rules) {
-            rule.execute(
-                scope = scope,
-                value = value,
-            )
-
-            if (firstViolation != null) break
-        }
-
-        return value
-    }
 }
 
 public class DefaultFirstViolationValidationScope(
@@ -73,7 +41,9 @@ public infix fun <T> T.passes(rule: Rule<T>): Boolean {
     val value = this
 
     return verifyWithFirstViolation {
-        value verifyWith rule
+        if (firstViolation != null) return@verifyWithFirstViolation
+
+        rule.execute(this, value)
     } == null
 }
 
@@ -81,17 +51,16 @@ public infix fun <T> T.passes(rules: Iterable<Rule<T>>): Boolean {
     val value = this
 
     return verifyWithFirstViolation {
-        value verifyWith rules
+        if (firstViolation != null) return@verifyWithFirstViolation
+
+        for (rule in rules) {
+            rule.execute(this, value)
+            if (firstViolation != null) break
+        }
     } == null
 }
 
-public fun <T> T.passes(vararg rules: Rule<T>): Boolean {
-    val value = this
-
-    return verifyWithFirstViolation {
-        value.verifyWith(rules = rules)
-    } == null
-}
+public fun <T> T.passes(vararg rules: Rule<T>): Boolean = passes(rules.asList())
 
 public infix fun <T> T.notPasses(rule: Rule<T>): Boolean = !passes(rule)
 
