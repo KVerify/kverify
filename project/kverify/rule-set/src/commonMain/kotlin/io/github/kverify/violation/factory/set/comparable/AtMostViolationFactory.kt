@@ -1,6 +1,6 @@
 package io.github.kverify.violation.factory.set.comparable
 
-import io.github.kverify.core.context.filterPathElements
+import io.github.kverify.core.model.pathElements
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.violation.set.comparable.AtMostViolation
@@ -16,7 +16,7 @@ public class AtMostViolationFactory<T : Comparable<T>>(
         AtMostViolation(
             maxAllowed = max,
             actual = value,
-            validationPath = scope.validationContext.filterPathElements(),
+            validationPath = scope.validationContext.pathElements(),
             reason = reason ?: "Value must be at most $max. Actual: $value",
         )
 }

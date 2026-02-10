@@ -1,6 +1,6 @@
 package io.github.kverify.violation.factory.set.comparable
 
-import io.github.kverify.core.context.filterPathElements
+import io.github.kverify.core.model.pathElements
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.violation.set.comparable.NotEqualToViolation
@@ -15,7 +15,7 @@ public class NotEqualToViolationFactory<T : Comparable<T>>(
     ): NotEqualToViolation<T> =
         NotEqualToViolation(
             forbidden = forbidden,
-            validationPath = scope.validationContext.filterPathElements(),
+            validationPath = scope.validationContext.pathElements(),
             reason = reason ?: "Value must not be equal to $forbidden",
         )
 }

@@ -1,6 +1,6 @@
 package io.github.kverify.violation.factory.set.collection
 
-import io.github.kverify.core.context.filterPathElements
+import io.github.kverify.core.model.pathElements
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.violation.set.collection.ExactSizeViolation
@@ -17,7 +17,7 @@ public class ExactSizeViolationFactory(
         return ExactSizeViolation(
             expectedSize = size,
             actualSize = actualSize,
-            validationPath = scope.validationContext.filterPathElements(),
+            validationPath = scope.validationContext.pathElements(),
             reason = reason ?: "Collection must have exactly $size elements. Actual size: $actualSize",
         )
     }
