@@ -46,14 +46,6 @@ public interface ValidationScope {
         )
 }
 
-public operator fun ValidationScope.plus(other: ValidationScope): ValidationScopeList =
-    when {
-        this is ValidationScopeList && other is ValidationScopeList -> ValidationScopeList(validationScopes + other.validationScopes)
-        this is ValidationScopeList -> ValidationScopeList(validationScopes + other)
-        other is ValidationScopeList -> ValidationScopeList(listOf(this) + other.validationScopes)
-        else -> ValidationScopeList(listOf(this, other))
-    }
-
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(
     value: T,
