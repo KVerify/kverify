@@ -1,7 +1,13 @@
-package io.github.kverify.core.rule
+package io.github.kverify.core
 
-import io.github.kverify.core.scope.ValidationScope
 import kotlin.jvm.JvmInline
+
+public interface Rule<in T> {
+    public fun execute(
+        scope: ValidationScope,
+        value: T,
+    )
+}
 
 @JvmInline
 public value class RuleList<in T>(
@@ -19,6 +25,14 @@ public value class RuleList<in T>(
         }
     }
 }
+
+public operator fun <T> Rule<T>.plus(other: Rule<T>): Rule<T> =
+    when {
+        this is RuleList && other is RuleList -> RuleList(this.rules + other.rules)
+        this is RuleList -> RuleList(this.rules + other)
+        other is RuleList -> RuleList(listOf(this) + other.rules)
+        else -> RuleList(this, other)
+    }
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> RuleList(): RuleList<T> = RuleList(emptyList())

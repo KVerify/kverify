@@ -1,8 +1,8 @@
 package io.github.kverify.violation.factory.set.string
 
-import io.github.kverify.core.model.pathElements
-import io.github.kverify.core.rule.ViolationFactory
-import io.github.kverify.core.scope.ValidationScope
+import io.github.kverify.core.ValidationScope
+import io.github.kverify.core.ViolationFactory
+import io.github.kverify.core.pathElements
 import io.github.kverify.violation.set.string.MinLengthViolation
 
 public class MinLengthViolationFactory(

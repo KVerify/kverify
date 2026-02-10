@@ -1,8 +1,5 @@
-package io.github.kverify.core.rule
+package io.github.kverify.core
 
-import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.core.scope.failIf
-import io.github.kverify.core.violation.Violation
 import kotlin.jvm.JvmInline
 
 public open class PredicateRule<in T>(

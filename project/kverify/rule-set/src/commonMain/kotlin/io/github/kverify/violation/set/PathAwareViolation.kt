@@ -1,7 +1,7 @@
 package io.github.kverify.violation.set
 
-import io.github.kverify.core.model.ValidationPath
-import io.github.kverify.core.violation.Violation
+import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.Violation
 
 internal interface PathAwareViolation : Violation {
     val validationPath: ValidationPath

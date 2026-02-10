@@ -1,4 +1,4 @@
-package io.github.kverify.core.model
+package io.github.kverify.core
 
 public interface ValidationContext {
     public val elements: List<Element>

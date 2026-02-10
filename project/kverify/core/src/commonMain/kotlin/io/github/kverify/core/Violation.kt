@@ -1,6 +1,18 @@
-package io.github.kverify.core.violation
+package io.github.kverify.core
 
 import kotlin.jvm.JvmInline
+
+/**
+ * Represents a validation failure with a [reason] of why it failed.
+ *
+ * @see ViolationReason
+ */
+public interface Violation {
+    /**
+     * A human-readable description of why the validation failed.
+     */
+    public val reason: String
+}
 
 /**
  * A simple string-based implementation of [Violation].
@@ -13,12 +25,6 @@ import kotlin.jvm.JvmInline
 public value class ViolationReason(
     override val reason: String,
 ) : Violation
-
-/**
- * @return [ViolationReason] with `this` string as the [reason][ViolationReason.reason].
- */
-@Suppress("NOTHING_TO_INLINE")
-public inline fun String.asViolationReason(): ViolationReason = ViolationReason(this)
 
 /**
  * @return [ViolationReason] with the given [reason].

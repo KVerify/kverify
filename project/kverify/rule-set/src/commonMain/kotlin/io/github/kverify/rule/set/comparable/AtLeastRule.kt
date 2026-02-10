@@ -1,8 +1,8 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.check.set.comparable.AtLeastCheck
-import io.github.kverify.core.rule.PredicateRule
-import io.github.kverify.core.rule.ViolationFactory
+import io.github.kverify.core.PredicateRule
+import io.github.kverify.core.ViolationFactory
 import io.github.kverify.violation.factory.set.comparable.AtLeastViolationFactory
 
 public class AtLeastRule<T : Comparable<T>>(

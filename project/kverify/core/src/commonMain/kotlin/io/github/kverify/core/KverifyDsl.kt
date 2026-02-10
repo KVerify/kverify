@@ -1,4 +1,4 @@
-package io.github.kverify.core.annotation
+package io.github.kverify.core
 
 /**
  * Marks DSL elements in the Kverify API to prevent scope leakage.

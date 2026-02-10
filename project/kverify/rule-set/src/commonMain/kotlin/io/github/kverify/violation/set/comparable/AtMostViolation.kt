@@ -1,6 +1,6 @@
 package io.github.kverify.violation.set.comparable
 
-import io.github.kverify.core.model.ValidationPath
+import io.github.kverify.core.ValidationPath
 import io.github.kverify.violation.set.PathAwareViolation
 
 public data class AtMostViolation<T : Comparable<T>>(

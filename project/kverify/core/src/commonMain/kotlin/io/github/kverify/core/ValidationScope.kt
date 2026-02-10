@@ -1,14 +1,7 @@
 @file:Suppress("TooManyFunctions")
 
-package io.github.kverify.core.scope
+package io.github.kverify.core
 
-import io.github.kverify.core.annotation.KverifyDsl
-import io.github.kverify.core.model.ListValidationContext
-import io.github.kverify.core.model.ValidationContext
-import io.github.kverify.core.model.ValidationPath
-import io.github.kverify.core.model.ValidationPathElement
-import io.github.kverify.core.rule.Rule
-import io.github.kverify.core.violation.Violation
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 

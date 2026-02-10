@@ -1,6 +1,4 @@
-package io.github.kverify.core.exception
-
-import io.github.kverify.core.violation.Violation
+package io.github.kverify.core
 
 /**
  * An exception that carries a list of [violations].
@@ -49,6 +47,28 @@ public open class ValidationException(
         cause: Throwable? = null,
     ) : this(
         violations = violations.asList(),
+        cause = cause,
+    )
+}
+
+/**
+ * A [ValidationException] that carries a single [violation].
+ */
+public open class ThrowingValidationScopeException(
+    message: String? = null,
+    public val violation: Violation,
+    cause: Throwable? = null,
+) : ValidationException(
+        message = message,
+        violations = listOf(violation),
+        cause = cause,
+    ) {
+    public constructor(
+        violation: Violation,
+        cause: Throwable? = null,
+    ) : this(
+        message = "Validation failed:\n\t- ${violation.reason}",
+        violation = violation,
         cause = cause,
     )
 }

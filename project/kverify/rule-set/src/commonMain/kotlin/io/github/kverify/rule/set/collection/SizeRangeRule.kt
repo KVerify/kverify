@@ -1,8 +1,8 @@
 package io.github.kverify.rule.set.collection
 
 import io.github.kverify.check.set.collection.SizeRangeCheck
-import io.github.kverify.core.rule.PredicateRule
-import io.github.kverify.core.rule.ViolationFactory
+import io.github.kverify.core.PredicateRule
+import io.github.kverify.core.ViolationFactory
 import io.github.kverify.violation.factory.set.collection.SizeRangeViolationFactory
 
 public class SizeRangeRule<C : Collection<*>>(
