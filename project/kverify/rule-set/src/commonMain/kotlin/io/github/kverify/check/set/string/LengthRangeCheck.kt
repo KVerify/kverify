@@ -1,7 +1,7 @@
 package io.github.kverify.check.set.string
 
-import io.github.kverify.core.rule.ValidationCheck
-import io.github.kverify.core.scope.ValidationScope
+import io.github.kverify.core.ValidationCheck
+import io.github.kverify.core.ValidationScope
 
 public class LengthRangeCheck(
     public val min: Int,

@@ -1,9 +1,7 @@
 @file:Suppress("TooManyFunctions")
 
-package io.github.kverify.core.model
+package io.github.kverify.core
 
-import io.github.kverify.core.exception.ValidationException
-import io.github.kverify.core.violation.Violation
 import kotlin.js.JsName
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmName

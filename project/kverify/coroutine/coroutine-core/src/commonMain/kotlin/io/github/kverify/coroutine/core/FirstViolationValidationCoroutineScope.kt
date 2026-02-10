@@ -1,9 +1,9 @@
-package io.github.kverify.coroutine.core.context
+package io.github.kverify.coroutine.core
 
-import io.github.kverify.core.model.EmptyValidationContext
-import io.github.kverify.core.model.ValidationContext
-import io.github.kverify.core.scope.FirstViolationValidationScope
-import io.github.kverify.core.violation.Violation
+import io.github.kverify.core.EmptyValidationContext
+import io.github.kverify.core.FirstViolationValidationScope
+import io.github.kverify.core.ValidationContext
+import io.github.kverify.core.Violation
 import kotlinx.atomicfu.atomic
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
