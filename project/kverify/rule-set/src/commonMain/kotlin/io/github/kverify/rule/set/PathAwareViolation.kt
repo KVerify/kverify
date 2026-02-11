@@ -1,4 +1,4 @@
-package io.github.kverify.violation.set
+package io.github.kverify.rule.set
 
 import io.github.kverify.core.ValidationPath
 import io.github.kverify.core.Violation

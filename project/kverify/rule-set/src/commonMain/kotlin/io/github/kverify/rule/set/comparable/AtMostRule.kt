@@ -1,9 +1,44 @@
 package io.github.kverify.rule.set.comparable
 
-import io.github.kverify.check.set.comparable.AtMostCheck
 import io.github.kverify.core.PredicateRule
+import io.github.kverify.core.ValidationCheck
+import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationScope
 import io.github.kverify.core.ViolationFactory
-import io.github.kverify.violation.factory.set.comparable.AtMostViolationFactory
+import io.github.kverify.core.pathElements
+import io.github.kverify.rule.set.PathAwareViolation
+
+public class AtMostCheck<T : Comparable<T>>(
+    public val max: T,
+) : ValidationCheck<T> {
+    override fun isValid(
+        scope: ValidationScope,
+        value: T,
+    ): Boolean = value <= max
+}
+
+public data class AtMostViolation<T : Comparable<T>>(
+    val maxAllowed: T,
+    val actual: T,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : PathAwareViolation
+
+public class AtMostViolationFactory<T : Comparable<T>>(
+    public val max: T,
+    public val reason: String? = null,
+) : ViolationFactory<T> {
+    override fun createViolation(
+        scope: ValidationScope,
+        value: T,
+    ): AtMostViolation<T> =
+        AtMostViolation(
+            maxAllowed = max,
+            actual = value,
+            validationPath = scope.validationContext.pathElements(),
+            reason = reason ?: "Value must be at most $max. Actual: $value",
+        )
+}
 
 public class AtMostRule<T : Comparable<T>>(
     public val max: T,
