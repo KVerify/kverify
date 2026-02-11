@@ -1,9 +1,49 @@
 package io.github.kverify.rule.set.comparable
 
-import io.github.kverify.check.set.comparable.BetweenCheck
 import io.github.kverify.core.PredicateRule
+import io.github.kverify.core.ValidationCheck
+import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationScope
 import io.github.kverify.core.ViolationFactory
-import io.github.kverify.violation.factory.set.comparable.BetweenViolationFactory
+import io.github.kverify.core.pathElements
+import io.github.kverify.rule.set.PathAwareViolation
+
+public class BetweenCheck<T : Comparable<T>>(
+    public val min: T,
+    public val max: T,
+) : ValidationCheck<T> {
+    @Suppress("ConvertTwoComparisonsToRangeCheck")
+    override fun isValid(
+        scope: ValidationScope,
+        value: T,
+    ): Boolean = value >= min && value <= max
+}
+
+public data class BetweenViolation<T : Comparable<T>>(
+    val min: T,
+    val max: T,
+    val actual: T,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : PathAwareViolation
+
+public class BetweenViolationFactory<T : Comparable<T>>(
+    public val min: T,
+    public val max: T,
+    public val reason: String? = null,
+) : ViolationFactory<T> {
+    override fun createViolation(
+        scope: ValidationScope,
+        value: T,
+    ): BetweenViolation<T> =
+        BetweenViolation(
+            min = min,
+            max = max,
+            actual = value,
+            validationPath = scope.validationContext.pathElements(),
+            reason = reason ?: "Value must be between $min and $max. Actual: $value",
+        )
+}
 
 public class BetweenRule<T : Comparable<T>>(
     public val min: T,
