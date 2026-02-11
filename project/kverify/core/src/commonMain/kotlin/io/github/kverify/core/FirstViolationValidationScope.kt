@@ -3,14 +3,10 @@ package io.github.kverify.core
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public interface FirstViolationValidationScope : ValidationScope {
-    public val firstViolation: Violation?
-}
-
-public class DefaultFirstViolationValidationScope(
+public class FirstViolationValidationScope(
     override val validationContext: ValidationContext = EmptyValidationContext,
-) : FirstViolationValidationScope {
-    override var firstViolation: Violation? = null
+) : ValidationScope {
+    public var firstViolation: Violation? = null
         private set
 
     override fun onFailure(violation: Violation) {
@@ -28,7 +24,7 @@ public inline fun verifyWithFirstViolation(
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return DefaultFirstViolationValidationScope(validationContext)
+    return FirstViolationValidationScope(validationContext)
         .apply(block)
         .firstViolation
 }
