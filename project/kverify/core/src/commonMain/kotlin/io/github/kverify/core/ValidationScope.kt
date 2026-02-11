@@ -103,6 +103,14 @@ public inline fun <T> ValidationScope.verify(
 public inline infix fun <T> Verification<T>.with(rule: Rule<T>): Unit = enforce(rule)
 
 @Suppress("NOTHING_TO_INLINE")
+public inline infix fun <T> Verification<T>.with(rules: Iterable<Rule<T>>) {
+    for (rule in rules) enforce(rule)
+}
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> Verification<T>.with(vararg rules: Rule<T>): Unit = with(rules.asList())
+
+@Suppress("NOTHING_TO_INLINE")
 public inline operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
     ContextExtendedValidationScope(
         originalValidationScope = this,
