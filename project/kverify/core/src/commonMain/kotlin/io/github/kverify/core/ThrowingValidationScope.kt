@@ -3,11 +3,11 @@ package io.github.kverify.core
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public interface ThrowingValidationScope : ValidationScope {
+public interface NonReturningValidationScope : ValidationScope {
     override fun onFailure(violation: Violation): Nothing
 }
 
-public inline fun ThrowingValidationScope.failIf(
+public inline fun NonReturningValidationScope.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
@@ -21,29 +21,29 @@ public inline fun ThrowingValidationScope.failIf(
     }
 }
 
-public class DefaultThrowingValidationScope(
+public class ThrowingValidationScope(
     override val validationContext: ValidationContext = EmptyValidationContext,
-) : ThrowingValidationScope {
+) : NonReturningValidationScope {
     override fun onFailure(violation: Violation): Nothing = throw ThrowingValidationScopeException(violation)
 }
 
 public inline fun <T> verifyWithThrowing(
     context: ValidationContext = EmptyValidationContext,
-    block: DefaultThrowingValidationScope.() -> T,
+    block: ThrowingValidationScope.() -> T,
 ): T {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    return DefaultThrowingValidationScope(context).block()
+    return ThrowingValidationScope(context).block()
 }
 
 public inline fun verifyWithFailFast(
     context: ValidationContext = EmptyValidationContext,
-    block: DefaultThrowingValidationScope.() -> Unit,
+    block: ThrowingValidationScope.() -> Unit,
 ): Violation? =
     try {
-        DefaultThrowingValidationScope(context).block()
+        ThrowingValidationScope(context).block()
         null
     } catch (e: ThrowingValidationScopeException) {
         e.violation
