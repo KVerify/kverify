@@ -38,7 +38,7 @@ public sealed interface ValidationPathElement : ValidationContext.Element {
     ) : ValidationPathElement
 
     public data class Index(
-        val index: String,
+        val index: Int,
     ) : ValidationPathElement
 }
 
