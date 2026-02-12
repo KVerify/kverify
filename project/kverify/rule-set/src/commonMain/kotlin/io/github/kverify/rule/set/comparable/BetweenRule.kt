@@ -8,6 +8,32 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class BetweenRule<T : Comparable<T>>(
+    public val min: T,
+    public val max: T,
+    violationFactory: ViolationFactory<T> = BetweenViolationFactory(min, max),
+) : PredicateRule<T>(
+        validationCheck = BetweenCheck(min, max),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> BetweenRule(
+    min: T,
+    max: T,
+    reason: String,
+): BetweenRule<T> =
+    BetweenRule(
+        min = min,
+        max = max,
+        violationFactory =
+            BetweenViolationFactory(
+                min = min,
+                max = max,
+                reason = reason,
+            ),
+    )
+
 public class BetweenCheck<T : Comparable<T>>(
     public val min: T,
     public val max: T,
@@ -44,29 +70,3 @@ public class BetweenViolationFactory<T : Comparable<T>>(
             reason = reason ?: "Value must be between $min and $max. Actual: $value",
         )
 }
-
-public class BetweenRule<T : Comparable<T>>(
-    public val min: T,
-    public val max: T,
-    violationFactory: ViolationFactory<T> = BetweenViolationFactory(min, max),
-) : PredicateRule<T>(
-        validationCheck = BetweenCheck(min, max),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> BetweenRule(
-    min: T,
-    max: T,
-    reason: String,
-): BetweenRule<T> =
-    BetweenRule(
-        min = min,
-        max = max,
-        violationFactory =
-            BetweenViolationFactory(
-                min = min,
-                max = max,
-                reason = reason,
-            ),
-    )

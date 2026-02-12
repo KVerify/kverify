@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class EqualToRule<T : Comparable<T>>(
+    public val expected: T,
+    violationFactory: ViolationFactory<T> = EqualToViolationFactory(expected),
+) : PredicateRule<T>(
+        validationCheck = EqualToCheck(expected),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> EqualToRule(
+    expected: T,
+    reason: String,
+): EqualToRule<T> =
+    EqualToRule(
+        expected = expected,
+        violationFactory =
+            EqualToViolationFactory(
+                expected = expected,
+                reason = reason,
+            ),
+    )
+
 public class EqualToCheck<T : Comparable<T>>(
     public val expected: T,
 ) : ValidationCheck<T> {
@@ -39,25 +61,3 @@ public class EqualToViolationFactory<T : Comparable<T>>(
             reason = reason ?: "Value must be equal to $expected. Actual: $value",
         )
 }
-
-public class EqualToRule<T : Comparable<T>>(
-    public val expected: T,
-    violationFactory: ViolationFactory<T> = EqualToViolationFactory(expected),
-) : PredicateRule<T>(
-        validationCheck = EqualToCheck(expected),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> EqualToRule(
-    expected: T,
-    reason: String,
-): EqualToRule<T> =
-    EqualToRule(
-        expected = expected,
-        violationFactory =
-            EqualToViolationFactory(
-                expected = expected,
-                reason = reason,
-            ),
-    )

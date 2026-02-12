@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class MinSizeRule<C : Collection<*>>(
+    public val min: Int,
+    violationFactory: ViolationFactory<C> = MinSizeViolationFactory(min),
+) : PredicateRule<C>(
+        validationCheck = MinSizeCheck(min),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun MinSizeRule(
+    min: Int,
+    reason: String,
+): MinSizeRule<Collection<*>> =
+    MinSizeRule(
+        min = min,
+        violationFactory =
+            MinSizeViolationFactory(
+                min = min,
+                reason = reason,
+            ),
+    )
+
 public class MinSizeCheck(
     public val min: Int,
 ) : ValidationCheck<Collection<*>> {
@@ -41,25 +63,3 @@ public class MinSizeViolationFactory(
         )
     }
 }
-
-public class MinSizeRule<C : Collection<*>>(
-    public val min: Int,
-    violationFactory: ViolationFactory<C> = MinSizeViolationFactory(min),
-) : PredicateRule<C>(
-        validationCheck = MinSizeCheck(min),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun MinSizeRule(
-    min: Int,
-    reason: String,
-): MinSizeRule<Collection<*>> =
-    MinSizeRule(
-        min = min,
-        violationFactory =
-            MinSizeViolationFactory(
-                min = min,
-                reason = reason,
-            ),
-    )

@@ -9,6 +9,24 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class DistinctRule<C : Collection<*>>(
+    violationFactory: ViolationFactory<C> = DistinctViolationFactory(),
+) : PredicateRule<C>(
+        validationCheck = DistinctCheck,
+        violationFactory = violationFactory,
+    ) {
+    public companion object : Rule<Collection<*>> by DistinctRule()
+}
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun DistinctRule(reason: String): DistinctRule<Collection<*>> =
+    DistinctRule(
+        violationFactory =
+            DistinctViolationFactory(
+                reason = reason,
+            ),
+    )
+
 public object DistinctCheck : ValidationCheck<Collection<*>> {
     override fun isValid(
         scope: ValidationScope,
@@ -40,21 +58,3 @@ public class DistinctViolationFactory(
         )
     }
 }
-
-public class DistinctRule<C : Collection<*>>(
-    violationFactory: ViolationFactory<C> = DistinctViolationFactory(),
-) : PredicateRule<C>(
-        validationCheck = DistinctCheck,
-        violationFactory = violationFactory,
-    ) {
-    public companion object : Rule<Collection<*>> by DistinctRule()
-}
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun DistinctRule(reason: String): DistinctRule<Collection<*>> =
-    DistinctRule(
-        violationFactory =
-            DistinctViolationFactory(
-                reason = reason,
-            ),
-    )

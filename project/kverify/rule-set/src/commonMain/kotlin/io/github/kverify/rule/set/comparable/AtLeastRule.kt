@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class AtLeastRule<T : Comparable<T>>(
+    public val min: T,
+    violationFactory: ViolationFactory<T> = AtLeastViolationFactory(min),
+) : PredicateRule<T>(
+        validationCheck = AtLeastCheck(min),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> AtLeastRule(
+    min: T,
+    reason: String,
+): AtLeastRule<T> =
+    AtLeastRule(
+        min = min,
+        violationFactory =
+            AtLeastViolationFactory(
+                min = min,
+                reason = reason,
+            ),
+    )
+
 public class AtLeastCheck<T : Comparable<T>>(
     public val min: T,
 ) : ValidationCheck<T> {
@@ -39,25 +61,3 @@ public class AtLeastViolationFactory<T : Comparable<T>>(
             reason = reason ?: "Value must be at least $min. Actual: $value",
         )
 }
-
-public class AtLeastRule<T : Comparable<T>>(
-    public val min: T,
-    violationFactory: ViolationFactory<T> = AtLeastViolationFactory(min),
-) : PredicateRule<T>(
-        validationCheck = AtLeastCheck(min),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> AtLeastRule(
-    min: T,
-    reason: String,
-): AtLeastRule<T> =
-    AtLeastRule(
-        min = min,
-        violationFactory =
-            AtLeastViolationFactory(
-                min = min,
-                reason = reason,
-            ),
-    )

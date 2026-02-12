@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class PatternRule(
+    public val regex: Regex,
+    violationFactory: ViolationFactory<String> = PatternViolationFactory(regex),
+) : PredicateRule<String>(
+        validationCheck = PatternCheck(regex),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun PatternRule(
+    regex: Regex,
+    reason: String,
+): PatternRule =
+    PatternRule(
+        regex = regex,
+        violationFactory =
+            PatternViolationFactory(
+                regex = regex,
+                reason = reason,
+            ),
+    )
+
 public class PatternCheck(
     public val regex: Regex,
 ) : ValidationCheck<String> {
@@ -37,25 +59,3 @@ public class PatternViolationFactory(
             reason = reason ?: "Value must match the pattern: $regex",
         )
 }
-
-public class PatternRule(
-    public val regex: Regex,
-    violationFactory: ViolationFactory<String> = PatternViolationFactory(regex),
-) : PredicateRule<String>(
-        validationCheck = PatternCheck(regex),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun PatternRule(
-    regex: Regex,
-    reason: String,
-): PatternRule =
-    PatternRule(
-        regex = regex,
-        violationFactory =
-            PatternViolationFactory(
-                regex = regex,
-                reason = reason,
-            ),
-    )

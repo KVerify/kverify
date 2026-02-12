@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class ExactLengthRule(
+    public val length: Int,
+    violationFactory: ViolationFactory<String> = ExactLengthViolationFactory(length),
+) : PredicateRule<String>(
+        validationCheck = ExactLengthCheck(length),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ExactLengthRule(
+    length: Int,
+    reason: String,
+): ExactLengthRule =
+    ExactLengthRule(
+        length = length,
+        violationFactory =
+            ExactLengthViolationFactory(
+                length = length,
+                reason = reason,
+            ),
+    )
+
 public class ExactLengthCheck(
     public val length: Int,
 ) : ValidationCheck<String> {
@@ -41,25 +63,3 @@ public class ExactLengthViolationFactory(
         )
     }
 }
-
-public class ExactLengthRule(
-    public val length: Int,
-    violationFactory: ViolationFactory<String> = ExactLengthViolationFactory(length),
-) : PredicateRule<String>(
-        validationCheck = ExactLengthCheck(length),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun ExactLengthRule(
-    length: Int,
-    reason: String,
-): ExactLengthRule =
-    ExactLengthRule(
-        length = length,
-        violationFactory =
-            ExactLengthViolationFactory(
-                length = length,
-                reason = reason,
-            ),
-    )
