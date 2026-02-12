@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class AtMostRule<T : Comparable<T>>(
+    public val max: T,
+    violationFactory: ViolationFactory<T> = AtMostViolationFactory(max),
+) : PredicateRule<T>(
+        validationCheck = AtMostCheck(max),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> AtMostRule(
+    max: T,
+    reason: String,
+): AtMostRule<T> =
+    AtMostRule(
+        max = max,
+        violationFactory =
+            AtMostViolationFactory(
+                max = max,
+                reason = reason,
+            ),
+    )
+
 public class AtMostCheck<T : Comparable<T>>(
     public val max: T,
 ) : ValidationCheck<T> {
@@ -39,25 +61,3 @@ public class AtMostViolationFactory<T : Comparable<T>>(
             reason = reason ?: "Value must be at most $max. Actual: $value",
         )
 }
-
-public class AtMostRule<T : Comparable<T>>(
-    public val max: T,
-    violationFactory: ViolationFactory<T> = AtMostViolationFactory(max),
-) : PredicateRule<T>(
-        validationCheck = AtMostCheck(max),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> AtMostRule(
-    max: T,
-    reason: String,
-): AtMostRule<T> =
-    AtMostRule(
-        max = max,
-        violationFactory =
-            AtMostViolationFactory(
-                max = max,
-                reason = reason,
-            ),
-    )

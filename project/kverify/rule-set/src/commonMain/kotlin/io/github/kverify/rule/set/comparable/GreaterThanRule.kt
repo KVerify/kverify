@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class GreaterThanRule<T : Comparable<T>>(
+    public val min: T,
+    violationFactory: ViolationFactory<T> = GreaterThanViolationFactory(min),
+) : PredicateRule<T>(
+        validationCheck = GreaterThanCheck(min),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> GreaterThanRule(
+    min: T,
+    reason: String,
+): GreaterThanRule<T> =
+    GreaterThanRule(
+        min = min,
+        violationFactory =
+            GreaterThanViolationFactory(
+                min = min,
+                reason = reason,
+            ),
+    )
+
 public class GreaterThanCheck<T : Comparable<T>>(
     public val min: T,
 ) : ValidationCheck<T> {
@@ -39,25 +61,3 @@ public class GreaterThanViolationFactory<T : Comparable<T>>(
             reason = reason ?: "Value must be greater than $min. Actual: $value",
         )
 }
-
-public class GreaterThanRule<T : Comparable<T>>(
-    public val min: T,
-    violationFactory: ViolationFactory<T> = GreaterThanViolationFactory(min),
-) : PredicateRule<T>(
-        validationCheck = GreaterThanCheck(min),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> GreaterThanRule(
-    min: T,
-    reason: String,
-): GreaterThanRule<T> =
-    GreaterThanRule(
-        min = min,
-        violationFactory =
-            GreaterThanViolationFactory(
-                min = min,
-                reason = reason,
-            ),
-    )

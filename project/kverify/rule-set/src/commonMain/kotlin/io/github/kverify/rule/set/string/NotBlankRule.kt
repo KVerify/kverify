@@ -9,6 +9,24 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class NotBlankRule(
+    violationFactory: ViolationFactory<String> = NotBlankViolationFactory(),
+) : PredicateRule<String>(
+        validationCheck = NotBlankCheck,
+        violationFactory = violationFactory,
+    ) {
+    public companion object : Rule<String> by NotBlankRule()
+}
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun NotBlankRule(message: String): NotBlankRule =
+    NotBlankRule(
+        violationFactory =
+            NotBlankViolationFactory(
+                reason = message,
+            ),
+    )
+
 public object NotBlankCheck : ValidationCheck<String> {
     override fun isValid(
         scope: ValidationScope,
@@ -33,21 +51,3 @@ public class NotBlankViolationFactory(
             reason = reason ?: "Value must not be blank",
         )
 }
-
-public class NotBlankRule(
-    violationFactory: ViolationFactory<String> = NotBlankViolationFactory(),
-) : PredicateRule<String>(
-        validationCheck = NotBlankCheck,
-        violationFactory = violationFactory,
-    ) {
-    public companion object : Rule<String> by NotBlankRule()
-}
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun NotBlankRule(message: String): NotBlankRule =
-    NotBlankRule(
-        violationFactory =
-            NotBlankViolationFactory(
-                reason = message,
-            ),
-    )

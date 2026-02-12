@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class OneOfRule<T>(
+    public val allowed: Set<T>,
+    violationFactory: ViolationFactory<T> = OneOfViolationFactory(allowed),
+) : PredicateRule<T>(
+        validationCheck = OneOfCheck(allowed),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T> OneOfRule(
+    allowed: Set<T>,
+    reason: String,
+): OneOfRule<T> =
+    OneOfRule(
+        allowed = allowed,
+        violationFactory =
+            OneOfViolationFactory(
+                allowed = allowed,
+                reason = reason,
+            ),
+    )
+
 public class OneOfCheck<T>(
     public val allowed: Set<T>,
 ) : ValidationCheck<T> {
@@ -39,25 +61,3 @@ public class OneOfViolationFactory<T>(
             reason = reason ?: "Value must be one of $allowed. Actual: $value",
         )
 }
-
-public class OneOfRule<T>(
-    public val allowed: Set<T>,
-    violationFactory: ViolationFactory<T> = OneOfViolationFactory(allowed),
-) : PredicateRule<T>(
-        validationCheck = OneOfCheck(allowed),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T> OneOfRule(
-    allowed: Set<T>,
-    reason: String,
-): OneOfRule<T> =
-    OneOfRule(
-        allowed = allowed,
-        violationFactory =
-            OneOfViolationFactory(
-                allowed = allowed,
-                reason = reason,
-            ),
-    )

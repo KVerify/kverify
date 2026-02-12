@@ -8,6 +8,32 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class LengthRangeRule(
+    public val min: Int,
+    public val max: Int,
+    violationFactory: ViolationFactory<String> = LengthRangeViolationFactory(min, max),
+) : PredicateRule<String>(
+        validationCheck = LengthRangeCheck(min, max),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun LengthRangeRule(
+    min: Int,
+    max: Int,
+    reason: String,
+): LengthRangeRule =
+    LengthRangeRule(
+        min = min,
+        max = max,
+        violationFactory =
+            LengthRangeViolationFactory(
+                min = min,
+                max = max,
+                reason = reason,
+            ),
+    )
+
 public class LengthRangeCheck(
     public val min: Int,
     public val max: Int,
@@ -49,29 +75,3 @@ public class LengthRangeViolationFactory(
         )
     }
 }
-
-public class LengthRangeRule(
-    public val min: Int,
-    public val max: Int,
-    violationFactory: ViolationFactory<String> = LengthRangeViolationFactory(min, max),
-) : PredicateRule<String>(
-        validationCheck = LengthRangeCheck(min, max),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun LengthRangeRule(
-    min: Int,
-    max: Int,
-    reason: String,
-): LengthRangeRule =
-    LengthRangeRule(
-        min = min,
-        max = max,
-        violationFactory =
-            LengthRangeViolationFactory(
-                min = min,
-                max = max,
-                reason = reason,
-            ),
-    )

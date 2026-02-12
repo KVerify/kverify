@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class MaxLengthRule(
+    public val max: Int,
+    violationFactory: ViolationFactory<String> = MaxLengthViolationFactory(max),
+) : PredicateRule<String>(
+        validationCheck = MaxLengthCheck(max),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun MaxLengthRule(
+    max: Int,
+    reason: String,
+): MaxLengthRule =
+    MaxLengthRule(
+        max = max,
+        violationFactory =
+            MaxLengthViolationFactory(
+                max = max,
+                reason = reason,
+            ),
+    )
+
 public class MaxLengthCheck(
     public val max: Int,
 ) : ValidationCheck<String> {
@@ -41,25 +63,3 @@ public class MaxLengthViolationFactory(
         )
     }
 }
-
-public class MaxLengthRule(
-    public val max: Int,
-    violationFactory: ViolationFactory<String> = MaxLengthViolationFactory(max),
-) : PredicateRule<String>(
-        validationCheck = MaxLengthCheck(max),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun MaxLengthRule(
-    max: Int,
-    reason: String,
-): MaxLengthRule =
-    MaxLengthRule(
-        max = max,
-        violationFactory =
-            MaxLengthViolationFactory(
-                max = max,
-                reason = reason,
-            ),
-    )

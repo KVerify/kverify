@@ -8,6 +8,28 @@ import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
 import io.github.kverify.rule.set.PathAwareViolation
 
+public class NotEqualToRule<T : Comparable<T>>(
+    public val forbidden: T,
+    violationFactory: ViolationFactory<T> = NotEqualToViolationFactory(forbidden),
+) : PredicateRule<T>(
+        validationCheck = NotEqualToCheck(forbidden),
+        violationFactory = violationFactory,
+    )
+
+@Suppress("NOTHING_TO_INLINE")
+public inline fun <T : Comparable<T>> NotEqualToRule(
+    forbidden: T,
+    reason: String,
+): NotEqualToRule<T> =
+    NotEqualToRule(
+        forbidden = forbidden,
+        violationFactory =
+            NotEqualToViolationFactory(
+                forbidden = forbidden,
+                reason = reason,
+            ),
+    )
+
 public class NotEqualToCheck<T : Comparable<T>>(
     public val forbidden: T,
 ) : ValidationCheck<T> {
@@ -37,25 +59,3 @@ public class NotEqualToViolationFactory<T : Comparable<T>>(
             reason = reason ?: "Value must not be equal to $forbidden",
         )
 }
-
-public class NotEqualToRule<T : Comparable<T>>(
-    public val forbidden: T,
-    violationFactory: ViolationFactory<T> = NotEqualToViolationFactory(forbidden),
-) : PredicateRule<T>(
-        validationCheck = NotEqualToCheck(forbidden),
-        violationFactory = violationFactory,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T : Comparable<T>> NotEqualToRule(
-    forbidden: T,
-    reason: String,
-): NotEqualToRule<T> =
-    NotEqualToRule(
-        forbidden = forbidden,
-        violationFactory =
-            NotEqualToViolationFactory(
-                forbidden = forbidden,
-                reason = reason,
-            ),
-    )
