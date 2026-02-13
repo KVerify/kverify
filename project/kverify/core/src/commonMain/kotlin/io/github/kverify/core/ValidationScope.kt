@@ -50,6 +50,12 @@ public inline fun <T> ValidationScope.verify(
     )
 
 @Suppress("NOTHING_TO_INLINE")
+public inline fun <T> ValidationScope.verify(
+    vararg path: ValidationPathElement,
+    value: T,
+): Verification<T> = verify(path.asList(), value)
+
+@Suppress("NOTHING_TO_INLINE")
 public inline infix fun <T> ValidationScope.verify(value: T): Verification<T> =
     ScopedVerification(
         value = value,
