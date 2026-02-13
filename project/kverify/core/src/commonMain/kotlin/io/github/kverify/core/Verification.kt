@@ -20,12 +20,12 @@ public class ScopedVerification<T>(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> Verification<T>.with(rule: Rule<T>): Unit = enforce(rule)
+public inline infix fun <T> Verification<T>.using(rule: Rule<T>): Unit = enforce(rule)
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> Verification<T>.with(rules: Iterable<Rule<T>>) {
+public inline infix fun <T> Verification<T>.using(rules: Iterable<Rule<T>>) {
     for (rule in rules) enforce(rule)
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> Verification<T>.with(vararg rules: Rule<T>): Unit = with(rules.asList())
+public inline fun <T> Verification<T>.using(vararg rules: Rule<T>): Unit = using(rules.asList())
