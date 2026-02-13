@@ -4,9 +4,8 @@ public interface Verification<T> {
     public fun enforce(rule: Rule<T>)
 }
 
-@PublishedApi
-internal class VerificationImpl<T>(
-    val value: T,
+public class ScopedVerification<T>(
+    public val value: T,
     scope: ValidationScope,
     path: ValidationPath = emptyList(),
 ) : Verification<T> {
