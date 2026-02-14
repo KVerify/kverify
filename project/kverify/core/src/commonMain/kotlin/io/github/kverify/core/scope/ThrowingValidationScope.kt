@@ -1,25 +1,13 @@
-package io.github.kverify.core
+package io.github.kverify.core.scope
 
+import io.github.kverify.core.EmptyValidationContext
+import io.github.kverify.core.NonReturningValidationScope
+import io.github.kverify.core.ThrowingValidationScopeException
+import io.github.kverify.core.ValidationContext
+import io.github.kverify.core.ValidationScope
+import io.github.kverify.core.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
-
-public interface NonReturningValidationScope : ValidationScope {
-    override fun onFailure(violation: Violation): Nothing
-}
-
-public inline fun NonReturningValidationScope.failIf(
-    condition: Boolean,
-    lazyViolation: () -> Violation,
-) {
-    contract {
-        returns() implies !condition
-    }
-
-    if (condition) {
-        val violation = lazyViolation()
-        onFailure(violation)
-    }
-}
 
 public class ThrowingValidationScope(
     override val validationContext: ValidationContext = EmptyValidationContext,
