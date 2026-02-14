@@ -2,6 +2,7 @@
 
 package io.github.kverify.core
 
+import kotlin.contracts.contract
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 
@@ -10,6 +11,10 @@ public interface ValidationScope {
     public val validationContext: ValidationContext
 
     public fun onFailure(violation: Violation)
+}
+
+public interface NonReturningValidationScope : ValidationScope {
+    override fun onFailure(violation: Violation): Nothing
 }
 
 @PublishedApi
@@ -32,6 +37,20 @@ public inline fun ValidationScope.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
+    if (condition) {
+        val violation = lazyViolation()
+        onFailure(violation)
+    }
+}
+
+public inline fun NonReturningValidationScope.failIf(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+) {
+    contract {
+        returns() implies !condition
+    }
+
     if (condition) {
         val violation = lazyViolation()
         onFailure(violation)
