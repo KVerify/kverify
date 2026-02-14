@@ -1,7 +1,6 @@
 package io.github.kverify.coroutine.core
 
 import io.github.kverify.core.EmptyValidationContext
-import io.github.kverify.core.FirstViolationValidationScope
 import io.github.kverify.core.ValidationContext
 import io.github.kverify.core.ValidationScope
 import io.github.kverify.core.Violation
