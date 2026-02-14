@@ -29,3 +29,11 @@ public inline infix fun <T> Verification<T>.using(rules: Iterable<Rule<T>>) {
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> Verification<T>.using(vararg rules: Rule<T>): Unit = using(rules.asList())
+
+public fun <T : Any> ScopedVerification<T?>.ifNotNull(): ScopedVerification<T>? =
+    if (value != null) {
+        @Suppress("UNCHECKED_CAST")
+        this as ScopedVerification<T>
+    } else {
+        null
+    }
