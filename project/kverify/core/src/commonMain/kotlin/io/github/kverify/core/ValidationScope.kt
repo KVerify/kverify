@@ -75,14 +75,14 @@ public inline fun <T> ValidationScope.verify(
 ): Verification<T> = verify(path.asList(), value)
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> ValidationScope.verify(value: T): Verification<T> =
+public inline infix fun <T> ValidationScope.verify(value: T): ScopedVerification<T> =
     ScopedVerification(
         value = value,
         scope = this,
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> =
+public inline infix fun <T> ValidationScope.verify(property: KProperty0<T>): ScopedVerification<T> =
     ScopedVerification(
         value = property.get(),
         scope = this,
@@ -93,7 +93,7 @@ public inline infix fun <T> ValidationScope.verify(property: KProperty0<T>): Ver
 public inline fun <T> ValidationScope.verify(
     vararg path: KProperty<*>,
     property: KProperty0<T>,
-): Verification<T> =
+): ScopedVerification<T> =
     ScopedVerification(
         value = property.get(),
         scope = this,
