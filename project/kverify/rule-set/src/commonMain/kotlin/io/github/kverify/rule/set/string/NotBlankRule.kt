@@ -3,7 +3,7 @@ package io.github.kverify.rule.set.string
 import io.github.kverify.core.PredicateRule
 import io.github.kverify.core.Rule
 import io.github.kverify.core.ValidationCheck
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathElement
 import io.github.kverify.core.ValidationScope
 import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
@@ -35,7 +35,7 @@ public object NotBlankCheck : ValidationCheck<String> {
 }
 
 public data class NotBlankViolation(
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathElement>,
     override val reason: String,
 ) : PathAwareViolation
 

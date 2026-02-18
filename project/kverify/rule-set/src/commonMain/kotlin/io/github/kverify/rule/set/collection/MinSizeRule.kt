@@ -2,7 +2,7 @@ package io.github.kverify.rule.set.collection
 
 import io.github.kverify.core.PredicateRule
 import io.github.kverify.core.ValidationCheck
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathElement
 import io.github.kverify.core.ValidationScope
 import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
@@ -42,7 +42,7 @@ public class MinSizeCheck(
 public data class MinSizeViolation(
     val minSizeAllowed: Int,
     val actualSize: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathElement>,
     override val reason: String,
 ) : PathAwareViolation
 

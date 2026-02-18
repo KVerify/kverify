@@ -42,8 +42,6 @@ public sealed interface ValidationPathElement : ValidationContext.Element {
     ) : ValidationPathElement
 }
 
-public typealias ValidationPath = List<ValidationPathElement>
-
 @Suppress("NOTHING_TO_INLINE")
 public inline fun ListValidationContext(element: ValidationContext.Element): ListValidationContext =
     ListValidationContext(
@@ -57,4 +55,4 @@ public inline fun ListValidationContext(vararg elements: ValidationContext.Eleme
     )
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun ValidationContext.pathElements(): ValidationPath = elements.filterIsInstance<ValidationPathElement>()
+public inline fun ValidationContext.pathElements(): List<ValidationPathElement> = elements.filterIsInstance<ValidationPathElement>()

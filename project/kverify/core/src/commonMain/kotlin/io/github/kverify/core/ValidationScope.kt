@@ -59,7 +59,7 @@ public inline fun NonReturningValidationScope.failIf(
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(
-    path: ValidationPath,
+    path: List<ValidationPathElement>,
     value: T,
 ): Verification<T> =
     ScopedVerification(
