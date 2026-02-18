@@ -6,16 +6,8 @@ public interface Verification<T> {
 
 public class ScopedVerification<T>(
     public val value: T,
-    scope: ValidationScope,
-    path: List<ValidationPathElement> = emptyList(),
+    public val scope: ValidationScope,
 ) : Verification<T> {
-    private val scope =
-        if (path.isNotEmpty()) {
-            scope + ListValidationContext(path)
-        } else {
-            scope
-        }
-
     override fun enforce(rule: Rule<T>): Unit = rule.execute(scope, value)
 }
 
