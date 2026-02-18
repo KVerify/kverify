@@ -1,9 +1,6 @@
-@file:Suppress("TooManyFunctions")
-
 package io.github.kverify.core
 
 import kotlin.contracts.contract
-import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty0
 
 @KverifyDsl
@@ -58,44 +55,35 @@ public inline fun NonReturningValidationScope.failIf(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> ValidationScope.verify(
-    path: List<ValidationPathElement>,
-    value: T,
-): Verification<T> =
-    ScopedVerification(
-        value = value,
-        scope = this,
-        path = path,
-    )
-
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T> ValidationScope.verify(
-    vararg path: ValidationPathElement,
-    value: T,
-): Verification<T> = verify(path.asList(), value)
-
-@Suppress("NOTHING_TO_INLINE")
 public inline infix fun <T> ValidationScope.verify(value: T): ScopedVerification<T> =
     ScopedVerification(
         value = value,
         scope = this,
     )
 
-@Suppress("NOTHING_TO_INLINE")
-public inline infix fun <T> ValidationScope.verify(property: KProperty0<T>): ScopedVerification<T> =
-    ScopedVerification(
-        value = property.get(),
-        scope = this,
-        path = listOf(ValidationPathElement.Property(property.name)),
-    )
+public infix fun <T> ValidationScope.verify(property: KProperty0<T>): ScopedVerification<T> {
+    val pathElement = ValidationPathElement.Property(property.name)
+    val context = ListValidationContext(pathElement)
 
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T> ValidationScope.verify(
-    vararg path: KProperty<*>,
-    property: KProperty0<T>,
-): ScopedVerification<T> =
-    ScopedVerification(
+    return ScopedVerification(
         value = property.get(),
-        scope = this,
-        path = path.map { ValidationPathElement.Property(it.name) },
+        scope = this + context,
     )
+}
+
+public fun <T> ValidationScope.verify(
+    pathElements: List<ValidationPathElement>,
+    value: T,
+): Verification<T> {
+    val newScope =
+        if (pathElements.isNotEmpty()) {
+            this + ListValidationContext(pathElements)
+        } else {
+            this
+        }
+
+    return ScopedVerification(
+        value = value,
+        scope = newScope,
+    )
+}
