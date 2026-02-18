@@ -7,7 +7,7 @@ public interface Verification<T> {
 public class ScopedVerification<T>(
     public val value: T,
     scope: ValidationScope,
-    path: ValidationPath = emptyList(),
+    path: List<ValidationPathElement> = emptyList(),
 ) : Verification<T> {
     private val scope =
         if (path.isNotEmpty()) {

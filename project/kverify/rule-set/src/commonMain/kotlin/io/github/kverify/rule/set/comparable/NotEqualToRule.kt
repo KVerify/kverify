@@ -2,7 +2,7 @@ package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.PredicateRule
 import io.github.kverify.core.ValidationCheck
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathElement
 import io.github.kverify.core.ValidationScope
 import io.github.kverify.core.ViolationFactory
 import io.github.kverify.core.pathElements
@@ -41,7 +41,7 @@ public class NotEqualToCheck<T : Comparable<T>>(
 
 public data class NotEqualToViolation<T : Comparable<T>>(
     val forbidden: T,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathElement>,
     override val reason: String,
 ) : PathAwareViolation
 
