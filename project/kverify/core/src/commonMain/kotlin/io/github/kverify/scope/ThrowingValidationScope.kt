@@ -9,7 +9,7 @@ import kotlin.contracts.contract
 
 public class ThrowingValidationScope(
     override val validationContext: ValidationContext = EmptyValidationContext,
-) : NonReturningValidationScope {
+) : ValidationScope {
     override fun onFailure(violation: Violation): Nothing = throw ThrowingValidationScopeException(violation)
 }
 
