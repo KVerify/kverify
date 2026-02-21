@@ -1,12 +1,12 @@
 package io.github.kverify.rule.set.comparable
 
-import io.github.kverify.core.PredicateRule
-import io.github.kverify.core.ValidationCheck
-import io.github.kverify.core.ValidationPathElement
-import io.github.kverify.core.ValidationScope
-import io.github.kverify.core.ViolationFactory
-import io.github.kverify.core.pathElements
+import io.github.kverify.context.ValidationPathElement
+import io.github.kverify.context.pathElements
+import io.github.kverify.rule.PredicateRule
+import io.github.kverify.rule.ValidationCheck
+import io.github.kverify.rule.ViolationFactory
 import io.github.kverify.rule.set.PathAwareViolation
+import io.github.kverify.scope.ValidationScope
 
 public class LessThanRule<T : Comparable<T>>(
     public val max: T,

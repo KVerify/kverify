@@ -1,4 +1,4 @@
-package io.github.kverify.core
+package io.github.kverify.rule
 
 import kotlin.jvm.JvmInline
 
