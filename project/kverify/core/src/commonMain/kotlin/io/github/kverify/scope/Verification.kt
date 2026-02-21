@@ -1,7 +1,6 @@
-package io.github.kverify.core
+package io.github.kverify.scope
 
 import io.github.kverify.rule.Rule
-import io.github.kverify.scope.ValidationScope
 
 public interface Verification<T> {
     public fun enforce(rule: Rule<T>)
