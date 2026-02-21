@@ -3,10 +3,7 @@ package io.github.kverify.scope
 import io.github.kverify.context.ListValidationContext
 import io.github.kverify.context.ValidationContext
 import io.github.kverify.context.ValidationPathElement
-import io.github.kverify.core.ScopedVerification
-import io.github.kverify.core.Verification
 import io.github.kverify.rule.Violation
-import kotlin.contracts.contract
 import kotlin.reflect.KProperty0
 
 /**
