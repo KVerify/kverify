@@ -1,4 +1,6 @@
-package io.github.kverify.core
+package io.github.kverify.result
+
+import io.github.kverify.rule.Violation
 
 /**
  * An exception that carries a list of [violations].
@@ -52,7 +54,7 @@ public open class ValidationException(
 }
 
 /**
- * A [ValidationException] that carries a single [violation].
+ * A [io.github.kverify.result.ValidationException] that carries a single [violation].
  */
 public open class ThrowingValidationScopeException(
     message: String? = null,
