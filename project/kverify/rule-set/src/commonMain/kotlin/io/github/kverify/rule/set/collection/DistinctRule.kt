@@ -54,7 +54,9 @@ public class DistinctViolationFactory(
             actualSize = actualSize,
             distinctSize = distinctSize,
             validationPath = scope.validationContext.pathElements(),
-            reason = reason ?: "Collection must contain distinct elements. Found ${actualSize - distinctSize} duplicates",
+            reason =
+                reason
+                    ?: "Collection must contain distinct elements. Found ${actualSize - distinctSize} duplicates",
         )
     }
 }

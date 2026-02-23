@@ -1,7 +1,6 @@
 package io.github.kverify.rule
 
 import io.github.kverify.scope.ValidationScope
-import kotlin.collections.plus
 import kotlin.jvm.JvmInline
 
 public fun interface ValidationCheck<in T> {

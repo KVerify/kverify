@@ -3,9 +3,6 @@
 package io.github.kverify.result
 
 import io.github.kverify.rule.Violation
-import kotlin.collections.ifEmpty
-import kotlin.collections.joinToString
-import kotlin.collections.plus
 import kotlin.js.JsName
 import kotlin.jvm.JvmInline
 import kotlin.jvm.JvmName
