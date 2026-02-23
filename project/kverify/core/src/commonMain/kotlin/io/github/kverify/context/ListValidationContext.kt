@@ -1,7 +1,5 @@
 package io.github.kverify.context
 
-import kotlin.collections.plus
-
 public data class ListValidationContext(
     override val elements: List<ValidationContext.Element>,
 ) : ValidationContext {
