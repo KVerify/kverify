@@ -1,9 +1,9 @@
 package io.github.kverify.rule.set.collection
 
-import io.github.kverify.context.ListValidationContext
-import io.github.kverify.context.ValidationPathElement
-import io.github.kverify.rule.Rule
-import io.github.kverify.scope.CollectingValidationScope
+import io.github.kverify.core.context.ListValidationContext
+import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.scope.CollectingValidationScope
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
