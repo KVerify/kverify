@@ -1,12 +1,11 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.core.context.pathElements
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.rule.set.PathAwareViolation
+import io.github.kverify.core.violation.PathAwareViolation
 
 public class NotEqualToRule<T : Comparable<T>>(
     public val forbidden: T,
@@ -55,7 +54,7 @@ public class NotEqualToViolationFactory<T : Comparable<T>>(
     ): NotEqualToViolation<T> =
         NotEqualToViolation(
             forbidden = forbidden,
-            validationPath = scope.validationContext.pathElements(),
+            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
             reason = reason ?: "Value must not be equal to $forbidden",
         )
 }

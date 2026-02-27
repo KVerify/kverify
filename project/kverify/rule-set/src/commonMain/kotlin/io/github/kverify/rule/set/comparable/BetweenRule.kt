@@ -1,12 +1,11 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.core.context.pathElements
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.rule.set.PathAwareViolation
+import io.github.kverify.core.violation.PathAwareViolation
 
 public class BetweenRule<T : Comparable<T>>(
     public val min: T,
@@ -66,7 +65,7 @@ public class BetweenViolationFactory<T : Comparable<T>>(
             min = min,
             max = max,
             actual = value,
-            validationPath = scope.validationContext.pathElements(),
+            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
             reason = reason ?: "Value must be between $min and $max. Actual: $value",
         )
 }
