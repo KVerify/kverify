@@ -1,12 +1,11 @@
 package io.github.kverify.rule.set.collection
 
 import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.core.context.pathElements
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.rule.set.PathAwareViolation
+import io.github.kverify.core.violation.PathAwareViolation
 
 public class MaxSizeRule<C : Collection<*>>(
     public val max: Int,
@@ -58,7 +57,7 @@ public class MaxSizeViolationFactory(
         return MaxSizeViolation(
             maxSizeAllowed = max,
             actualSize = actualSize,
-            validationPath = scope.validationContext.pathElements(),
+            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
             reason = reason ?: "Collection must have at most $max elements. Actual size: $actualSize",
         )
     }

@@ -1,12 +1,11 @@
 package io.github.kverify.rule.set.string
 
 import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.core.context.pathElements
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.rule.set.PathAwareViolation
+import io.github.kverify.core.violation.PathAwareViolation
 
 public class MinLengthRule(
     public val min: Int,
@@ -58,7 +57,7 @@ public class MinLengthViolationFactory(
         return MinLengthViolation(
             minLengthAllowed = min,
             actualLength = actualLength,
-            validationPath = scope.validationContext.pathElements(),
+            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
             reason = reason ?: "Value must be at least $min characters long. Actual length: $actualLength",
         )
     }

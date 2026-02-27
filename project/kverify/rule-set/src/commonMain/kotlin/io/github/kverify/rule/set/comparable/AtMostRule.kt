@@ -1,12 +1,11 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.core.context.pathElements
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
 import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.rule.set.PathAwareViolation
+import io.github.kverify.core.violation.PathAwareViolation
 
 public class AtMostRule<T : Comparable<T>>(
     public val max: T,
@@ -57,7 +56,7 @@ public class AtMostViolationFactory<T : Comparable<T>>(
         AtMostViolation(
             maxAllowed = max,
             actual = value,
-            validationPath = scope.validationContext.pathElements(),
+            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
             reason = reason ?: "Value must be at most $max. Actual: $value",
         )
 }

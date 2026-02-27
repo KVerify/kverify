@@ -2,6 +2,7 @@ package io.github.kverify.core.rule
 
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.core.scope.failIf
+import io.github.kverify.core.violation.Violation
 
 public open class PredicateRule<in T>(
     public val validationCheck: ValidationCheck<T>,
@@ -17,4 +18,18 @@ public open class PredicateRule<in T>(
             violationFactory.createViolation(scope, value)
         }
     }
+}
+
+public interface ValidationCheck<in T> {
+    public fun isValid(
+        scope: ValidationScope,
+        value: T,
+    ): Boolean
+}
+
+public interface ViolationFactory<in T> {
+    public fun createViolation(
+        scope: ValidationScope,
+        value: T,
+    ): Violation
 }
