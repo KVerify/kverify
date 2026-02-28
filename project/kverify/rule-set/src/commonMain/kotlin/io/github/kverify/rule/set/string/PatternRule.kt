@@ -1,6 +1,7 @@
 package io.github.kverify.rule.set.string
 
 import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.rule.set.validationPath
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
@@ -54,7 +55,7 @@ public class PatternViolationFactory(
     ): PatternViolation =
         PatternViolation(
             regex = regex,
-            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
+            validationPath = scope.validationContext.validationPath(),
             reason = reason ?: "Value must match the pattern: $regex",
         )
 }
