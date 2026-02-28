@@ -1,6 +1,7 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.rule.set.validationPath
 import io.github.kverify.core.rule.PredicateRule
 import io.github.kverify.core.rule.ValidationCheck
 import io.github.kverify.core.rule.ViolationFactory
@@ -56,7 +57,7 @@ public class AtLeastViolationFactory<T : Comparable<T>>(
         AtLeastViolation(
             minAllowed = min,
             actual = value,
-            validationPath = scope.validationContext.elements.filterIsInstance<ValidationPathElement>(),
+            validationPath = scope.validationContext.validationPath(),
             reason = reason ?: "Value must be at least $min. Actual: $value",
         )
 }

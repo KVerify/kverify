@@ -1,6 +1,5 @@
 package io.github.kverify.core.scope
 
-import io.github.kverify.core.context.ListValidationContext
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.violation.Violation
@@ -41,12 +40,8 @@ public inline fun <T> ValidationScope.verify(value: T): ScopedVerification<T> =
         scope = this,
     )
 
-public fun <T> ValidationScope.verify(property: KProperty0<T>): ScopedVerification<T> {
-    val pathElement = ValidationPathElement.Property(property.name)
-    val context = ListValidationContext(pathElement)
-
-    return ScopedVerification(
+public fun <T> ValidationScope.verify(property: KProperty0<T>): ScopedVerification<T> =
+    ScopedVerification(
         value = property.get(),
-        scope = this + context,
+        scope = this + ValidationPathElement.Property(property.name),
     )
-}
