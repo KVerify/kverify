@@ -35,3 +35,22 @@ public fun ValidationResult(violations: List<Violation>): ValidationResult =
 public fun ValidationResult.throwIfInvalid() {
     if (this is ValidationResult.Invalid) throw ValidationException(violations)
 }
+
+public inline fun ValidationResult.onValid(block: () -> Unit): ValidationResult =
+    apply {
+        if (this is ValidationResult.Valid) block()
+    }
+
+public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit): ValidationResult =
+    apply {
+        if (this is ValidationResult.Invalid) block(violations)
+    }
+
+public inline fun <T> ValidationResult.fold(
+    onValid: () -> T,
+    onInvalid: (List<Violation>) -> T,
+): T =
+    when (this) {
+        ValidationResult.Valid -> onValid()
+        is ValidationResult.Invalid -> onInvalid(violations)
+    }
