@@ -1,6 +1,6 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.scope.ScopedVerification
+import io.github.kverify.core.scope.Verification
 import io.github.kverify.core.scope.failIf
 import io.github.kverify.violations.DistinctViolation
 import io.github.kverify.violations.ExactSizeViolation
@@ -8,10 +8,10 @@ import io.github.kverify.violations.MaxSizeViolation
 import io.github.kverify.violations.MinSizeViolation
 import io.github.kverify.violations.SizeRangeViolation
 
-public fun <C : Collection<*>> ScopedVerification<C>.minSize(
+public fun <C : Collection<*>> Verification<C>.minSize(
     min: Int,
     reason: String? = null,
-): ScopedVerification<C> =
+): Verification<C> =
     apply {
         val size = value.size
         scope.failIf(size < min) {
@@ -24,10 +24,10 @@ public fun <C : Collection<*>> ScopedVerification<C>.minSize(
         }
     }
 
-public fun <C : Collection<*>> ScopedVerification<C>.maxSize(
+public fun <C : Collection<*>> Verification<C>.maxSize(
     max: Int,
     reason: String? = null,
-): ScopedVerification<C> =
+): Verification<C> =
     apply {
         val size = value.size
         scope.failIf(size > max) {
@@ -40,10 +40,10 @@ public fun <C : Collection<*>> ScopedVerification<C>.maxSize(
         }
     }
 
-public fun <C : Collection<*>> ScopedVerification<C>.exactSize(
+public fun <C : Collection<*>> Verification<C>.exactSize(
     size: Int,
     reason: String? = null,
-): ScopedVerification<C> =
+): Verification<C> =
     apply {
         val actualSize = value.size
         scope.failIf(actualSize != size) {
@@ -56,11 +56,11 @@ public fun <C : Collection<*>> ScopedVerification<C>.exactSize(
         }
     }
 
-public fun <C : Collection<*>> ScopedVerification<C>.sizeRange(
+public fun <C : Collection<*>> Verification<C>.sizeRange(
     min: Int,
     max: Int,
     reason: String? = null,
-): ScopedVerification<C> =
+): Verification<C> =
     apply {
         val size = value.size
         scope.failIf(size < min || size > max) {
@@ -74,7 +74,7 @@ public fun <C : Collection<*>> ScopedVerification<C>.sizeRange(
         }
     }
 
-public fun <C : Collection<*>> ScopedVerification<C>.distinct(reason: String? = null): ScopedVerification<C> =
+public fun <C : Collection<*>> Verification<C>.distinct(reason: String? = null): Verification<C> =
     apply {
         val size = value.size
         val distinctSize = value.toSet().size

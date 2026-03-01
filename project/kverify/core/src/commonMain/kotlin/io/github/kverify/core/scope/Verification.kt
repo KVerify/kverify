@@ -1,14 +1,14 @@
 package io.github.kverify.core.scope
 
-public class ScopedVerification<T>(
+public class Verification<T>(
     public val value: T,
     public val scope: ValidationScope,
 )
 
-public fun <T : Any> ScopedVerification<T?>.takeIfNotNull(): ScopedVerification<T>? =
+public fun <T : Any> Verification<T?>.takeIfNotNull(): Verification<T>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")
-        this as ScopedVerification<T>
+        this as Verification<T>
     } else {
         null
     }

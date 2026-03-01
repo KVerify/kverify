@@ -1,6 +1,6 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.scope.ScopedVerification
+import io.github.kverify.core.scope.Verification
 import io.github.kverify.core.scope.failIf
 import io.github.kverify.violations.ExactLengthViolation
 import io.github.kverify.violations.LengthRangeViolation
@@ -9,9 +9,7 @@ import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
 import io.github.kverify.violations.PatternViolation
 
-private typealias StringScopedVerification = ScopedVerification<String>
-
-public fun StringScopedVerification.notBlank(reason: String? = null): StringScopedVerification =
+public fun Verification<String>.notBlank(reason: String? = null): Verification<String> =
     apply {
         scope.failIf(value.isBlank()) {
             NotBlankViolation(
@@ -21,10 +19,10 @@ public fun StringScopedVerification.notBlank(reason: String? = null): StringScop
         }
     }
 
-public fun StringScopedVerification.minLength(
+public fun Verification<String>.minLength(
     min: Int,
     reason: String? = null,
-): StringScopedVerification =
+): Verification<String> =
     apply {
         val length = value.length
         scope.failIf(length < min) {
@@ -37,10 +35,10 @@ public fun StringScopedVerification.minLength(
         }
     }
 
-public fun StringScopedVerification.maxLength(
+public fun Verification<String>.maxLength(
     max: Int,
     reason: String? = null,
-): StringScopedVerification =
+): Verification<String> =
     apply {
         val length = value.length
         scope.failIf(length > max) {
@@ -53,10 +51,10 @@ public fun StringScopedVerification.maxLength(
         }
     }
 
-public fun StringScopedVerification.exactLength(
+public fun Verification<String>.exactLength(
     length: Int,
     reason: String? = null,
-): StringScopedVerification =
+): Verification<String> =
     apply {
         val actualLength = value.length
         scope.failIf(actualLength != length) {
@@ -69,11 +67,11 @@ public fun StringScopedVerification.exactLength(
         }
     }
 
-public fun StringScopedVerification.lengthRange(
+public fun Verification<String>.lengthRange(
     min: Int,
     max: Int,
     reason: String? = null,
-): StringScopedVerification =
+): Verification<String> =
     apply {
         val length = value.length
         scope.failIf(length !in min..max) {
@@ -87,10 +85,10 @@ public fun StringScopedVerification.lengthRange(
         }
     }
 
-public fun StringScopedVerification.pattern(
+public fun Verification<String>.pattern(
     regex: Regex,
     reason: String? = null,
-): StringScopedVerification =
+): Verification<String> =
     apply {
         scope.failIf(!value.matches(regex)) {
             PatternViolation(
