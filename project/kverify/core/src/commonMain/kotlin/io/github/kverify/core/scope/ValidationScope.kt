@@ -34,14 +34,14 @@ public inline fun ValidationScope.failIf(
 }
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun <T> ValidationScope.verify(value: T): ScopedVerification<T> =
-    ScopedVerification(
+public inline fun <T> ValidationScope.verify(value: T): Verification<T> =
+    Verification(
         value = value,
         scope = this,
     )
 
-public fun <T> ValidationScope.verify(property: KProperty0<T>): ScopedVerification<T> =
-    ScopedVerification(
+public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> =
+    Verification(
         value = property.get(),
         scope = this + ValidationPathElement.Property(property.name),
     )
