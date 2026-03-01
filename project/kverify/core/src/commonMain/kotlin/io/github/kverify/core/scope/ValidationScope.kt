@@ -16,11 +16,8 @@ public interface ValidationScope {
 
     public fun onFailure(violation: Violation)
 
-    public fun <T> enforce(
-        rule: Rule<T>,
-        value: T,
-    ) {
-        val violation = rule.check(validationContext, value) ?: return
+    public fun enforce(rule: Rule) {
+        val violation = rule.check() ?: return
 
         onFailure(violation)
     }
