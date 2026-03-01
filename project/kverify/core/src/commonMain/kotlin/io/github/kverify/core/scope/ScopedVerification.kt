@@ -1,15 +1,9 @@
 package io.github.kverify.core.scope
 
-import io.github.kverify.core.rule.Rule
-
 public class ScopedVerification<T>(
-    internal val value: T,
-    internal val scope: ValidationScope,
+    public val value: T,
+    public val scope: ValidationScope,
 )
-
-public fun <T> ScopedVerification<T>.using(vararg rules: Rule<T>) {
-    for (rule in rules) rule.execute(scope, value)
-}
 
 public fun <T : Any> ScopedVerification<T?>.ifNotNull(): ScopedVerification<T>? =
     if (value != null) {
