@@ -1,5 +1,6 @@
 package io.github.kverify.core.result
 
+import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.violation.Violation
 
 public sealed interface ValidationResult {
@@ -30,3 +31,7 @@ public fun ValidationResult(violations: List<Violation>): ValidationResult =
             violations = violations,
         )
     }
+
+public fun ValidationResult.throwIfInvalid() {
+    if (this is ValidationResult.Invalid) throw ValidationException(violations)
+}
