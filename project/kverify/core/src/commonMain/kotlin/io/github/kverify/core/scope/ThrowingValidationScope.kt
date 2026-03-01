@@ -13,20 +13,6 @@ public class ThrowingValidationScope(
     override fun onFailure(violation: Violation): Nothing = throw ThrowingValidationScopeException(violation)
 }
 
-public inline fun ThrowingValidationScope.failIf(
-    condition: Boolean,
-    lazyViolation: () -> Violation,
-) {
-    contract {
-        returns() implies !condition
-    }
-
-    if (condition) {
-        val violation = lazyViolation()
-        onFailure(violation)
-    }
-}
-
 public inline fun <T> verifyWithThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
     block: ThrowingValidationScope.() -> T,
