@@ -5,7 +5,7 @@ public class ScopedVerification<T>(
     public val scope: ValidationScope,
 )
 
-public fun <T : Any> ScopedVerification<T?>.ifNotNull(): ScopedVerification<T>? =
+public fun <T : Any> ScopedVerification<T?>.takeIfNotNull(): ScopedVerification<T>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")
         this as ScopedVerification<T>
