@@ -30,16 +30,6 @@ public inline operator fun ValidationScope.plus(validationContext: ValidationCon
         additionalContext = validationContext,
     )
 
-public inline fun ValidationScope.failIf(
-    condition: Boolean,
-    lazyViolation: () -> Violation,
-) {
-    if (condition) {
-        val violation = lazyViolation()
-        onFailure(violation)
-    }
-}
-
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(value: T): Verification<T> =
     Verification(
