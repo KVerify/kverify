@@ -25,3 +25,14 @@ public interface ValidationContext {
         ): R = operation(initial, this)
     }
 }
+
+public fun ValidationContext.validationPath(): List<ValidationPathElement> {
+    val context = this
+
+    return buildList {
+        context.fold(this) { acc, element ->
+            if (element is ValidationPathElement) acc.add(element)
+            acc
+        }
+    }
+}
