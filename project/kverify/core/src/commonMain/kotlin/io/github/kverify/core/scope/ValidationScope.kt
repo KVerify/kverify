@@ -2,6 +2,7 @@ package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.reflect.KProperty0
 
@@ -14,6 +15,15 @@ public interface ValidationScope {
     public val validationContext: ValidationContext
 
     public fun onFailure(violation: Violation)
+
+    public fun <T> enforce(
+        rule: Rule<T>,
+        value: T,
+    ) {
+        val violation = rule.check(validationContext, value) ?: return
+
+        onFailure(violation)
+    }
 }
 
 @Suppress("NOTHING_TO_INLINE")
