@@ -10,7 +10,6 @@ import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
 import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
-import io.github.kverify.violations.PatternViolation
 
 public fun Verification<String>.notBlank(reason: String? = null): Verification<String> =
     apply {
@@ -52,15 +51,6 @@ public fun Verification<String>.lengthRange(
 ): Verification<String> =
     apply {
         val rule = StringLengthRangeRule(value, scope.validationContext, min, max, reason)
-        scope.enforce(rule)
-    }
-
-public fun Verification<String>.pattern(
-    regex: Regex,
-    reason: String? = null,
-): Verification<String> =
-    apply {
-        val rule = StringPatternRule(value, scope.validationContext, regex, reason)
         scope.enforce(rule)
     }
 
@@ -176,24 +166,4 @@ private class StringLengthRangeRule(
             null
         }
     }
-}
-
-private class StringPatternRule(
-    private val value: String,
-    private val context: ValidationContext,
-    private val regex: Regex,
-    private val reason: String? = null,
-) : Rule {
-    override fun check(): Violation? =
-        if (!value.matches(regex)) {
-            PatternViolation(
-                regex = regex,
-                validationPath = context.validationPath(),
-                reason =
-                    reason
-                        ?: "Value must match the pattern: $regex",
-            )
-        } else {
-            null
-        }
 }
