@@ -1,8 +1,6 @@
 package io.github.kverify.core.scope
 
-import io.github.kverify.core.context.IndexPathElement
-import io.github.kverify.core.context.PropertyPathElement
-import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.violation.Violation
 import kotlin.test.Test
@@ -47,7 +45,7 @@ class VerificationTest {
 
             val path = verification.scope.validationContext.validationPath()
             assertEquals(1, path.size)
-            assertEquals(PropertyPathElement("name"), path[0])
+            assertEquals(NamePathElement("name"), path[0])
         }
     }
 
@@ -98,12 +96,12 @@ class VerificationTest {
         val violations =
             verifyWithCollecting {
                 val addressVerification = verify(user::address)
-                val cityScope = addressVerification.scope + PropertyPathElement("city")
+                val cityScope = addressVerification.scope + NamePathElement("city")
 
                 val path = cityScope.validationContext.validationPath()
                 assertEquals(2, path.size)
-                assertEquals(PropertyPathElement("address"), path[0])
-                assertEquals(PropertyPathElement("city"), path[1])
+                assertEquals(NamePathElement("address"), path[0])
+                assertEquals(NamePathElement("city"), path[1])
             }
 
         assertTrue(violations.isEmpty())

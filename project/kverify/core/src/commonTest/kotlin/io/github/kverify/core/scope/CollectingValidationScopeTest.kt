@@ -1,8 +1,7 @@
 package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.EmptyValidationContext
-import io.github.kverify.core.context.PropertyPathElement
-import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
@@ -67,7 +66,7 @@ class CollectingValidationScopeTest {
 
     @Test
     fun acceptsCustomContext() {
-        val context = PropertyPathElement("root")
+        val context = NamePathElement("root")
         val scope = CollectingValidationScope(validationContext = context)
         assertEquals(context, scope.validationContext)
     }
@@ -106,7 +105,7 @@ class CollectingValidationScopeTest {
 
     @Test
     fun verifyWithCollectingPassesContextToScope() {
-        val context = PropertyPathElement("root")
+        val context = NamePathElement("root")
 
         val violations =
             verifyWithCollecting(validationContext = context) {

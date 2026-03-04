@@ -2,7 +2,7 @@ package io.github.kverify.core.context
 
 public sealed interface ValidationPathElement : ValidationContext.Element
 
-public data class PropertyPathElement(
+public data class NamePathElement(
     val name: String,
 ) : ValidationPathElement
 
