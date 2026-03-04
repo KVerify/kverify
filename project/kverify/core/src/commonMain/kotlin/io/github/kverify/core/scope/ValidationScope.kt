@@ -43,7 +43,7 @@ public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> 
         scope = this + PropertyPathElement(property.name),
     )
 
-public inline fun ValidationScope.withName(
+public inline fun ValidationScope.pathName(
     name: String,
     block: ValidationScope.() -> Unit = {},
 ): ValidationScope {
