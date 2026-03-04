@@ -14,21 +14,21 @@ class ValidationContextTest {
 
     @Test
     fun emptyPlusContextReturnsOther() {
-        val element = PropertyPathElement("name")
+        val element = NamePathElement("name")
         val result = EmptyValidationContext + element
         assertSame(element, result)
     }
 
     @Test
     fun contextPlusEmptyReturnsSelf() {
-        val element = PropertyPathElement("name")
+        val element = NamePathElement("name")
         val result = element + EmptyValidationContext
         assertSame(element, result)
     }
 
     @Test
     fun elementFoldsOverItself() {
-        val element = PropertyPathElement("name")
+        val element = NamePathElement("name")
         val result =
             element.fold(mutableListOf<ValidationContext.Element>()) { acc, e ->
                 acc.apply { add(e) }
@@ -39,9 +39,9 @@ class ValidationContextTest {
 
     @Test
     fun combinedContextFoldsInOrder() {
-        val a = PropertyPathElement("a")
+        val a = NamePathElement("a")
         val b = IndexPathElement(0)
-        val c = PropertyPathElement("c")
+        val c = NamePathElement("c")
 
         val combined = (a + b) + c
 
@@ -58,7 +58,7 @@ class ValidationContextTest {
 
     @Test
     fun validationPathExtractsPathElements() {
-        val property = PropertyPathElement("user")
+        val property = NamePathElement("user")
         val index = IndexPathElement(2)
 
         val context = property + index
@@ -77,7 +77,7 @@ class ValidationContextTest {
 
     @Test
     fun validationPathFromSingleElement() {
-        val property = PropertyPathElement("name")
+        val property = NamePathElement("name")
         val path = property.validationPath()
 
         assertEquals(1, path.size)
