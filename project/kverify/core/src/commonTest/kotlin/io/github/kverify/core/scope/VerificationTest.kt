@@ -11,7 +11,9 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class VerificationTest {
-    private data class SimpleViolation(override val reason: String) : Violation
+    private data class SimpleViolation(
+        override val reason: String,
+    ) : Violation
 
     @Test
     fun verifyCreatesVerificationWithValue() {
@@ -31,7 +33,9 @@ class VerificationTest {
 
     @Test
     fun verifyPropertyExtractsValueAndAddsPath() {
-        data class User(val name: String)
+        data class User(
+            val name: String,
+        )
 
         val user = User("Alice")
 
@@ -41,7 +45,7 @@ class VerificationTest {
 
             val path = verification.scope.validationContext.validationPath()
             assertEquals(1, path.size)
-            assertEquals(ValidationPathElement.Property("name"), path[0])
+            assertEquals(ValidationPathElement.Name("name"), path[0])
         }
     }
 
@@ -66,26 +70,28 @@ class VerificationTest {
 
     @Test
     fun eachIteratesWithIndexedContext() {
-        val violations = verifyWithCollecting {
-            verify(listOf("a", "b", "c")).each { idx, element ->
-                val path = validationContext.validationPath()
-                assertEquals(1, path.size)
-                assertEquals(ValidationPathElement.Index(idx), path[0])
+        val violations =
+            verifyWithCollecting {
+                verify(listOf("a", "b", "c")).each { idx, element ->
+                    val path = validationContext.validationPath()
+                    assertEquals(1, path.size)
+                    assertEquals(ValidationPathElement.Index(idx), path[0])
+                }
             }
-        }
 
         assertTrue(violations.isEmpty())
     }
 
     @Test
     fun eachCollectsViolationsFromElements() {
-        val violations = verifyWithCollecting {
-            verify(listOf("", "ok", "")).each { element ->
-                if (element.isBlank()) {
-                    onFailure(SimpleViolation("blank at ${validationContext.validationPath()}"))
+        val violations =
+            verifyWithCollecting {
+                verify(listOf("", "ok", "")).each { element ->
+                    if (element.isBlank()) {
+                        onFailure(SimpleViolation("blank at ${validationContext.validationPath()}"))
+                    }
                 }
             }
-        }
 
         assertEquals(2, violations.size)
     }
@@ -102,50 +108,60 @@ class VerificationTest {
 
     @Test
     fun chainingMultipleVerifications() {
-        val violations = verifyWithCollecting {
-            verify("").apply {
-                if (value.isBlank()) scope.onFailure(SimpleViolation("blank"))
-                if (value.length < 3) scope.onFailure(SimpleViolation("too short"))
+        val violations =
+            verifyWithCollecting {
+                verify("").apply {
+                    if (value.isBlank()) scope.onFailure(SimpleViolation("blank"))
+                    if (value.length < 3) scope.onFailure(SimpleViolation("too short"))
+                }
             }
-        }
 
         assertEquals(2, violations.size)
     }
 
     @Test
     fun nestedPropertyPathsStack() {
-        data class Address(val city: String)
-        data class User(val address: Address)
+        data class Address(
+            val city: String,
+        )
+
+        data class User(
+            val address: Address,
+        )
 
         val user = User(Address(""))
 
-        val violations = verifyWithCollecting {
-            val addressVerification = verify(user::address)
-            val cityScope = addressVerification.scope + ValidationPathElement.Property("city")
+        val violations =
+            verifyWithCollecting {
+                val addressVerification = verify(user::address)
+                val cityScope = addressVerification.scope + ValidationPathElement.Name("city")
 
-            val path = cityScope.validationContext.validationPath()
-            assertEquals(2, path.size)
-            assertEquals(ValidationPathElement.Property("address"), path[0])
-            assertEquals(ValidationPathElement.Property("city"), path[1])
-        }
+                val path = cityScope.validationContext.validationPath()
+                assertEquals(2, path.size)
+                assertEquals(ValidationPathElement.Name("address"), path[0])
+                assertEquals(ValidationPathElement.Name("city"), path[1])
+            }
 
         assertTrue(violations.isEmpty())
     }
 
     @Test
     fun eachWithNestedPropertyPath() {
-        data class User(val tags: List<String>)
+        data class User(
+            val tags: List<String>,
+        )
 
         val user = User(listOf("a", "b"))
 
-        val violations = verifyWithCollecting {
-            verify(user::tags).each { idx, _ ->
-                val path = validationContext.validationPath()
-                assertEquals(2, path.size)
-                assertEquals(ValidationPathElement.Property("tags"), path[0])
-                assertEquals(ValidationPathElement.Index(idx), path[1])
+        val violations =
+            verifyWithCollecting {
+                verify(user::tags).each { idx, _ ->
+                    val path = validationContext.validationPath()
+                    assertEquals(2, path.size)
+                    assertEquals(ValidationPathElement.Name("tags"), path[0])
+                    assertEquals(ValidationPathElement.Index(idx), path[1])
+                }
             }
-        }
 
         assertTrue(violations.isEmpty())
     }
