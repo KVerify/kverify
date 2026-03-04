@@ -12,7 +12,9 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class CollectingValidationScopeTest {
-    private data class SimpleViolation(override val reason: String) : Violation
+    private data class SimpleViolation(
+        override val reason: String,
+    ) : Violation
 
     @Test
     fun emptyValidationReturnsNoViolations() {
@@ -22,9 +24,10 @@ class CollectingValidationScopeTest {
 
     @Test
     fun collectsSingleViolation() {
-        val violations = verifyWithCollecting {
-            onFailure(SimpleViolation("fail"))
-        }
+        val violations =
+            verifyWithCollecting {
+                onFailure(SimpleViolation("fail"))
+            }
 
         assertEquals(1, violations.size)
         assertEquals("fail", violations[0].reason)
@@ -32,11 +35,12 @@ class CollectingValidationScopeTest {
 
     @Test
     fun collectsMultipleViolations() {
-        val violations = verifyWithCollecting {
-            onFailure(SimpleViolation("first"))
-            onFailure(SimpleViolation("second"))
-            onFailure(SimpleViolation("third"))
-        }
+        val violations =
+            verifyWithCollecting {
+                onFailure(SimpleViolation("first"))
+                onFailure(SimpleViolation("second"))
+                onFailure(SimpleViolation("third"))
+            }
 
         assertEquals(3, violations.size)
         assertEquals("first", violations[0].reason)
@@ -46,9 +50,10 @@ class CollectingValidationScopeTest {
 
     @Test
     fun returnsImmutableList() {
-        val violations = verifyWithCollecting {
-            onFailure(SimpleViolation("fail"))
-        }
+        val violations =
+            verifyWithCollecting {
+                onFailure(SimpleViolation("fail"))
+            }
 
         assertIs<List<Violation>>(violations)
     }
@@ -61,7 +66,7 @@ class CollectingValidationScopeTest {
 
     @Test
     fun acceptsCustomContext() {
-        val context = ValidationPathElement.Property("root")
+        val context = ValidationPathElement.Name("root")
         val scope = CollectingValidationScope(validationContext = context)
         assertEquals(context, scope.validationContext)
     }
@@ -69,13 +74,15 @@ class CollectingValidationScopeTest {
     @Test
     fun enforceCollectsViolationFromFailingRule() {
         val violation = SimpleViolation("rule failed")
-        val rule = object : Rule {
-            override fun check(): Violation? = violation
-        }
+        val rule =
+            object : Rule {
+                override fun check(): Violation? = violation
+            }
 
-        val violations = verifyWithCollecting {
-            enforce(rule)
-        }
+        val violations =
+            verifyWithCollecting {
+                enforce(rule)
+            }
 
         assertEquals(1, violations.size)
         assertSame(violation, violations[0])
@@ -83,26 +90,29 @@ class CollectingValidationScopeTest {
 
     @Test
     fun enforceSkipsPassingRule() {
-        val rule = object : Rule {
-            override fun check(): Violation? = null
-        }
+        val rule =
+            object : Rule {
+                override fun check(): Violation? = null
+            }
 
-        val violations = verifyWithCollecting {
-            enforce(rule)
-        }
+        val violations =
+            verifyWithCollecting {
+                enforce(rule)
+            }
 
         assertTrue(violations.isEmpty())
     }
 
     @Test
     fun verifyWithCollectingPassesContextToScope() {
-        val context = ValidationPathElement.Property("root")
+        val context = ValidationPathElement.Name("root")
 
-        val violations = verifyWithCollecting(validationContext = context) {
-            val path = validationContext.validationPath()
-            assertEquals(1, path.size)
-            assertEquals(context, path[0])
-        }
+        val violations =
+            verifyWithCollecting(validationContext = context) {
+                val path = validationContext.validationPath()
+                assertEquals(1, path.size)
+                assertEquals(context, path[0])
+            }
 
         assertTrue(violations.isEmpty())
     }

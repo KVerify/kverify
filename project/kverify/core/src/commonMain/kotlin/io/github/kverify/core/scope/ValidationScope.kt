@@ -40,5 +40,5 @@ public inline fun <T> ValidationScope.verify(value: T): Verification<T> =
 public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> =
     Verification(
         value = property.get(),
-        scope = this + ValidationPathElement.Property(property.name),
+        scope = this + ValidationPathElement.Name(property.name),
     )

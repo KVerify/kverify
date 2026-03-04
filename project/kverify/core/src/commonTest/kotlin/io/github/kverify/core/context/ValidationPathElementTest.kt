@@ -7,8 +7,8 @@ import kotlin.test.assertNotEquals
 class ValidationPathElementTest {
     @Test
     fun propertyStoresName() {
-        val property = ValidationPathElement.Property("username")
-        assertEquals("username", property.name)
+        val name = ValidationPathElement.Name("username")
+        assertEquals("username", name.name)
     }
 
     @Test
@@ -19,9 +19,9 @@ class ValidationPathElementTest {
 
     @Test
     fun propertyEquality() {
-        val a = ValidationPathElement.Property("name")
-        val b = ValidationPathElement.Property("name")
-        val c = ValidationPathElement.Property("other")
+        val a = ValidationPathElement.Name("name")
+        val b = ValidationPathElement.Name("name")
+        val c = ValidationPathElement.Name("other")
 
         assertEquals(a, b)
         assertNotEquals(a, c)
@@ -39,9 +39,9 @@ class ValidationPathElementTest {
 
     @Test
     fun propertyAndIndexAreNotEqual() {
-        val property = ValidationPathElement.Property("0")
+        val name = ValidationPathElement.Name("0")
         val index = ValidationPathElement.Index(0)
 
-        assertNotEquals<ValidationPathElement>(property, index)
+        assertNotEquals<ValidationPathElement>(name, index)
     }
 }
