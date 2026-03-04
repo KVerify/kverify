@@ -14,21 +14,21 @@ class ValidationContextTest {
 
     @Test
     fun emptyPlusContextReturnsOther() {
-        val element = ValidationPathElement.Name("name")
+        val element = PropertyPathElement("name")
         val result = EmptyValidationContext + element
         assertSame(element, result)
     }
 
     @Test
     fun contextPlusEmptyReturnsSelf() {
-        val element = ValidationPathElement.Name("name")
+        val element = PropertyPathElement("name")
         val result = element + EmptyValidationContext
         assertSame(element, result)
     }
 
     @Test
     fun elementFoldsOverItself() {
-        val element = ValidationPathElement.Name("name")
+        val element = PropertyPathElement("name")
         val result =
             element.fold(mutableListOf<ValidationContext.Element>()) { acc, e ->
                 acc.apply { add(e) }
@@ -39,9 +39,9 @@ class ValidationContextTest {
 
     @Test
     fun combinedContextFoldsInOrder() {
-        val a = ValidationPathElement.Name("a")
-        val b = ValidationPathElement.Index(0)
-        val c = ValidationPathElement.Name("c")
+        val a = PropertyPathElement("a")
+        val b = IndexPathElement(0)
+        val c = PropertyPathElement("c")
 
         val combined = (a + b) + c
 
@@ -58,14 +58,14 @@ class ValidationContextTest {
 
     @Test
     fun validationPathExtractsPathElements() {
-        val name = ValidationPathElement.Name("user")
-        val index = ValidationPathElement.Index(2)
+        val property = PropertyPathElement("user")
+        val index = IndexPathElement(2)
 
-        val context = name + index
+        val context = property + index
         val path = context.validationPath()
 
         assertEquals(2, path.size)
-        assertEquals(name, path[0])
+        assertEquals(property, path[0])
         assertEquals(index, path[1])
     }
 
@@ -77,16 +77,16 @@ class ValidationContextTest {
 
     @Test
     fun validationPathFromSingleElement() {
-        val name = ValidationPathElement.Name("name")
-        val path = name.validationPath()
+        val property = PropertyPathElement("name")
+        val path = property.validationPath()
 
         assertEquals(1, path.size)
-        assertEquals(name, path[0])
+        assertEquals(property, path[0])
     }
 
     @Test
     fun multipleCombinationsPreserveOrder() {
-        val elements = (0..4).map { ValidationPathElement.Index(it) }
+        val elements = (0..4).map { IndexPathElement(it) }
 
         var context: ValidationContext = EmptyValidationContext
         for (element in elements) {

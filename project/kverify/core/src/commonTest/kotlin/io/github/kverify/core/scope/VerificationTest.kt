@@ -1,5 +1,7 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.IndexPathElement
+import io.github.kverify.core.context.PropertyPathElement
 import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.violation.Violation
@@ -45,7 +47,7 @@ class VerificationTest {
 
             val path = verification.scope.validationContext.validationPath()
             assertEquals(1, path.size)
-            assertEquals(ValidationPathElement.Name("name"), path[0])
+            assertEquals(PropertyPathElement("name"), path[0])
         }
     }
 
@@ -75,7 +77,7 @@ class VerificationTest {
                 verify(listOf("a", "b", "c")).each { idx, element ->
                     val path = validationContext.validationPath()
                     assertEquals(1, path.size)
-                    assertEquals(ValidationPathElement.Index(idx), path[0])
+                    assertEquals(IndexPathElement(idx), path[0])
                 }
             }
 
@@ -134,12 +136,12 @@ class VerificationTest {
         val violations =
             verifyWithCollecting {
                 val addressVerification = verify(user::address)
-                val cityScope = addressVerification.scope + ValidationPathElement.Name("city")
+                val cityScope = addressVerification.scope + PropertyPathElement("city")
 
                 val path = cityScope.validationContext.validationPath()
                 assertEquals(2, path.size)
-                assertEquals(ValidationPathElement.Name("address"), path[0])
-                assertEquals(ValidationPathElement.Name("city"), path[1])
+                assertEquals(PropertyPathElement("address"), path[0])
+                assertEquals(PropertyPathElement("city"), path[1])
             }
 
         assertTrue(violations.isEmpty())
@@ -158,8 +160,8 @@ class VerificationTest {
                 verify(user::tags).each { idx, _ ->
                     val path = validationContext.validationPath()
                     assertEquals(2, path.size)
-                    assertEquals(ValidationPathElement.Name("tags"), path[0])
-                    assertEquals(ValidationPathElement.Index(idx), path[1])
+                    assertEquals(PropertyPathElement("tags"), path[0])
+                    assertEquals(IndexPathElement(idx), path[1])
                 }
             }
 
