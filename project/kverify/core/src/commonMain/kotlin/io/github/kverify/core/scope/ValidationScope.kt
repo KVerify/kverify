@@ -1,5 +1,6 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.PropertyPathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.rule.Rule
@@ -48,6 +49,15 @@ public inline fun ValidationScope.pathName(
     block: ValidationScope.() -> Unit = {},
 ): ValidationScope {
     val scope = this + PropertyPathElement(name)
+
+    return scope.apply(block)
+}
+
+public inline fun ValidationScope.pathIndex(
+    index: Int,
+    block: ValidationScope.() -> Unit = {},
+): ValidationScope {
+    val scope = this + IndexPathElement(index)
 
     return scope.apply(block)
 }
