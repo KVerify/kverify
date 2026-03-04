@@ -1,6 +1,6 @@
 package io.github.kverify.core.scope
 
-import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.context.IndexPathElement
 
 public class Verification<T>(
     public val value: T,
@@ -18,7 +18,7 @@ public fun <T : Any> Verification<T?>.takeIfNotNull(): Verification<T>? =
 public inline fun <T, I : Iterable<T>> Verification<I>.each(block: ValidationScope.(Int, T) -> Unit): Verification<I> =
     apply {
         for ((idx, element) in value.withIndex()) {
-            val indexedScope = scope + ValidationPathElement.Index(idx)
+            val indexedScope = scope + IndexPathElement(idx)
             indexedScope.block(idx, element)
         }
     }

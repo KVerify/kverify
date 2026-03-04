@@ -1,5 +1,6 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.PropertyPathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.rule.Rule
@@ -40,5 +41,5 @@ public inline fun <T> ValidationScope.verify(value: T): Verification<T> =
 public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> =
     Verification(
         value = property.get(),
-        scope = this + ValidationPathElement.Name(property.name),
+        scope = this + PropertyPathElement(property.name),
     )
