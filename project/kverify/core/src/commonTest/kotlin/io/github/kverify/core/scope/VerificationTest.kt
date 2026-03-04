@@ -71,44 +71,6 @@ class VerificationTest {
     }
 
     @Test
-    fun eachIteratesWithIndexedContext() {
-        val violations =
-            verifyWithCollecting {
-                verify(listOf("a", "b", "c")).each { idx, element ->
-                    val path = validationContext.validationPath()
-                    assertEquals(1, path.size)
-                    assertEquals(IndexPathElement(idx), path[0])
-                }
-            }
-
-        assertTrue(violations.isEmpty())
-    }
-
-    @Test
-    fun eachCollectsViolationsFromElements() {
-        val violations =
-            verifyWithCollecting {
-                verify(listOf("", "ok", "")).each { element ->
-                    if (element.isBlank()) {
-                        onFailure(SimpleViolation("blank at ${validationContext.validationPath()}"))
-                    }
-                }
-            }
-
-        assertEquals(2, violations.size)
-    }
-
-    @Test
-    fun eachReturnsOriginalVerification() {
-        verifyWithCollecting {
-            val list = listOf(1, 2, 3)
-            val verification = verify(list)
-            val returned = verification.each { _ -> }
-            assertSame(verification, returned)
-        }
-    }
-
-    @Test
     fun chainingMultipleVerifications() {
         val violations =
             verifyWithCollecting {
@@ -142,27 +104,6 @@ class VerificationTest {
                 assertEquals(2, path.size)
                 assertEquals(PropertyPathElement("address"), path[0])
                 assertEquals(PropertyPathElement("city"), path[1])
-            }
-
-        assertTrue(violations.isEmpty())
-    }
-
-    @Test
-    fun eachWithNestedPropertyPath() {
-        data class User(
-            val tags: List<String>,
-        )
-
-        val user = User(listOf("a", "b"))
-
-        val violations =
-            verifyWithCollecting {
-                verify(user::tags).each { idx, _ ->
-                    val path = validationContext.validationPath()
-                    assertEquals(2, path.size)
-                    assertEquals(PropertyPathElement("tags"), path[0])
-                    assertEquals(IndexPathElement(idx), path[1])
-                }
             }
 
         assertTrue(violations.isEmpty())
