@@ -2,7 +2,6 @@ package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.PropertyPathElement
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.reflect.KProperty0
@@ -44,7 +43,7 @@ public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> 
         scope = this + PropertyPathElement(property.name),
     )
 
-public inline fun ValidationScope.named(
+public inline fun ValidationScope.withName(
     name: String,
     block: ValidationScope.() -> Unit = {},
 ): ValidationScope {
