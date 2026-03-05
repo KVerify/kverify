@@ -24,8 +24,7 @@ public interface ValidationScope {
     }
 }
 
-@Suppress("NOTHING_TO_INLINE")
-public inline operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
+public operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
     ContextExtendedValidationScope(
         originalValidationScope = this,
         additionalContext = validationContext,
