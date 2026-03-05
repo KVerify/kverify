@@ -11,44 +11,44 @@ import io.github.kverify.violations.MaxLengthViolation
 import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
 
-public fun Verification<String>.notBlank(reason: String? = null): Verification<String> =
+public fun <V : Verification<String>> V.notBlank(reason: String? = null): V =
     apply {
         val rule = StringNotBlankRule(value, scope.validationContext, reason)
         scope.enforce(rule)
     }
 
-public fun Verification<String>.minLength(
+public fun <V : Verification<String>> V.minLength(
     min: Int,
     reason: String? = null,
-): Verification<String> =
+): V =
     apply {
         val rule = StringMinLengthRule(value, scope.validationContext, min, reason)
         scope.enforce(rule)
     }
 
-public fun Verification<String>.maxLength(
+public fun <V : Verification<String>> V.maxLength(
     max: Int,
     reason: String? = null,
-): Verification<String> =
+): V =
     apply {
         val rule = StringMaxLengthRule(value, scope.validationContext, max, reason)
         scope.enforce(rule)
     }
 
-public fun Verification<String>.exactLength(
+public fun <V : Verification<String>> V.exactLength(
     length: Int,
     reason: String? = null,
-): Verification<String> =
+): V =
     apply {
         val rule = StringExactLengthRule(value, scope.validationContext, length, reason)
         scope.enforce(rule)
     }
 
-public fun Verification<String>.lengthRange(
+public fun <V : Verification<String>> V.lengthRange(
     min: Int,
     max: Int,
     reason: String? = null,
-): Verification<String> =
+): V =
     apply {
         val rule = StringLengthRangeRule(value, scope.validationContext, min, max, reason)
         scope.enforce(rule)

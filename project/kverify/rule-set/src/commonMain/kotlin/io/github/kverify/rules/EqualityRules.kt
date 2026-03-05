@@ -10,37 +10,37 @@ import io.github.kverify.violations.NoneOfViolation
 import io.github.kverify.violations.NotEqualToViolation
 import io.github.kverify.violations.OneOfViolation
 
-public fun <T> Verification<T>.equalTo(
+public fun <T, V : Verification<T>> V.equalTo(
     expected: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = EqualityEqualToRule(value, scope.validationContext, expected, reason)
         scope.enforce(rule)
     }
 
-public fun <T> Verification<T>.notEqualTo(
+public fun <T, V : Verification<T>> V.notEqualTo(
     forbidden: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = EqualityNotEqualToRule(value, scope.validationContext, forbidden, reason)
         scope.enforce(rule)
     }
 
-public fun <T> Verification<T>.oneOf(
+public fun <T, V : Verification<T>> V.oneOf(
     allowed: Set<T>,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = EqualityOneOfRule(value, scope.validationContext, allowed, reason)
         scope.enforce(rule)
     }
 
-public fun <T> Verification<T>.noneOf(
+public fun <T, V : Verification<T>> V.noneOf(
     forbidden: Set<T>,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = EqualityNoneOfRule(value, scope.validationContext, forbidden, reason)
         scope.enforce(rule)
