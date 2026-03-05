@@ -11,47 +11,47 @@ import io.github.kverify.violations.BetweenViolation
 import io.github.kverify.violations.GreaterThanViolation
 import io.github.kverify.violations.LessThanViolation
 
-public fun <T : Comparable<T>> Verification<T>.atLeast(
+public fun <T : Comparable<T>, V : Verification<T>> V.atLeast(
     min: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = ComparableAtLeastRule(value, scope.validationContext, min, reason)
         scope.enforce(rule)
     }
 
-public fun <T : Comparable<T>> Verification<T>.atMost(
+public fun <T : Comparable<T>, V : Verification<T>> V.atMost(
     max: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = ComparableAtMostRule(value, scope.validationContext, max, reason)
         scope.enforce(rule)
     }
 
-public fun <T : Comparable<T>> Verification<T>.between(
+public fun <T : Comparable<T>, V : Verification<T>> V.between(
     min: T,
     max: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = ComparableBetweenRule(value, scope.validationContext, min, max, reason)
         scope.enforce(rule)
     }
 
-public fun <T : Comparable<T>> Verification<T>.greaterThan(
+public fun <T : Comparable<T>, V : Verification<T>> V.greaterThan(
     min: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = ComparableGreaterThanRule(value, scope.validationContext, min, reason)
         scope.enforce(rule)
     }
 
-public fun <T : Comparable<T>> Verification<T>.lessThan(
+public fun <T : Comparable<T>, V : Verification<T>> V.lessThan(
     max: T,
     reason: String? = null,
-): Verification<T> =
+): V =
     apply {
         val rule = ComparableLessThanRule(value, scope.validationContext, max, reason)
         scope.enforce(rule)

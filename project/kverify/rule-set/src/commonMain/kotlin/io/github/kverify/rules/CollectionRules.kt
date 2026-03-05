@@ -11,44 +11,44 @@ import io.github.kverify.violations.MaxSizeViolation
 import io.github.kverify.violations.MinSizeViolation
 import io.github.kverify.violations.SizeRangeViolation
 
-public fun <C : Collection<*>> Verification<C>.minSize(
+public fun <C : Collection<*>, V : Verification<C>> V.minSize(
     min: Int,
     reason: String? = null,
-): Verification<C> =
+): V =
     apply {
         val rule = CollectionMinSizeRule(value, scope.validationContext, min, reason)
         scope.enforce(rule)
     }
 
-public fun <C : Collection<*>> Verification<C>.maxSize(
+public fun <C : Collection<*>, V : Verification<C>> V.maxSize(
     max: Int,
     reason: String? = null,
-): Verification<C> =
+): V =
     apply {
         val rule = CollectionMaxSizeRule(value, scope.validationContext, max, reason)
         scope.enforce(rule)
     }
 
-public fun <C : Collection<*>> Verification<C>.exactSize(
+public fun <C : Collection<*>, V : Verification<C>> V.exactSize(
     size: Int,
     reason: String? = null,
-): Verification<C> =
+): V =
     apply {
         val rule = CollectionExactSizeRule(value, scope.validationContext, size, reason)
         scope.enforce(rule)
     }
 
-public fun <C : Collection<*>> Verification<C>.sizeRange(
+public fun <C : Collection<*>, V : Verification<C>> V.sizeRange(
     min: Int,
     max: Int,
     reason: String? = null,
-): Verification<C> =
+): V =
     apply {
         val rule = CollectionSizeRangeRule(value, scope.validationContext, min, max, reason)
         scope.enforce(rule)
     }
 
-public fun <C : Collection<*>> Verification<C>.distinct(reason: String? = null): Verification<C> =
+public fun <C : Collection<*>, V : Verification<C>> V.distinct(reason: String? = null): V =
     apply {
         val rule = CollectionDistinctRule(value, scope.validationContext, reason)
         scope.enforce(rule)
