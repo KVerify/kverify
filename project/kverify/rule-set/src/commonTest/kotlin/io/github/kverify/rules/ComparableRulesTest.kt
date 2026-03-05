@@ -1,7 +1,7 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.scope.verify
-import io.github.kverify.core.scope.verifyWithCollecting
+import io.github.kverify.core.scope.verifyCollecting
 import io.github.kverify.violations.AtLeastViolation
 import io.github.kverify.violations.AtMostViolation
 import io.github.kverify.violations.BetweenViolation
@@ -18,7 +18,7 @@ class ComparableRulesTest {
     @Test
     fun atLeastPassesWhenEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(5).atLeast(5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -27,7 +27,7 @@ class ComparableRulesTest {
     @Test
     fun atLeastPassesWhenGreater() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(6).atLeast(5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -36,7 +36,7 @@ class ComparableRulesTest {
     @Test
     fun atLeastFailsWhenLess() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(4).atLeast(5)
             }.violations
         assertEquals(1, violations.size)
@@ -50,7 +50,7 @@ class ComparableRulesTest {
     @Test
     fun atMostPassesWhenEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(5).atMost(5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -59,7 +59,7 @@ class ComparableRulesTest {
     @Test
     fun atMostPassesWhenLess() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(4).atMost(5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -68,7 +68,7 @@ class ComparableRulesTest {
     @Test
     fun atMostFailsWhenGreater() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(6).atMost(5)
             }.violations
         assertEquals(1, violations.size)
@@ -82,7 +82,7 @@ class ComparableRulesTest {
     @Test
     fun betweenPassesWithinRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(5).between(1, 10)
             }.violations
         assertTrue(violations.isEmpty())
@@ -91,7 +91,7 @@ class ComparableRulesTest {
     @Test
     fun betweenPassesAtLowerBound() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(1).between(1, 10)
             }.violations
         assertTrue(violations.isEmpty())
@@ -100,7 +100,7 @@ class ComparableRulesTest {
     @Test
     fun betweenPassesAtUpperBound() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(10).between(1, 10)
             }.violations
         assertTrue(violations.isEmpty())
@@ -109,7 +109,7 @@ class ComparableRulesTest {
     @Test
     fun betweenFailsBelowRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(0).between(1, 10)
             }.violations
         assertEquals(1, violations.size)
@@ -122,7 +122,7 @@ class ComparableRulesTest {
     @Test
     fun betweenFailsAboveRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(11).between(1, 10)
             }.violations
         assertEquals(1, violations.size)
@@ -134,7 +134,7 @@ class ComparableRulesTest {
     @Test
     fun greaterThanPassesWhenGreater() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(6).greaterThan(5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -143,7 +143,7 @@ class ComparableRulesTest {
     @Test
     fun greaterThanFailsWhenEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(5).greaterThan(5)
             }.violations
         assertEquals(1, violations.size)
@@ -155,7 +155,7 @@ class ComparableRulesTest {
     @Test
     fun greaterThanFailsWhenLess() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(4).greaterThan(5)
             }.violations
         assertEquals(1, violations.size)
@@ -167,7 +167,7 @@ class ComparableRulesTest {
     @Test
     fun lessThanPassesWhenLess() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(4).lessThan(5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -176,7 +176,7 @@ class ComparableRulesTest {
     @Test
     fun lessThanFailsWhenEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(5).lessThan(5)
             }.violations
         assertEquals(1, violations.size)
@@ -188,7 +188,7 @@ class ComparableRulesTest {
     @Test
     fun lessThanFailsWhenGreater() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(6).lessThan(5)
             }.violations
         assertEquals(1, violations.size)
@@ -200,7 +200,7 @@ class ComparableRulesTest {
     @Test
     fun customReasonIsUsed() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(0).atLeast(1, reason = "Must be positive")
             }.violations
         assertEquals("Must be positive", violations[0].reason)
@@ -211,7 +211,7 @@ class ComparableRulesTest {
     @Test
     fun worksWithDouble() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(3.14).between(1.0, 5.0)
             }.violations
         assertTrue(violations.isEmpty())
@@ -220,7 +220,7 @@ class ComparableRulesTest {
     @Test
     fun worksWithString() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("banana").between("apple", "cherry")
             }.violations
         assertTrue(violations.isEmpty())
