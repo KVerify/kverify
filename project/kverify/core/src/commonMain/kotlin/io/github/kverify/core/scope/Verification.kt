@@ -1,9 +1,18 @@
 package io.github.kverify.core.scope
 
-public class Verification<T>(
-    public val value: T,
-    public val scope: ValidationScope,
-)
+public interface Verification<out T> {
+    public val value: T
+    public val scope: ValidationScope
+}
+
+public fun <T> Verification(
+    value: T,
+    scope: ValidationScope,
+): Verification<T> =
+    VerificationImpl(
+        value = value,
+        scope = scope,
+    )
 
 public fun <T : Any> Verification<T?>.takeIfNotNull(): Verification<T>? =
     if (value != null) {
@@ -12,3 +21,8 @@ public fun <T : Any> Verification<T?>.takeIfNotNull(): Verification<T>? =
     } else {
         null
     }
+
+private class VerificationImpl<out T>(
+    override val value: T,
+    override val scope: ValidationScope,
+) : Verification<T>
