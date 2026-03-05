@@ -18,7 +18,7 @@ class CollectingValidationScopeTest {
 
     @Test
     fun emptyValidationReturnsNoViolations() {
-        val violations = verifyWithCollecting { }
+        val violations = verifyWithCollecting { }.violations
         assertTrue(violations.isEmpty())
     }
 
@@ -27,7 +27,7 @@ class CollectingValidationScopeTest {
         val violations =
             verifyWithCollecting {
                 onFailure(SimpleViolation("fail"))
-            }
+            }.violations
 
         assertEquals(1, violations.size)
         assertEquals("fail", violations[0].reason)
@@ -40,7 +40,7 @@ class CollectingValidationScopeTest {
                 onFailure(SimpleViolation("first"))
                 onFailure(SimpleViolation("second"))
                 onFailure(SimpleViolation("third"))
-            }
+            }.violations
 
         assertEquals(3, violations.size)
         assertEquals("first", violations[0].reason)
@@ -53,7 +53,7 @@ class CollectingValidationScopeTest {
         val violations =
             verifyWithCollecting {
                 onFailure(SimpleViolation("fail"))
-            }
+            }.violations
 
         assertIs<List<Violation>>(violations)
     }
@@ -82,7 +82,7 @@ class CollectingValidationScopeTest {
         val violations =
             verifyWithCollecting {
                 enforce(rule)
-            }
+            }.violations
 
         assertEquals(1, violations.size)
         assertSame(violation, violations[0])
@@ -98,7 +98,7 @@ class CollectingValidationScopeTest {
         val violations =
             verifyWithCollecting {
                 enforce(rule)
-            }
+            }.violations
 
         assertTrue(violations.isEmpty())
     }
@@ -112,7 +112,7 @@ class CollectingValidationScopeTest {
                 val path = validationContext.validationPath()
                 assertEquals(1, path.size)
                 assertEquals(context, path[0])
-            }
+            }.violations
 
         assertTrue(violations.isEmpty())
     }
@@ -123,7 +123,7 @@ class CollectingValidationScopeTest {
 
         verifyWithCollecting(violationStorage = storage) {
             onFailure(SimpleViolation("stored"))
-        }
+        }.violations
 
         assertEquals(1, storage.size)
         assertEquals("stored", storage[0].reason)

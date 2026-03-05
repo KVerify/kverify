@@ -76,7 +76,7 @@ class VerificationTest {
                     if (value.isBlank()) scope.onFailure(SimpleViolation("blank"))
                     if (value.length < 3) scope.onFailure(SimpleViolation("too short"))
                 }
-            }
+            }.violations
 
         assertEquals(2, violations.size)
     }
@@ -102,7 +102,7 @@ class VerificationTest {
                 assertEquals(2, path.size)
                 assertEquals(NamePathElement("address"), path[0])
                 assertEquals(NamePathElement("city"), path[1])
-            }
+            }.violations
 
         assertTrue(violations.isEmpty())
     }
