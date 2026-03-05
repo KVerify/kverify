@@ -17,7 +17,7 @@ class VerificationTest {
 
     @Test
     fun verifyCreatesVerificationWithValue() {
-        verifyWithCollecting {
+        verifyCollecting {
             val verification = verify("hello")
             assertEquals("hello", verification.value)
         }
@@ -25,7 +25,7 @@ class VerificationTest {
 
     @Test
     fun verifyCreatesVerificationWithScope() {
-        verifyWithCollecting {
+        verifyCollecting {
             val verification = verify("hello")
             assertSame(this, verification.scope)
         }
@@ -39,7 +39,7 @@ class VerificationTest {
 
         val user = User("Alice")
 
-        verifyWithCollecting {
+        verifyCollecting {
             val verification = verify(user::name)
             assertEquals("Alice", verification.value)
 
@@ -51,7 +51,7 @@ class VerificationTest {
 
     @Test
     fun takeIfNotNullReturnsVerificationForNonNull() {
-        verifyWithCollecting {
+        verifyCollecting {
             val value: String? = "hello"
             val verification = verify(value).takeIfNotNull()
             assertNotNull(verification)
@@ -61,7 +61,7 @@ class VerificationTest {
 
     @Test
     fun takeIfNotNullReturnsNullForNull() {
-        verifyWithCollecting {
+        verifyCollecting {
             val value: String? = null
             val verification = verify(value).takeIfNotNull()
             assertNull(verification)
@@ -71,7 +71,7 @@ class VerificationTest {
     @Test
     fun chainingMultipleVerifications() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("").apply {
                     if (value.isBlank()) scope.onFailure(SimpleViolation("blank"))
                     if (value.length < 3) scope.onFailure(SimpleViolation("too short"))
@@ -94,7 +94,7 @@ class VerificationTest {
         val user = User(Address(""))
 
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 val addressVerification = verify(user::address)
                 val cityScope = addressVerification.scope + NamePathElement("city")
 

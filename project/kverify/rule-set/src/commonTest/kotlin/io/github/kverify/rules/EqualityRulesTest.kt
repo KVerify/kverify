@@ -1,7 +1,7 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.scope.verify
-import io.github.kverify.core.scope.verifyWithCollecting
+import io.github.kverify.core.scope.verifyCollecting
 import io.github.kverify.violations.EqualToViolation
 import io.github.kverify.violations.NoneOfViolation
 import io.github.kverify.violations.NotEqualToViolation
@@ -17,7 +17,7 @@ class EqualityRulesTest {
     @Test
     fun equalToPassesWhenEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("hello").equalTo("hello")
             }.violations
         assertTrue(violations.isEmpty())
@@ -26,7 +26,7 @@ class EqualityRulesTest {
     @Test
     fun equalToFailsWhenNotEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("hello").equalTo("world")
             }.violations
         assertEquals(1, violations.size)
@@ -40,7 +40,7 @@ class EqualityRulesTest {
     @Test
     fun notEqualToPassesWhenDifferent() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("hello").notEqualTo("world")
             }.violations
         assertTrue(violations.isEmpty())
@@ -49,7 +49,7 @@ class EqualityRulesTest {
     @Test
     fun notEqualToFailsWhenEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("hello").notEqualTo("hello")
             }.violations
         assertEquals(1, violations.size)
@@ -62,7 +62,7 @@ class EqualityRulesTest {
     @Test
     fun oneOfPassesWhenInSet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("b").oneOf(setOf("a", "b", "c"))
             }.violations
         assertTrue(violations.isEmpty())
@@ -71,7 +71,7 @@ class EqualityRulesTest {
     @Test
     fun oneOfFailsWhenNotInSet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("d").oneOf(setOf("a", "b", "c"))
             }.violations
         assertEquals(1, violations.size)
@@ -83,7 +83,7 @@ class EqualityRulesTest {
     @Test
     fun oneOfFailsForEmptySet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("a").oneOf(emptySet())
             }.violations
         assertEquals(1, violations.size)
@@ -95,7 +95,7 @@ class EqualityRulesTest {
     @Test
     fun noneOfPassesWhenNotInSet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("d").noneOf(setOf("a", "b", "c"))
             }.violations
         assertTrue(violations.isEmpty())
@@ -104,7 +104,7 @@ class EqualityRulesTest {
     @Test
     fun noneOfFailsWhenInSet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("b").noneOf(setOf("a", "b", "c"))
             }.violations
         assertEquals(1, violations.size)
@@ -116,7 +116,7 @@ class EqualityRulesTest {
     @Test
     fun noneOfPassesForEmptySet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("a").noneOf(emptySet())
             }.violations
         assertTrue(violations.isEmpty())
@@ -127,7 +127,7 @@ class EqualityRulesTest {
     @Test
     fun customReasonIsUsed() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("x").equalTo("y", reason = "Must match")
             }.violations
         assertEquals("Must match", violations[0].reason)
@@ -138,7 +138,7 @@ class EqualityRulesTest {
     @Test
     fun worksWithInts() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(42).equalTo(42)
             }.violations
         assertTrue(violations.isEmpty())
@@ -147,7 +147,7 @@ class EqualityRulesTest {
     @Test
     fun worksWithNullable() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(null).equalTo(null)
             }.violations
         assertTrue(violations.isEmpty())
@@ -156,7 +156,7 @@ class EqualityRulesTest {
     @Test
     fun worksWithNullableNotEqual() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify<String?>(null).notEqualTo("hello")
             }.violations
         assertTrue(violations.isEmpty())

@@ -17,7 +17,7 @@ public class CollectingValidationScope(
     }
 }
 
-public inline fun verifyWithCollecting(
+public inline fun verifyCollecting(
     violationStorage: MutableCollection<Violation> = ArrayList(),
     validationContext: ValidationContext = EmptyValidationContext,
     block: CollectingValidationScope.() -> Unit,

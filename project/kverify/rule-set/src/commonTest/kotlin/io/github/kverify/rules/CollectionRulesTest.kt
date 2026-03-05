@@ -1,7 +1,7 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.scope.verify
-import io.github.kverify.core.scope.verifyWithCollecting
+import io.github.kverify.core.scope.verifyCollecting
 import io.github.kverify.violations.DistinctViolation
 import io.github.kverify.violations.ExactSizeViolation
 import io.github.kverify.violations.MaxSizeViolation
@@ -18,7 +18,7 @@ class CollectionRulesTest {
     @Test
     fun minSizePassesWhenMet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3)).minSize(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -27,7 +27,7 @@ class CollectionRulesTest {
     @Test
     fun minSizePassesWhenExceeded() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3, 4)).minSize(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -36,7 +36,7 @@ class CollectionRulesTest {
     @Test
     fun minSizeFailsWhenTooSmall() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2)).minSize(3)
             }.violations
         assertEquals(1, violations.size)
@@ -48,7 +48,7 @@ class CollectionRulesTest {
     @Test
     fun minSizeFailsForEmptyCollection() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(emptyList<Int>()).minSize(1)
             }.violations
         assertEquals(1, violations.size)
@@ -60,7 +60,7 @@ class CollectionRulesTest {
     @Test
     fun maxSizePassesWhenMet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3)).maxSize(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -69,7 +69,7 @@ class CollectionRulesTest {
     @Test
     fun maxSizePassesWhenUnder() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2)).maxSize(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -78,7 +78,7 @@ class CollectionRulesTest {
     @Test
     fun maxSizeFailsWhenExceeded() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3, 4)).maxSize(3)
             }.violations
         assertEquals(1, violations.size)
@@ -92,7 +92,7 @@ class CollectionRulesTest {
     @Test
     fun exactSizePassesWhenExact() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3)).exactSize(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -101,7 +101,7 @@ class CollectionRulesTest {
     @Test
     fun exactSizeFailsWhenTooSmall() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2)).exactSize(3)
             }.violations
         assertEquals(1, violations.size)
@@ -113,7 +113,7 @@ class CollectionRulesTest {
     @Test
     fun exactSizeFailsWhenTooLarge() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3, 4)).exactSize(3)
             }.violations
         assertEquals(1, violations.size)
@@ -125,7 +125,7 @@ class CollectionRulesTest {
     @Test
     fun sizeRangePassesWithinRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3)).sizeRange(2, 5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -134,11 +134,11 @@ class CollectionRulesTest {
     @Test
     fun sizeRangePassesAtBounds() {
         val lower =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2)).sizeRange(2, 5)
             }.violations
         val upper =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3, 4, 5)).sizeRange(2, 5)
             }.violations
         assertTrue(lower.isEmpty())
@@ -148,7 +148,7 @@ class CollectionRulesTest {
     @Test
     fun sizeRangeFailsOutsideRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1)).sizeRange(2, 5)
             }.violations
         assertEquals(1, violations.size)
@@ -163,7 +163,7 @@ class CollectionRulesTest {
     @Test
     fun distinctPassesForUniqueElements() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 3)).distinct()
             }.violations
         assertTrue(violations.isEmpty())
@@ -172,7 +172,7 @@ class CollectionRulesTest {
     @Test
     fun distinctPassesForEmptyCollection() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(emptyList<Int>()).distinct()
             }.violations
         assertTrue(violations.isEmpty())
@@ -181,7 +181,7 @@ class CollectionRulesTest {
     @Test
     fun distinctFailsForDuplicates() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 2, 2, 3, 3)).distinct()
             }.violations
         assertEquals(1, violations.size)
@@ -195,7 +195,7 @@ class CollectionRulesTest {
     @Test
     fun chainingMultipleRulesCollectsAllViolations() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify(listOf(1, 1)).minSize(5).distinct()
             }.violations
         assertEquals(2, violations.size)

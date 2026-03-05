@@ -18,14 +18,14 @@ class CollectingValidationScopeTest {
 
     @Test
     fun emptyValidationReturnsNoViolations() {
-        val violations = verifyWithCollecting { }.violations
+        val violations = verifyCollecting { }.violations
         assertTrue(violations.isEmpty())
     }
 
     @Test
     fun collectsSingleViolation() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 onFailure(SimpleViolation("fail"))
             }.violations
 
@@ -36,7 +36,7 @@ class CollectingValidationScopeTest {
     @Test
     fun collectsMultipleViolations() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 onFailure(SimpleViolation("first"))
                 onFailure(SimpleViolation("second"))
                 onFailure(SimpleViolation("third"))
@@ -51,7 +51,7 @@ class CollectingValidationScopeTest {
     @Test
     fun returnsImmutableList() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 onFailure(SimpleViolation("fail"))
             }.violations
 
@@ -80,7 +80,7 @@ class CollectingValidationScopeTest {
             }
 
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 enforce(rule)
             }.violations
 
@@ -96,7 +96,7 @@ class CollectingValidationScopeTest {
             }
 
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 enforce(rule)
             }.violations
 
@@ -108,7 +108,7 @@ class CollectingValidationScopeTest {
         val context = NamePathElement("root")
 
         val violations =
-            verifyWithCollecting(validationContext = context) {
+            verifyCollecting(validationContext = context) {
                 val path = validationContext.validationPath()
                 assertEquals(1, path.size)
                 assertEquals(context, path[0])
@@ -121,7 +121,7 @@ class CollectingValidationScopeTest {
     fun acceptsCustomViolationStorage() {
         val storage = mutableListOf<Violation>()
 
-        verifyWithCollecting(violationStorage = storage) {
+        verifyCollecting(violationStorage = storage) {
             onFailure(SimpleViolation("stored"))
         }.violations
 

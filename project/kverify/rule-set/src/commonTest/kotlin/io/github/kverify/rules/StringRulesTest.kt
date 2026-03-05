@@ -1,7 +1,7 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.scope.verify
-import io.github.kverify.core.scope.verifyWithCollecting
+import io.github.kverify.core.scope.verifyCollecting
 import io.github.kverify.violations.ExactLengthViolation
 import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
@@ -18,7 +18,7 @@ class StringRulesTest {
     @Test
     fun notBlankPassesForNonBlank() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("hello").notBlank()
             }.violations
         assertTrue(violations.isEmpty())
@@ -27,7 +27,7 @@ class StringRulesTest {
     @Test
     fun notBlankFailsForEmpty() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("").notBlank()
             }.violations
         assertEquals(1, violations.size)
@@ -37,7 +37,7 @@ class StringRulesTest {
     @Test
     fun notBlankFailsForWhitespace() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("   ").notBlank()
             }.violations
         assertEquals(1, violations.size)
@@ -47,7 +47,7 @@ class StringRulesTest {
     @Test
     fun notBlankUsesCustomReason() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("").notBlank(reason = "Name is required")
             }.violations
         assertEquals("Name is required", violations[0].reason)
@@ -58,7 +58,7 @@ class StringRulesTest {
     @Test
     fun minLengthPassesWhenMet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abc").minLength(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -67,7 +67,7 @@ class StringRulesTest {
     @Test
     fun minLengthPassesWhenExceeded() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abcd").minLength(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -76,7 +76,7 @@ class StringRulesTest {
     @Test
     fun minLengthFailsWhenTooShort() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("ab").minLength(3)
             }.violations
         assertEquals(1, violations.size)
@@ -90,7 +90,7 @@ class StringRulesTest {
     @Test
     fun maxLengthPassesWhenMet() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abc").maxLength(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -99,7 +99,7 @@ class StringRulesTest {
     @Test
     fun maxLengthPassesWhenUnder() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("ab").maxLength(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -108,7 +108,7 @@ class StringRulesTest {
     @Test
     fun maxLengthFailsWhenExceeded() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abcd").maxLength(3)
             }.violations
         assertEquals(1, violations.size)
@@ -122,7 +122,7 @@ class StringRulesTest {
     @Test
     fun exactLengthPassesWhenExact() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abc").exactLength(3)
             }.violations
         assertTrue(violations.isEmpty())
@@ -131,7 +131,7 @@ class StringRulesTest {
     @Test
     fun exactLengthFailsWhenTooShort() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("ab").exactLength(3)
             }.violations
         assertEquals(1, violations.size)
@@ -143,7 +143,7 @@ class StringRulesTest {
     @Test
     fun exactLengthFailsWhenTooLong() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abcd").exactLength(3)
             }.violations
         assertEquals(1, violations.size)
@@ -155,7 +155,7 @@ class StringRulesTest {
     @Test
     fun lengthRangePassesWithinRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abc").lengthRange(2, 5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -164,7 +164,7 @@ class StringRulesTest {
     @Test
     fun lengthRangePassesAtLowerBound() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("ab").lengthRange(2, 5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -173,7 +173,7 @@ class StringRulesTest {
     @Test
     fun lengthRangePassesAtUpperBound() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abcde").lengthRange(2, 5)
             }.violations
         assertTrue(violations.isEmpty())
@@ -182,7 +182,7 @@ class StringRulesTest {
     @Test
     fun lengthRangeFailsBelowRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("a").lengthRange(2, 5)
             }.violations
         assertEquals(1, violations.size)
@@ -195,7 +195,7 @@ class StringRulesTest {
     @Test
     fun lengthRangeFailsAboveRange() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("abcdef").lengthRange(2, 5)
             }.violations
         assertEquals(1, violations.size)
@@ -207,7 +207,7 @@ class StringRulesTest {
     @Test
     fun chainingMultipleRulesCollectsAllViolations() {
         val violations =
-            verifyWithCollecting {
+            verifyCollecting {
                 verify("").notBlank().minLength(5)
             }.violations
         assertEquals(2, violations.size)
