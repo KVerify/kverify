@@ -1,17 +1,17 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.scope.Verification
 import io.github.kverify.core.scope.failIf
-import io.github.kverify.core.verification.Verification
 import io.github.kverify.violations.EqualToViolation
 import io.github.kverify.violations.NoneOfViolation
 import io.github.kverify.violations.NotEqualToViolation
 import io.github.kverify.violations.OneOfViolation
 
-public fun <T, V : Verification<T>> V.equalTo(
+public fun <T> Verification<T>.equalTo(
     expected: T,
     reason: String? = null,
-): V =
+): Verification<T> =
     apply {
         scope.failIf({ value != expected }) {
             EqualToViolation(
@@ -23,10 +23,10 @@ public fun <T, V : Verification<T>> V.equalTo(
         }
     }
 
-public fun <T, V : Verification<T>> V.notEqualTo(
+public fun <T> Verification<T>.notEqualTo(
     forbidden: T,
     reason: String? = null,
-): V =
+): Verification<T> =
     apply {
         scope.failIf({ value == forbidden }) {
             NotEqualToViolation(
@@ -37,10 +37,10 @@ public fun <T, V : Verification<T>> V.notEqualTo(
         }
     }
 
-public fun <T, V : Verification<T>> V.oneOf(
+public fun <T> Verification<T>.oneOf(
     allowed: Set<T>,
     reason: String? = null,
-): V =
+): Verification<T> =
     apply {
         scope.failIf({ value !in allowed }) {
             OneOfViolation(
@@ -52,10 +52,10 @@ public fun <T, V : Verification<T>> V.oneOf(
         }
     }
 
-public fun <T, V : Verification<T>> V.noneOf(
+public fun <T> Verification<T>.noneOf(
     forbidden: Set<T>,
     reason: String? = null,
-): V =
+): Verification<T> =
     apply {
         scope.failIf({ value in forbidden }) {
             NoneOfViolation(
