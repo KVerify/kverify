@@ -30,7 +30,7 @@ public inline fun <T> ValidationResult.fold(
         onInvalid(violations)
     }
 
-public fun ValidationResult.throwIfInvalid(): Unit =
+public fun ValidationResult.throwOnInvalid(): Unit =
     onInvalid {
         throw ValidationException(it)
     }
