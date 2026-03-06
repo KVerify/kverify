@@ -1,15 +1,15 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.scope.Verification
 import io.github.kverify.core.scope.failIf
-import io.github.kverify.core.verification.Verification
 import io.github.kverify.violations.ExactLengthViolation
 import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
 import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
 
-public fun <V : Verification<String>> V.notBlank(reason: String? = null): V =
+public fun Verification<String>.notBlank(reason: String? = null): Verification<String> =
     apply {
         scope.failIf({ value.isBlank() }) {
             NotBlankViolation(
@@ -19,10 +19,10 @@ public fun <V : Verification<String>> V.notBlank(reason: String? = null): V =
         }
     }
 
-public fun <V : Verification<String>> V.minLength(
+public fun Verification<String>.minLength(
     min: Int,
     reason: String? = null,
-): V =
+): Verification<String> =
     apply {
         val actualLength = value.length
         scope.failIf({ actualLength < min }) {
@@ -35,10 +35,10 @@ public fun <V : Verification<String>> V.minLength(
         }
     }
 
-public fun <V : Verification<String>> V.maxLength(
+public fun Verification<String>.maxLength(
     max: Int,
     reason: String? = null,
-): V =
+): Verification<String> =
     apply {
         val actualLength = value.length
         scope.failIf({ actualLength > max }) {
@@ -51,10 +51,10 @@ public fun <V : Verification<String>> V.maxLength(
         }
     }
 
-public fun <V : Verification<String>> V.exactLength(
+public fun Verification<String>.exactLength(
     length: Int,
     reason: String? = null,
-): V =
+): Verification<String> =
     apply {
         val actualLength = value.length
         scope.failIf({ actualLength != length }) {
@@ -67,11 +67,11 @@ public fun <V : Verification<String>> V.exactLength(
         }
     }
 
-public fun <V : Verification<String>> V.lengthRange(
+public fun Verification<String>.lengthRange(
     min: Int,
     max: Int,
     reason: String? = null,
-): V =
+): Verification<String> =
     apply {
         val actualLength = value.length
         scope.failIf({ actualLength !in min..max }) {

@@ -1,18 +1,18 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.scope.Verification
 import io.github.kverify.core.scope.failIf
-import io.github.kverify.core.verification.Verification
 import io.github.kverify.violations.DistinctViolation
 import io.github.kverify.violations.ExactSizeViolation
 import io.github.kverify.violations.MaxSizeViolation
 import io.github.kverify.violations.MinSizeViolation
 import io.github.kverify.violations.SizeRangeViolation
 
-public fun <C : Collection<*>, V : Verification<C>> V.minSize(
+public fun <C : Collection<*>> Verification<C>.minSize(
     min: Int,
     reason: String? = null,
-): V =
+): Verification<C> =
     apply {
         val actualSize = value.size
         scope.failIf({ actualSize < min }) {
@@ -25,10 +25,10 @@ public fun <C : Collection<*>, V : Verification<C>> V.minSize(
         }
     }
 
-public fun <C : Collection<*>, V : Verification<C>> V.maxSize(
+public fun <C : Collection<*>> Verification<C>.maxSize(
     max: Int,
     reason: String? = null,
-): V =
+): Verification<C> =
     apply {
         val actualSize = value.size
         scope.failIf({ actualSize > max }) {
@@ -41,10 +41,10 @@ public fun <C : Collection<*>, V : Verification<C>> V.maxSize(
         }
     }
 
-public fun <C : Collection<*>, V : Verification<C>> V.exactSize(
+public fun <C : Collection<*>> Verification<C>.exactSize(
     size: Int,
     reason: String? = null,
-): V =
+): Verification<C> =
     apply {
         val actualSize = value.size
         scope.failIf({ actualSize != size }) {
@@ -57,11 +57,11 @@ public fun <C : Collection<*>, V : Verification<C>> V.exactSize(
         }
     }
 
-public fun <C : Collection<*>, V : Verification<C>> V.sizeRange(
+public fun <C : Collection<*>> Verification<C>.sizeRange(
     min: Int,
     max: Int,
     reason: String? = null,
-): V =
+): Verification<C> =
     apply {
         val actualSize = value.size
         scope.failIf({ actualSize !in min..max }) {
@@ -75,7 +75,7 @@ public fun <C : Collection<*>, V : Verification<C>> V.sizeRange(
         }
     }
 
-public fun <C : Collection<*>, V : Verification<C>> V.distinct(reason: String? = null): V =
+public fun <C : Collection<*>> Verification<C>.distinct(reason: String? = null): Verification<C> =
     apply {
         val actualSize = value.size
         val distinctSize = value.toSet().size

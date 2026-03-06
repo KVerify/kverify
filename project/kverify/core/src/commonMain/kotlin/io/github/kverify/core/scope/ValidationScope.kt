@@ -4,7 +4,6 @@ import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.core.verification.Verification
 import io.github.kverify.core.violation.Violation
 import kotlin.reflect.KProperty0
 
