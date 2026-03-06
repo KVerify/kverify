@@ -9,8 +9,7 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 public class CollectingValidationScope(
-    @PublishedApi
-    internal val violationStorage: MutableCollection<Violation> = ArrayList(),
+    private val violationStorage: MutableCollection<Violation> = ArrayList(),
     override val validationContext: ValidationContext = EmptyValidationContext,
 ) : ValidationScope {
     override fun enforce(rule: Rule) {
@@ -28,12 +27,13 @@ public inline fun verifyCollecting(
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val violationStorage = ArrayList<Violation>()
-
-    val scope = CollectingValidationScope(violationStorage, validationContext)
-    scope.block()
-
-    val violations = scope.violationStorage.toList()
+    val violations =
+        buildList {
+            CollectingValidationScope(
+                violationStorage = this,
+                validationContext,
+            ).block()
+        }
 
     return ValidationResult(violations)
 }
