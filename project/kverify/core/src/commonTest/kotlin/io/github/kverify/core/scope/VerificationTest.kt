@@ -2,6 +2,7 @@ package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.verification.takeIfNotNull
 import io.github.kverify.core.violation.Violation
 import kotlin.test.Test
 import kotlin.test.assertEquals

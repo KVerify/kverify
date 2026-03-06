@@ -1,4 +1,6 @@
-package io.github.kverify.core.scope
+package io.github.kverify.core.verification
+
+import io.github.kverify.core.scope.ValidationScope
 
 public interface Verification<out T> {
     public val value: T
