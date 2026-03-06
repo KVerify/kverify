@@ -25,6 +25,14 @@ public interface ValidationScope {
     }
 }
 
+public inline fun ValidationScope.failIf(
+    crossinline condition: () -> Boolean,
+    crossinline violation: () -> Violation,
+): Unit =
+    enforce {
+        if (condition()) violation() else null
+    }
+
 public operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
     ContextExtendedValidationScope(
         originalValidationScope = this,
