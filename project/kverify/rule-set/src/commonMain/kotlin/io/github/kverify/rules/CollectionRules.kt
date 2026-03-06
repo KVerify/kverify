@@ -3,7 +3,7 @@ package io.github.kverify.rules
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.rule.Rule
-import io.github.kverify.core.scope.Verification
+import io.github.kverify.core.verification.Verification
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.violations.DistinctViolation
 import io.github.kverify.violations.ExactSizeViolation
