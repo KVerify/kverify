@@ -1,10 +1,8 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.validationPath
-import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.scope.failIf
 import io.github.kverify.core.verification.Verification
-import io.github.kverify.core.violation.Violation
 import io.github.kverify.violations.ExactLengthViolation
 import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
@@ -13,8 +11,12 @@ import io.github.kverify.violations.NotBlankViolation
 
 public fun <V : Verification<String>> V.notBlank(reason: String? = null): V =
     apply {
-        val rule = StringNotBlankRule(value, scope.validationContext, reason)
-        scope.enforce(rule)
+        scope.failIf({ value.isBlank() }) {
+            NotBlankViolation(
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must not be blank",
+            )
+        }
     }
 
 public fun <V : Verification<String>> V.minLength(
@@ -22,8 +24,15 @@ public fun <V : Verification<String>> V.minLength(
     reason: String? = null,
 ): V =
     apply {
-        val rule = StringMinLengthRule(value, scope.validationContext, min, reason)
-        scope.enforce(rule)
+        val actualLength = value.length
+        scope.failIf({ actualLength < min }) {
+            MinLengthViolation(
+                minLengthAllowed = min,
+                actualLength = actualLength,
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must be at least $min characters long. Actual length: $actualLength",
+            )
+        }
     }
 
 public fun <V : Verification<String>> V.maxLength(
@@ -31,8 +40,15 @@ public fun <V : Verification<String>> V.maxLength(
     reason: String? = null,
 ): V =
     apply {
-        val rule = StringMaxLengthRule(value, scope.validationContext, max, reason)
-        scope.enforce(rule)
+        val actualLength = value.length
+        scope.failIf({ actualLength > max }) {
+            MaxLengthViolation(
+                maxLengthAllowed = max,
+                actualLength = actualLength,
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must be at most $max characters long. Actual length: $actualLength",
+            )
+        }
     }
 
 public fun <V : Verification<String>> V.exactLength(
@@ -40,8 +56,15 @@ public fun <V : Verification<String>> V.exactLength(
     reason: String? = null,
 ): V =
     apply {
-        val rule = StringExactLengthRule(value, scope.validationContext, length, reason)
-        scope.enforce(rule)
+        val actualLength = value.length
+        scope.failIf({ actualLength != length }) {
+            ExactLengthViolation(
+                expectedLength = length,
+                actualLength = actualLength,
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must be exactly $length characters long. Actual length: $actualLength",
+            )
+        }
     }
 
 public fun <V : Verification<String>> V.lengthRange(
@@ -50,120 +73,14 @@ public fun <V : Verification<String>> V.lengthRange(
     reason: String? = null,
 ): V =
     apply {
-        val rule = StringLengthRangeRule(value, scope.validationContext, min, max, reason)
-        scope.enforce(rule)
-    }
-
-private class StringNotBlankRule(
-    private val value: String,
-    private val context: ValidationContext,
-    private val reason: String? = null,
-) : Rule {
-    override fun check(): Violation? =
-        if (value.isBlank()) {
-            NotBlankViolation(
-                validationPath = context.validationPath(),
-                reason = reason ?: "Value must not be blank",
-            )
-        } else {
-            null
-        }
-}
-
-private class StringMinLengthRule(
-    private val value: String,
-    private val context: ValidationContext,
-    private val minLength: Int,
-    private val reason: String? = null,
-) : Rule {
-    override fun check(): Violation? {
         val actualLength = value.length
-
-        return if (actualLength < minLength) {
-            MinLengthViolation(
-                minLengthAllowed = minLength,
-                actualLength = actualLength,
-                validationPath = context.validationPath(),
-                reason =
-                    reason
-                        ?: "Value must be at least $minLength characters long. Actual length: $actualLength",
-            )
-        } else {
-            null
-        }
-    }
-}
-
-private class StringMaxLengthRule(
-    private val value: String,
-    private val context: ValidationContext,
-    private val maxLength: Int,
-    private val reason: String? = null,
-) : Rule {
-    override fun check(): Violation? {
-        val actualLength = value.length
-
-        return if (actualLength > maxLength) {
-            MaxLengthViolation(
-                maxLengthAllowed = maxLength,
-                actualLength = actualLength,
-                validationPath = context.validationPath(),
-                reason =
-                    reason
-                        ?: "Value must be at most $maxLength characters long. Actual length: $actualLength",
-            )
-        } else {
-            null
-        }
-    }
-}
-
-private class StringExactLengthRule(
-    private val value: String,
-    private val context: ValidationContext,
-    private val expectedLength: Int,
-    private val reason: String? = null,
-) : Rule {
-    override fun check(): Violation? {
-        val actualLength = value.length
-
-        return if (actualLength != expectedLength) {
-            ExactLengthViolation(
-                expectedLength = expectedLength,
-                actualLength = actualLength,
-                validationPath = context.validationPath(),
-                reason =
-                    reason
-                        ?: "Value must be exactly $expectedLength characters long. Actual length: $actualLength",
-            )
-        } else {
-            null
-        }
-    }
-}
-
-private class StringLengthRangeRule(
-    private val value: String,
-    private val context: ValidationContext,
-    private val minLength: Int,
-    private val maxLength: Int,
-    private val reason: String? = null,
-) : Rule {
-    override fun check(): Violation? {
-        val actualLength = value.length
-
-        return if (actualLength !in minLength..maxLength) {
+        scope.failIf({ actualLength !in min..max }) {
             LengthRangeViolation(
-                minLengthAllowed = minLength,
-                maxLengthAllowed = maxLength,
+                minLengthAllowed = min,
+                maxLengthAllowed = max,
                 actualLength = actualLength,
-                validationPath = context.validationPath(),
-                reason =
-                    reason
-                        ?: "Value must be between $minLength and $maxLength characters long. Actual length: $actualLength",
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must be between $min and $max characters long. Actual length: $actualLength",
             )
-        } else {
-            null
         }
     }
-}
