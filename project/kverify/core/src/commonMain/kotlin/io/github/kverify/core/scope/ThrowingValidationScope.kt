@@ -11,7 +11,11 @@ import kotlin.contracts.contract
 public class ThrowingValidationScope(
     public override val validationContext: ValidationContext,
 ) : ValidationScope {
-    override fun onFailure(violation: Violation): Nothing = throw ViolationException(violation)
+    override fun enforce(rule: Rule) {
+        val violation = rule.check() ?: return
+
+        throw ViolationException(violation)
+    }
 }
 
 public inline fun <T> verifyThrowing(

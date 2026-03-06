@@ -15,28 +15,8 @@ public annotation class KverifyDsl
 public interface ValidationScope {
     public val validationContext: ValidationContext
 
-    public fun onFailure(violation: Violation)
-
-    public fun enforce(rule: Rule) {
-        val violation = rule.check() ?: return
-
-        onFailure(violation)
-    }
+    public fun enforce(rule: Rule)
 }
-
-public inline fun ValidationScope.failIf(
-    crossinline condition: () -> Boolean,
-    crossinline violation: () -> Violation,
-): Unit =
-    enforce {
-        if (condition()) violation() else null
-    }
-
-public operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
-    ContextExtendedValidationScope(
-        originalValidationScope = this,
-        additionalContext = validationContext,
-    )
 
 @Suppress("NOTHING_TO_INLINE")
 public inline fun <T> ValidationScope.verify(value: T): Verification<T> =
@@ -50,6 +30,14 @@ public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> 
         value = property.get(),
         scope = this + NamePathElement(property.name),
     )
+
+public inline fun ValidationScope.failIf(
+    crossinline condition: () -> Boolean,
+    crossinline violation: () -> Violation,
+): Unit =
+    enforce {
+        if (condition()) violation() else null
+    }
 
 public inline fun ValidationScope.pathName(
     name: String,
@@ -68,3 +56,9 @@ public inline fun ValidationScope.pathIndex(
 
     return scope.apply(block)
 }
+
+public operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
+    ContextExtendedValidationScope(
+        originalValidationScope = this,
+        additionalContext = validationContext,
+    )
