@@ -2,7 +2,8 @@ package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.result.ViolationException
+import io.github.kverify.core.exception.ViolationException
+import io.github.kverify.core.rule.Rule
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
