@@ -21,13 +21,14 @@ public class CollectingValidationScope(
 }
 
 public inline fun verifyCollecting(
-    violationStorage: MutableCollection<Violation> = ArrayList(),
     validationContext: ValidationContext = EmptyValidationContext,
     block: CollectingValidationScope.() -> Unit,
 ): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
+
+    val violationStorage = ArrayList<Violation>()
 
     val scope = CollectingValidationScope(violationStorage, validationContext)
     scope.block()
