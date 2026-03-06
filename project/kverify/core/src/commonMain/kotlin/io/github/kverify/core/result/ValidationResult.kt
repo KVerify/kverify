@@ -12,8 +12,25 @@ public value class ValidationResult(
     public inline val isInvalid: Boolean get() = !isValid
 }
 
-public fun ValidationResult.throwIfInvalid() {
-    if (isValid) return
-
-    throw ValidationException(violations)
+public inline fun ValidationResult.onValid(block: () -> Unit) {
+    if (isValid) block()
 }
+
+public inline fun ValidationResult.onInvalid(block: (List<Violation>) -> Unit) {
+    if (isInvalid) block(violations)
+}
+
+public inline fun <T> ValidationResult.fold(
+    onValid: () -> T,
+    onInvalid: (List<Violation>) -> T,
+): T =
+    if (isValid) {
+        onValid()
+    } else {
+        onInvalid(violations)
+    }
+
+public fun ValidationResult.throwIfInvalid(): Unit =
+    onInvalid {
+        throw ValidationException(it)
+    }
