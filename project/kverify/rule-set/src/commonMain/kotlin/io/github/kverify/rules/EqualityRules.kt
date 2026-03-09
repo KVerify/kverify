@@ -6,7 +6,18 @@ import io.github.kverify.core.scope.failIf
 import io.github.kverify.violations.EqualToViolation
 import io.github.kverify.violations.NoneOfViolation
 import io.github.kverify.violations.NotEqualToViolation
+import io.github.kverify.violations.NotNullViolation
 import io.github.kverify.violations.OneOfViolation
+
+public fun <T> Verification<T>.notNull(reason: String? = null): Verification<T> =
+    apply {
+        scope.failIf({ value == null }) {
+            NotNullViolation(
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must not be null",
+            )
+        }
+    }
 
 public fun <T> Verification<T>.equalTo(
     expected: T,
