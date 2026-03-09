@@ -1,6 +1,14 @@
 package io.github.kverify.violations
 
 import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.violation.PathAwareViolation
+
+public class NotNullViolation(
+    override val validationPath: List<ValidationPathElement>,
+    override val reason: String,
+) : PathAwareViolation {
+    override fun toString(): String = "NotNullViolation(validationPath=$validationPath, reason=$reason)"
+}
 
 public class EqualToViolation<T>(
     public val expected: T,
