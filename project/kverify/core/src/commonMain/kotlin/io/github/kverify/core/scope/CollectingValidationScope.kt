@@ -9,7 +9,7 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 public class CollectingValidationScope(
-    private val violationStorage: MutableCollection<Violation> = ArrayList(),
+    private val violationStorage: MutableCollection<Violation>,
     override val validationContext: ValidationContext = EmptyValidationContext,
 ) : ValidationScope {
     override fun enforce(rule: Rule) {
