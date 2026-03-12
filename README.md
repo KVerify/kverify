@@ -14,55 +14,15 @@
 
 ---
 
-KVerify is a validation library that treats validation as **first-class code**, not configuration. Built for Kotlin
-developers who want compile-time safety, flexibility, and clean APIs.
+KVerify is a lightweight Kotlin Multiplatform validation library. No annotations, no reflection, no framework lock-in — just a clean DSL that gets out of your way.
+
+Use it in your backend, mobile app, game, or test suite. It doesn't care where it runs.
 
 ## Why KVerify?
 
-### Type-Safe Composition
+### Your errors are real objects
 
-Rules are typed values that compose naturally:
-
-```kotlin
-// Define rules once
-val nicknameRule = RuleList(
-    StringRules.notBlank(),
-    StringRules.lengthBetween(3..20),
-    StringRules.alphanumeric(),
-)
-
-// Compose with +
-val userRule = nicknameRule + emailRule + ageRule
-
-// Type safety guaranteed at compile time
-user.nickname verifyWith nicknameRule  // ✅ Works
-user.age verifyWith nicknameRule       // ❌ Compile error
-```
-
-### Choose Your Validation Strategy
-
-Different use cases need different error handling:
-
-```kotlin
-// Collect all errors (for forms, DTOs, APIs)
-val result = verifyCollecting {
-    user.nickname verifyWith nicknameRule
-    user.email verifyWith emailRule
-    user.age verifyWith ageRule
-}
-// Returns: Valid or Invalid(List<Violation>)
-
-// Throw on first error (for business logic, use cases)
-verifyThrowing {
-    order.total verifyWith minimumAmountRule
-    order.items verifyWith notEmptyRule
-}
-// Throws: ValidationException on first failure
-```
-
-### Rich, Typed Violations
-
-Errors are real objects, not just strings:
+Most validation libraries give you strings. KVerify gives you typed violations you can actually work with:
 
 ```kotlin
 data class PasswordTooShortViolation(
@@ -70,97 +30,113 @@ data class PasswordTooShortViolation(
     val minimumLength: Int,
 ) : Violation {
     override val reason =
-        "Password must be at least $minimumLength characters, but is $actualLength"
+        "Password must be at least $minimumLength characters, but got $actualLength"
 }
 
-// Handle errors by type
-when (val violation = result.violations.first()) {
-    is PasswordTooShortViolation ->
-        "Try a longer password (min: ${violation.minimumLength})"
-    is EmailInvalidViolation ->
-        "Please check your email format"
+// Handle errors by type, not by parsing strings
+when (violation) {
+    is PasswordTooShortViolation -> "Try a longer password (min: ${violation.minimumLength})"
+    is EmailFormatViolation -> "Please check your email format"
     else -> violation.reason
 }
 ```
 
-## Quick Start
+### You choose what happens on failure
 
-**Add dependencies:**
+Collect all violations, or stop at the first — depending on what the situation calls for:
+
+```kotlin
+// Collect everything (great for forms, APIs, DTOs)
+val result = validateCollecting {
+    verify(user::name).notBlank().minLength(3)
+    verify(user::email).notBlank()
+    verify(user::age).atLeast(13)
+}
+
+result.onInvalid { violations ->
+    violations.forEach { println(it.reason) }
+}
+
+// Throw immediately (great for business logic, use cases)
+validateThrowing {
+    verify(order::total).atLeast(minimumAmount)
+    verify(order::items).minSize(1)
+}
+```
+
+### Write rules once, use them everywhere
+
+Rules are just extension functions on `Verification<T>`. Define them once, reuse across your whole codebase:
+
+```kotlin
+fun Verification<String>.validEmail(): Verification<String> =
+    apply {
+        scope.failIf({ !value.contains("@") }) {
+            EmailFormatViolation(value)
+        }
+    }
+
+// Works anywhere, on any value of the right type
+validateCollecting {
+    verify(user::email).validEmail()
+    verify(invite::recipientEmail).validEmail()
+}
+```
+
+For domain-specific validation (e.g. validating a whole request object), write a `ValidationScope` extension instead:
+
+```kotlin
+fun ValidationScope.validateSignUp(request: SignUpRequest) {
+    verify(request::username).notBlank().minLength(3).maxLength(20)
+    verify(request::email).notBlank().validEmail()
+    verify(request::age).atLeast(13)
+}
+
+val result = validateCollecting {
+    validateSignUp(request)
+}
+```
+
+## Getting Started
+
+Add the dependencies:
 
 ```kotlin
 dependencies {
     implementation("io.github.kverify:kverify-core:2.0.0")
     implementation("io.github.kverify:kverify-rule-set:2.0.0")
-    implementation("io.github.kverify:kverify-named-value:2.0.0")
-    implementation("io.github.kverify:kverify-named-rule-set:2.0.0")
 }
 ```
 
-**Validate anything:**
+Validate something:
 
 ```kotlin
-import io.github.kverify.core.context.verifyCollecting
-import io.github.kverify.named.rule.set.provider.*
-
-object NamedStringRules : NamedStringRuleProvider by DefaultNamedStringRuleProvider()
-
-data class SignUpRequest(
-    val username: String,
-    val email: String,
-    val age: Int,
-)
-
-fun validateSignUp(request: SignUpRequest): ValidationResult = verifyCollecting {
-    request.username withName "username" verifyWith RuleList(
-        NamedStringRules.namedNotBlank(),
-        NamedStringRules.namedLengthBetween(3..20),
-        NamedStringRules.namedAlphanumeric(),
-    )
-
-    request.email withName "email" verifyWith emailRule
-    request.age withName "age" verifyWith ageRule
+val result = validateCollecting {
+    verify(user::name).notBlank().minLength(3).maxLength(50)
+    verify(user::age).atLeast(0).atMost(150)
+    verify(user::tags).distinct().maxSize(10)
 }
 
-// Use the result
-val result = validateSignUp(request)
-
 result.fold(
-    ifValid = { createUser(request) },
-    ifInvalid = { violations ->
-        violations.forEach { println(it.reason) }
-        // 'username' must be alphanumeric
-        // 'email' must contain @
-        // 'age' must be at least 13
-    }
+    onValid = { println("All good!") },
+    onInvalid = { violations -> violations.forEach { println(it.reason) } }
 )
 ```
 
-## What Makes It Different?
+## Built-in Rules
 
-| Feature              | KVerify               | Bean Validation       | Konform            |
-|----------------------|-----------------------|-----------------------|--------------------|
-| **Type Safety**      | ✅ Compile-time        | ❌ Runtime annotations | ✅                  |
-| **Composable**       | ✅ Rules are values    | ❌ Annotation-based    | ⚠️ Limited         |
-| **Error Strategies** | ✅ Multiple strategies | ❌ Always throws       | ⚠️ Single strategy |
-| **Typed Violations** | ✅ Custom error types  | ❌ String messages     | ❌ String messages  |
-| **Custom Rules**     | ✅ First-class         | ⚠️ Complex            | ✅                  |
-| **Multiplatform**    | ✅ JVM, JS, Native     | ⚠️ JVM only           | ✅                  |
+**Strings** — `notBlank`, `minLength`, `maxLength`, `exactLength`, `lengthRange`
 
-## Features
+**Comparable** — `atLeast`, `atMost`, `between`, `greaterThan`, `lessThan`
 
-- **45+ built-in rules** for strings, numbers, collections
-- **Multiple validation strategies** - collecting, throwing, fail-fast, first-error
-- **Custom typed violations** - structured error information
-- **Field-specific errors** - named values for better error messages
-- **Localization support** - customize error messages per locale
-- **Zero reflection** in core (optional for convenience)
-- **Coroutine support** - async validation for database/API checks
-- **Modular** - use only what you need
+**Collections** — `minSize`, `maxSize`, `exactSize`, `sizeRange`, `distinct`
+
+**Equality** — `notNull`, `equalTo`, `notEqualTo`, `oneOf`, `noneOf`
 
 ## Requirements
 
 - Kotlin 1.9+
-- Compatible with JVM, JavaScript, and Native platforms
+- JVM, JavaScript, and Native platforms supported
 
 ## License
 
