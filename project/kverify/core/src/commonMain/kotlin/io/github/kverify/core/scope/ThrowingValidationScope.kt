@@ -17,7 +17,7 @@ public class ThrowingValidationScope(
     }
 }
 
-public inline fun <T> verifyThrowing(
+public inline fun <T> validateThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
     block: ThrowingValidationScope.() -> T,
 ): T {
