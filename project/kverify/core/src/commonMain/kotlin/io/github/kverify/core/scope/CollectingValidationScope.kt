@@ -19,7 +19,7 @@ public class CollectingValidationScope(
     }
 }
 
-public inline fun verifyCollecting(
+public inline fun validateCollecting(
     validationContext: ValidationContext = EmptyValidationContext,
     block: CollectingValidationScope.() -> Unit,
 ): ValidationResult {
