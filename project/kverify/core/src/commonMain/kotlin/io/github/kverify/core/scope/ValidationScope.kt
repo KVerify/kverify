@@ -32,11 +32,11 @@ public fun <T> ValidationScope.verify(property: KProperty0<T>): Verification<T> 
     )
 
 public inline fun ValidationScope.failIf(
-    crossinline condition: () -> Boolean,
+    crossinline predicate: () -> Boolean,
     crossinline lazyViolation: () -> Violation,
 ): Unit =
     enforce {
-        if (condition()) lazyViolation() else null
+        if (predicate()) lazyViolation() else null
     }
 
 public inline fun ValidationScope.pathName(
