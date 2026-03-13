@@ -6,6 +6,5 @@ internal class ContextExtendedValidationScope<out T : ValidationScope>(
     val originalValidationScope: T,
     val additionalContext: ValidationContext,
 ) : ValidationScope by originalValidationScope {
-    override val validationContext: ValidationContext
-        get() = originalValidationScope.validationContext + additionalContext
+    override val validationContext: ValidationContext = originalValidationScope.validationContext + additionalContext
 }
