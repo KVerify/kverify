@@ -16,6 +16,11 @@ public interface ValidationScope {
     public val validationContext: ValidationContext
 
     public fun enforce(rule: Rule)
+    public operator fun plus(validationContext: ValidationContext): ValidationScope =
+        ContextExtendedValidationScope(
+            originalValidationScope = this,
+            additionalContext = validationContext,
+        )
 }
 
 @Suppress("NOTHING_TO_INLINE")
@@ -56,9 +61,3 @@ public inline fun ValidationScope.pathIndex(
 
     return scope.apply(block)
 }
-
-public operator fun ValidationScope.plus(validationContext: ValidationContext): ValidationScope =
-    ContextExtendedValidationScope(
-        originalValidationScope = this,
-        additionalContext = validationContext,
-    )
