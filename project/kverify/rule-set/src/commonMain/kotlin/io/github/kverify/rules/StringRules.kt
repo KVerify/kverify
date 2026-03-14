@@ -9,6 +9,11 @@ import io.github.kverify.violations.MaxLengthViolation
 import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
 
+/**
+ * Fails with [NotBlankViolation] if the string is blank.
+ *
+ * If [reason] is `null`, defaults to: `"Value must not be blank"`.
+ */
 public fun Verification<String>.notBlank(reason: String? = null): Verification<String> =
     apply {
         scope.failIf({ value.isBlank() }) {
@@ -19,6 +24,11 @@ public fun Verification<String>.notBlank(reason: String? = null): Verification<S
         }
     }
 
+/**
+ * Fails with [MinLengthViolation] if the string is shorter than [min] characters (inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be at least $min characters long. Actual length: $actualLength"`.
+ */
 public fun Verification<String>.minLength(
     min: Int,
     reason: String? = null,
@@ -35,6 +45,11 @@ public fun Verification<String>.minLength(
         }
     }
 
+/**
+ * Fails with [MaxLengthViolation] if the string is longer than [max] characters (inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be at most $max characters long. Actual length: $actualLength"`.
+ */
 public fun Verification<String>.maxLength(
     max: Int,
     reason: String? = null,
@@ -51,6 +66,11 @@ public fun Verification<String>.maxLength(
         }
     }
 
+/**
+ * Fails with [ExactLengthViolation] if the string length does not equal [length].
+ *
+ * If [reason] is `null`, defaults to: `"Value must be exactly $length characters long. Actual length: $actualLength"`.
+ */
 public fun Verification<String>.exactLength(
     length: Int,
     reason: String? = null,
@@ -67,6 +87,11 @@ public fun Verification<String>.exactLength(
         }
     }
 
+/**
+ * Fails with [LengthRangeViolation] if the string length is outside the range [[min], [max]] (both inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be between $min and $max characters long. Actual length: $actualLength"`.
+ */
 public fun Verification<String>.lengthRange(
     min: Int,
     max: Int,

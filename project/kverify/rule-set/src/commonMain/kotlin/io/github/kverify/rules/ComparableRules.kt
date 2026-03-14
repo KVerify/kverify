@@ -9,6 +9,11 @@ import io.github.kverify.violations.BetweenViolation
 import io.github.kverify.violations.GreaterThanViolation
 import io.github.kverify.violations.LessThanViolation
 
+/**
+ * Fails with [AtLeastViolation] if the value is less than [min] (inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be at least $min. Actual: $value"`.
+ */
 public fun <T : Comparable<T>> Verification<T>.atLeast(
     min: T,
     reason: String? = null,
@@ -24,6 +29,11 @@ public fun <T : Comparable<T>> Verification<T>.atLeast(
         }
     }
 
+/**
+ * Fails with [AtMostViolation] if the value is greater than [max] (inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be at most $max. Actual: $value"`.
+ */
 public fun <T : Comparable<T>> Verification<T>.atMost(
     max: T,
     reason: String? = null,
@@ -39,6 +49,11 @@ public fun <T : Comparable<T>> Verification<T>.atMost(
         }
     }
 
+/**
+ * Fails with [BetweenViolation] if the value is outside the range [[min], [max]] (both inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be between $min and $max. Actual: $value"`.
+ */
 public fun <T : Comparable<T>> Verification<T>.between(
     min: T,
     max: T,
@@ -56,6 +71,11 @@ public fun <T : Comparable<T>> Verification<T>.between(
         }
     }
 
+/**
+ * Fails with [GreaterThanViolation] if the value is not greater than [min] (exclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be greater than $min. Actual: $value"`.
+ */
 public fun <T : Comparable<T>> Verification<T>.greaterThan(
     min: T,
     reason: String? = null,
@@ -71,6 +91,11 @@ public fun <T : Comparable<T>> Verification<T>.greaterThan(
         }
     }
 
+/**
+ * Fails with [LessThanViolation] if the value is not less than [max] (exclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Value must be less than $max. Actual: $value"`.
+ */
 public fun <T : Comparable<T>> Verification<T>.lessThan(
     max: T,
     reason: String? = null,
