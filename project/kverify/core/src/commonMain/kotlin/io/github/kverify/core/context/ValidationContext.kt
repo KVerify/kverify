@@ -1,11 +1,6 @@
 package io.github.kverify.core.context
 
-public interface ValidationContext {
-    public fun <R> fold(
-        initial: R,
-        operation: (R, Element) -> R,
-    ): R
-
+public interface ValidationContext : Iterable<ValidationContext.Element> {
     public operator fun plus(other: ValidationContext): ValidationContext {
         if (other === EmptyValidationContext) return this
 
@@ -19,20 +14,9 @@ public interface ValidationContext {
     }
 
     public interface Element : ValidationContext {
-        override fun <R> fold(
-            initial: R,
-            operation: (R, Element) -> R,
-        ): R = operation(initial, this)
+        override fun iterator(): Iterator<Element> = iterator { yield(this@Element) }
     }
 }
 
-public fun ValidationContext.validationPath(): List<ValidationPathElement> {
-    val context = this
-
-    return buildList {
-        context.fold(this) { acc, element ->
-            if (element is ValidationPathElement) acc.add(element)
-            acc
-        }
-    }
-}
+@Suppress("NOTHING_TO_INLINE")
+public inline fun ValidationContext.validationPath(): List<ValidationPathElement> = filterIsInstance<ValidationPathElement>()
