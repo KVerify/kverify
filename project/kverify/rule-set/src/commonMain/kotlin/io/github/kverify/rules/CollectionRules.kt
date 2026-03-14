@@ -9,6 +9,11 @@ import io.github.kverify.violations.MaxSizeViolation
 import io.github.kverify.violations.MinSizeViolation
 import io.github.kverify.violations.SizeRangeViolation
 
+/**
+ * Fails with [MinSizeViolation] if the collection has fewer than [min] elements (inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Collection must have at least $min elements. Actual size: $actualSize"`.
+ */
 public fun <C : Collection<*>> Verification<C>.minSize(
     min: Int,
     reason: String? = null,
@@ -25,6 +30,11 @@ public fun <C : Collection<*>> Verification<C>.minSize(
         }
     }
 
+/**
+ * Fails with [MaxSizeViolation] if the collection has more than [max] elements (inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Collection must have at most $max elements. Actual size: $actualSize"`.
+ */
 public fun <C : Collection<*>> Verification<C>.maxSize(
     max: Int,
     reason: String? = null,
@@ -41,6 +51,11 @@ public fun <C : Collection<*>> Verification<C>.maxSize(
         }
     }
 
+/**
+ * Fails with [ExactSizeViolation] if the collection size does not equal [size].
+ *
+ * If [reason] is `null`, defaults to: `"Collection must have exactly $size elements. Actual size: $actualSize"`.
+ */
 public fun <C : Collection<*>> Verification<C>.exactSize(
     size: Int,
     reason: String? = null,
@@ -57,6 +72,11 @@ public fun <C : Collection<*>> Verification<C>.exactSize(
         }
     }
 
+/**
+ * Fails with [SizeRangeViolation] if the collection size is outside the range [[min], [max]] (both inclusive).
+ *
+ * If [reason] is `null`, defaults to: `"Collection must have between $min and $max elements. Actual size: $actualSize"`.
+ */
 public fun <C : Collection<*>> Verification<C>.sizeRange(
     min: Int,
     max: Int,
@@ -75,6 +95,11 @@ public fun <C : Collection<*>> Verification<C>.sizeRange(
         }
     }
 
+/**
+ * Fails with [DistinctViolation] if the collection contains duplicate elements.
+ *
+ * If [reason] is `null`, defaults to: `"Collection must contain distinct elements. Found $duplicatesCount duplicates"`.
+ */
 public fun <C : Collection<*>> Verification<C>.distinct(reason: String? = null): Verification<C> =
     apply {
         val actualSize = value.size
