@@ -1,7 +1,11 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.scope.validateCollecting
-import io.github.kverify.core.scope.verify
+import io.github.kverify.core.context.EmptyValidationContext
+import io.github.kverify.core.context.NamePathElement
+import io.github.kverify.core.scope.CollectingValidationScope
+import io.github.kverify.core.scope.ThrowingValidationScope
+import io.github.kverify.core.scope.Verification
+import io.github.kverify.core.violation.Violation
 import io.github.kverify.violations.EqualToViolation
 import io.github.kverify.violations.NoneOfViolation
 import io.github.kverify.violations.NotEqualToViolation
@@ -10,158 +14,340 @@ import io.github.kverify.violations.OneOfViolation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 class EqualityRulesTest {
     @Test
-    fun notNull_valid() {
-        val value = "present"
-
-        assertTrue(validateCollecting { verify(value).notNull() }.isValid)
+    fun notNullPassesWhenValueIsNotNull() {
+        throwing<String?>("hello").notNull()
     }
 
     @Test
-    fun notNull_invalid() {
-        val value: String? = null
+    fun notNullFailsWhenValueIsNull() {
+        val (storage, verification) = collecting<String?>(null)
 
-        val result = validateCollecting { verify(value).notNull() }
+        verification.notNull()
 
-        assertTrue(result.isInvalid)
-        assertIs<NotNullViolation>(result.violations.first())
+        assertEquals(1, storage.size)
+        assertIs<NotNullViolation>(storage[0])
     }
 
     @Test
-    fun notNull_nonNullableType_valid() {
-        assertTrue(validateCollecting { verify(42).notNull() }.isValid)
+    fun notNullViolationHasDefaultReason() {
+        val (storage, verification) = collecting<String?>(null)
+
+        verification.notNull()
+
+        assertEquals("Value must not be null", storage[0].reason)
     }
 
     @Test
-    fun notNull_customReason() {
-        val reason = "ID is required"
+    fun notNullViolationHasCustomReason() {
+        val customReason = "name is required"
+        val (storage, verification) = collecting<String?>(null)
 
-        val result = validateCollecting { verify<String?>(null).notNull(reason) }
+        verification.notNull(reason = customReason)
 
-        val violation = assertIs<NotNullViolation>(result.violations.first())
-        assertEquals(reason, violation.reason)
+        assertEquals(customReason, storage[0].reason)
     }
 
     @Test
-    fun equalTo_valid() {
-        val value = "hello"
+    fun notNullViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("userId")
+        val (storage, verification) = collecting<String?>(null, pathElement)
 
-        assertTrue(validateCollecting { verify(value).equalTo(value) }.isValid)
+        verification.notNull()
+
+        assertEquals(listOf(pathElement), (storage[0] as NotNullViolation).validationPath)
     }
 
     @Test
-    fun equalTo_invalid() {
-        val value = "hello"
-        val expected = "world"
+    fun notNullReturnsSameVerification() {
+        val (_, verification) = collecting<String?>("value")
 
-        val result = validateCollecting { verify(value).equalTo(expected) }
+        val returned = verification.notNull()
 
-        assertTrue(result.isInvalid)
-        assertIs<EqualToViolation<*>>(result.violations.first())
+        assertSame(verification, returned)
     }
 
     @Test
-    fun equalTo_violationValues() {
-        val value = "hello"
-        val expected = "world"
+    fun equalToPassesWhenValueEqualsExpected() {
+        throwing(42).equalTo(42)
+    }
 
-        val result = validateCollecting { verify(value).equalTo(expected) }
+    @Test
+    fun equalToFailsWhenValueDiffersFromExpected() {
+        val (storage, verification) = collecting(43)
 
-        val violation = assertIs<EqualToViolation<*>>(result.violations.first())
+        verification.equalTo(42)
+
+        assertEquals(1, storage.size)
+        assertIs<EqualToViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun equalToViolationStoresExpectedAndActual() {
+        val expected = 10
+        val actual = 99
+        val (storage, verification) = collecting(actual)
+
+        verification.equalTo(expected)
+
+        val violation = storage[0] as EqualToViolation<*>
         assertEquals(expected, violation.expected)
-        assertEquals(value, violation.actual)
+        assertEquals(actual, violation.actual)
     }
 
     @Test
-    fun notEqualTo_valid() {
-        val value = "hello"
-        val forbidden = "world"
+    fun equalToViolationHasDefaultReason() {
+        val expected = 5
+        val actual = 6
+        val (storage, verification) = collecting(actual)
 
-        assertTrue(validateCollecting { verify(value).notEqualTo(forbidden) }.isValid)
+        verification.equalTo(expected)
+
+        assertEquals("Value must be equal to $expected. Actual: $actual", storage[0].reason)
     }
 
     @Test
-    fun notEqualTo_invalid() {
-        val value = "same"
+    fun equalToViolationHasCustomReason() {
+        val customReason = "token mismatch"
+        val (storage, verification) = collecting("abc")
 
-        val result = validateCollecting { verify(value).notEqualTo(value) }
+        verification.equalTo("xyz", reason = customReason)
 
-        assertTrue(result.isInvalid)
-        assertIs<NotEqualToViolation<*>>(result.violations.first())
+        assertEquals(customReason, storage[0].reason)
     }
 
     @Test
-    fun notEqualTo_violationValues() {
-        val value = "same"
+    fun equalToViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("code")
+        val (storage, verification) = collecting("wrong", pathElement)
 
-        val result = validateCollecting { verify(value).notEqualTo(value) }
+        verification.equalTo("right")
 
-        val violation = assertIs<NotEqualToViolation<*>>(result.violations.first())
-        assertEquals(value, violation.forbidden)
+        assertEquals(listOf(pathElement), (storage[0] as EqualToViolation<*>).validationPath)
     }
 
     @Test
-    fun oneOf_valid() {
-        val value = "a"
-        val allowed = setOf("a", "b", "c")
-
-        assertTrue(validateCollecting { verify(value).oneOf(allowed) }.isValid)
+    fun notEqualToPassesWhenValueDiffersFromForbidden() {
+        throwing("user").notEqualTo("admin")
     }
 
     @Test
-    fun oneOf_invalid() {
-        val value = "d"
-        val allowed = setOf("a", "b", "c")
+    fun notEqualToFailsWhenValueEqualsForbidden() {
+        val forbidden = "admin"
+        val (storage, verification) = collecting(forbidden)
 
-        val result = validateCollecting { verify(value).oneOf(allowed) }
+        verification.notEqualTo(forbidden)
 
-        assertTrue(result.isInvalid)
-        assertIs<OneOfViolation<*>>(result.violations.first())
+        assertEquals(1, storage.size)
+        assertIs<NotEqualToViolation<*>>(storage[0])
     }
 
     @Test
-    fun oneOf_violationValues() {
-        val value = "d"
+    fun notEqualToViolationStoresForbiddenValue() {
+        val forbidden = "root"
+        val (storage, verification) = collecting(forbidden)
+
+        verification.notEqualTo(forbidden)
+
+        assertEquals(forbidden, (storage[0] as NotEqualToViolation<*>).forbidden)
+    }
+
+    @Test
+    fun notEqualToViolationHasDefaultReason() {
+        val forbidden = "banned"
+        val (storage, verification) = collecting(forbidden)
+
+        verification.notEqualTo(forbidden)
+
+        assertEquals("Value must not be equal to $forbidden", storage[0].reason)
+    }
+
+    @Test
+    fun notEqualToViolationHasCustomReason() {
+        val customReason = "this value is reserved"
+        val forbidden = "system"
+        val (storage, verification) = collecting(forbidden)
+
+        verification.notEqualTo(forbidden, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun notEqualToViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("role")
+        val forbidden = "superuser"
+        val (storage, verification) = collecting(forbidden, pathElement)
+
+        verification.notEqualTo(forbidden)
+
+        assertEquals(listOf(pathElement), (storage[0] as NotEqualToViolation<*>).validationPath)
+    }
+
+    @Test
+    fun oneOfPassesWhenValueIsInAllowedSet() {
+        throwing("read").oneOf(setOf("read", "write", "execute"))
+    }
+
+    @Test
+    fun oneOfFailsWhenValueIsNotInAllowedSet() {
+        val (storage, verification) = collecting("delete")
+
+        verification.oneOf(setOf("read", "write"))
+
+        assertEquals(1, storage.size)
+        assertIs<OneOfViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun oneOfViolationStoresAllowedAndActual() {
         val allowed = setOf("a", "b")
+        val actual = "c"
+        val (storage, verification) = collecting(actual)
 
-        val result = validateCollecting { verify(value).oneOf(allowed) }
+        verification.oneOf(allowed)
 
-        val violation = assertIs<OneOfViolation<*>>(result.violations.first())
+        val violation = storage[0] as OneOfViolation<*>
         assertEquals(allowed, violation.allowed)
-        assertEquals(value, violation.actual)
+        assertEquals(actual, violation.actual)
     }
 
     @Test
-    fun noneOf_valid() {
-        val value = "d"
-        val forbidden = setOf("a", "b", "c")
+    fun oneOfViolationHasDefaultReason() {
+        val allowed = setOf(1, 2, 3)
+        val actual = 5
+        val (storage, verification) = collecting(actual)
 
-        assertTrue(validateCollecting { verify(value).noneOf(forbidden) }.isValid)
+        verification.oneOf(allowed)
+
+        assertEquals("Value must be one of $allowed. Actual: $actual", storage[0].reason)
     }
 
     @Test
-    fun noneOf_invalid() {
-        val value = "a"
-        val forbidden = setOf("a", "b", "c")
+    fun oneOfViolationHasCustomReason() {
+        val customReason = "invalid status"
+        val (storage, verification) = collecting("unknown")
 
-        val result = validateCollecting { verify(value).noneOf(forbidden) }
+        verification.oneOf(setOf("active", "inactive"), reason = customReason)
 
-        assertTrue(result.isInvalid)
-        assertIs<NoneOfViolation<*>>(result.violations.first())
+        assertEquals(customReason, storage[0].reason)
     }
 
     @Test
-    fun noneOf_violationValues() {
-        val value = "a"
-        val forbidden = setOf("a", "b")
+    fun oneOfViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("status")
+        val (storage, verification) = collecting("unknown", pathElement)
 
-        val result = validateCollecting { verify(value).noneOf(forbidden) }
+        verification.oneOf(setOf("active", "inactive"))
 
-        val violation = assertIs<NoneOfViolation<*>>(result.violations.first())
+        assertEquals(listOf(pathElement), (storage[0] as OneOfViolation<*>).validationPath)
+    }
+
+    @Test
+    fun noneOfPassesWhenValueIsNotInForbiddenSet() {
+        throwing("select").noneOf(setOf("delete", "drop"))
+    }
+
+    @Test
+    fun noneOfFailsWhenValueIsInForbiddenSet() {
+        val (storage, verification) = collecting("drop")
+
+        verification.noneOf(setOf("drop", "truncate"))
+
+        assertEquals(1, storage.size)
+        assertIs<NoneOfViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun noneOfViolationStoresForbiddenAndActual() {
+        val forbidden = setOf("x", "y")
+        val actual = "x"
+        val (storage, verification) = collecting(actual)
+
+        verification.noneOf(forbidden)
+
+        val violation = storage[0] as NoneOfViolation<*>
         assertEquals(forbidden, violation.forbidden)
-        assertEquals(value, violation.actual)
+        assertEquals(actual, violation.actual)
+    }
+
+    @Test
+    fun noneOfViolationHasDefaultReason() {
+        val forbidden = setOf("banned1", "banned2")
+        val actual = "banned1"
+        val (storage, verification) = collecting(actual)
+
+        verification.noneOf(forbidden)
+
+        assertEquals("Value must not be one of $forbidden. Actual: $actual", storage[0].reason)
+    }
+
+    @Test
+    fun noneOfViolationHasCustomReason() {
+        val customReason = "keyword is reserved"
+        val (storage, verification) = collecting("null")
+
+        verification.noneOf(setOf("null", "undefined"), reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun noneOfViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("command")
+        val (storage, verification) = collecting("drop", pathElement)
+
+        verification.noneOf(setOf("drop", "truncate"))
+
+        assertEquals(listOf(pathElement), (storage[0] as NoneOfViolation<*>).validationPath)
+    }
+
+    @Test
+    fun notNullReturnsSameVerificationOnFail() {
+        val (_, verification) = collecting<String?>(null)
+
+        val returned = verification.notNull()
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun equalToReturnsSameVerification() {
+        val (_, verification) = collecting(42)
+
+        val returned = verification.equalTo(42)
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun notEqualToReturnsSameVerification() {
+        val (_, verification) = collecting("user")
+
+        val returned = verification.notEqualTo("admin")
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun oneOfReturnsSameVerification() {
+        val (_, verification) = collecting("read")
+
+        val returned = verification.oneOf(setOf("read", "write"))
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun noneOfReturnsSameVerification() {
+        val (_, verification) = collecting("select")
+
+        val returned = verification.noneOf(setOf("drop", "truncate"))
+
+        assertSame(verification, returned)
     }
 }

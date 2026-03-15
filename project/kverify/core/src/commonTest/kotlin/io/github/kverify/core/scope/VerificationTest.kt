@@ -1,131 +1,177 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.IndexPathElement
+import io.github.kverify.core.context.NamePathElement
+import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.context.validationPath
-import io.github.kverify.core.violation.violation
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 
 class VerificationTest {
+    private fun emptyScope() = CollectingValidationScope(mutableListOf(), EmptyValidationContext)
+
     @Test
-    fun takeIfNotNull_returnsVerificationWhenNotNull() {
-        val expected = "present"
+    fun storesProvidedValue() {
+        val value = "test"
+        val scope = emptyScope()
 
-        validateCollecting {
-            val verification = verify<String?>(expected)
+        val verification = Verification(value, scope)
 
-            val result = verification.takeIfNotNull()
+        assertSame(value, verification.value)
+    }
 
-            assertEquals(expected, result?.value)
+    @Test
+    fun storesProvidedScope() {
+        val scope = emptyScope()
+
+        val verification = Verification("value", scope)
+
+        assertSame(scope, verification.scope)
+    }
+
+    @Test
+    fun takeIfNotNullReturnsSameValueWhenNotNull() {
+        val value = "present"
+        val verification = Verification<String?>(value, emptyScope())
+
+        val result = verification.takeIfNotNull()
+
+        assertEquals(value, result?.value)
+    }
+
+    @Test
+    fun takeIfNotNullReturnsSameScopeWhenNotNull() {
+        val scope = emptyScope()
+        val verification = Verification<String?>("present", scope)
+
+        val result = verification.takeIfNotNull()
+
+        assertSame(scope, result?.scope)
+    }
+
+    @Test
+    fun takeIfNotNullReturnsNullWhenValueIsNull() {
+        val verification = Verification<String?>(null, emptyScope())
+
+        val result = verification.takeIfNotNull()
+
+        assertNull(result)
+    }
+
+    @Test
+    fun eachWithElementBlockVisitsEachElement() {
+        val elements = listOf("a", "b", "c")
+        val verification = Verification(elements, emptyScope())
+        val visited = mutableListOf<String>()
+
+        verification.each { element -> visited.add(element) }
+
+        assertEquals(elements, visited)
+    }
+
+    @Test
+    fun eachWithElementBlockReceivesCorrectIndexPathElements() {
+        val elements = listOf("x", "y", "z")
+        val verification = Verification(elements, emptyScope())
+        val capturedPaths = mutableListOf<List<ValidationPathElement>>()
+
+        verification.each { capturedPaths.add(validationContext.validationPath()) }
+
+        capturedPaths.forEachIndexed { index, path ->
+            assertEquals(listOf(IndexPathElement(index)), path)
         }
     }
 
     @Test
-    fun takeIfNotNull_returnsNullWhenNull() {
-        validateCollecting {
-            val verification = verify<String?>(null)
+    fun eachWithElementBlockReturnsSameVerification() {
+        val verification = Verification(listOf(1, 2, 3), emptyScope())
 
-            assertNull(verification.takeIfNotNull())
+        val returned = verification.each { }
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun eachWithElementBlockOnEmptyCollectionDoesNotVisitAnything() {
+        val verification = Verification(emptyList<String>(), emptyScope())
+        var visited = false
+
+        verification.each { visited = true }
+
+        assertEquals(false, visited)
+    }
+
+    @Test
+    fun eachWithElementBlockDoesNotLeakIndexedScopeToOriginalScope() {
+        val scope = emptyScope()
+        val verification = Verification(listOf("only"), scope)
+
+        verification.each { }
+
+        assertEquals(EmptyValidationContext, scope.validationContext)
+    }
+
+    @Test
+    fun eachWithIndexedBlockReceivesCorrectIndexAndElement() {
+        val elements = listOf("a", "b", "c")
+        val verification = Verification(elements, emptyScope())
+        val captured = mutableListOf<Pair<Int, String>>()
+
+        verification.each { index, element -> captured.add(index to element) }
+
+        captured.forEachIndexed { expected, (actualIndex, actualElement) ->
+            assertEquals(expected, actualIndex)
+            assertEquals(elements[expected], actualElement)
         }
     }
 
     @Test
-    fun takeIfNotNull_preservesScope() {
-        validateCollecting {
-            val verification = verify<String?>("present")
+    fun eachWithIndexedBlockReceivesCorrectIndexPathElements() {
+        val elements = listOf("p", "q")
+        val verification = Verification(elements, emptyScope())
+        val capturedPaths = mutableListOf<List<ValidationPathElement>>()
 
-            val result = verification.takeIfNotNull()
+        verification.each { _, _ -> capturedPaths.add(validationContext.validationPath()) }
 
-            assertSame(verification.scope, result?.scope)
+        capturedPaths.forEachIndexed { index, path ->
+            assertEquals(listOf(IndexPathElement(index)), path)
         }
     }
 
     @Test
-    fun each_iteratesAllElements() {
-        val source = listOf("x", "y", "z")
-        val collected = mutableListOf<String>()
+    fun eachWithIndexedBlockReturnsSameVerification() {
+        val verification = Verification(listOf(10, 20), emptyScope())
 
-        validateCollecting {
-            verify(source).each { element ->
-                collected.add(element)
-            }
-        }
+        val returned = verification.each { _, _ -> }
 
-        assertEquals(source, collected)
+        assertSame(verification, returned)
     }
 
     @Test
-    fun each_withIndex_providesCorrectIndices() {
-        val source = listOf("a", "b", "c")
-        val collectedIndices = mutableListOf<Int>()
+    fun eachWithIndexedBlockOnEmptyCollectionDoesNotVisitAnything() {
+        val verification = Verification(emptyList<Int>(), emptyScope())
+        var visited = false
 
-        validateCollecting {
-            verify(source).each { idx, _ ->
-                collectedIndices.add(idx)
-            }
-        }
+        verification.each { _, _ -> visited = true }
 
-        val expectedIndices = source.indices.toList()
-        assertEquals(expectedIndices, collectedIndices)
+        assertEquals(false, visited)
     }
 
     @Test
-    fun each_addsIndexPathToScope() {
-        val source = listOf("first", "second")
-        val paths = mutableListOf<IndexPathElement>()
+    fun eachWithIndexedBlockExistingContextIsPrependedToIndexPath() {
+        val parentElement = NamePathElement("items")
+        val parentScope = CollectingValidationScope(mutableListOf(), parentElement)
+        val elements = listOf("one", "two")
+        val verification = Verification(elements, parentScope)
+        val capturedPaths = mutableListOf<List<ValidationPathElement>>()
 
-        validateCollecting {
-            verify(source).each { _, _ ->
-                val indexElement =
-                    validationContext
-                        .validationPath()
-                        .filterIsInstance<IndexPathElement>()
-                        .first()
-                paths.add(indexElement)
-            }
-        }
+        verification.each { _, _ -> capturedPaths.add(validationContext.validationPath()) }
 
-        assertEquals(IndexPathElement(0), paths[0])
-        assertEquals(IndexPathElement(1), paths[1])
-    }
-
-    @Test
-    fun each_collectsViolationsFromBlock() {
-        val source = listOf("", "valid", "")
-        val expectedViolationCount = source.count { it.isBlank() }
-
-        val result =
-            validateCollecting {
-                verify(source).each { element ->
-                    failIf({ element.isBlank() }) { violation("blank element") }
-                }
-            }
-
-        assertEquals(expectedViolationCount, result.violations.size)
-    }
-
-    @Test
-    fun each_emptyList_doesNotIterate() {
-        var iterated = false
-
-        validateCollecting {
-            verify(emptyList<String>()).each { _ -> iterated = true }
-        }
-
-        assertFalse(iterated)
-    }
-
-    @Test
-    fun each_returnsOriginalVerification() {
-        validateCollecting {
-            val original = verify(listOf(1, 2, 3))
-
-            val returned = original.each { _ -> }
-
-            assertSame(original, returned)
+        capturedPaths.forEachIndexed { index, path ->
+            assertEquals(listOf(parentElement, IndexPathElement(index)), path)
         }
     }
 }

@@ -1,7 +1,8 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.NamePathElement
-import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.violation
 import kotlin.test.Test
@@ -9,84 +10,125 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class CollectingValidationScopeTest {
+    private fun scopeWithStorage(): Pair<MutableList<Violation>, CollectingValidationScope> {
+        val storage = mutableListOf<Violation>()
+        return storage to CollectingValidationScope(storage, EmptyValidationContext)
+    }
+
     @Test
-    fun noViolations_returnsValidResult() {
+    fun enforceDoesNotAddViolationWhenRulePasses() {
+        val (storage, scope) = scopeWithStorage()
+
+        scope.enforce { null }
+
+        assertTrue(storage.isEmpty())
+    }
+
+    @Test
+    fun enforceCollectsAllViolationsFromMultipleFailingRules() {
+        val (storage, scope) = scopeWithStorage()
+        val v1 = violation("first")
+        val v2 = violation("second")
+        val v3 = violation("third")
+
+        scope.enforce { v1 }
+        scope.enforce { v2 }
+        scope.enforce { v3 }
+
+        assertEquals(listOf(v1, v2, v3), storage)
+    }
+
+    @Test
+    fun providedValidationContextIsStored() {
+        val storage = mutableListOf<Violation>()
+        val context = NamePathElement("field")
+
+        val scope = CollectingValidationScope(storage, context)
+
+        assertEquals(listOf(context), scope.validationContext.toList())
+    }
+
+    @Test
+    fun validateCollectingReturnsValidResultWhenNoRulesFail() {
+        val result =
+            validateCollecting {
+                enforce { null }
+                enforce { null }
+            }
+
+        assertTrue(result.isValid)
+    }
+
+    @Test
+    fun validateCollectingCollectsAllViolations() {
+        val v1 = violation("first")
+        val v2 = violation("second")
+        val v3 = violation("third")
+
+        val result =
+            validateCollecting {
+                enforce { v1 }
+                enforce { null }
+                enforce { v2 }
+                enforce { v3 }
+            }
+
+        assertEquals(listOf(v1, v2, v3), result.violations)
+    }
+
+    @Test
+    fun validateCollectingWithEmptyBlockReturnsValidResult() {
         val result = validateCollecting {}
 
         assertTrue(result.isValid)
-        assertEquals(emptyList(), result.violations)
     }
 
     @Test
-    fun collectsAllViolations() {
-        val first = violation("first error")
-        val second = violation("second error")
+    fun validateCollectingPassesContextToScope() {
+        val context = NamePathElement("root")
+        var capturedContext: ValidationContext? = null
 
-        val result =
-            validateCollecting {
-                enforce { first }
-                enforce { second }
-            }
+        validateCollecting(context) {
+            capturedContext = validationContext
+        }
 
-        assertEquals(listOf(first, second), result.violations)
+        assertEquals(listOf(context), capturedContext?.toList())
     }
 
     @Test
-    fun continuesAfterFailure() {
-        var secondRuleReached = false
+    fun validateCollectingDefaultContextIsEmpty() {
+        var capturedContext: ValidationContext? = null
+
+        validateCollecting {
+            capturedContext = validationContext
+        }
+
+        assertEquals(EmptyValidationContext, capturedContext)
+    }
+
+    @Test
+    fun validateCollectingEvaluatesAllRulesUnconditionally() {
+        var secondRuleEvaluated = false
 
         validateCollecting {
             enforce { violation("first") }
-            secondRuleReached = true
-            enforce { null }
-        }
-
-        assertTrue(secondRuleReached)
-    }
-
-    @Test
-    fun customValidationContext_applied() {
-        val contextName = "root"
-
-        validateCollecting(validationContext = NamePathElement(contextName)) {
-            val path = validationContext.validationPath()
-
-            assertEquals(NamePathElement(contextName), path.single())
-        }
-    }
-
-    @Test
-    fun failIf_addsViolationWhenTrue() {
-        val expected = violation("condition met")
-
-        val result = validateCollecting { failIf({ true }) { expected } }
-
-        assertEquals(expected, result.violations.single())
-    }
-
-    @Test
-    fun failIf_skipsViolationWhenFalse() {
-        val result = validateCollecting { failIf({ false }) { violation("unreachable") } }
-
-        assertTrue(result.isValid)
-    }
-
-    @Test
-    fun nullReturningRule_addsNoViolation() {
-        val result = validateCollecting { enforce { null } }
-
-        assertTrue(result.isValid)
-    }
-
-    @Test
-    fun preservesViolationOrder() {
-        val violations = (1..5).map { violation("error $it") }
-
-        val result =
-            validateCollecting {
-                violations.forEach { v -> enforce { v } }
+            enforce {
+                secondRuleEvaluated = true
+                null
             }
+        }
 
-        assertEquals(violations, result.violations)
+        assertTrue(secondRuleEvaluated)
+    }
+
+    @Test
+    fun worksWithDequeAsStorage() {
+        val storage = ArrayDeque<Violation>()
+        val scope = CollectingValidationScope(storage, EmptyValidationContext)
+        val v = violation("reason")
+
+        scope.enforce { v }
+
+        assertEquals(listOf(v), storage.toList())
     }
 }

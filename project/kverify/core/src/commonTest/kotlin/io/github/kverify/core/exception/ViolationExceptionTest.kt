@@ -7,33 +7,41 @@ import kotlin.test.assertIs
 
 class ViolationExceptionTest {
     @Test
-    fun violation_accessible() {
-        val cause = violation("access denied")
+    fun storesProvidedViolation() {
+        val v = violation("must not be null")
 
-        val ex = ViolationException(cause)
+        val exception = ViolationException(v)
 
-        assertEquals(cause, ex.violation)
+        assertEquals(v, exception.violation)
     }
 
     @Test
-    fun violations_containsSingleViolation() {
-        val cause = violation("access denied")
+    fun violationsListContainsExactlyTheProvidedViolation() {
+        val v = violation("must be positive")
 
-        val ex = ViolationException(cause)
+        val exception = ViolationException(v)
 
-        assertEquals(cause, ex.violations.single())
+        assertEquals(listOf(v), exception.violations)
+    }
+
+    @Test
+    fun violationsListHasSizeOne() {
+        val exception = ViolationException(violation("any reason"))
+
+        assertEquals(1, exception.violations.size)
+    }
+
+    @Test
+    fun messageReflectsSingleViolation() {
+        val exception = ViolationException(violation("reason"))
+
+        assertEquals("Validation failed with 1 violation(s)", exception.message)
     }
 
     @Test
     fun isValidationException() {
-        assertIs<ValidationException>(ViolationException(violation("error")))
-    }
+        val exception = ViolationException(violation("reason"))
 
-    @Test
-    fun message_reflectsSingleViolation() {
-        val ex = ViolationException(violation("error"))
-        val expectedCount = 1
-
-        assertEquals("Validation failed with $expectedCount violation(s)", ex.message)
+        assertIs<ValidationException>(exception)
     }
 }

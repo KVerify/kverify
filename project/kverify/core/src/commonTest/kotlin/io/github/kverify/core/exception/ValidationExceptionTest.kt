@@ -4,32 +4,30 @@ import io.github.kverify.core.violation.violation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.test.assertTrue
 
 class ValidationExceptionTest {
     @Test
-    fun violations_accessible() {
-        val first = violation("first")
-        val second = violation("second")
-        val violations = listOf(first, second)
+    fun storesProvidedViolations() {
+        val violations = listOf(violation("first"), violation("second"))
 
-        val ex = ValidationException(violations)
+        val exception = ValidationException(violations)
 
-        assertEquals(violations, ex.violations)
+        assertEquals(violations, exception.violations)
     }
 
     @Test
-    fun message_reflectsViolationCount() {
+    fun messageReflectsViolationCount() {
         val violations = listOf(violation("a"), violation("b"), violation("c"))
 
-        val ex = ValidationException(violations)
+        val exception = ValidationException(violations)
 
-        val expectedCount = violations.size
-        assertEquals("Validation failed with $expectedCount violation(s)", ex.message)
+        assertEquals("Validation failed with ${violations.size} violation(s)", exception.message)
     }
 
     @Test
     fun isRuntimeException() {
-        assertIs<RuntimeException>(ValidationException(emptyList()))
+        val exception = ValidationException(emptyList())
+
+        assertIs<RuntimeException>(exception)
     }
 }
