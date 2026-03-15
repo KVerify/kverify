@@ -39,7 +39,7 @@ class ValidationContextTest {
 
     @Test
     fun validationPathOnEmptyContextReturnsEmptyList() {
-        val path = EmptyValidationContext.validationPath()
+        val path = EmptyValidationContext.validationPath().elements
 
         assertEquals(emptyList(), path)
     }
@@ -49,7 +49,7 @@ class ValidationContextTest {
         val name = NamePathElement("user")
         val index = IndexPathElement(1)
 
-        val path = (name + index + CustomElement).validationPath()
+        val path = (name + index + CustomElement).validationPath().elements
 
         assertEquals(listOf(name, index), path)
     }
@@ -61,7 +61,7 @@ class ValidationContextTest {
         val c = NamePathElement("c")
         val d = IndexPathElement(1)
 
-        val path = (a + b + c + d).validationPath()
+        val path = (a + b + c + d).validationPath().elements
 
         assertEquals(listOf(a, b, c, d), path)
     }

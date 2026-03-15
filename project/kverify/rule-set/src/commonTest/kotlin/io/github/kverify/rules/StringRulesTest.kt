@@ -63,7 +63,7 @@ class StringRulesTest {
 
         verification.notBlank()
 
-        assertEquals(listOf(pathElement), (storage[0] as NotBlankViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as NotBlankViolation).validationPath.elements)
     }
 
     @Test
@@ -137,7 +137,7 @@ class StringRulesTest {
 
         verification.minLength(8)
 
-        assertEquals(listOf(pathElement), (storage[0] as MinLengthViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as MinLengthViolation).validationPath.elements)
     }
 
     @Test
@@ -211,7 +211,7 @@ class StringRulesTest {
 
         verification.maxLength(255)
 
-        assertEquals(listOf(pathElement), (storage[0] as MaxLengthViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as MaxLengthViolation).validationPath.elements)
     }
 
     @Test
@@ -292,7 +292,7 @@ class StringRulesTest {
 
         verification.exactLength(4)
 
-        assertEquals(listOf(pathElement), (storage[0] as ExactLengthViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as ExactLengthViolation).validationPath.elements)
     }
 
     @Test
@@ -386,7 +386,7 @@ class StringRulesTest {
 
         verification.lengthRange(3, 20)
 
-        assertEquals(listOf(pathElement), (storage[0] as LengthRangeViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as LengthRangeViolation).validationPath.elements)
     }
 
     @Test

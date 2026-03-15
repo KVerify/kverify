@@ -74,7 +74,7 @@ class ComparableRulesTest {
 
         verification.atLeast(1)
 
-        assertEquals(listOf(pathElement), (storage[0] as AtLeastViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as AtLeastViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -148,7 +148,7 @@ class ComparableRulesTest {
 
         verification.atMost(100)
 
-        assertEquals(listOf(pathElement), (storage[0] as AtMostViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as AtMostViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -239,7 +239,7 @@ class ComparableRulesTest {
 
         verification.between(0, 100)
 
-        assertEquals(listOf(pathElement), (storage[0] as BetweenViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as BetweenViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -317,7 +317,7 @@ class ComparableRulesTest {
 
         verification.greaterThan(0)
 
-        assertEquals(listOf(pathElement), (storage[0] as GreaterThanViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as GreaterThanViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -395,7 +395,7 @@ class ComparableRulesTest {
 
         verification.lessThan(500)
 
-        assertEquals(listOf(pathElement), (storage[0] as LessThanViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as LessThanViolation<*>).validationPath.elements)
     }
 
     @Test

@@ -1,6 +1,6 @@
 package io.github.kverify.violations
 
-import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.violation.Violation
 
 /**
@@ -12,5 +12,5 @@ public interface PathAwareViolation : Violation {
      *
      * An empty list means the violation was produced at the root scope, with no path context applied.
      */
-    public val validationPath: List<ValidationPathElement>
+    public val validationPath: ValidationPath
 }

@@ -1,5 +1,7 @@
 package io.github.kverify.core.context
 
+import io.github.kverify.core.model.ValidationPath
+
 /**
  * An immutable, composable container of contextual information threaded through the validation process.
  *
@@ -35,9 +37,10 @@ public interface ValidationContext : Iterable<ValidationContext.Element> {
 }
 
 /**
- * Returns the list of [ValidationPathElement]s accumulated in this context.
+ * Extracts the [ValidationPath] accumulated in this context.
  *
- * Non-path elements are ignored. Returns an empty list if no path elements are present.
+ * Collects all [ValidationPathElement]s in iteration order, ignoring any non-path elements,
+ * and wraps them in a [ValidationPath]. Returns a [ValidationPath] with an empty
+ * [ValidationPath.elements] list if no path elements are present.
  */
-@Suppress("NOTHING_TO_INLINE")
-public inline fun ValidationContext.validationPath(): List<ValidationPathElement> = filterIsInstance<ValidationPathElement>()
+public fun ValidationContext.validationPath(): ValidationPath = ValidationPath(filterIsInstance<ValidationPathElement>())
