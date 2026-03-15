@@ -79,7 +79,7 @@ class CollectionRulesTest {
 
         verification.minSize(3)
 
-        assertEquals(listOf(pathElement), (storage[0] as MinSizeViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as MinSizeViolation).validationPath.elements)
     }
 
     @Test
@@ -153,7 +153,7 @@ class CollectionRulesTest {
 
         verification.maxSize(2)
 
-        assertEquals(listOf(pathElement), (storage[0] as MaxSizeViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as MaxSizeViolation).validationPath.elements)
     }
 
     @Test
@@ -234,7 +234,7 @@ class CollectionRulesTest {
 
         verification.exactSize(2)
 
-        assertEquals(listOf(pathElement), (storage[0] as ExactSizeViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as ExactSizeViolation).validationPath.elements)
     }
 
     @Test
@@ -328,7 +328,7 @@ class CollectionRulesTest {
 
         verification.sizeRange(2, 5)
 
-        assertEquals(listOf(pathElement), (storage[0] as SizeRangeViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as SizeRangeViolation).validationPath.elements)
     }
 
     @Test
@@ -408,7 +408,7 @@ class CollectionRulesTest {
 
         verification.distinct()
 
-        assertEquals(listOf(pathElement), (storage[0] as DistinctViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as DistinctViolation).validationPath.elements)
     }
 
     @Test

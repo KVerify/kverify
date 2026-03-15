@@ -6,6 +6,7 @@ import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.violation
 import kotlin.test.Test
@@ -107,7 +108,12 @@ class ValidationScopeTest {
 
         val verification = scope.verify(subject::username)
 
-        assertEquals(listOf(NamePathElement("username")), verification.scope.validationContext.validationPath())
+        assertEquals(
+            listOf(NamePathElement("username")),
+            verification.scope.validationContext
+                .validationPath()
+                .elements,
+        )
     }
 
     @Test
@@ -136,7 +142,9 @@ class ValidationScopeTest {
 
         assertEquals(
             listOf(parentElement, NamePathElement("street")),
-            verification.scope.validationContext.validationPath(),
+            verification.scope.validationContext
+                .validationPath()
+                .elements,
         )
     }
 
@@ -179,7 +187,7 @@ class ValidationScopeTest {
 
         val extended = scope.pathName(name)
 
-        assertEquals(listOf(NamePathElement(name)), extended.validationContext.validationPath())
+        assertEquals(listOf(NamePathElement(name)), extended.validationContext.validationPath().elements)
     }
 
     @Test
@@ -207,7 +215,7 @@ class ValidationScopeTest {
         val scope = collectingScope()
         var capturedPath: List<ValidationPathElement>? = null
 
-        scope.pathName(name) { capturedPath = validationContext.validationPath() }
+        scope.pathName(name) { capturedPath = validationContext.validationPath().elements }
 
         assertEquals(listOf(NamePathElement(name)), capturedPath)
     }
@@ -219,7 +227,7 @@ class ValidationScopeTest {
 
         val returned = scope.pathName(name) {}
 
-        assertEquals(listOf(NamePathElement(name)), returned.validationContext.validationPath())
+        assertEquals(listOf(NamePathElement(name)), returned.validationContext.validationPath().elements)
     }
 
     @Test
@@ -229,7 +237,7 @@ class ValidationScopeTest {
 
         val extended = scope.pathIndex(index)
 
-        assertEquals(listOf(IndexPathElement(index)), extended.validationContext.validationPath())
+        assertEquals(listOf(IndexPathElement(index)), extended.validationContext.validationPath().elements)
     }
 
     @Test
@@ -257,7 +265,7 @@ class ValidationScopeTest {
         val scope = collectingScope()
         var capturedPath: List<ValidationPathElement>? = null
 
-        scope.pathIndex(index) { capturedPath = validationContext.validationPath() }
+        scope.pathIndex(index) { capturedPath = validationContext.validationPath().elements }
 
         assertEquals(listOf(IndexPathElement(index)), capturedPath)
     }
@@ -269,6 +277,6 @@ class ValidationScopeTest {
 
         val returned = scope.pathIndex(index) {}
 
-        assertEquals(listOf(IndexPathElement(index)), returned.validationContext.validationPath())
+        assertEquals(listOf(IndexPathElement(index)), returned.validationContext.validationPath().elements)
     }
 }

@@ -78,7 +78,7 @@ class VerificationTest {
         val verification = Verification(elements, emptyScope())
         val capturedPaths = mutableListOf<List<ValidationPathElement>>()
 
-        verification.each { capturedPaths.add(validationContext.validationPath()) }
+        verification.each { capturedPaths.add(validationContext.validationPath().elements) }
 
         capturedPaths.forEachIndexed { index, path ->
             assertEquals(listOf(IndexPathElement(index)), path)
@@ -134,7 +134,7 @@ class VerificationTest {
         val verification = Verification(elements, emptyScope())
         val capturedPaths = mutableListOf<List<ValidationPathElement>>()
 
-        verification.each { _, _ -> capturedPaths.add(validationContext.validationPath()) }
+        verification.each { _, _ -> capturedPaths.add(validationContext.validationPath().elements) }
 
         capturedPaths.forEachIndexed { index, path ->
             assertEquals(listOf(IndexPathElement(index)), path)
@@ -168,7 +168,7 @@ class VerificationTest {
         val verification = Verification(elements, parentScope)
         val capturedPaths = mutableListOf<List<ValidationPathElement>>()
 
-        verification.each { _, _ -> capturedPaths.add(validationContext.validationPath()) }
+        verification.each { _, _ -> capturedPaths.add(validationContext.validationPath().elements) }
 
         capturedPaths.forEachIndexed { index, path ->
             assertEquals(listOf(parentElement, IndexPathElement(index)), path)

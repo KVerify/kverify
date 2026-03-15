@@ -59,7 +59,7 @@ class EqualityRulesTest {
 
         verification.notNull()
 
-        assertEquals(listOf(pathElement), (storage[0] as NotNullViolation).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as NotNullViolation).validationPath.elements)
     }
 
     @Test
@@ -127,7 +127,7 @@ class EqualityRulesTest {
 
         verification.equalTo("right")
 
-        assertEquals(listOf(pathElement), (storage[0] as EqualToViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as EqualToViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -185,7 +185,7 @@ class EqualityRulesTest {
 
         verification.notEqualTo(forbidden)
 
-        assertEquals(listOf(pathElement), (storage[0] as NotEqualToViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as NotEqualToViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -244,7 +244,7 @@ class EqualityRulesTest {
 
         verification.oneOf(setOf("active", "inactive"))
 
-        assertEquals(listOf(pathElement), (storage[0] as OneOfViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as OneOfViolation<*>).validationPath.elements)
     }
 
     @Test
@@ -303,7 +303,7 @@ class EqualityRulesTest {
 
         verification.noneOf(setOf("drop", "truncate"))
 
-        assertEquals(listOf(pathElement), (storage[0] as NoneOfViolation<*>).validationPath)
+        assertEquals(listOf(pathElement), (storage[0] as NoneOfViolation<*>).validationPath.elements)
     }
 
     @Test

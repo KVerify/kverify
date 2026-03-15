@@ -1,10 +1,9 @@
 package io.github.kverify.violations
 
-import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.violations.PathAwareViolation
+import io.github.kverify.core.model.ValidationPath
 
 public class NotBlankViolation(
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String = "NotBlankViolation(validationPath=$validationPath, reason=$reason)"
@@ -13,7 +12,7 @@ public class NotBlankViolation(
 public class MinLengthViolation(
     public val minLengthAllowed: Int,
     public val actualLength: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -23,7 +22,7 @@ public class MinLengthViolation(
 public class MaxLengthViolation(
     public val maxLengthAllowed: Int,
     public val actualLength: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -33,7 +32,7 @@ public class MaxLengthViolation(
 public class ExactLengthViolation(
     public val expectedLength: Int,
     public val actualLength: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -44,7 +43,7 @@ public class LengthRangeViolation(
     public val minLengthAllowed: Int,
     public val maxLengthAllowed: Int,
     public val actualLength: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =

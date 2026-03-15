@@ -1,12 +1,11 @@
 package io.github.kverify.violations
 
-import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.violations.PathAwareViolation
+import io.github.kverify.core.model.ValidationPath
 
 public class MinSizeViolation(
     public val minSizeAllowed: Int,
     public val actualSize: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -16,7 +15,7 @@ public class MinSizeViolation(
 public class MaxSizeViolation(
     public val maxSizeAllowed: Int,
     public val actualSize: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -26,7 +25,7 @@ public class MaxSizeViolation(
 public class ExactSizeViolation(
     public val expectedSize: Int,
     public val actualSize: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -37,7 +36,7 @@ public class SizeRangeViolation(
     public val minSizeAllowed: Int,
     public val maxSizeAllowed: Int,
     public val actualSize: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
@@ -47,7 +46,7 @@ public class SizeRangeViolation(
 public class DistinctViolation(
     public val actualSize: Int,
     public val distinctSize: Int,
-    override val validationPath: List<ValidationPathElement>,
+    override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation {
     override fun toString(): String =
