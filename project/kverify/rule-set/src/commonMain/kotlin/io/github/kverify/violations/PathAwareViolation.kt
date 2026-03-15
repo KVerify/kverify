@@ -1,6 +1,7 @@
-package io.github.kverify.core.violation
+package io.github.kverify.violations
 
 import io.github.kverify.core.context.ValidationPathElement
+import io.github.kverify.core.violation.Violation
 
 /**
  * A [Violation] that carries the path to the value that failed validation.

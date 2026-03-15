@@ -1,7 +1,7 @@
 package io.github.kverify.violations
 
 import io.github.kverify.core.context.ValidationPathElement
-import io.github.kverify.core.violation.PathAwareViolation
+import io.github.kverify.violations.PathAwareViolation
 
 public class NotNullViolation(
     override val validationPath: List<ValidationPathElement>,
