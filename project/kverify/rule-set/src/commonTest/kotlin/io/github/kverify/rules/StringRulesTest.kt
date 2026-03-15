@@ -1,7 +1,6 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.scope.validateCollecting
-import io.github.kverify.core.scope.verify
+import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.violations.ExactLengthViolation
 import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
@@ -10,230 +9,392 @@ import io.github.kverify.violations.NotBlankViolation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.test.assertTrue
+import kotlin.test.assertSame
 
 class StringRulesTest {
     @Test
-    fun notBlank_valid() {
-        val value = "hello"
-
-        assertTrue(validateCollecting { verify(value).notBlank() }.isValid)
+    fun notBlankPassesWhenValueIsNotBlank() {
+        throwing("hello").notBlank()
     }
 
     @Test
-    fun notBlank_invalid_blank() {
-        val value = "   "
+    fun notBlankFailsWhenValueIsBlank() {
+        val (storage, verification) = collecting("   ")
 
-        val result = validateCollecting { verify(value).notBlank() }
+        verification.notBlank()
 
-        assertTrue(result.isInvalid)
-        assertIs<NotBlankViolation>(result.violations.first())
+        assertEquals(1, storage.size)
+        assertIs<NotBlankViolation>(storage[0])
     }
 
     @Test
-    fun notBlank_invalid_empty() {
-        assertTrue(validateCollecting { verify("").notBlank() }.isInvalid)
+    fun notBlankFailsWhenValueIsEmpty() {
+        val (storage, verification) = collecting("")
+
+        verification.notBlank()
+
+        assertEquals(1, storage.size)
+        assertIs<NotBlankViolation>(storage[0])
     }
 
     @Test
-    fun notBlank_customReason() {
-        val reason = "must provide a name"
+    fun notBlankViolationHasDefaultReason() {
+        val (storage, verification) = collecting("")
 
-        val result = validateCollecting { verify("").notBlank(reason) }
+        verification.notBlank()
 
-        val violation = assertIs<NotBlankViolation>(result.violations.first())
-        assertEquals(reason, violation.reason)
+        assertEquals("Value must not be blank", storage[0].reason)
     }
 
     @Test
-    fun minLength_valid() {
-        val value = "hello"
+    fun notBlankViolationHasCustomReason() {
+        val customReason = "name cannot be blank"
+        val (storage, verification) = collecting("")
+
+        verification.notBlank(reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun notBlankViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("name")
+        val (storage, verification) = collecting("", pathElement)
+
+        verification.notBlank()
+
+        assertEquals(listOf(pathElement), (storage[0] as NotBlankViolation).validationPath)
+    }
+
+    @Test
+    fun notBlankReturnsSameVerification() {
+        val (_, verification) = collecting("text")
+
+        val returned = verification.notBlank()
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun minLengthPassesWhenLengthEqualsMin() {
         val min = 3
-
-        assertTrue(validateCollecting { verify(value).minLength(min) }.isValid)
+        throwing("abc").minLength(min)
     }
 
     @Test
-    fun minLength_atBoundary() {
-        val value = "abc"
-
-        assertTrue(validateCollecting { verify(value).minLength(value.length) }.isValid)
+    fun minLengthPassesWhenLengthExceedsMin() {
+        throwing("abcde").minLength(3)
     }
 
     @Test
-    fun minLength_invalid() {
+    fun minLengthFailsWhenLengthIsBelowMin() {
+        val (storage, verification) = collecting("ab")
+
+        verification.minLength(3)
+
+        assertEquals(1, storage.size)
+        assertIs<MinLengthViolation>(storage[0])
+    }
+
+    @Test
+    fun minLengthViolationStoresMinAndActualLength() {
+        val min = 5
         val value = "hi"
-        val min = 5
+        val (storage, verification) = collecting(value)
 
-        val result = validateCollecting { verify(value).minLength(min) }
+        verification.minLength(min)
 
-        assertTrue(result.isInvalid)
-        assertIs<MinLengthViolation>(result.violations.first())
-    }
-
-    @Test
-    fun minLength_violationValues() {
-        val value = "ab"
-        val min = 5
-
-        val result = validateCollecting { verify(value).minLength(min) }
-
-        val violation = assertIs<MinLengthViolation>(result.violations.first())
+        val violation = storage[0] as MinLengthViolation
         assertEquals(min, violation.minLengthAllowed)
         assertEquals(value.length, violation.actualLength)
     }
 
     @Test
-    fun maxLength_valid() {
+    fun minLengthViolationHasDefaultReason() {
+        val min = 5
         val value = "hi"
+        val (storage, verification) = collecting(value)
+
+        verification.minLength(min)
+
+        assertEquals("Value must be at least $min characters long. Actual length: ${value.length}", storage[0].reason)
+    }
+
+    @Test
+    fun minLengthViolationHasCustomReason() {
+        val customReason = "too short"
+        val (storage, verification) = collecting("x")
+
+        verification.minLength(10, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun minLengthViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("password")
+        val (storage, verification) = collecting("abc", pathElement)
+
+        verification.minLength(8)
+
+        assertEquals(listOf(pathElement), (storage[0] as MinLengthViolation).validationPath)
+    }
+
+    @Test
+    fun minLengthReturnsSameVerification() {
+        val (_, verification) = collecting("hello")
+
+        val returned = verification.minLength(1)
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun maxLengthPassesWhenLengthEqualsMax() {
         val max = 5
-
-        assertTrue(validateCollecting { verify(value).maxLength(max) }.isValid)
+        throwing("abcde").maxLength(max)
     }
 
     @Test
-    fun maxLength_atBoundary() {
-        val value = "abc"
-
-        assertTrue(validateCollecting { verify(value).maxLength(value.length) }.isValid)
+    fun maxLengthPassesWhenLengthIsBelowMax() {
+        throwing("abc").maxLength(5)
     }
 
     @Test
-    fun maxLength_invalid() {
-        val value = "toolong"
+    fun maxLengthFailsWhenLengthExceedsMax() {
+        val (storage, verification) = collecting("abcdef")
+
+        verification.maxLength(5)
+
+        assertEquals(1, storage.size)
+        assertIs<MaxLengthViolation>(storage[0])
+    }
+
+    @Test
+    fun maxLengthViolationStoresMaxAndActualLength() {
         val max = 3
-
-        val result = validateCollecting { verify(value).maxLength(max) }
-
-        assertTrue(result.isInvalid)
-        assertIs<MaxLengthViolation>(result.violations.first())
-    }
-
-    @Test
-    fun maxLength_violationValues() {
         val value = "toolong"
-        val max = 3
+        val (storage, verification) = collecting(value)
 
-        val result = validateCollecting { verify(value).maxLength(max) }
+        verification.maxLength(max)
 
-        val violation = assertIs<MaxLengthViolation>(result.violations.first())
+        val violation = storage[0] as MaxLengthViolation
         assertEquals(max, violation.maxLengthAllowed)
         assertEquals(value.length, violation.actualLength)
     }
 
     @Test
-    fun exactLength_valid() {
-        val value = "abc"
+    fun maxLengthViolationHasDefaultReason() {
+        val max = 3
+        val value = "toolong"
+        val (storage, verification) = collecting(value)
 
-        assertTrue(validateCollecting { verify(value).exactLength(value.length) }.isValid)
+        verification.maxLength(max)
+
+        assertEquals("Value must be at most $max characters long. Actual length: ${value.length}", storage[0].reason)
     }
 
     @Test
-    fun exactLength_invalid_tooShort() {
-        val value = "ab"
-        val length = 3
+    fun maxLengthViolationHasCustomReason() {
+        val customReason = "too long"
+        val (storage, verification) = collecting("verylongstring")
 
-        val result = validateCollecting { verify(value).exactLength(length) }
+        verification.maxLength(5, reason = customReason)
 
-        assertTrue(result.isInvalid)
-        assertIs<ExactLengthViolation>(result.violations.first())
+        assertEquals(customReason, storage[0].reason)
     }
 
     @Test
-    fun exactLength_invalid_tooLong() {
-        val value = "abcd"
-        val length = 3
+    fun maxLengthViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("bio")
+        val (storage, verification) = collecting("a".repeat(300), pathElement)
 
-        assertTrue(validateCollecting { verify(value).exactLength(length) }.isInvalid)
+        verification.maxLength(255)
+
+        assertEquals(listOf(pathElement), (storage[0] as MaxLengthViolation).validationPath)
     }
 
     @Test
-    fun exactLength_violationValues() {
-        val value = "ab"
-        val length = 5
+    fun maxLengthReturnsSameVerification() {
+        val (_, verification) = collecting("hello")
 
-        val result = validateCollecting { verify(value).exactLength(length) }
+        val returned = verification.maxLength(10)
 
-        val violation = assertIs<ExactLengthViolation>(result.violations.first())
-        assertEquals(length, violation.expectedLength)
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun exactLengthPassesWhenLengthMatchesExactly() {
+        throwing("abc").exactLength(3)
+    }
+
+    @Test
+    fun exactLengthFailsWhenLengthIsBelowExpected() {
+        val (storage, verification) = collecting("ab")
+
+        verification.exactLength(3)
+
+        assertEquals(1, storage.size)
+        assertIs<ExactLengthViolation>(storage[0])
+    }
+
+    @Test
+    fun exactLengthFailsWhenLengthIsAboveExpected() {
+        val (storage, verification) = collecting("abcd")
+
+        verification.exactLength(3)
+
+        assertEquals(1, storage.size)
+        assertIs<ExactLengthViolation>(storage[0])
+    }
+
+    @Test
+    fun exactLengthViolationStoresExpectedAndActualLength() {
+        val expectedLength = 5
+        val value = "hi"
+        val (storage, verification) = collecting(value)
+
+        verification.exactLength(expectedLength)
+
+        val violation = storage[0] as ExactLengthViolation
+        assertEquals(expectedLength, violation.expectedLength)
         assertEquals(value.length, violation.actualLength)
     }
 
     @Test
-    fun lengthRange_valid() {
-        val value = "abc"
-        val min = 2
-        val max = 5
+    fun exactLengthViolationHasDefaultReason() {
+        val expectedLength = 5
+        val value = "hi"
+        val (storage, verification) = collecting(value)
 
-        assertTrue(validateCollecting { verify(value).lengthRange(min, max) }.isValid)
+        verification.exactLength(expectedLength)
+
+        assertEquals(
+            "Value must be exactly $expectedLength characters long. Actual length: ${value.length}",
+            storage[0].reason,
+        )
     }
 
     @Test
-    fun lengthRange_atLowerBoundary() {
+    fun exactLengthViolationHasCustomReason() {
+        val customReason = "must be exactly 4 chars"
+        val (storage, verification) = collecting("ab")
+
+        verification.exactLength(4, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun exactLengthViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("pin")
+        val (storage, verification) = collecting("12", pathElement)
+
+        verification.exactLength(4)
+
+        assertEquals(listOf(pathElement), (storage[0] as ExactLengthViolation).validationPath)
+    }
+
+    @Test
+    fun exactLengthReturnsSameVerification() {
+        val (_, verification) = collecting("abc")
+
+        val returned = verification.exactLength(3)
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun lengthRangePassesWhenLengthEqualsMin() {
+        throwing("ab").lengthRange(2, 5)
+    }
+
+    @Test
+    fun lengthRangePassesWhenLengthEqualsMax() {
+        throwing("abcde").lengthRange(2, 5)
+    }
+
+    @Test
+    fun lengthRangePassesWhenLengthIsWithinRange() {
+        throwing("abc").lengthRange(2, 5)
+    }
+
+    @Test
+    fun lengthRangeFailsWhenLengthIsBelowMin() {
+        val (storage, verification) = collecting("a")
+
+        verification.lengthRange(2, 5)
+
+        assertEquals(1, storage.size)
+        assertIs<LengthRangeViolation>(storage[0])
+    }
+
+    @Test
+    fun lengthRangeFailsWhenLengthIsAboveMax() {
+        val (storage, verification) = collecting("abcdef")
+
+        verification.lengthRange(2, 5)
+
+        assertEquals(1, storage.size)
+        assertIs<LengthRangeViolation>(storage[0])
+    }
+
+    @Test
+    fun lengthRangeViolationStoresMinMaxAndActualLength() {
+        val min = 3
+        val max = 6
         val value = "ab"
-        val max = 5
+        val (storage, verification) = collecting(value)
 
-        assertTrue(validateCollecting { verify(value).lengthRange(value.length, max) }.isValid)
-    }
+        verification.lengthRange(min, max)
 
-    @Test
-    fun lengthRange_atUpperBoundary() {
-        val value = "abcde"
-        val min = 2
-
-        assertTrue(validateCollecting { verify(value).lengthRange(min, value.length) }.isValid)
-    }
-
-    @Test
-    fun lengthRange_invalid_tooShort() {
-        val value = "a"
-        val min = 2
-        val max = 5
-
-        val result = validateCollecting { verify(value).lengthRange(min, max) }
-
-        assertTrue(result.isInvalid)
-        assertIs<LengthRangeViolation>(result.violations.first())
-    }
-
-    @Test
-    fun lengthRange_invalid_tooLong() {
-        val value = "abcdef"
-        val min = 2
-        val max = 5
-
-        assertTrue(validateCollecting { verify(value).lengthRange(min, max) }.isInvalid)
-    }
-
-    @Test
-    fun lengthRange_violationValues() {
-        val value = "a"
-        val min = 2
-        val max = 5
-
-        val result = validateCollecting { verify(value).lengthRange(min, max) }
-
-        val violation = assertIs<LengthRangeViolation>(result.violations.first())
+        val violation = storage[0] as LengthRangeViolation
         assertEquals(min, violation.minLengthAllowed)
         assertEquals(max, violation.maxLengthAllowed)
         assertEquals(value.length, violation.actualLength)
     }
 
     @Test
-    fun rules_chain() {
-        val value = "hello"
+    fun lengthRangeViolationHasDefaultReason() {
+        val min = 3
+        val max = 6
+        val value = "ab"
+        val (storage, verification) = collecting(value)
 
-        assertTrue(validateCollecting { verify(value).notBlank().minLength(3).maxLength(10) }.isValid)
+        verification.lengthRange(min, max)
+
+        assertEquals(
+            "Value must be between $min and $max characters long. Actual length: ${value.length}",
+            storage[0].reason,
+        )
     }
 
     @Test
-    fun rules_collectMultipleViolations() {
-        val value = ""
-        val min = 3
+    fun lengthRangeViolationHasCustomReason() {
+        val customReason = "length out of range"
+        val (storage, verification) = collecting("x")
 
-        val result = validateCollecting { verify(value).notBlank().minLength(min) }
+        verification.lengthRange(3, 10, reason = customReason)
 
-        val expectedViolationCount = 2
-        assertEquals(expectedViolationCount, result.violations.size)
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun lengthRangeViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("username")
+        val (storage, verification) = collecting("x", pathElement)
+
+        verification.lengthRange(3, 20)
+
+        assertEquals(listOf(pathElement), (storage[0] as LengthRangeViolation).validationPath)
+    }
+
+    @Test
+    fun lengthRangeReturnsSameVerification() {
+        val (_, verification) = collecting("hello")
+
+        val returned = verification.lengthRange(1, 10)
+
+        assertSame(verification, returned)
     }
 }

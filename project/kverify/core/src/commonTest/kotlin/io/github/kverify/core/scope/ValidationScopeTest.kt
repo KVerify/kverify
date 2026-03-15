@@ -1,187 +1,274 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
+import io.github.kverify.core.context.ValidationContext
+import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.violation.Violation
 import io.github.kverify.core.violation.violation
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertSame
 import kotlin.test.assertTrue
+import kotlin.test.fail
 
 class ValidationScopeTest {
-    @Test
-    fun verify_value_setsValue() {
-        val expected = "test value"
+    private fun collectingScope(context: ValidationContext = EmptyValidationContext): CollectingValidationScope =
+        CollectingValidationScope(mutableListOf(), context)
 
-        validateCollecting {
-            val verification = verify(expected)
-
-            assertEquals(expected, verification.value)
-        }
+    private fun collectingScopeWithStorage(
+        context: ValidationContext = EmptyValidationContext,
+    ): Pair<MutableList<Violation>, CollectingValidationScope> {
+        val storage = mutableListOf<Violation>()
+        return storage to CollectingValidationScope(storage, context)
     }
 
     @Test
-    fun verify_value_setsScope() {
-        validateCollecting {
-            val verification = verify("anything")
+    fun plusReturnsNewScopeWithCombinedContext() {
+        val originalElement = NamePathElement("original")
+        val additionalElement = NamePathElement("additional")
+        val scope = collectingScope(originalElement)
 
-            assertSame(this, verification.scope)
-        }
+        val extended = scope + additionalElement
+
+        assertEquals(listOf(originalElement, additionalElement), extended.validationContext.toList())
     }
 
     @Test
-    fun verify_property_setsValue() {
-        data class Dto(
+    fun plusEmptyContextReturnsSameScope() {
+        val scope = collectingScope()
+
+        val result = scope + EmptyValidationContext
+
+        assertSame(scope, result)
+    }
+
+    @Test
+    fun plusDoesNotMutateOriginalScopeContext() {
+        val originalElement = NamePathElement("original")
+        val scope = collectingScope(originalElement)
+
+        scope + NamePathElement("extra")
+
+        assertEquals(listOf(originalElement), scope.validationContext.toList())
+    }
+
+    @Test
+    fun plusReturnsContextExtendedValidationScope() {
+        val scope = collectingScope()
+
+        val extended = scope + NamePathElement("extra")
+
+        assertTrue(extended is ContextExtendedValidationScope<*>)
+    }
+
+    @Test
+    fun verifyValueBindsValueToVerification() {
+        val scope = collectingScope()
+        val value = "hello"
+
+        val verification = scope.verify(value)
+
+        assertSame(value, verification.value)
+    }
+
+    @Test
+    fun verifyValueBindsCurrentScopeToVerification() {
+        val scope = collectingScope()
+
+        val verification = scope.verify("anything")
+
+        assertSame(scope, verification.scope)
+    }
+
+    @Test
+    fun verifyPropertyBindsPropertyValueToVerification() {
+        data class Subject(
             val age: Int,
         )
+        val subject = Subject(age = 25)
+        val scope = collectingScope()
 
-        val expected = 25
-        val dto = Dto(expected)
+        val verification = scope.verify(subject::age)
 
-        validateCollecting {
-            val verification = verify(dto::age)
-
-            assertEquals(expected, verification.value)
-        }
+        assertEquals(subject.age, verification.value)
     }
 
     @Test
-    fun verify_property_addsPropertyNameToPath() {
-        data class Dto(
-            val name: String,
+    fun verifyPropertyAppendsPropertyNameToContext() {
+        data class Subject(
+            val username: String,
         )
+        val subject = Subject(username = "alice")
+        val scope = collectingScope()
 
-        val dto = Dto("Alice")
+        val verification = scope.verify(subject::username)
 
-        validateCollecting {
-            val verification = verify(dto::name)
-            val path = verification.scope.validationContext.validationPath()
-
-            assertEquals(NamePathElement("name"), path.single())
-        }
+        assertEquals(listOf(NamePathElement("username")), verification.scope.validationContext.validationPath())
     }
 
     @Test
-    fun plus_appendsContext() {
-        val element = NamePathElement("field")
+    fun verifyPropertyDoesNotMutateOriginalScopeContext() {
+        data class Subject(
+            val email: String,
+        )
+        val subject = Subject(email = "a@b.com")
+        val scope = collectingScope()
 
-        validateCollecting {
-            val extended = this + element
-            val path = extended.validationContext.validationPath()
+        scope.verify(subject::email)
 
-            assertEquals(element, path.single())
-        }
+        assertEquals(EmptyValidationContext, scope.validationContext)
     }
 
     @Test
-    fun plus_preservesOrder() {
-        val first = NamePathElement("a")
-        val second = NamePathElement("b")
+    fun verifyPropertyWithExistingContextAppendsPropNameAfterExisting() {
+        data class Subject(
+            val street: String,
+        )
+        val subject = Subject(street = "Main St")
+        val parentElement = NamePathElement("address")
+        val scope = collectingScope(parentElement)
 
-        validateCollecting {
-            val extended = this + first + second
-            val path = extended.validationContext.validationPath()
+        val verification = scope.verify(subject::street)
 
-            assertEquals(listOf(first, second), path)
-        }
+        assertEquals(
+            listOf(parentElement, NamePathElement("street")),
+            verification.scope.validationContext.validationPath(),
+        )
     }
 
     @Test
-    fun pathName_addsToContext() {
+    fun failIfDoesNotEnforceViolationWhenPredicateReturnsFalse() {
+        val (storage, scope) = collectingScopeWithStorage()
+
+        scope.failIf({ false }) { violation("should not be called") }
+
+        assertTrue(storage.isEmpty())
+    }
+
+    @Test
+    fun failIfEnforcesViolationWhenPredicateReturnsTrue() {
+        val (storage, scope) = collectingScopeWithStorage()
+        val v = violation("condition met")
+
+        scope.failIf({ true }) { v }
+
+        assertEquals(listOf(v), storage)
+    }
+
+    @Test
+    fun failIfDoesNotCallViolationLambdaWhenPredicateReturnsFalse() {
+        val scope = collectingScope()
+        var violationLambdaCalled = false
+
+        scope.failIf({ false }) {
+            violationLambdaCalled = true
+            violation("should not be called")
+        }
+
+        assertFalse(violationLambdaCalled)
+    }
+
+    @Test
+    fun pathNameReturnsNewScopeWithNameAppendedToPath() {
+        val name = "address"
+        val scope = collectingScope()
+
+        val extended = scope.pathName(name)
+
+        assertEquals(listOf(NamePathElement(name)), extended.validationContext.validationPath())
+    }
+
+    @Test
+    fun pathNameDoesNotMutateOriginalScope() {
+        val scope = collectingScope()
+
+        scope.pathName("field")
+
+        assertEquals(EmptyValidationContext, scope.validationContext)
+    }
+
+    @Test
+    fun pathNameWithBlockExecutesBlockInNewScope() {
+        val (storage, scope) = collectingScopeWithStorage()
+        val v = violation("nested")
+
+        scope.pathName("parent") { enforce { v } }
+
+        assertEquals(listOf(v), storage)
+    }
+
+    @Test
+    fun pathNameWithBlockReceivesCorrectPath() {
         val name = "user"
+        val scope = collectingScope()
+        var capturedPath: List<ValidationPathElement>? = null
 
-        validateCollecting {
-            pathName(name) {
-                val path = validationContext.validationPath()
+        scope.pathName(name) { capturedPath = validationContext.validationPath() }
 
-                assertEquals(NamePathElement(name), path.single())
-            }
-        }
+        assertEquals(listOf(NamePathElement(name)), capturedPath)
     }
 
     @Test
-    fun pathName_doesNotAffectOuterScope() {
-        validateCollecting {
-            pathName("inner") {}
+    fun pathNameWithBlockReturnsExtendedScope() {
+        val name = "items"
+        val scope = collectingScope()
 
-            val outerPath = validationContext.validationPath()
+        val returned = scope.pathName(name) {}
 
-            assertEquals(emptyList(), outerPath)
-        }
+        assertEquals(listOf(NamePathElement(name)), returned.validationContext.validationPath())
     }
 
     @Test
-    fun pathName_nested_buildsCorrectPath() {
-        val outer = "user"
-        val inner = "address"
+    fun pathIndexReturnsNewScopeWithIndexAppendedToPath() {
+        val index = 3
+        val scope = collectingScope()
 
-        validateCollecting {
-            pathName(outer) {
-                pathName(inner) {
-                    val path = validationContext.validationPath()
+        val extended = scope.pathIndex(index)
 
-                    assertEquals(
-                        listOf(NamePathElement(outer), NamePathElement(inner)),
-                        path,
-                    )
-                }
-            }
-        }
+        assertEquals(listOf(IndexPathElement(index)), extended.validationContext.validationPath())
     }
 
     @Test
-    fun pathIndex_addsToContext() {
-        val index = 0
+    fun pathIndexDoesNotMutateOriginalScope() {
+        val scope = collectingScope()
 
-        validateCollecting {
-            pathIndex(index) {
-                val path = validationContext.validationPath()
+        scope.pathIndex(0)
 
-                assertEquals(IndexPathElement(index), path.single())
-            }
-        }
+        assertEquals(EmptyValidationContext, scope.validationContext)
     }
 
     @Test
-    fun pathIndex_doesNotAffectOuterScope() {
-        validateCollecting {
-            pathIndex(3) {}
+    fun pathIndexWithBlockExecutesBlockInNewScope() {
+        val (storage, scope) = collectingScopeWithStorage()
+        val v = violation("indexed")
 
-            val outerPath = validationContext.validationPath()
+        scope.pathIndex(1) { enforce { v } }
 
-            assertEquals(emptyList(), outerPath)
-        }
+        assertEquals(listOf(v), storage)
     }
 
     @Test
-    fun pathIndex_nested_buildsCorrectPath() {
-        val outerIndex = 0
-        val innerIndex = 1
+    fun pathIndexWithBlockReceivesCorrectPath() {
+        val index = 5
+        val scope = collectingScope()
+        var capturedPath: List<ValidationPathElement>? = null
 
-        validateCollecting {
-            pathIndex(outerIndex) {
-                pathIndex(innerIndex) {
-                    val path = validationContext.validationPath()
+        scope.pathIndex(index) { capturedPath = validationContext.validationPath() }
 
-                    assertEquals(
-                        listOf(IndexPathElement(outerIndex), IndexPathElement(innerIndex)),
-                        path,
-                    )
-                }
-            }
-        }
+        assertEquals(listOf(IndexPathElement(index)), capturedPath)
     }
 
     @Test
-    fun pathName_collectsViolationsFromBlock() {
-        val result =
-            validateCollecting {
-                pathName("field") {
-                    failIf({ true }) { violation("error inside pathName") }
-                }
-            }
+    fun pathIndexWithBlockReturnsExtendedScope() {
+        val index = 7
+        val scope = collectingScope()
 
-        assertTrue(result.isInvalid)
+        val returned = scope.pathIndex(index) {}
+
+        assertEquals(listOf(IndexPathElement(index)), returned.validationContext.validationPath())
     }
 }

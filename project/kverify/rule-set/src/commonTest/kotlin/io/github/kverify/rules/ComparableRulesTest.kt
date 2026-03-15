@@ -1,7 +1,6 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.scope.validateCollecting
-import io.github.kverify.core.scope.verify
+import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.violations.AtLeastViolation
 import io.github.kverify.violations.AtMostViolation
 import io.github.kverify.violations.BetweenViolation
@@ -10,227 +9,401 @@ import io.github.kverify.violations.LessThanViolation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.test.assertTrue
+import kotlin.test.assertSame
 
 class ComparableRulesTest {
     @Test
-    fun atLeast_valid() {
-        val value = 5
-        val min = 3
-
-        assertTrue(validateCollecting { verify(value).atLeast(min) }.isValid)
-    }
-
-    @Test
-    fun atLeast_atBoundary() {
-        val value = 5
-
-        assertTrue(validateCollecting { verify(value).atLeast(value) }.isValid)
-    }
-
-    @Test
-    fun atLeast_invalid() {
-        val value = 2
+    fun atLeastPassesWhenValueEqualsMin() {
         val min = 5
-
-        val result = validateCollecting { verify(value).atLeast(min) }
-
-        assertTrue(result.isInvalid)
-        assertIs<AtLeastViolation<*>>(result.violations.first())
+        throwing(min).atLeast(min)
     }
 
     @Test
-    fun atLeast_violationValues() {
-        val value = 2
-        val min = 5
+    fun atLeastPassesWhenValueExceedsMin() {
+        throwing(10).atLeast(5)
+    }
 
-        val result = validateCollecting { verify(value).atLeast(min) }
+    @Test
+    fun atLeastFailsWhenValueIsBelowMin() {
+        val (storage, verification) = collecting(4)
 
-        val violation = assertIs<AtLeastViolation<*>>(result.violations.first())
+        verification.atLeast(5)
+
+        assertEquals(1, storage.size)
+        assertIs<AtLeastViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun atLeastViolationStoresMinAndActual() {
+        val min = 10
+        val actual = 3
+        val (storage, verification) = collecting(actual)
+
+        verification.atLeast(min)
+
+        val violation = storage[0] as AtLeastViolation<*>
         assertEquals(min, violation.minAllowed)
-        assertEquals(value, violation.actual)
+        assertEquals(actual, violation.actual)
     }
 
     @Test
-    fun atMost_valid() {
-        val value = 3
-        val max = 5
+    fun atLeastViolationHasDefaultReason() {
+        val min = 10
+        val actual = 3
+        val (storage, verification) = collecting(actual)
 
-        assertTrue(validateCollecting { verify(value).atMost(max) }.isValid)
+        verification.atLeast(min)
+
+        assertEquals("Value must be at least $min. Actual: $actual", storage[0].reason)
     }
 
     @Test
-    fun atMost_atBoundary() {
-        val value = 5
+    fun atLeastViolationHasCustomReason() {
+        val customReason = "age too low"
+        val (storage, verification) = collecting(17)
 
-        assertTrue(validateCollecting { verify(value).atMost(value) }.isValid)
+        verification.atLeast(18, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
     }
 
     @Test
-    fun atMost_invalid() {
-        val value = 6
-        val max = 5
+    fun atLeastViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("age")
+        val (storage, verification) = collecting(0, pathElement)
 
-        val result = validateCollecting { verify(value).atMost(max) }
+        verification.atLeast(1)
 
-        assertTrue(result.isInvalid)
-        assertIs<AtMostViolation<*>>(result.violations.first())
+        assertEquals(listOf(pathElement), (storage[0] as AtLeastViolation<*>).validationPath)
     }
 
     @Test
-    fun atMost_violationValues() {
-        val value = 6
-        val max = 5
+    fun atLeastReturnsSameVerification() {
+        val (_, verification) = collecting(10)
 
-        val result = validateCollecting { verify(value).atMost(max) }
+        val returned = verification.atLeast(1)
 
-        val violation = assertIs<AtMostViolation<*>>(result.violations.first())
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun atMostPassesWhenValueEqualsMax() {
+        val max = 100
+        throwing(max).atMost(max)
+    }
+
+    @Test
+    fun atMostPassesWhenValueIsBelowMax() {
+        throwing(50).atMost(100)
+    }
+
+    @Test
+    fun atMostFailsWhenValueExceedsMax() {
+        val (storage, verification) = collecting(101)
+
+        verification.atMost(100)
+
+        assertEquals(1, storage.size)
+        assertIs<AtMostViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun atMostViolationStoresMaxAndActual() {
+        val max = 50
+        val actual = 75
+        val (storage, verification) = collecting(actual)
+
+        verification.atMost(max)
+
+        val violation = storage[0] as AtMostViolation<*>
         assertEquals(max, violation.maxAllowed)
-        assertEquals(value, violation.actual)
+        assertEquals(actual, violation.actual)
     }
 
     @Test
-    fun between_valid() {
-        val value = 3
-        val min = 1
-        val max = 5
+    fun atMostViolationHasDefaultReason() {
+        val max = 50
+        val actual = 75
+        val (storage, verification) = collecting(actual)
 
-        assertTrue(validateCollecting { verify(value).between(min, max) }.isValid)
+        verification.atMost(max)
+
+        assertEquals("Value must be at most $max. Actual: $actual", storage[0].reason)
     }
 
     @Test
-    fun between_atLowerBoundary() {
-        val value = 1
-        val max = 5
+    fun atMostViolationHasCustomReason() {
+        val customReason = "quantity exceeded"
+        val (storage, verification) = collecting(200)
 
-        assertTrue(validateCollecting { verify(value).between(value, max) }.isValid)
+        verification.atMost(99, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
     }
 
     @Test
-    fun between_atUpperBoundary() {
-        val value = 5
-        val min = 1
+    fun atMostViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("quantity")
+        val (storage, verification) = collecting(200, pathElement)
 
-        assertTrue(validateCollecting { verify(value).between(min, value) }.isValid)
+        verification.atMost(100)
+
+        assertEquals(listOf(pathElement), (storage[0] as AtMostViolation<*>).validationPath)
     }
 
     @Test
-    fun between_invalid_tooSmall() {
-        val value = 0
-        val min = 1
-        val max = 5
+    fun atMostReturnsSameVerification() {
+        val (_, verification) = collecting(10)
 
-        val result = validateCollecting { verify(value).between(min, max) }
+        val returned = verification.atMost(100)
 
-        assertTrue(result.isInvalid)
-        assertIs<BetweenViolation<*>>(result.violations.first())
+        assertSame(verification, returned)
     }
 
     @Test
-    fun between_invalid_tooBig() {
-        val value = 6
-        val min = 1
-        val max = 5
-
-        assertTrue(validateCollecting { verify(value).between(min, max) }.isInvalid)
+    fun betweenPassesWhenValueEqualsMin() {
+        throwing(1).between(1, 10)
     }
 
     @Test
-    fun between_violationValues() {
-        val value = 0
-        val min = 1
-        val max = 5
+    fun betweenPassesWhenValueEqualsMax() {
+        throwing(10).between(1, 10)
+    }
 
-        val result = validateCollecting { verify(value).between(min, max) }
+    @Test
+    fun betweenPassesWhenValueIsWithinRange() {
+        throwing(5).between(1, 10)
+    }
 
-        val violation = assertIs<BetweenViolation<*>>(result.violations.first())
+    @Test
+    fun betweenFailsWhenValueIsBelowMin() {
+        val (storage, verification) = collecting(4)
+
+        verification.between(5, 10)
+
+        assertEquals(1, storage.size)
+        assertIs<BetweenViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun betweenFailsWhenValueIsAboveMax() {
+        val (storage, verification) = collecting(11)
+
+        verification.between(5, 10)
+
+        assertEquals(1, storage.size)
+        assertIs<BetweenViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun betweenViolationStoresMinMaxAndActual() {
+        val min = 5
+        val max = 10
+        val actual = 15
+        val (storage, verification) = collecting(actual)
+
+        verification.between(min, max)
+
+        val violation = storage[0] as BetweenViolation<*>
         assertEquals(min, violation.min)
         assertEquals(max, violation.max)
-        assertEquals(value, violation.actual)
+        assertEquals(actual, violation.actual)
     }
 
     @Test
-    fun greaterThan_valid() {
-        val value = 6
-        val boundary = 5
-
-        assertTrue(validateCollecting { verify(value).greaterThan(boundary) }.isValid)
-    }
-
-    @Test
-    fun greaterThan_invalid_equal() {
-        val value = 5
-
-        val result = validateCollecting { verify(value).greaterThan(value) }
-
-        assertTrue(result.isInvalid)
-        assertIs<GreaterThanViolation<*>>(result.violations.first())
-    }
-
-    @Test
-    fun greaterThan_invalid_less() {
-        val value = 4
-        val boundary = 5
-
-        assertTrue(validateCollecting { verify(value).greaterThan(boundary) }.isInvalid)
-    }
-
-    @Test
-    fun greaterThan_violationValues() {
-        val value = 4
-        val boundary = 5
-
-        val result = validateCollecting { verify(value).greaterThan(boundary) }
-
-        val violation = assertIs<GreaterThanViolation<*>>(result.violations.first())
-        assertEquals(boundary, violation.minExclusive)
-        assertEquals(value, violation.actual)
-    }
-
-    @Test
-    fun lessThan_valid() {
-        val value = 4
-        val boundary = 5
-
-        assertTrue(validateCollecting { verify(value).lessThan(boundary) }.isValid)
-    }
-
-    @Test
-    fun lessThan_invalid_equal() {
-        val value = 5
-
-        val result = validateCollecting { verify(value).lessThan(value) }
-
-        assertTrue(result.isInvalid)
-        assertIs<LessThanViolation<*>>(result.violations.first())
-    }
-
-    @Test
-    fun lessThan_invalid_greater() {
-        val value = 6
-        val boundary = 5
-
-        assertTrue(validateCollecting { verify(value).lessThan(boundary) }.isInvalid)
-    }
-
-    @Test
-    fun lessThan_violationValues() {
-        val value = 6
-        val boundary = 5
-
-        val result = validateCollecting { verify(value).lessThan(boundary) }
-
-        val violation = assertIs<LessThanViolation<*>>(result.violations.first())
-        assertEquals(boundary, violation.maxExclusive)
-        assertEquals(value, violation.actual)
-    }
-
-    @Test
-    fun rules_chain() {
-        val value = 3
+    fun betweenViolationHasDefaultReason() {
         val min = 1
         val max = 5
+        val actual = 9
+        val (storage, verification) = collecting(actual)
 
-        assertTrue(validateCollecting { verify(value).atLeast(min).atMost(max) }.isValid)
+        verification.between(min, max)
+
+        assertEquals("Value must be between $min and $max. Actual: $actual", storage[0].reason)
+    }
+
+    @Test
+    fun betweenViolationHasCustomReason() {
+        val customReason = "out of allowed range"
+        val (storage, verification) = collecting(99)
+
+        verification.between(0, 10, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun betweenViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("score")
+        val (storage, verification) = collecting(200, pathElement)
+
+        verification.between(0, 100)
+
+        assertEquals(listOf(pathElement), (storage[0] as BetweenViolation<*>).validationPath)
+    }
+
+    @Test
+    fun betweenReturnsSameVerification() {
+        val (_, verification) = collecting(5)
+
+        val returned = verification.between(1, 10)
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun greaterThanPassesWhenValueExceedsMin() {
+        throwing(1).greaterThan(0)
+    }
+
+    @Test
+    fun greaterThanFailsWhenValueEqualsMin() {
+        val min = 5
+        val (storage, verification) = collecting(min)
+
+        verification.greaterThan(min)
+
+        assertEquals(1, storage.size)
+        assertIs<GreaterThanViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun greaterThanFailsWhenValueIsBelowMin() {
+        val (storage, verification) = collecting(4)
+
+        verification.greaterThan(5)
+
+        assertEquals(1, storage.size)
+        assertIs<GreaterThanViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun greaterThanViolationStoresMinExclusiveAndActual() {
+        val min = 10
+        val (storage, verification) = collecting(min)
+
+        verification.greaterThan(min)
+
+        val violation = storage[0] as GreaterThanViolation<*>
+        assertEquals(min, violation.minExclusive)
+        assertEquals(min, violation.actual)
+    }
+
+    @Test
+    fun greaterThanViolationHasDefaultReason() {
+        val min = 0
+        val actual = 0
+        val (storage, verification) = collecting(actual)
+
+        verification.greaterThan(min)
+
+        assertEquals("Value must be greater than $min. Actual: $actual", storage[0].reason)
+    }
+
+    @Test
+    fun greaterThanViolationHasCustomReason() {
+        val customReason = "must be positive"
+        val (storage, verification) = collecting(0)
+
+        verification.greaterThan(0, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun greaterThanViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("price")
+        val (storage, verification) = collecting(0, pathElement)
+
+        verification.greaterThan(0)
+
+        assertEquals(listOf(pathElement), (storage[0] as GreaterThanViolation<*>).validationPath)
+    }
+
+    @Test
+    fun greaterThanReturnsSameVerification() {
+        val (_, verification) = collecting(5)
+
+        val returned = verification.greaterThan(0)
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun lessThanPassesWhenValueIsBelowMax() {
+        throwing(9).lessThan(10)
+    }
+
+    @Test
+    fun lessThanFailsWhenValueEqualsMax() {
+        val max = 10
+        val (storage, verification) = collecting(max)
+
+        verification.lessThan(max)
+
+        assertEquals(1, storage.size)
+        assertIs<LessThanViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun lessThanFailsWhenValueExceedsMax() {
+        val (storage, verification) = collecting(11)
+
+        verification.lessThan(10)
+
+        assertEquals(1, storage.size)
+        assertIs<LessThanViolation<*>>(storage[0])
+    }
+
+    @Test
+    fun lessThanViolationStoresMaxExclusiveAndActual() {
+        val max = 5
+        val (storage, verification) = collecting(max)
+
+        verification.lessThan(max)
+
+        val violation = storage[0] as LessThanViolation<*>
+        assertEquals(max, violation.maxExclusive)
+        assertEquals(max, violation.actual)
+    }
+
+    @Test
+    fun lessThanViolationHasDefaultReason() {
+        val max = 100
+        val actual = 100
+        val (storage, verification) = collecting(actual)
+
+        verification.lessThan(max)
+
+        assertEquals("Value must be less than $max. Actual: $actual", storage[0].reason)
+    }
+
+    @Test
+    fun lessThanViolationHasCustomReason() {
+        val customReason = "must be under limit"
+        val (storage, verification) = collecting(100)
+
+        verification.lessThan(100, reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun lessThanViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("weight")
+        val (storage, verification) = collecting(1000, pathElement)
+
+        verification.lessThan(500)
+
+        assertEquals(listOf(pathElement), (storage[0] as LessThanViolation<*>).validationPath)
+    }
+
+    @Test
+    fun lessThanReturnsSameVerification() {
+        val (_, verification) = collecting(5)
+
+        val returned = verification.lessThan(10)
+
+        assertSame(verification, returned)
     }
 }
