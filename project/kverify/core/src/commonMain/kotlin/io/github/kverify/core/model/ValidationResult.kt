@@ -11,8 +11,7 @@ import kotlin.jvm.JvmInline
  *
  * @param violations All violations produced during the validation run. Empty if validation passed.
  */
-@JvmInline
-public value class ValidationResult(
+public class ValidationResult(
     public val violations: List<Violation>,
 ) {
     /**
@@ -24,6 +23,16 @@ public value class ValidationResult(
      * `true` if [violations] is not empty (validation failed).
      */
     public inline val isInvalid: Boolean get() = !isValid
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ValidationResult) return false
+        return violations == other.violations
+    }
+
+    override fun hashCode(): Int = violations.hashCode()
+
+    override fun toString(): String = "ValidationResult(violations=$violations)"
 }
 
 /**
