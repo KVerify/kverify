@@ -13,7 +13,7 @@ import kotlin.contracts.contract
  */
 public class CollectingValidationScope(
     private val violationStorage: MutableCollection<Violation>,
-    override val validationContext: ValidationContext = EmptyValidationContext,
+    override val validationContext: ValidationContext,
 ) : ValidationScope {
     /**
      * Evaluates [rule] and appends the resulting [Violation] to [violationStorage] if it fails.
