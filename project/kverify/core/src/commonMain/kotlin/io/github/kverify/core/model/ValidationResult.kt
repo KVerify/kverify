@@ -2,7 +2,6 @@ package io.github.kverify.core.model
 
 import io.github.kverify.core.exception.ValidationException
 import io.github.kverify.core.violation.Violation
-import kotlin.jvm.JvmInline
 
 /**
  * The outcome of a validation run.
