@@ -2,6 +2,7 @@ package io.github.kverify.core.context
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNull
 import kotlin.test.assertSame
 
 class ValidationContextTest {
@@ -64,5 +65,44 @@ class ValidationContextTest {
         val path = (a + b + c + d).validationPath().elements
 
         assertEquals(listOf(a, b, c, d), path)
+    }
+
+    @Test
+    fun lastOfTypeOrNullReturnsNullWhenNoMatchingElementExists() {
+        val context = NamePathElement("a") + IndexPathElement(0)
+
+        val result = context.lastOfTypeOrNull<CustomElement>()
+
+        assertNull(result)
+    }
+
+    @Test
+    fun lastOfTypeOrNullReturnsSingleMatchingElement() {
+        val element = CustomElement(1)
+
+        val result = element.lastOfTypeOrNull<CustomElement>()
+
+        assertEquals(element, result)
+    }
+
+    @Test
+    fun lastOfTypeOrNullReturnsLastMatchingElement() {
+        val first = CustomElement(1)
+        val last = CustomElement(2)
+        val context = first + NamePathElement("between") + last
+
+        val result = context.lastOfTypeOrNull<CustomElement>()
+
+        assertEquals(last, result)
+    }
+
+    @Test
+    fun lastOfTypeOrNullSkipsNonMatchingElements() {
+        val target = CustomElement(1)
+        val context = NamePathElement("a") + target + IndexPathElement(0)
+
+        val result = context.lastOfTypeOrNull<CustomElement>()
+
+        assertEquals(target, result)
     }
 }
