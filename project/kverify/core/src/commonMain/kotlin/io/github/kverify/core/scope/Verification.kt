@@ -53,7 +53,7 @@ public inline fun <T, I : Iterable<T>> Verification<I>.each(block: ValidationSco
  *
  * Exposes both the index and the element to the [block].
  *
- * Returns `this` so further rules can be chained on the collection itself.
+ * Returns `this` so further rules can be chained on the iterable itself.
  */
 public inline fun <T, I : Iterable<T>> Verification<I>.each(block: ValidationScope.(Int, T) -> Unit): Verification<I> =
     apply {

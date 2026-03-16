@@ -99,7 +99,7 @@ public inline fun ValidationScope.failIf(
 /**
  * Returns a new scope with [name] appended to the validation path as a [NamePathElement].
  *
- * If [block] is provided, it is run immediately in the new scope before the scope is returned.
+ * If [block] is provided, it is run in the new scope.
  * The original scope is not modified.
  */
 public inline fun ValidationScope.pathName(
@@ -114,7 +114,7 @@ public inline fun ValidationScope.pathName(
 /**
  * Returns a new scope with [index] appended to the validation path as an [IndexPathElement].
  *
- * If [block] is provided, it is run immediately in the new scope before the scope is returned.
+ * If [block] is provided, it is run in the new scope.
  * The original scope is not modified.
  */
 public inline fun ValidationScope.pathIndex(

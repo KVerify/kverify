@@ -9,7 +9,8 @@ internal class CombinedContext(
 ) : ValidationContext {
     /**
      * Traverses the left spine iteratively rather than recursively to avoid stack overflow
-     * on deeply nested chains, then yields right elements in reverse order.
+     * on deeply nested chains, collecting right-hand elements along the way,
+     * then emits them in insertion order.
      */
     override fun iterator(): Iterator<ValidationContext.Element> =
         iterator {
