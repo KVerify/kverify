@@ -1,149 +1,78 @@
-<p align="center">
-  <img src="docs/img/kverify-logo.svg" alt="KVerify Logo">
-</p>
+# Getting Started
 
-<p align="center">
-  <strong>Type-safe, composable validation for Kotlin</strong>
-</p>
+This page walks you through your first validation with KVerify. If you haven't added the dependency yet,
+see [Installation](Installation).
 
-<p align="center">
-  <a href="https://kotlinlang.org"><img src="https://img.shields.io/badge/kotlin--multiplatform-2.0.21-blue.svg?logo=kotlin" alt="Kotlin 2.0.21"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License"></a>
-  <img src="https://img.shields.io/badge/Version-2.0.0-blue" alt="Version 2.0.0">
-</p>
+## Your first validation
 
----
-
-KVerify is a lightweight Kotlin Multiplatform validation library. No annotations, no reflection, no framework lock-in — just a clean DSL that gets out of your way.
-
-Use it in your backend, mobile app, game, or test suite. It doesn't care where it runs.
-
-## Why KVerify?
-
-### Your errors are real objects
-
-Most validation libraries give you strings. KVerify gives you typed violations you can actually work with:
+KVerify validations are built around three ideas: you create a scope, verify values inside it, and get a result back.
 
 ```kotlin
-data class PasswordTooShortViolation(
-    val actualLength: Int,
-    val minimumLength: Int,
-) : Violation {
-    override val reason =
-        "Password must be at least $minimumLength characters, but got $actualLength"
-}
+data class User(
+    val name: String,
+    val email: String,
+    val age: Int,
+)
 
-// Handle errors by type, not by parsing strings
-when (violation) {
-    is PasswordTooShortViolation -> "Try a longer password (min: ${violation.minimumLength})"
-    is EmailFormatViolation -> "Please check your email format"
-    else -> violation.reason
-}
-```
+val user = User(name = "", email = "bob@example.com", age = 17)
 
-### You choose what happens on failure
-
-Collect all violations, or stop at the first — depending on what the situation calls for:
-
-```kotlin
-// Collect everything (great for forms, APIs, DTOs)
 val result = validateCollecting {
     verify(user::name).notBlank().minLength(3)
     verify(user::email).notBlank()
-    verify(user::age).atLeast(13)
+    verify(user::age).atLeast(18, reason = "User must be at least 18 years old")
 }
+```
 
-result.onInvalid { violations ->
-    violations.forEach { println(it.reason) }
-}
+`validateCollecting` runs every rule regardless of failures — it never stops early. This makes it ideal for forms, APIs,
+and DTOs where you want to report all problems at once.
 
-// Throw immediately (great for business logic, use cases)
+Every built-in rule accepts an optional `reason` parameter. When omitted, a sensible default is used — but supplying
+your own message is encouraged wherever the context makes a more precise explanation valuable.
+
+`result` is a `ValidationResult`. You can inspect it like this:
+
+```kotlin
+result.fold(
+    onValid = { println("All good!") },
+    onInvalid = { violations ->
+        violations.forEach { println(it.reason) }
+    }
+)
+```
+
+For `user` above, this would print:
+
+```
+Value must not be blank
+User must be at least 18 years old
+```
+
+## Using property references
+
+Notice that `verify` is called with `user::name` rather than `user.name`. This is the recommended approach — passing a
+property reference lets KVerify automatically include the property name in any violations it produces, which makes
+failure messages much easier to trace back to the source.
+
+If you don't have a property reference available, `verify(value)` works too, but violations will not carry path
+information automatically.
+
+## Throwing on the first failure
+
+If you'd rather stop at the first violation instead of collecting all of them, use `validateThrowing`:
+
+```kotlin
 validateThrowing {
     verify(order::total).atLeast(minimumAmount)
     verify(order::items).minSize(1)
 }
 ```
 
-### Write rules once, use them everywhere
+The first rule that fails throws a `ViolationException` immediately. This is a good fit for business logic and use cases
+where a single violation means the operation cannot proceed.
 
-Rules are just extension functions on `Verification<T>`. Define them once, reuse across your whole codebase:
+Choosing between the two is covered in depth on the [ValidationScope](ValidationScope) page.
 
-```kotlin
-fun Verification<String>.validEmail(): Verification<String> =
-    apply {
-        scope.failIf({ !value.contains("@") }) {
-            EmailFormatViolation(value)
-        }
-    }
+## Next steps
 
-// Works anywhere, on any value of the right type
-validateCollecting {
-    verify(user::email).validEmail()
-    verify(invite::recipientEmail).validEmail()
-}
-```
-
-For domain-specific validation (e.g. validating a whole request object), write a `ValidationScope` extension instead:
-
-```kotlin
-fun ValidationScope.validateSignUp(request: SignUpRequest) {
-    verify(request::username).notBlank().minLength(3).maxLength(20)
-    verify(request::email).notBlank().validEmail()
-    verify(request::age).atLeast(13)
-}
-
-val result = validateCollecting {
-    validateSignUp(request)
-}
-```
-
-## Getting Started
-
-Add the dependencies:
-
-```kotlin
-dependencies {
-    implementation("io.github.kverify:kverify-core:2.0.0")
-    implementation("io.github.kverify:kverify-rule-set:2.0.0")
-}
-```
-
-Validate something:
-
-```kotlin
-val result = validateCollecting {
-    verify(user::name).notBlank().minLength(3).maxLength(50)
-    verify(user::age).atLeast(0).atMost(150)
-    verify(user::tags).distinct().maxSize(10)
-}
-
-result.fold(
-    onValid = { println("All good!") },
-    onInvalid = { violations -> violations.forEach { println(it.reason) } }
-)
-```
-
-## Built-in Rules
-
-**Strings** — `notBlank`, `minLength`, `maxLength`, `exactLength`, `lengthRange`
-
-**Comparable** — `atLeast`, `atMost`, `between`, `greaterThan`, `lessThan`
-
-**Collections** — `minSize`, `maxSize`, `exactSize`, `sizeRange`, `distinct`
-
-**Equality** — `notNull`, `equalTo`, `notEqualTo`, `oneOf`, `noneOf`
-
-## Requirements
-
-- Kotlin 1.9+
-- JVM, JavaScript, and Native platforms supported
-
-## License
-
-KVerify is licensed under the [Apache 2.0 License](LICENSE).
-
----
-
-<p align="center">
-  <strong>Built for Kotlin developers who care about type safety and clean code.</strong>
-</p>
+- [ValidationScope](ValidationScope) — understand the entry point for all validations
+- [Built-in Rules](Built-in-Rules) — full reference for the rules used above
