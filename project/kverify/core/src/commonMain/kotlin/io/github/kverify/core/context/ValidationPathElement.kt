@@ -16,20 +16,9 @@ public sealed interface ValidationPathElement : ValidationContext.Element
  *
  * @param name The name of this path segment, as it should appear in violation reports.
  */
-public class NamePathElement(
+public data class NamePathElement(
     public val name: String,
-) : ValidationPathElement {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is NamePathElement) return false
-
-        return name == other.name
-    }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "NamePathElement(name=$name)"
-}
+) : ValidationPathElement
 
 /**
  * An indexed segment in a validation path, typically representing a position within a collection.
@@ -38,17 +27,6 @@ public class NamePathElement(
  *
  * @param index The zero-based index of this path segment.
  */
-public class IndexPathElement(
+public data class IndexPathElement(
     public val index: Int,
-) : ValidationPathElement {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is IndexPathElement) return false
-
-        return index == other.index
-    }
-
-    override fun hashCode(): Int = index.hashCode()
-
-    override fun toString(): String = "IndexPathElement(index=$index)"
-}
+) : ValidationPathElement
