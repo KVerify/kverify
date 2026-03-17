@@ -26,16 +26,8 @@ public fun violation(reason: String): Violation = ViolationImpl(reason)
 /**
  * Default implementation of [Violation].
  */
-private class ViolationImpl(
+private data class ViolationImpl(
     override val reason: String,
 ) : Violation {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is ViolationImpl) return false
-        return reason == other.reason
-    }
-
     override fun toString(): String = "Violation(reason=$reason)"
-
-    override fun hashCode(): Int = reason.hashCode()
 }

@@ -2,53 +2,38 @@ package io.github.kverify.violations
 
 import io.github.kverify.core.model.ValidationPath
 
-public class MinSizeViolation(
+public data class MinSizeViolation(
     public val minSizeAllowed: Int,
     public val actualSize: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
-    override fun toString(): String =
-        "MinSizeViolation(minSizeAllowed=$minSizeAllowed, actualSize=$actualSize, validationPath=$validationPath, reason=$reason)"
-}
+) : PathAwareViolation
 
-public class MaxSizeViolation(
+public data class MaxSizeViolation(
     public val maxSizeAllowed: Int,
     public val actualSize: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
-    override fun toString(): String =
-        "MaxSizeViolation(maxSizeAllowed=$maxSizeAllowed, actualSize=$actualSize, validationPath=$validationPath, reason=$reason)"
-}
+) : PathAwareViolation
 
-public class ExactSizeViolation(
+public data class ExactSizeViolation(
     public val expectedSize: Int,
     public val actualSize: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
-    override fun toString(): String =
-        "ExactSizeViolation(expectedSize=$expectedSize, actualSize=$actualSize, validationPath=$validationPath, reason=$reason)"
-}
+) : PathAwareViolation
 
-public class SizeRangeViolation(
+public data class SizeRangeViolation(
     public val minSizeAllowed: Int,
     public val maxSizeAllowed: Int,
     public val actualSize: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
-    override fun toString(): String =
-        "SizeRangeViolation(minSizeAllowed=$minSizeAllowed, maxSizeAllowed=$maxSizeAllowed, actualSize=$actualSize, validationPath=$validationPath, reason=$reason)"
-}
+) : PathAwareViolation
 
-public class DistinctViolation(
+public data class DistinctViolation(
     public val actualSize: Int,
     public val distinctSize: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
-    override fun toString(): String =
-        "DistinctViolation(actualSize=$actualSize, distinctSize=$distinctSize, validationPath=$validationPath, reason=$reason)"
-}
+) : PathAwareViolation
