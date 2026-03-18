@@ -44,22 +44,10 @@ public fun <T : Any> Verification<T?>.takeIfNotNull(): Verification<T>? =
  * Returns `this` so further rules can be chained on the iterable itself.
  */
 public inline fun <T, I : Iterable<T>> Verification<I>.each(block: ValidationScope.(T) -> Unit): Verification<I> =
-    each { _, element ->
-        block(element)
-    }
-
-/**
- * Validates each element of the iterable, automatically appending each element's index to the validation path.
- *
- * Exposes both the index and the element to the [block].
- *
- * Returns `this` so further rules can be chained on the iterable itself.
- */
-public inline fun <T, I : Iterable<T>> Verification<I>.each(block: ValidationScope.(Int, T) -> Unit): Verification<I> =
     apply {
-        for ((idx, element) in value.withIndex()) {
-            val indexedScope = scope + IndexPathElement(idx)
+        value.forEachIndexed { index, element ->
+            val indexedScope = scope + IndexPathElement(index)
 
-            indexedScope.block(idx, element)
+            indexedScope.block(element)
         }
     }
