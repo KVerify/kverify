@@ -98,30 +98,32 @@ public inline fun ValidationScope.failIf(
 
 /**
  * Returns a new scope with [name] appended to the validation path as a [NamePathElement].
- *
- * If [block] is provided, it is run in the new scope.
- * The original scope is not modified.
+ */
+public fun ValidationScope.pathName(name: String): ValidationScope = this + NamePathElement(name)
+
+/**
+ * Runs [block] in a new scope with [name] appended to the validation path as a [NamePathElement].
  */
 public inline fun ValidationScope.pathName(
     name: String,
-    block: ValidationScope.() -> Unit = {},
-): ValidationScope {
+    block: ValidationScope.() -> Unit,
+) {
     val scope = this + NamePathElement(name)
-
-    return scope.apply(block)
+    scope.block()
 }
 
 /**
  * Returns a new scope with [index] appended to the validation path as an [IndexPathElement].
- *
- * If [block] is provided, it is run in the new scope.
- * The original scope is not modified.
+ */
+public fun ValidationScope.pathIndex(index: Int): ValidationScope = this + IndexPathElement(index)
+
+/**
+ * Runs [block] in a new scope with [index] appended to the validation path as an [IndexPathElement].
  */
 public inline fun ValidationScope.pathIndex(
     index: Int,
-    block: ValidationScope.() -> Unit = {},
-): ValidationScope {
+    block: ValidationScope.() -> Unit,
+) {
     val scope = this + IndexPathElement(index)
-
-    return scope.apply(block)
+    scope.block()
 }
