@@ -221,11 +221,11 @@ class ValidationScopeTest {
     }
 
     @Test
-    fun pathNameWithBlockReturnsExtendedScope() {
+    fun pathNameReturnsExtendedScope() {
         val name = "items"
         val scope = collectingScope()
 
-        val returned = scope.pathName(name) {}
+        val returned = scope.pathName(name)
 
         assertEquals(listOf(NamePathElement(name)), returned.validationContext.validationPath().elements)
     }
@@ -271,11 +271,11 @@ class ValidationScopeTest {
     }
 
     @Test
-    fun pathIndexWithBlockReturnsExtendedScope() {
+    fun pathIndexReturnsExtendedScope() {
         val index = 7
         val scope = collectingScope()
 
-        val returned = scope.pathIndex(index) {}
+        val returned = scope.pathIndex(index)
 
         assertEquals(listOf(IndexPathElement(index)), returned.validationContext.validationPath().elements)
     }
