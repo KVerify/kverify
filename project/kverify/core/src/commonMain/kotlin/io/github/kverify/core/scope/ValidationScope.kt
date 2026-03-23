@@ -64,8 +64,7 @@ public interface ValidationScope {
  * The [Verification] binds [value] to this scope so that validation rules
  * can be applied to it as extension functions.
  */
-@Suppress("NOTHING_TO_INLINE")
-public inline fun <T> ValidationScope.verify(value: T): Verification<T> =
+public fun <T> ValidationScope.verify(value: T): Verification<T> =
     Verification(
         value = value,
         scope = this,
