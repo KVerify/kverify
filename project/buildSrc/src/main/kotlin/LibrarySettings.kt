@@ -1,4 +1,4 @@
 object LibrarySettings {
-    const val VERSION = "2.0.0-rc-5"
+    const val VERSION = "2.0.0"
     const val GROUP = "io.github.kverify"
 }
