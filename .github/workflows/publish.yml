@@ -33,9 +33,9 @@ jobs:
       - name: Publish to Maven Central
         run: |
           if [ "${{ inputs.dry_run }}" = "true" ]; then
-            cd project && ./gradlew publishToMavenLocal --no-daemon --stacktrace
+            cd project && ./gradlew publishToMavenLocal --no-daemon --no-configuration-cache --stacktrace
           else
-            cd project && ./gradlew publishAndReleaseToMavenCentral --no-daemon --stacktrace
+            cd project && ./gradlew publishAndReleaseToMavenCentral --no-daemon --no-configuration-cache --stacktrace
           fi
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
