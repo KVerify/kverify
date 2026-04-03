@@ -1,17 +1,22 @@
-import org.jetbrains.dokka.DokkaConfiguration.Visibility
-import org.jetbrains.dokka.gradle.DokkaTask
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 
 plugins {
     org.jetbrains.dokka
 }
 
-tasks.withType<DokkaTask>().configureEach {
+dokka {
+    moduleName.set("kverify-${project.name}")
+
+    dokkaPublications.html {
+        suppressInheritedMembers.set(true)
+        outputDirectory.set(layout.buildDirectory.dir("dokka"))
+    }
+
     dokkaSourceSets.configureEach {
-        documentedVisibilities =
-            setOf(
-                Visibility.PUBLIC,
-                Visibility.PROTECTED,
-            )
+        documentedVisibilities(
+            VisibilityModifier.Public,
+            VisibilityModifier.Protected,
+        )
 
         val readmeFile = projectDir.resolve("README.md")
         if (readmeFile.exists()) {
@@ -20,16 +25,8 @@ tasks.withType<DokkaTask>().configureEach {
 
         sourceLink {
             localDirectory.set(projectDir.resolve("src"))
-            remoteUrl.set(
-                uri("https://github.com/kverify/kverify/tree/main/${project.path.replace(":", "/")}/src").toURL(),
-            )
+            remoteUrl("${LibrarySettings.GITHUB_URL}/tree/${LibrarySettings.GITHUB_BRANCH}/${project.path.replace(":", "/")}/src")
             remoteLineSuffix.set("#L")
         }
-
-        moduleName.set("kverify-${project.name}")
-
-        suppressInheritedMembers.set(true)
     }
-
-    outputDirectory.set(layout.buildDirectory.dir("dokka"))
 }

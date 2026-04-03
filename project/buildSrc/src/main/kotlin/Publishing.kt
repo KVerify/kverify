@@ -8,11 +8,11 @@ fun MavenPom.configureMavenCentralMetadata(project: Project) {
     name set project.name
     description set "KVerify - Kotlin Validation Library"
     inceptionYear set "2024"
-    url set "https://github.com/kverify/kverify"
+    url set LibrarySettings.GITHUB_URL
 
     organization {
-        name set "KVerify"
-        url set "https://github.com/kverify"
+        name set LibrarySettings.GITHUB_ORG
+        url set "https://github.com/${LibrarySettings.GITHUB_ORG}"
     }
 
     developers {
@@ -24,7 +24,7 @@ fun MavenPom.configureMavenCentralMetadata(project: Project) {
 
     issueManagement {
         system set "GitHub"
-        url set "https://github.com/kverify/kverify/issues"
+        url set "${LibrarySettings.GITHUB_URL}/issues"
     }
 
     licenses {
@@ -35,7 +35,7 @@ fun MavenPom.configureMavenCentralMetadata(project: Project) {
     }
 
     scm {
-        connection set "scm:git:ssh://github.com/kverify/kverify.git"
-        url set "https://github.com/kverify/kverify"
+        connection set "scm:git:ssh://github.com/${LibrarySettings.GITHUB_ORG}/${LibrarySettings.GITHUB_REPO}.git"
+        url set LibrarySettings.GITHUB_URL
     }
 }
