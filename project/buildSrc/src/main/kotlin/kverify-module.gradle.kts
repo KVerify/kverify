@@ -1,8 +1,14 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
+import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     org.jetbrains.kotlin.multiplatform
+    org.jetbrains.dokka
+    com.vanniktech.maven.publish
 }
 
 @OptIn(ExperimentalKotlinGradlePluginApi::class, ExperimentalWasmDsl::class)
@@ -76,4 +82,52 @@ tasks.named<Test>("jvmTest") {
             )
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
     }
+}
+
+dokka {
+    moduleName.set("kverify-${project.name}")
+
+    dokkaPublications.html {
+        suppressInheritedMembers.set(true)
+        outputDirectory.set(layout.buildDirectory.dir("dokka"))
+    }
+
+    dokkaSourceSets.configureEach {
+        documentedVisibilities(
+            VisibilityModifier.Public,
+            VisibilityModifier.Protected,
+        )
+
+        val readmeFile = projectDir.resolve("README.md")
+        if (readmeFile.exists()) {
+            includes.from(readmeFile)
+        }
+
+        sourceLink {
+            localDirectory.set(projectDir.resolve("src"))
+            remoteUrl("${LibrarySettings.GITHUB_URL}/tree/${LibrarySettings.GITHUB_BRANCH}/${project.path.replace(":", "/")}/src")
+            remoteLineSuffix.set("#L")
+        }
+    }
+}
+
+mavenPublishing {
+    configure(
+        KotlinMultiplatform(
+            javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"),
+        ),
+    )
+
+    coordinates(
+        groupId = LibrarySettings.GROUP,
+        version = LibrarySettings.VERSION,
+        artifactId = "kverify-${project.name}",
+    )
+
+    pom {
+        configureMavenCentralMetadata(project)
+    }
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
 }
