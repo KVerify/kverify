@@ -35,3 +35,10 @@ public data class LengthRangeViolation(
     override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation
+
+public data class PatternViolation(
+    public val pattern: String,
+    public val actualValue: String,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : PathAwareViolation
