@@ -8,6 +8,7 @@ import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
 import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
+import io.github.kverify.violations.PatternViolation
 
 /**
  * Fails with [NotBlankViolation] if the string is blank.
@@ -83,6 +84,27 @@ public fun Verification<String>.exactLength(
                 actualLength = actualLength,
                 validationPath = scope.validationContext.validationPath(),
                 reason = reason ?: "Value must be exactly $length characters long. Actual length: $actualLength",
+            )
+        }
+    }
+
+/**
+ * Fails with [PatternViolation] if the string does not fully match [pattern].
+ *
+ * If [reason] is `null`, defaults to: `"Value must match pattern \"${pattern.pattern}\". Actual value: \"$actualValue\""`.
+ */
+public fun Verification<String>.matches(
+    pattern: Regex,
+    reason: String? = null,
+): Verification<String> =
+    apply {
+        val actualValue = value
+        scope.failIf({ !pattern.matches(actualValue) }) {
+            PatternViolation(
+                pattern = pattern.pattern,
+                actualValue = actualValue,
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Value must match pattern \"${pattern.pattern}\". Actual value: \"$actualValue\"",
             )
         }
     }

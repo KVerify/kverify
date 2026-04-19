@@ -6,6 +6,7 @@ import io.github.kverify.violations.LengthRangeViolation
 import io.github.kverify.violations.MaxLengthViolation
 import io.github.kverify.violations.MinLengthViolation
 import io.github.kverify.violations.NotBlankViolation
+import io.github.kverify.violations.PatternViolation
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -394,6 +395,87 @@ class StringRulesTest {
         val (_, verification) = collecting("hello")
 
         val returned = verification.lengthRange(1, 10)
+
+        assertSame(verification, returned)
+    }
+
+    @Test
+    fun matchesPassesWhenValueMatchesPattern() {
+        throwing("abc123").matches(Regex("[a-z0-9]+"))
+    }
+
+    @Test
+    fun matchesFailsWhenValueDoesNotMatchPattern() {
+        val (storage, verification) = collecting("abc 123")
+
+        verification.matches(Regex("[a-z0-9]+"))
+
+        assertEquals(1, storage.size)
+        assertIs<PatternViolation>(storage[0])
+    }
+
+    @Test
+    fun matchesFailsWhenValuePartiallyMatchesPattern() {
+        val (storage, verification) = collecting("123abc")
+
+        verification.matches(Regex("[0-9]+"))
+
+        assertEquals(1, storage.size)
+        assertIs<PatternViolation>(storage[0])
+    }
+
+    @Test
+    fun matchesViolationStoresPatternAndActualValue() {
+        val pattern = Regex("[a-z]+")
+        val value = "ABC"
+        val (storage, verification) = collecting(value)
+
+        verification.matches(pattern)
+
+        val violation = storage[0] as PatternViolation
+        assertEquals(pattern.pattern, violation.pattern)
+        assertEquals(value, violation.actualValue)
+    }
+
+    @Test
+    fun matchesViolationHasDefaultReason() {
+        val pattern = Regex("[a-z]+")
+        val value = "ABC"
+        val (storage, verification) = collecting(value)
+
+        verification.matches(pattern)
+
+        assertEquals(
+            "Value must match pattern \"${pattern.pattern}\". Actual value: \"$value\"",
+            storage[0].reason,
+        )
+    }
+
+    @Test
+    fun matchesViolationHasCustomReason() {
+        val customReason = "must be lowercase letters only"
+        val (storage, verification) = collecting("ABC")
+
+        verification.matches(Regex("[a-z]+"), reason = customReason)
+
+        assertEquals(customReason, storage[0].reason)
+    }
+
+    @Test
+    fun matchesViolationCarriesCorrectPath() {
+        val pathElement = NamePathElement("code")
+        val (storage, verification) = collecting("ABC", pathElement)
+
+        verification.matches(Regex("[a-z]+"))
+
+        assertEquals(listOf(pathElement), (storage[0] as PatternViolation).validationPath.elements)
+    }
+
+    @Test
+    fun matchesReturnsSameVerification() {
+        val (_, verification) = collecting("abc")
+
+        val returned = verification.matches(Regex("[a-z]+"))
 
         assertSame(verification, returned)
     }
