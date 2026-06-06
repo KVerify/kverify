@@ -86,6 +86,18 @@ class VerificationTest {
     }
 
     @Test
+    fun eachWithElementBlockPreservesExistingPathElementsBeforeIndex() {
+        val parent = NamePathElement("CreateUserRequest")
+        val property = NamePathElement("favoriteTeams")
+        val verification = Verification(listOf("x"), emptyScope() + parent + property)
+        val capturedPaths = mutableListOf<List<ValidationPathElement>>()
+
+        verification.each { capturedPaths.add(validationContext.validationPath().elements) }
+
+        assertEquals(listOf(listOf(parent, property, IndexPathElement(0))), capturedPaths)
+    }
+
+    @Test
     fun eachWithElementBlockReturnsSameVerification() {
         val verification = Verification(listOf(1, 2, 3), emptyScope())
 

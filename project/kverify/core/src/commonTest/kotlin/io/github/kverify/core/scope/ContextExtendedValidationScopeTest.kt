@@ -71,6 +71,19 @@ class ContextExtendedValidationScopeTest {
     }
 
     @Test
+    fun plusOnExtendedScopePreservesExistingAdditionalContext() {
+        val root = NamePathElement("root")
+        val child = NamePathElement("child")
+        val index = IndexPathElement(0)
+        val (_, original) = collectingScope(root)
+        val extended = ContextExtendedValidationScope(original, child)
+
+        val nested = extended + index
+
+        assertEquals(listOf(root, child, index), nested.validationContext.toList())
+    }
+
+    @Test
     fun originalValidationScopeIsStoredByReference() {
         val (_, original) = collectingScope()
 
