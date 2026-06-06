@@ -1,5 +1,6 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
 
 /**
@@ -16,4 +17,14 @@ internal class ContextExtendedValidationScope<out T : ValidationScope>(
     val additionalContext: ValidationContext,
 ) : ValidationScope by originalValidationScope {
     override val validationContext: ValidationContext = originalValidationScope.validationContext + additionalContext
+
+    override fun plus(validationContext: ValidationContext): ValidationScope =
+        if (validationContext !== EmptyValidationContext) {
+            ContextExtendedValidationScope(
+                originalValidationScope = originalValidationScope,
+                additionalContext = additionalContext + validationContext,
+            )
+        } else {
+            this
+        }
 }
