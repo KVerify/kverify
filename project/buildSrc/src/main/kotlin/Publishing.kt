@@ -17,8 +17,8 @@ fun MavenPom.configureMavenCentralMetadata(project: Project) {
 
     developers {
         developer {
-            name set "MrKekovich"
-            email set "mrkekovich.official@gmail.com"
+            name set "tessoir"
+            email set "real.tessoir@gmail.com"
         }
     }
 
