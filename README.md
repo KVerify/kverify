@@ -1,7 +1,7 @@
 <div align="center">
   <img src="docs/img/kverify-logo.svg" alt="KVerify" width="280"/>
   <br/><br/>
-  <strong>Type-safe, composable validation for Kotlin Multiplatform.</strong>
+  <strong>Kotlin-first validation DSL with typed failures.</strong>
   <br/><br/>
 
 [![Maven Central](https://img.shields.io/badge/Maven%20Central-kverify-blue)](https://central.sonatype.com/namespace/io.github.kverify)
@@ -24,51 +24,85 @@ dependencies {
 }
 ```
 
-`kverify-rule-set` includes `kverify-core` — you only need one. Supports all Kotlin Multiplatform targets. Requires
-Kotlin 1.9+.
+`kverify-rule-set` includes `kverify-core` - you only need one. Supports all Kotlin Multiplatform targets. Requires
+Kotlin 1.9+. The latest version is available
+on [Maven Central](https://central.sonatype.com/namespace/io.github.kverify).
 
----
+## Validation is just Kotlin
 
-## The problem with validation
-
-Validation always starts simple and ends messy. `if` checks scattered across the codebase. Error messages hardcoded as
-strings. No structure, no reuse, no way to know which field failed without parsing the message. And if you reach for a
-framework, you get annotations crawling over your model classes and a build plugin you didn't ask for.
-
-KVerify is what validation should have been. A clean DSL, typed failures, automatic path tracking — and nothing your
-project didn't already have.
-
----
-
-## Violations are values, not messages
-
-Most libraries give you a string when something fails. KVerify gives you a typed data class — with the actual values
-that caused the failure — that you can inspect, pattern-match on, serialize, or forward to a frontend as structured
-errors.
+Rules are extension functions. Built-in rules and your own rules are used the same way.
 
 ```kotlin
-when (violation) {
-    is MinLengthViolation ->
-        respondWithError(violation.validationPath, "At least ${violation.minLengthAllowed} characters required")
-    is NotBlankViolation ->
-        respondWithError(violation.validationPath, "This field is required")
-    else ->
-        respondWithError(message = violation.reason)
-}
+private val usernameRegex = Regex("^[A-Za-z0-9_]+$")
+
+fun Verification<String>.matchesUsername(): Verification<String> =
+    apply {
+        scope.failIf({ !value.matches(usernameRegex) }) {
+            violation("Username has invalid format")
+        }
+    }
 ```
 
-No string parsing. No guessing. The type tells you everything.
+```kotlin
+validateCollecting {
+    verify(request::username)
+        .notBlank()
+        .lengthRange(3, 20)
+        .matchesUsername()
 
----
+    verify(request::age).atLeast(18)
+    verify(request::referralCode).takeIfNotNull()?.notBlank()
+}.throwOnInvalid()
+```
+
+No annotations. No code generation. No model pollution.
+
+Just Kotlin functions and IDE-discoverable validation rules.
+
+## Typed failures, not string messages
+
+`violation("...")` is useful for simple rules. When the failure matters to your API, tests, or domain logic, make it a
+type.
+
+```kotlin
+data class InvalidUsernameViolation(
+    val actualValue: String,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : PathAwareViolation
+```
+
+The rule stays the same shape:
+
+```kotlin
+fun Verification<String>.matchesUsername(reason: String? = null): Verification<String> =
+    apply {
+        scope.failIf({ !value.matches(usernameRegex) }) {
+            InvalidUsernameViolation(
+                actualValue = value,
+                validationPath = scope.validationContext.validationPath(),
+                reason = reason ?: "Username has invalid format",
+            )
+        }
+    }
+```
 
 ## Path tracking that builds itself
 
-Pass a property reference to `verify` and KVerify tracks exactly where in the object structure each violation came
-from — through nested objects, through collections, through any depth.
+Typed failures are much more useful when they know where they came from.
+
+Pass a property reference to `verify`, and KVerify adds the property name to the validation path automatically.
 
 ```kotlin
-data class OrderItem(val name: String, val price: Double)
-data class Order(val customerName: String, val items: List<OrderItem>)
+data class OrderItem(
+    val name: String,
+    val price: Double,
+)
+
+data class Order(
+    val customerName: String,
+    val items: List<OrderItem>,
+)
 
 val result = validateCollecting {
     verify(order::customerName).notBlank()
@@ -78,96 +112,86 @@ val result = validateCollecting {
         verify(item::price).greaterThan(0.0)
     }
 }
-
-result.violations
-    .filterIsInstance<PathAwareViolation>()
-    .forEach { println("${it.validationPath}: ${it.reason}") }
 ```
 
-```
-ValidationPath("customerName"): Value must not be blank
-ValidationPath("items", 1, "name"): Value must not be blank
-ValidationPath("items", 1, "price"): Value must be greater than 0.0. Actual: -1.0
+Validation paths:
+
+```text
+ValidationPath("customerName")
+ValidationPath("items", 0, "name")
+ValidationPath("items", 0, "price")
 ```
 
-No path configuration. No field name strings. The property reference does the work.
+No field-name strings. No manual path configuration. Collection indexes are added automatically by `each`.
 
----
+Because paths are built from property references, IDE rename refactoring works with them too.
 
 ## Collect everything, or stop at the first failure
 
-Two scopes. Same rules. You decide at the call site.
+Validation rules do not decide what happens when they fail. The scope does.
+
+Extract your validation once:
 
 ```kotlin
-// Run every rule — ideal for forms, APIs, DTOs
-val result = validateCollecting {
-    verify(request::username).notBlank().minLength(3)
-    verify(request::email).notBlank()
+fun ValidationScope.validateRequest(request: UserRequest) {
+    verify(request::username)
+        .notBlank()
+        .lengthRange(3, 20)
+        .matchesUsername()
+
     verify(request::age).atLeast(18)
-}
-
-result.fold(
-    onValid = { proceed() },
-    onInvalid = { violations -> respondWithErrors(violations) }
-)
-```
-
-```kotlin
-// Stop at the first failure — ideal for business rules and invariants
-validateThrowing {
-    verify(order::total).greaterThan(BigDecimal.ZERO)
-    verify(order::items).minSize(1)
+    verify(request::referralCode).takeIfNotNull()?.notBlank()
 }
 ```
 
-The validation logic is the same either way. Only the scope changes.
-
-Need something different? The scope is an interface — implement your own. A logging scope, an auditing scope, anything
-you need. See the [Wiki](https://github.com/KVerify/kverify/wiki/ValidationScope) for details.
-
----
-
-## Validation is just Kotlin
-
-Rules are extension functions. They live where they make sense, they compose naturally, and they read exactly like what
-they validate. No annotations, no code generation, no framework to learn.
+Collect every violation:
 
 ```kotlin
-fun ValidationScope.validateAddress(address: Address) {
-    verify(address::street).notBlank()
-    verify(address::city).notBlank()
-    verify(address::postalCode).exactLength(5)
-}
-
-fun ValidationScope.validateUser(user: User) {
-    verify(user::name).notBlank().minLength(3)
-    verify(user::age).atLeast(18)
-    pathName("address").validateAddress(user.address)
-}
-
 val result = validateCollecting {
-    validateUser(user)
+    validateRequest(request)
 }
 ```
 
----
-
-## Null-safe chaining
-
-Optional fields fit naturally into the chain. Rules only run when the value is present.
+Stop at the first violation:
 
 ```kotlin
-validateCollecting {
-    verify(user::middleName)
-        .takeIfNotNull()
-        ?.minLength(2)
-        ?.maxLength(50)
+validateThrowing {
+    validateRequest(request)
 }
 ```
 
----
+Or define your own behavior:
+
+```kotlin
+class PrintingValidationScope(
+    override val validationContext: ValidationContext = EmptyValidationContext,
+) : ValidationScope {
+    override fun enforce(rule: Rule) {
+        val violation = rule.check() ?: return
+
+        println("Violation encountered: $violation")
+    }
+}
+
+inline fun validatePrinting(
+    validationContext: ValidationContext = EmptyValidationContext,
+    block: PrintingValidationScope.() -> Unit,
+): Unit = PrintingValidationScope(validationContext).run(block)
+```
+
+And run the same validation inside it:
+
+```kotlin
+validatePrinting {
+    validateRequest(request)
+}
+```
+
+Same validation. Different failure handling.
 
 ## Built-in rules
+
+`kverify-rule-set` provides common rules for strings, comparable values, collections and equality checks.
 
 | Category   | Rules                                                              |
 |------------|--------------------------------------------------------------------|
@@ -176,10 +200,7 @@ validateCollecting {
 | Collection | `minSize`, `maxSize`, `exactSize`, `sizeRange`, `distinct`         |
 | Equality   | `notNull`, `equalTo`, `notEqualTo`, `oneOf`, `noneOf`              |
 
-Every rule accepts an optional `reason` parameter. Every rule produces a typed violation with the full validation path
-and the constraint values that caused the failure.
-
----
+Every rule accepts an optional `reason` parameter. Every built-in rule produces a typed violation.
 
 ## Documentation
 
