@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.4.10"
-publish = "0.28.0"
+publish = "0.37.0"
 dokka = "2.2.0"
 
 [libraries]
