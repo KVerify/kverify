@@ -15,8 +15,6 @@ internal fun KotlinCommonCompilerOptions.applyKverifyCommonCompilerOptions() {
     languageVersion = KotlinVersion.KOTLIN_2_0
 }
 
-internal const val KVERIFY_JVM_TARGET = 8
-
 internal fun KotlinJvmCompilerOptions.applyKverifyJvmCompilerOptions() {
     applyKverifyCommonCompilerOptions()
     jvmTarget = JVM_1_8
