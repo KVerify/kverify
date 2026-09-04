@@ -11,8 +11,8 @@ val kverifyOptIns =
 
 internal fun KotlinCommonCompilerOptions.applyKverifyCommonCompilerOptions() {
     allWarningsAsErrors = true
-    apiVersion = KotlinVersion.KOTLIN_2_0
-    languageVersion = KotlinVersion.KOTLIN_2_0
+    apiVersion = KotlinVersion.KOTLIN_2_4
+    languageVersion = KotlinVersion.KOTLIN_2_4
 }
 
 internal fun KotlinJvmCompilerOptions.applyKverifyJvmCompilerOptions() {
