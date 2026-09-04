@@ -2,7 +2,7 @@ import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.api.publish.maven.MavenPom
 
-infix fun <T> Property<T>.set(value: T): Unit = this.set(value)
+infix fun <T : Any> Property<T>.set(value: T): Unit = this.set(value)
 
 fun MavenPom.configureMavenCentralMetadata(project: Project) {
     name set project.name
