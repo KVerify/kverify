@@ -5,6 +5,7 @@ import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.verification.Verification
 import io.github.kverify.core.violation.Violation
 import kotlin.reflect.KProperty0
 
@@ -59,9 +60,9 @@ public interface ValidationScope {
 }
 
 /**
- * Creates a [Verification] for [value] within this scope.
+ * Creates a [io.github.kverify.core.verification.Verification] for [value] within this scope.
  *
- * The [Verification] binds [value] to this scope so that validation rules
+ * The [io.github.kverify.core.verification.Verification] binds [value] to this scope so that validation rules
  * can be applied to it as extension functions.
  */
 public fun <T> ValidationScope.verify(value: T): Verification<T> =

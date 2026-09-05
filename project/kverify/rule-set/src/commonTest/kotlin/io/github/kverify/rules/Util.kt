@@ -4,7 +4,7 @@ import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.scope.CollectingValidationScope
 import io.github.kverify.core.scope.ThrowingValidationScope
-import io.github.kverify.core.scope.Verification
+import io.github.kverify.core.verification.Verification
 import io.github.kverify.core.violation.Violation
 
 fun <T> collecting(

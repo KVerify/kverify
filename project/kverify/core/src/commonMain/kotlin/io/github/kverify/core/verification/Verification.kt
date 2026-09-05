@@ -1,12 +1,13 @@
-package io.github.kverify.core.scope
+package io.github.kverify.core.verification
 
 import io.github.kverify.core.context.IndexPathElement
+import io.github.kverify.core.scope.ValidationScope
 
 /**
- * A value bound to a [ValidationScope], ready for validation rules to be applied.
+ * A value bound to a [io.github.kverify.core.scope.ValidationScope], ready for validation rules to be applied.
  *
  * [Verification] is the primary surface for chaining validation rules.
- * It is created by [ValidationScope.verify] and consumed by rule extension functions
+ * It is created by [io.github.kverify.core.scope.verify] and consumed by rule extension functions
  * defined on `Verification<T>` or its supertypes.
  *
  * The [scope] carries the active [io.github.kverify.core.context.ValidationContext],

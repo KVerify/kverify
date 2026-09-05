@@ -1,11 +1,6 @@
 package io.github.kverify.rules
 
-import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.NamePathElement
-import io.github.kverify.core.scope.CollectingValidationScope
-import io.github.kverify.core.scope.ThrowingValidationScope
-import io.github.kverify.core.scope.Verification
-import io.github.kverify.core.violation.Violation
 import io.github.kverify.violations.EqualToViolation
 import io.github.kverify.violations.NoneOfViolation
 import io.github.kverify.violations.NotEqualToViolation
@@ -15,7 +10,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertSame
-import kotlin.test.assertTrue
 
 class EqualityRulesTest {
     @Test

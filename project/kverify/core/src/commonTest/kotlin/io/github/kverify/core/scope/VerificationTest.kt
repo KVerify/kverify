@@ -5,6 +5,9 @@ import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationPathElement
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.verification.Verification
+import io.github.kverify.core.verification.each
+import io.github.kverify.core.verification.takeIfNotNull
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull

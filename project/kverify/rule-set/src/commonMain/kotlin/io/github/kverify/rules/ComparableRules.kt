@@ -1,7 +1,7 @@
 package io.github.kverify.rules
 
 import io.github.kverify.core.context.validationPath
-import io.github.kverify.core.scope.Verification
+import io.github.kverify.core.verification.Verification
 import io.github.kverify.core.scope.failIf
 import io.github.kverify.violations.AtLeastViolation
 import io.github.kverify.violations.AtMostViolation
