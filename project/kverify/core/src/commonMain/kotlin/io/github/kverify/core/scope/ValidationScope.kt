@@ -1,6 +1,5 @@
 package io.github.kverify.core.scope
 
-import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
@@ -42,20 +41,8 @@ public interface ValidationScope {
      */
     public fun enforce(rule: Rule)
 
-    /**
-     * Returns a new scope with [validationContext] merged into the current context.
-     *
-     * If [validationContext] is [EmptyValidationContext], returns this scope unchanged.
-     */
-    public operator fun plus(validationContext: ValidationContext): ValidationScope =
-        if (validationContext !== EmptyValidationContext) {
-            ContextExtendedValidationScope(
-                originalValidationScope = this,
-                additionalContext = validationContext,
-            )
-        } else {
-            this
-        }
+    // TODO: New docstring
+    public operator fun plus(validationContext: ValidationContext): ValidationScope
 }
 
 /**

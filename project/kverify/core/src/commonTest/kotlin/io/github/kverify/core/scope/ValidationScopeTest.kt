@@ -58,15 +58,6 @@ class ValidationScopeTest {
     }
 
     @Test
-    fun plusReturnsContextExtendedValidationScope() {
-        val scope = collectingScope()
-
-        val extended = scope + NamePathElement("extra")
-
-        assertTrue(extended is ContextExtendedValidationScope<*>)
-    }
-
-    @Test
     fun verifyValueBindsValueToVerification() {
         val scope = collectingScope()
         val value = "hello"

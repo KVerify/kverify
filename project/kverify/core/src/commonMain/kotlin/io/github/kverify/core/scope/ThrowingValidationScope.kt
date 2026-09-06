@@ -25,6 +25,16 @@ public class ThrowingValidationScope(
 
         throw ViolationException(violation)
     }
+
+    // TODO: New docstring
+    // TODO: other name for the 'validationContext' parameter?
+    override fun plus(validationContext: ValidationContext): ThrowingValidationScope {
+        if (validationContext === EmptyValidationContext) return this
+
+        return ThrowingValidationScope(
+            this.validationContext + validationContext,
+        )
+    }
 }
 
 /**

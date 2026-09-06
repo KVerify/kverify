@@ -25,6 +25,16 @@ public class CollectingValidationScope(
 
         violationStorage.add(violation)
     }
+
+    // TODO: New docstring
+    override fun plus(validationContext: ValidationContext): CollectingValidationScope {
+        if (validationContext === EmptyValidationContext) return this
+
+        return CollectingValidationScope(
+            violationStorage = violationStorage,
+            validationContext = this.validationContext + validationContext,
+        )
+    }
 }
 
 /**
