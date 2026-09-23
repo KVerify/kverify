@@ -1,11 +1,13 @@
 package io.github.kverify.core.model
 
+import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
 import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty0
 
+@KverifyDsl
 public class Verification<out V, out S : ValidationStrategy>(
     public val value: V,
     public val strategy: S,
@@ -36,11 +38,8 @@ public fun <V, S : ValidationStrategy> verify(value: V): Verification<V, S> = va
 context(validationStrategy: S, validationContext: ValidationContext)
 public fun <V, S : ValidationStrategy> verify(property: KProperty0<V>): Verification<V, S> = validationContext.verify(property)
 
-public inline infix fun <V, S : ValidationStrategy> Verification<V, S>.with(
+public inline fun <V, S : ValidationStrategy> Verification<V, S>.using(
     block: context(S, ValidationContext) Verification<V, S>.() -> Unit,
 ) {
-    val verification = this
-    context(strategy, context) {
-        verification.block()
-    }
+    context(strategy, context) { block() }
 }
