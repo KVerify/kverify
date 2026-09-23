@@ -1,5 +1,7 @@
 package io.github.kverify.core.context
 
+import kotlin.jvm.JvmName
+
 /**
  * A [ValidationContext.Element] that contributes one segment to the validation path.
  *
@@ -31,6 +33,24 @@ public class NamePathElement(
     override fun toString(): String = "NamePathElement(name=$name)"
 }
 
+@JvmName("extPathName")
+public inline fun ValidationContext.pathName(
+    name: String,
+    block: context(ValidationContext) () -> Unit = {},
+): ValidationContext {
+    val newContext = this + NamePathElement(name)
+
+    context(newContext, block = block)
+
+    return newContext
+}
+
+context(validationContext: ValidationContext)
+public inline fun pathName(
+    name: String,
+    block: context(ValidationContext) () -> Unit = {},
+): ValidationContext = validationContext.pathName(name, block)
+
 /**
  * An indexed segment in a validation path, typically representing a position within a collection.
  *
@@ -52,3 +72,21 @@ public class IndexPathElement(
 
     override fun toString(): String = "IndexPathElement(index=$index)"
 }
+
+@JvmName("extPathIndex")
+public inline fun ValidationContext.pathIndex(
+    index: Int,
+    block: context(ValidationContext) () -> Unit = {},
+): ValidationContext {
+    val newContext = this + IndexPathElement(index)
+
+    context(newContext, block = block)
+
+    return newContext
+}
+
+context(validationContext: ValidationContext)
+public inline fun pathIndex(
+    index: Int,
+    block: context(ValidationContext) () -> Unit = {},
+): ValidationContext = validationContext.pathIndex(index, block)
