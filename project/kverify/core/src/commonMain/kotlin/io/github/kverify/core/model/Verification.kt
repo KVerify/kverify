@@ -49,3 +49,11 @@ public inline fun <V, S : ValidationStrategy> Verification<V, S>.using(
 
     context(validationStrategy, validationContext) { block() }
 }
+
+public fun <V : Any, S : ValidationStrategy> Verification<V?, S>.takeIfNotNull(): Verification<V, S>? =
+    if (value != null) {
+        @Suppress("UNCHECKED_CAST")
+        this as Verification<V, S>
+    } else {
+        null
+    }
