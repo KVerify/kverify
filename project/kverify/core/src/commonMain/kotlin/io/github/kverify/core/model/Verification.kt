@@ -4,6 +4,8 @@ import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty0
 
@@ -41,6 +43,9 @@ public fun <V, S : ValidationStrategy> verify(property: KProperty0<V>): Verifica
 public inline fun <V, S : ValidationStrategy> Verification<V, S>.using(
     block: context(S, ValidationContext) Verification<V, S>.() -> Unit,
 ) {
-    context(strategy, context) { block() }
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
     context(validationStrategy, validationContext) { block() }
 }
