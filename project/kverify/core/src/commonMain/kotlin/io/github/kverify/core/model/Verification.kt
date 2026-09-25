@@ -10,8 +10,8 @@ import kotlin.reflect.KProperty0
 @KverifyDsl
 public class Verification<out V, out S : ValidationStrategy>(
     public val value: V,
-    public val strategy: S,
-    public val context: ValidationContext,
+    public val validationStrategy: S,
+    public val validationContext: ValidationContext,
 )
 
 @JvmName("extVerify")
@@ -19,8 +19,8 @@ context(validationStrategy: S)
 public fun <V, S : ValidationStrategy> ValidationContext.verify(value: V): Verification<V, S> =
     Verification(
         value = value,
-        strategy = validationStrategy,
-        context = this,
+        validationStrategy = validationStrategy,
+        validationContext = this,
     )
 
 @JvmName("extVerify")
@@ -28,8 +28,8 @@ context(validationStrategy: S)
 public fun <V, S : ValidationStrategy> ValidationContext.verify(property: KProperty0<V>): Verification<V, S> =
     Verification(
         value = property.get(),
-        strategy = validationStrategy,
-        context = this + NamePathElement(property.name),
+        validationStrategy = validationStrategy,
+        validationContext = this + NamePathElement(property.name),
     )
 
 context(validationStrategy: S, validationContext: ValidationContext)
@@ -42,4 +42,5 @@ public inline fun <V, S : ValidationStrategy> Verification<V, S>.using(
     block: context(S, ValidationContext) Verification<V, S>.() -> Unit,
 ) {
     context(strategy, context) { block() }
+    context(validationStrategy, validationContext) { block() }
 }
