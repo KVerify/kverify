@@ -10,7 +10,7 @@ public interface PathAwareViolation : Violation {
     /**
      * The path to the value that failed validation.
      *
-     * An empty list means the violation was produced at the root scope, with no path context applied.
+     * An empty list means the violation was produced at the root, with no path context applied.
      */
     public val validationPath: ValidationPath
 }

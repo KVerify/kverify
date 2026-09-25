@@ -12,7 +12,7 @@ import io.github.kverify.core.context.ValidationPathElement
  * each [NamePathElement] represents a named field or property, and each [IndexPathElement]
  * represents a position within a collection.
  *
- * An empty [elements] list means the violation was produced at the root scope,
+ * An empty [elements] list means the violation was produced at the root,
  * with no path context applied.
  *
  * @param elements The ordered list of path segments. Empty for root-level violations.
