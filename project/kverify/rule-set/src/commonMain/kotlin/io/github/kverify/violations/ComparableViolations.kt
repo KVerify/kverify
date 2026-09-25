@@ -1,6 +1,7 @@
 package io.github.kverify.violations
 
 import io.github.kverify.core.model.ValidationPath
+import io.github.kverify.core.violation.PathAwareViolation
 
 public data class AtLeastViolation<T : Comparable<T>>(
     public val minAllowed: T,
