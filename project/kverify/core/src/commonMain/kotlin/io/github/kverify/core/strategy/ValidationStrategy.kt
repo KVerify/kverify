@@ -1,6 +1,7 @@
 package io.github.kverify.core.strategy
 
 import io.github.kverify.core.rule.Rule
+import io.github.kverify.core.rule.ViolationRule
 import io.github.kverify.core.violation.Violation
 
 public interface ValidationStrategy {
@@ -19,3 +20,9 @@ public inline fun failIf(
             null
         }
     }
+
+context(validationStrategy: ValidationStrategy)
+public fun failWith(violation: Violation): Unit =
+    validationStrategy.enforce(
+        ViolationRule(violation),
+    )
