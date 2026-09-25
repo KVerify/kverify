@@ -32,7 +32,7 @@ public interface ValidationContext : Iterable<ValidationContext.Element> {
      * passed anywhere a [ValidationContext] is expected.
      */
     public interface Element : ValidationContext {
-        override fun iterator(): Iterator<Element> = iterator { yield(this@Element) }
+        override fun iterator(): Iterator<Element> = SingleElementIterator(this)
     }
 }
 
@@ -60,4 +60,18 @@ public inline fun <reified T : ValidationContext.Element> ValidationContext.last
     }
 
     return result
+}
+
+private class SingleElementIterator(
+    private val element: ValidationContext.Element,
+) : Iterator<ValidationContext.Element> {
+    private var hasNext: Boolean = true
+
+    override fun next(): ValidationContext.Element {
+        if (!hasNext) throw NoSuchElementException()
+        hasNext = false
+        return element
+    }
+
+    override fun hasNext(): Boolean = hasNext
 }
