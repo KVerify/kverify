@@ -7,22 +7,3 @@ import io.github.kverify.core.violation.Violation
 public interface ValidationStrategy {
     public fun enforce(rule: Rule)
 }
-
-context(validationStrategy: ValidationStrategy)
-public inline fun failIf(
-    crossinline predicate: () -> Boolean,
-    crossinline lazyViolation: () -> Violation,
-): Unit =
-    validationStrategy.enforce {
-        if (predicate()) {
-            lazyViolation()
-        } else {
-            null
-        }
-    }
-
-context(validationStrategy: ValidationStrategy)
-public fun failWith(violation: Violation): Unit =
-    validationStrategy.enforce(
-        ViolationRule(violation),
-    )
