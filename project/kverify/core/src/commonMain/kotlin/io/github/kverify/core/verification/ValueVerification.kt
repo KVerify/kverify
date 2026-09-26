@@ -4,13 +4,26 @@ import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.strategy.ValidationStrategy
 
 @KverifyDsl
-public open class ValueVerification<out V, out S : ValidationStrategy>(
-    public val value: V,
-    public override val validationStrategy: S,
-) : Verification<S>
+public interface ValueVerification<out V, out S : ValidationStrategy> : Verification<S> {
+    public val value: V
+}
+
+private class ValueVerificationImpl<out V, out S : ValidationStrategy>(
+    override val value: V,
+    override val validationStrategy: S,
+) : ValueVerification<V, S>
+
+public fun <V, S : ValidationStrategy> ValueVerification(
+    value: V,
+    validationStrategy: S,
+): ValueVerification<V, S> =
+    ValueVerificationImpl(
+        value = value,
+        validationStrategy = validationStrategy,
+    )
 
 context(validationStrategy: S)
-public fun <V, S : ValidationStrategy> verifyValue(
+public inline fun <V, S : ValidationStrategy> verifyValue(
     value: V,
     block: context(S) ValueVerification<V, S>.() -> Unit,
 ) {
