@@ -28,8 +28,8 @@ public fun <V, S : ValidationStrategy> ValueVerification(
         validationPath = validationPath,
     )
 
-context(validationStrategy: S, validationPath: ValidationPath)
-public inline fun <V, S : ValidationStrategy> verifyValue(
+context(validationStrategy: S)
+public inline fun <V, S : ValidationStrategy> ValidationPath.verifyValue(
     value: V,
     block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
 ) {
@@ -37,18 +37,24 @@ public inline fun <V, S : ValidationStrategy> verifyValue(
         ValueVerification(
             value = value,
             validationStrategy = validationStrategy,
-            validationPath = validationPath,
+            validationPath = this,
         )
 
-    context(validationStrategy, validationPath) { valueVerification.block() }
+    context(validationStrategy, this) { valueVerification.block() }
 }
 
 context(validationStrategy: S, validationPath: ValidationPath)
-public inline fun <V, S : ValidationStrategy> verifyProperty(
+public inline fun <V, S : ValidationStrategy> verifyValue(
+    value: V,
+    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
+): Unit = validationPath.verifyValue(value, block)
+
+context(validationStrategy: S)
+public inline fun <V, S : ValidationStrategy> ValidationPath.verifyProperty(
     property: KProperty0<V>,
     block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
 ) {
-    val newPath = validationPath + NamePathElement(property.name)
+    val newPath = this + NamePathElement(property.name)
 
     val valueVerification =
         ValueVerification(
@@ -59,3 +65,9 @@ public inline fun <V, S : ValidationStrategy> verifyProperty(
 
     context(validationStrategy, newPath) { valueVerification.block() }
 }
+
+context(validationStrategy: S, validationPath: ValidationPath)
+public inline fun <V, S : ValidationStrategy> verifyProperty(
+    property: KProperty0<V>,
+    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
+): Unit = validationPath.verifyProperty(property, block)
