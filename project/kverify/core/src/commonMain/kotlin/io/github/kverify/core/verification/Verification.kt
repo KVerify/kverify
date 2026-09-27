@@ -11,9 +11,10 @@ public interface Verification<out S : ValidationStrategy> {
     public val validationPath: ValidationPath
 }
 
-public inline fun <V, S : ValidationStrategy> Verification<S>.verifyValue(
+context(validationStrategy: S, validationPath: ValidationPath)
+public inline fun <V, S : ValidationStrategy> verifyValue(
     value: V,
-    block: ValueVerification<V, S>.() -> Unit,
+    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
 ) {
     val valueVerification =
         ValueVerification(
@@ -22,21 +23,24 @@ public inline fun <V, S : ValidationStrategy> Verification<S>.verifyValue(
             validationPath = validationPath,
         )
 
-    valueVerification.block()
+    context(validationStrategy, validationPath) { valueVerification.block() }
 }
 
-public inline fun <V, S : ValidationStrategy> Verification<S>.verifyProperty(
+context(validationStrategy: S, validationPath: ValidationPath)
+public inline fun <V, S : ValidationStrategy> verifyProperty(
     property: KProperty0<V>,
-    block: ValueVerification<V, S>.() -> Unit,
+    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
 ) {
+    val newPath = validationPath + NamePathElement(property.name)
+
     val valueVerification =
         ValueVerification(
             value = property.get(),
             validationStrategy = validationStrategy,
-            validationPath = validationPath + NamePathElement(property.name),
+            validationPath = newPath,
         )
 
-    valueVerification.block()
+    context(validationStrategy, newPath) { valueVerification.block() }
 }
 
 public fun Verification<*>.failWith(violation: Violation): Unit = validationStrategy.enforce(violation)
