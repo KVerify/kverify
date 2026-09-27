@@ -56,3 +56,37 @@ public fun ValidationPath.toList(): List<ValidationPathElement> {
 
     return result.asReversed()
 }
+
+public inline fun ValidationPath.pathName(
+    name: String,
+    block: context(ValidationPath) () -> Unit = {},
+): ValidationPath {
+    val newPath = this + NamePathElement(name)
+
+    context(newPath) { block() }
+
+    return newPath
+}
+
+context(validationPath: ValidationPath)
+public inline fun pathName(
+    name: String,
+    block: context(ValidationPath) () -> Unit = {},
+): ValidationPath = validationPath.pathName(name, block)
+
+public inline fun ValidationPath.pathIndex(
+    index: Int,
+    block: context(ValidationPath) () -> Unit = {},
+): ValidationPath {
+    val newPath = this + IndexPathElement(index)
+
+    context(newPath) { block() }
+
+    return newPath
+}
+
+context(validationPath: ValidationPath)
+public inline fun pathIndex(
+    index: Int,
+    block: context(ValidationPath) () -> Unit = {},
+): ValidationPath = validationPath.pathIndex(index, block)
