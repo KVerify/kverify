@@ -2,10 +2,18 @@ package io.github.kverify.core.model
 
 public sealed interface ValidationPath {
     public val size: Int
+
+    public operator fun plus(element: ValidationPathElement): ValidationPath =
+        ValidationPathNode(
+            parent = this,
+            element = element,
+        )
 }
 
 public object EmptyValidationPath : ValidationPath {
     override val size: Int = 0
+
+    override fun plus(element: ValidationPathElement): ValidationPath = element
 }
 
 public class ValidationPathNode(
@@ -36,12 +44,6 @@ public fun ValidationPath(vararg elements: ValidationPathElement): ValidationPat
         acc + element
     }
 }
-
-public operator fun ValidationPath.plus(element: ValidationPathElement): ValidationPath =
-    ValidationPathNode(
-        parent = this,
-        element = element,
-    )
 
 public fun ValidationPath.toList(): List<ValidationPathElement> {
     val result = ArrayList<ValidationPathElement>(size)
