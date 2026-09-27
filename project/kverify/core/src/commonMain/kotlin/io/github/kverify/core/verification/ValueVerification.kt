@@ -1,7 +1,6 @@
 package io.github.kverify.core.verification
 
 import io.github.kverify.core.annotation.KverifyDsl
-import io.github.kverify.core.model.NamePathElement
 import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.strategy.ValidationStrategy
 
@@ -26,17 +25,3 @@ public fun <V, S : ValidationStrategy> ValueVerification(
         validationStrategy = validationStrategy,
         validationPath = validationPath,
     )
-
-public inline fun <V, S : ValidationStrategy> Verification<S>.verifyValue(
-    value: V,
-    block: ValueVerification<V, S>.() -> Unit,
-) {
-    val valueVerification =
-        ValueVerification(
-            value = value,
-            validationStrategy = validationStrategy,
-            validationPath = validationPath,
-        )
-
-    valueVerification.block()
-}
