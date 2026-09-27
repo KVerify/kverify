@@ -15,16 +15,26 @@ public class ValidationPathNode(
     override val size: Int = parent.size + 1
 }
 
+public sealed interface ValidationPathElement : ValidationPath
+
+public class NamePathElement(
+    public val name: String,
+) : ValidationPathElement {
+    override val size: Int = 1
+}
+
+public class IndexPathElement(
+    public val index: Int,
+) : ValidationPathElement {
+    override val size: Int = 1
+}
+
 public fun ValidationPath(vararg elements: ValidationPathElement): ValidationPath {
     if (elements.isEmpty()) return EmptyValidationPath
 
-    var result: ValidationPath = EmptyValidationPath
-
-    for (element in elements) {
-        result += element
+    return elements.reduce<ValidationPath, ValidationPathElement> { acc, element ->
+        acc + element
     }
-
-    return result
 }
 
 public operator fun ValidationPath.plus(element: ValidationPathElement): ValidationPath =
