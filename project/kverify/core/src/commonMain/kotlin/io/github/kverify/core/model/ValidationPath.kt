@@ -1,5 +1,7 @@
 package io.github.kverify.core.model
 
+import kotlin.jvm.JvmName
+
 public sealed interface ValidationPath {
     public val size: Int
 
@@ -57,6 +59,7 @@ public fun ValidationPath.toList(): List<ValidationPathElement> {
     return result.asReversed()
 }
 
+@JvmName("pathNameExtension")
 public inline fun ValidationPath.pathName(
     name: String,
     block: context(ValidationPath) () -> Unit = {},
@@ -74,6 +77,7 @@ public inline fun pathName(
     block: context(ValidationPath) () -> Unit = {},
 ): ValidationPath = validationPath.pathName(name, block)
 
+@JvmName("pathIndexExtension")
 public inline fun ValidationPath.pathIndex(
     index: Int,
     block: context(ValidationPath) () -> Unit = {},

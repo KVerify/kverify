@@ -4,6 +4,7 @@ import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.model.NamePathElement
 import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.strategy.ValidationStrategy
+import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty0
 
 @KverifyDsl
@@ -28,6 +29,7 @@ public fun <V, S : ValidationStrategy> ValueVerification(
         validationPath = validationPath,
     )
 
+@JvmName("verifyValueExtension")
 context(validationStrategy: S)
 public inline fun <V, S : ValidationStrategy> ValidationPath.verifyValue(
     value: V,
@@ -49,6 +51,7 @@ public inline fun <V, S : ValidationStrategy> verifyValue(
     block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
 ): Unit = validationPath.verifyValue(value, block)
 
+@JvmName("verifyPropertyExtension")
 context(validationStrategy: S)
 public inline fun <V, S : ValidationStrategy> ValidationPath.verifyProperty(
     property: KProperty0<V>,
