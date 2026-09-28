@@ -31,46 +31,25 @@ public fun <V, S : ValidationStrategy> ValueVerification(
 
 @JvmName("verifyValueExtension")
 context(validationStrategy: S)
-public inline fun <V, S : ValidationStrategy> ValidationPath.verifyValue(
-    value: V,
-    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
-) {
-    val valueVerification =
-        ValueVerification(
-            value = value,
-            validationStrategy = validationStrategy,
-            validationPath = this,
-        )
-
-    context(validationStrategy, this) { valueVerification.block() }
-}
+public fun <V, S : ValidationStrategy> ValidationPath.verifyValue(value: V): ValueVerification<V, S> =
+    ValueVerification(
+        value = value,
+        validationStrategy = validationStrategy,
+        validationPath = this,
+    )
 
 context(validationStrategy: S, validationPath: ValidationPath)
-public inline fun <V, S : ValidationStrategy> verifyValue(
-    value: V,
-    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
-): Unit = validationPath.verifyValue(value, block)
+public fun <V, S : ValidationStrategy> verifyValue(value: V): ValueVerification<V, S> = validationPath.verifyValue(value)
 
 @JvmName("verifyPropertyExtension")
 context(validationStrategy: S)
-public inline fun <V, S : ValidationStrategy> ValidationPath.verifyProperty(
-    property: KProperty0<V>,
-    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
-) {
-    val newPath = this + NamePathElement(property.name)
-
-    val valueVerification =
-        ValueVerification(
-            value = property.get(),
-            validationStrategy = validationStrategy,
-            validationPath = newPath,
-        )
-
-    context(validationStrategy, newPath) { valueVerification.block() }
-}
+public fun <V, S : ValidationStrategy> ValidationPath.verifyProperty(property: KProperty0<V>): ValueVerification<V, S> =
+    ValueVerification(
+        value = property.get(),
+        validationStrategy = validationStrategy,
+        validationPath = this + NamePathElement(property.name),
+    )
 
 context(validationStrategy: S, validationPath: ValidationPath)
-public inline fun <V, S : ValidationStrategy> verifyProperty(
-    property: KProperty0<V>,
-    block: context(S, ValidationPath) ValueVerification<V, S>.() -> Unit,
-): Unit = validationPath.verifyProperty(property, block)
+public fun <V, S : ValidationStrategy> verifyProperty(property: KProperty0<V>): ValueVerification<V, S> =
+    validationPath.verifyProperty(property)
