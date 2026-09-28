@@ -8,3 +8,20 @@ public interface ValidationStrategy {
 
 context(validationStrategy: ValidationStrategy)
 public fun failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
+
+public inline fun ValidationStrategy.failIf(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+) {
+    if (condition) {
+        val violation = lazyViolation()
+
+        failWith(violation)
+    }
+}
+
+context(validationStrategy: ValidationStrategy)
+public inline fun failIf(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+): Unit = validationStrategy.failIf(condition, lazyViolation)
