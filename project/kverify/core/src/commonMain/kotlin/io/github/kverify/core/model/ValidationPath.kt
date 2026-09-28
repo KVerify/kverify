@@ -56,6 +56,8 @@ public fun ValidationPath.toList(): List<ValidationPathElement> {
         currentPath = currentPath.parent
     }
 
+    if (currentPath is ValidationPathElement) result.add(currentPath)
+
     return result.asReversed()
 }
 
