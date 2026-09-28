@@ -1,0 +1,69 @@
+package io.github.kverify.rule.set.equality
+
+import io.github.kverify.core.model.toList
+import io.github.kverify.core.strategy.failIf
+import io.github.kverify.core.verification.ValueVerification
+
+public fun <T> ValueVerification<T, *>.notNull(reason: String? = null) {
+    validationStrategy.failIf(value == null) {
+        NotNullViolation(
+            validationPath = validationPath.toList(),
+            reason = reason ?: "Value must not be null",
+        )
+    }
+}
+
+public fun <T> ValueVerification<T, *>.equalTo(
+    expected: T,
+    reason: String? = null,
+) {
+    validationStrategy.failIf(value != expected) {
+        EqualToViolation(
+            expected = expected,
+            actual = value,
+            validationPath = validationPath.toList(),
+            reason = reason ?: "Value must be equal to $expected. Actual: $value",
+        )
+    }
+}
+
+public fun <T> ValueVerification<T, *>.notEqualTo(
+    forbidden: T,
+    reason: String? = null,
+) {
+    validationStrategy.failIf(value == forbidden) {
+        NotEqualToViolation(
+            forbidden = forbidden,
+            validationPath = validationPath.toList(),
+            reason = reason ?: "Value must not be equal to $forbidden",
+        )
+    }
+}
+
+public fun <T> ValueVerification<T, *>.oneOf(
+    allowed: Set<T>,
+    reason: String? = null,
+) {
+    validationStrategy.failIf(value !in allowed) {
+        OneOfViolation(
+            allowed = allowed,
+            actual = value,
+            validationPath = validationPath.toList(),
+            reason = reason ?: "Value must be one of $allowed. Actual: $value",
+        )
+    }
+}
+
+public fun <T> ValueVerification<T, *>.noneOf(
+    forbidden: Set<T>,
+    reason: String? = null,
+) {
+    validationStrategy.failIf(value in forbidden) {
+        NoneOfViolation(
+            forbidden = forbidden,
+            actual = value,
+            validationPath = validationPath.toList(),
+            reason = reason ?: "Value must not be one of $forbidden. Actual: $value",
+        )
+    }
+}
