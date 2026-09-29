@@ -1,7 +1,10 @@
 package io.github.kverify.core.verification
 
+import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
+import kotlin.jvm.JvmName
+import kotlin.reflect.KProperty0
 
 public interface ValueVerification<out V, out S : ValidationStrategy> : Verification<S> {
     public val value: V
@@ -22,4 +25,38 @@ public fun <V, S : ValidationStrategy> ValueVerification(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = validationContext,
+    )
+
+context(validationStrategy: S, validationContext: ValidationContext)
+public fun <V, S : ValidationStrategy> verifyValue(value: V): ValueVerification<V, S> =
+    ValueVerification(
+        value = value,
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
+@JvmName("verifyValueExtension")
+context(validationStrategy: S)
+public fun <V, S : ValidationStrategy> ValidationContext.verifyValue(value: V): ValueVerification<V, S> =
+    ValueVerification(
+        value = value,
+        validationStrategy = validationStrategy,
+        validationContext = this,
+    )
+
+context(validationStrategy: S, validationContext: ValidationContext)
+public fun <V, S : ValidationStrategy> verifyProperty(property: KProperty0<V>): ValueVerification<V, S> =
+    ValueVerification(
+        value = property.get(),
+        validationStrategy = validationStrategy,
+        validationContext = validationContext + NamePathElement(property.name),
+    )
+
+@JvmName("verifyPropertyExtension")
+context(validationStrategy: S)
+public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property: KProperty0<V>): ValueVerification<V, S> =
+    ValueVerification(
+        value = property.get(),
+        validationStrategy = validationStrategy,
+        validationContext = this + NamePathElement(property.name),
     )
