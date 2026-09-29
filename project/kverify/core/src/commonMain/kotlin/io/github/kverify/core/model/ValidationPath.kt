@@ -1,98 +1,42 @@
 package io.github.kverify.core.model
 
-import kotlin.jvm.JvmName
+import io.github.kverify.core.context.IndexPathElement
+import io.github.kverify.core.context.NamePathElement
+import io.github.kverify.core.context.ValidationPathElement
 
-public sealed interface ValidationPath {
-    public val size: Int
-
-    public operator fun plus(element: ValidationPathElement): ValidationPath =
-        ValidationPathNode(
-            parent = this,
-            element = element,
-        )
-}
-
-public object EmptyValidationPath : ValidationPath {
-    override val size: Int = 0
-
-    override fun plus(element: ValidationPathElement): ValidationPath = element
-}
-
-public class ValidationPathNode(
-    public val parent: ValidationPath,
-    public val element: ValidationPathElement,
-) : ValidationPath {
-    override val size: Int = parent.size + 1
-}
-
-public sealed interface ValidationPathElement : ValidationPath
-
-public class NamePathElement(
-    public val name: String,
-) : ValidationPathElement {
-    override val size: Int = 1
-}
-
-public class IndexPathElement(
-    public val index: Int,
-) : ValidationPathElement {
-    override val size: Int = 1
-}
-
-public fun ValidationPath(vararg elements: ValidationPathElement): ValidationPath {
-    if (elements.isEmpty()) return EmptyValidationPath
-
-    return elements.reduce<ValidationPath, ValidationPathElement> { acc, element ->
-        acc + element
-    }
-}
-
-public fun ValidationPath.toList(): List<ValidationPathElement> {
-    val result = ArrayList<ValidationPathElement>(size)
-    var currentPath = this
-
-    while (currentPath is ValidationPathNode) {
-        result.add(currentPath.element)
-        currentPath = currentPath.parent
+/**
+ * An ordered sequence of path segments that identifies the location of a value within
+ * a validated structure.
+ *
+ * A path is built from [ValidationPathElement]s accumulated in a [io.github.kverify.core.context.ValidationContext] —
+ * each [NamePathElement] represents a named field or property, and each [IndexPathElement]
+ * represents a position within a collection.
+ *
+ * An empty [elements] list means the violation was produced at the root,
+ * with no path context applied.
+ *
+ * @param elements The ordered list of path segments. Empty for root-level violations.
+ */
+public class ValidationPath(
+    public val elements: List<ValidationPathElement>,
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ValidationPath) return false
+        return elements == other.elements
     }
 
-    if (currentPath is ValidationPathElement) result.add(currentPath)
+    override fun hashCode(): Int = elements.hashCode()
 
-    return result.asReversed()
+    override fun toString(): String =
+        elements.joinToString(
+            separator = ", ",
+            prefix = "ValidationPath(",
+            postfix = ")",
+        ) { element ->
+            when (element) {
+                is NamePathElement -> "\"${element.name}\""
+                is IndexPathElement -> element.index.toString()
+            }
+        }
 }
-
-@JvmName("pathNameExtension")
-public inline fun ValidationPath.pathName(
-    name: String,
-    block: context(ValidationPath) () -> Unit = {},
-): ValidationPath {
-    val newPath = this + NamePathElement(name)
-
-    context(newPath) { block() }
-
-    return newPath
-}
-
-context(validationPath: ValidationPath)
-public inline fun pathName(
-    name: String,
-    block: context(ValidationPath) () -> Unit = {},
-): ValidationPath = validationPath.pathName(name, block)
-
-@JvmName("pathIndexExtension")
-public inline fun ValidationPath.pathIndex(
-    index: Int,
-    block: context(ValidationPath) () -> Unit = {},
-): ValidationPath {
-    val newPath = this + IndexPathElement(index)
-
-    context(newPath) { block() }
-
-    return newPath
-}
-
-context(validationPath: ValidationPath)
-public inline fun pathIndex(
-    index: Int,
-    block: context(ValidationPath) () -> Unit = {},
-): ValidationPath = validationPath.pathIndex(index, block)
