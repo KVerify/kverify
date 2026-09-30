@@ -10,6 +10,20 @@ public interface Verification<out S : ValidationStrategy> {
     public val validationContext: ValidationContext
 }
 
+private class VerificationImpl<out S : ValidationStrategy>(
+    override val validationStrategy: S,
+    override val validationContext: ValidationContext,
+) : Verification<S>
+
+public fun <S : ValidationStrategy> Verification(
+    validationStrategy: S,
+    validationContext: ValidationContext,
+): Verification<S> =
+    VerificationImpl(
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
 public inline fun <S : ValidationStrategy, T : Verification<S>> T.using(block: context(S, ValidationContext) T.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
