@@ -1,5 +1,6 @@
 package io.github.kverify.core.verification
 
+import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
@@ -60,3 +61,26 @@ public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property
         validationStrategy = validationStrategy,
         validationContext = this + NamePathElement(property.name),
     )
+
+public fun <V : Any, S : ValidationStrategy> ValueVerification<V?, S>.takeIfNotNull(): ValueVerification<V, S>? =
+    if (value != null) {
+        @Suppress("UNCHECKED_CAST")
+        this as ValueVerification<V, S>
+    } else {
+        null
+    }
+
+public inline fun <V, I : Iterable<V>, S : ValidationStrategy> ValueVerification<I, S>.each(
+    block: context(S, ValidationContext) ValueVerification<V, S>.() -> Unit,
+) {
+    value.forEachIndexed { index, element ->
+        val verification =
+            ValueVerification(
+                value = element,
+                validationStrategy = validationStrategy,
+                validationContext = validationContext + IndexPathElement(index),
+            )
+
+        context(validationStrategy, validationContext) { verification.block() }
+    }
+}
