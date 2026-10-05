@@ -15,10 +15,6 @@ public interface ValidationContext : Iterable<ValidationContext.Element> {
      */
     public operator fun plus(other: ValidationContext): ValidationContext =
         when {
-            this === EmptyValidationContext -> {
-                other
-            }
-
             other is Element -> {
                 CombinedContext(this, other)
             }
