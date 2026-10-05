@@ -1,8 +1,8 @@
 package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.scope.ValueVerificationScope
 import io.github.kverify.core.strategy.failIf
-import io.github.kverify.core.verification.ValueVerificationScope
 
 public fun <T : Comparable<T>> ValueVerificationScope<T, *>.atLeast(
     min: T,

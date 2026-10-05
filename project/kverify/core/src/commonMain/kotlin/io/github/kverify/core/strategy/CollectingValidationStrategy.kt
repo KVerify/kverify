@@ -3,8 +3,8 @@ package io.github.kverify.core.strategy
 import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.ValidationResult
-import io.github.kverify.core.verification.VerificationScope
-import io.github.kverify.core.verification.using
+import io.github.kverify.core.scope.VerificationScope
+import io.github.kverify.core.scope.using
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract

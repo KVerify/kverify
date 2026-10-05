@@ -1,4 +1,4 @@
-package io.github.kverify.core.verification
+package io.github.kverify.core.scope
 
 import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext

@@ -1,8 +1,8 @@
 package io.github.kverify.rule.set.collection
 
 import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.scope.ValueVerificationScope
 import io.github.kverify.core.strategy.failIf
-import io.github.kverify.core.verification.ValueVerificationScope
 
 public fun <C : Collection<*>> ValueVerificationScope<C, *>.minSize(
     minSizeAllowed: Int,
