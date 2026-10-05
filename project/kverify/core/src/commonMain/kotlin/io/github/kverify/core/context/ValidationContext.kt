@@ -52,7 +52,13 @@ public interface ValidationContext : Iterable<ValidationContext.Element> {
  * and wraps them in a [ValidationPath]. Returns a [ValidationPath] with an empty
  * [ValidationPath.elements] list if no path elements are present.
  */
-public fun ValidationContext.validationPath(): ValidationPath = ValidationPath(filterIsInstance<ValidationPathElement>())
+public fun ValidationContext.validationPath(): ValidationPath =
+    when {
+        this is CombinedContext -> ValidationPath(pathElements())
+        this is ValidationPathElement -> ValidationPath(listOf(this))
+        this === EmptyValidationContext -> ValidationPath.Empty
+        else -> ValidationPath(filterIsInstance<ValidationPathElement>())
+    }
 
 private class SingleElementIterator(
     private val element: ValidationContext.Element,
