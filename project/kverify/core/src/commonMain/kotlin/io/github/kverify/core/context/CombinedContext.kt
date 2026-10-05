@@ -23,6 +23,27 @@ internal class CombinedContext(
 
         return CombinedContextIterator(cur, rights)
     }
+
+    fun pathElements(): List<ValidationPathElement> {
+        var cur: ValidationContext = this
+        val elements = ArrayList<ValidationPathElement>()
+
+        while (cur is CombinedContext) {
+            val element = cur.right
+
+            if (element is ValidationPathElement) elements.add(element)
+
+            cur = cur.left
+        }
+
+        when (cur) {
+            is ValidationPathElement -> elements.add(cur)
+            is ValidationContext.Element -> Unit
+            else -> elements.addAll(cur.filterIsInstance<ValidationPathElement>().asReversed())
+        }
+
+        return elements.asReversed()
+    }
 }
 
 private class CombinedContextIterator(
