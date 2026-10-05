@@ -54,23 +54,6 @@ public interface ValidationContext : Iterable<ValidationContext.Element> {
  */
 public fun ValidationContext.validationPath(): ValidationPath = ValidationPath(filterIsInstance<ValidationPathElement>())
 
-/**
- * Returns the last element of type [T] in this context, or `null` if no such element exists.
- *
- * Elements are examined in iteration order — the last matching element is returned,
- * meaning the most recently added element of type [T] takes precedence over earlier ones.
- * Non-matching elements are skipped.
- */
-public inline fun <reified T : ValidationContext.Element> ValidationContext.lastOfTypeOrNull(): T? {
-    var result: T? = null
-
-    for (element in this) {
-        if (element is T) result = element
-    }
-
-    return result
-}
-
 private class SingleElementIterator(
     private val element: ValidationContext.Element,
 ) : Iterator<ValidationContext.Element> {
