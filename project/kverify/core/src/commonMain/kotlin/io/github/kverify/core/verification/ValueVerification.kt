@@ -74,13 +74,15 @@ public inline fun <V, I : Iterable<V>, S : ValidationStrategy> ValueVerification
     block: context(S, ValidationContext) ValueVerification<V, S>.() -> Unit,
 ) {
     value.forEachIndexed { index, element ->
+        val newContext = validationContext + IndexPathElement(index)
+
         val verification =
             ValueVerification(
                 value = element,
                 validationStrategy = validationStrategy,
-                validationContext = validationContext + IndexPathElement(index),
+                validationContext = newContext,
             )
 
-        context(validationStrategy, validationContext) { verification.block() }
+        context(validationStrategy, newContext) { verification.block() }
     }
 }
