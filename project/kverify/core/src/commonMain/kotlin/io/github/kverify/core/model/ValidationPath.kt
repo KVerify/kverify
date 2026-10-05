@@ -39,4 +39,8 @@ public class ValidationPath(
                 is IndexPathElement -> element.index.toString()
             }
         }
+
+    internal companion object {
+        val Empty: ValidationPath = ValidationPath(listOf())
+    }
 }
