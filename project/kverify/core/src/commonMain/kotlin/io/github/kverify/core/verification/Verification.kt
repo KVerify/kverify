@@ -1,10 +1,12 @@
 package io.github.kverify.core.verification
 
+import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+@KverifyDsl
 public interface Verification<out S : ValidationStrategy> {
     public val validationStrategy: S
     public val validationContext: ValidationContext
