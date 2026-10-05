@@ -13,17 +13,26 @@ public interface ValidationContext : Iterable<ValidationContext.Element> {
     /**
      * Returns a new context containing elements from both contexts.
      */
-    public operator fun plus(other: ValidationContext): ValidationContext {
-        if (other === EmptyValidationContext) return this
+    public operator fun plus(other: ValidationContext): ValidationContext =
+        when {
+            this === EmptyValidationContext -> {
+                other
+            }
 
-        return other.fold(this) { acc, element ->
-            if (acc === EmptyValidationContext) {
-                element
-            } else {
-                CombinedContext(acc, element)
+            other is Element -> {
+                CombinedContext(this, other)
+            }
+
+            other === EmptyValidationContext -> {
+                this
+            }
+
+            else -> {
+                other.fold(this) { acc, element ->
+                    CombinedContext(acc, element)
+                }
             }
         }
-    }
 
     /**
      * A single, indivisible unit of a [ValidationContext].
