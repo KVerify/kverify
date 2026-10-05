@@ -2,9 +2,9 @@ package io.github.kverify.rule.set.string
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.strategy.failIf
-import io.github.kverify.core.verification.ValueVerification
+import io.github.kverify.core.verification.ValueVerificationScope
 
-public fun ValueVerification<String, *>.notBlank(reason: String? = null) {
+public fun ValueVerificationScope<String, *>.notBlank(reason: String? = null) {
     validationStrategy.failIf(value.isBlank()) {
         NotBlankViolation(
             validationPath = validationContext.validationPath(),
@@ -13,7 +13,7 @@ public fun ValueVerification<String, *>.notBlank(reason: String? = null) {
     }
 }
 
-public fun ValueVerification<String, *>.minLength(
+public fun ValueVerificationScope<String, *>.minLength(
     min: Int,
     reason: String? = null,
 ) {
@@ -28,7 +28,7 @@ public fun ValueVerification<String, *>.minLength(
     }
 }
 
-public fun ValueVerification<String, *>.maxLength(
+public fun ValueVerificationScope<String, *>.maxLength(
     max: Int,
     reason: String? = null,
 ) {
@@ -43,7 +43,7 @@ public fun ValueVerification<String, *>.maxLength(
     }
 }
 
-public fun ValueVerification<String, *>.exactLength(
+public fun ValueVerificationScope<String, *>.exactLength(
     length: Int,
     reason: String? = null,
 ) {
@@ -58,7 +58,7 @@ public fun ValueVerification<String, *>.exactLength(
     }
 }
 
-public fun ValueVerification<String, *>.matches(
+public fun ValueVerificationScope<String, *>.matches(
     pattern: Regex,
     reason: String? = null,
 ) {
@@ -73,7 +73,7 @@ public fun ValueVerification<String, *>.matches(
     }
 }
 
-public fun ValueVerification<String, *>.lengthRange(
+public fun ValueVerificationScope<String, *>.lengthRange(
     min: Int,
     max: Int,
     reason: String? = null,

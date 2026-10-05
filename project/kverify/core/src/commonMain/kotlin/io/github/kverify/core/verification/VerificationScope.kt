@@ -7,26 +7,26 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @KverifyDsl
-public interface Verification<out S : ValidationStrategy> {
+public interface VerificationScope<out S : ValidationStrategy> {
     public val validationStrategy: S
     public val validationContext: ValidationContext
 }
 
-private class VerificationImpl<out S : ValidationStrategy>(
+private class VerificationScopeImpl<out S : ValidationStrategy>(
     override val validationStrategy: S,
     override val validationContext: ValidationContext,
-) : Verification<S>
+) : VerificationScope<S>
 
-public fun <S : ValidationStrategy> Verification(
+public fun <S : ValidationStrategy> VerificationScope(
     validationStrategy: S,
     validationContext: ValidationContext,
-): Verification<S> =
-    VerificationImpl(
+): VerificationScope<S> =
+    VerificationScopeImpl(
         validationStrategy = validationStrategy,
         validationContext = validationContext,
     )
 
-public inline fun <S : ValidationStrategy, T : Verification<S>> T.using(block: context(S, ValidationContext) T.() -> Unit) {
+public inline fun <S : ValidationStrategy, T : VerificationScope<S>> T.using(block: context(S, ValidationContext) T.() -> Unit) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }

@@ -2,9 +2,9 @@ package io.github.kverify.rule.set.collection
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.strategy.failIf
-import io.github.kverify.core.verification.ValueVerification
+import io.github.kverify.core.verification.ValueVerificationScope
 
-public fun <C : Collection<*>> ValueVerification<C, *>.minSize(
+public fun <C : Collection<*>> ValueVerificationScope<C, *>.minSize(
     minSizeAllowed: Int,
     reason: String? = null,
 ) {
@@ -19,7 +19,7 @@ public fun <C : Collection<*>> ValueVerification<C, *>.minSize(
     }
 }
 
-public fun <C : Collection<*>> ValueVerification<C, *>.maxSize(
+public fun <C : Collection<*>> ValueVerificationScope<C, *>.maxSize(
     maxSizeAllowed: Int,
     reason: String? = null,
 ) {
@@ -34,7 +34,7 @@ public fun <C : Collection<*>> ValueVerification<C, *>.maxSize(
     }
 }
 
-public fun <C : Collection<*>> ValueVerification<C, *>.exactSize(
+public fun <C : Collection<*>> ValueVerificationScope<C, *>.exactSize(
     expectedSize: Int,
     reason: String? = null,
 ) {
@@ -49,7 +49,7 @@ public fun <C : Collection<*>> ValueVerification<C, *>.exactSize(
     }
 }
 
-public fun <C : Collection<*>> ValueVerification<C, *>.sizeRange(
+public fun <C : Collection<*>> ValueVerificationScope<C, *>.sizeRange(
     minSizeAllowed: Int,
     maxSizeAllowed: Int,
     reason: String? = null,
@@ -68,7 +68,7 @@ public fun <C : Collection<*>> ValueVerification<C, *>.sizeRange(
     }
 }
 
-public fun <C : Collection<*>> ValueVerification<C, *>.distinct(reason: String? = null) {
+public fun <C : Collection<*>> ValueVerificationScope<C, *>.distinct(reason: String? = null) {
     val actualSize = value.size
 
     if (actualSize < 2) return

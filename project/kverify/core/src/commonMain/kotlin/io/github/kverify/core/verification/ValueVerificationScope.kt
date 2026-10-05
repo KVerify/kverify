@@ -7,30 +7,30 @@ import io.github.kverify.core.strategy.ValidationStrategy
 import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty0
 
-public interface ValueVerification<out V, out S : ValidationStrategy> : Verification<S> {
+public interface ValueVerificationScope<out V, out S : ValidationStrategy> : VerificationScope<S> {
     public val value: V
 }
 
-private class ValueVerificationImpl<out V, out S : ValidationStrategy>(
+private class ValueVerificationScopeImpl<out V, out S : ValidationStrategy>(
     override val value: V,
     override val validationStrategy: S,
     override val validationContext: ValidationContext,
-) : ValueVerification<V, S>
+) : ValueVerificationScope<V, S>
 
-public fun <V, S : ValidationStrategy> ValueVerification(
+public fun <V, S : ValidationStrategy> ValueVerificationScope(
     value: V,
     validationStrategy: S,
     validationContext: ValidationContext,
-): ValueVerification<V, S> =
-    ValueVerificationImpl(
+): ValueVerificationScope<V, S> =
+    ValueVerificationScopeImpl(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = validationContext,
     )
 
 context(validationStrategy: S, validationContext: ValidationContext)
-public fun <V, S : ValidationStrategy> verifyValue(value: V): ValueVerification<V, S> =
-    ValueVerification(
+public fun <V, S : ValidationStrategy> verifyValue(value: V): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = validationContext,
@@ -38,16 +38,16 @@ public fun <V, S : ValidationStrategy> verifyValue(value: V): ValueVerification<
 
 @JvmName("verifyValueExtension")
 context(validationStrategy: S)
-public fun <V, S : ValidationStrategy> ValidationContext.verifyValue(value: V): ValueVerification<V, S> =
-    ValueVerification(
+public fun <V, S : ValidationStrategy> ValidationContext.verifyValue(value: V): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = this,
     )
 
 context(validationStrategy: S, validationContext: ValidationContext)
-public fun <V, S : ValidationStrategy> verifyProperty(property: KProperty0<V>): ValueVerification<V, S> =
-    ValueVerification(
+public fun <V, S : ValidationStrategy> verifyProperty(property: KProperty0<V>): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = property.get(),
         validationStrategy = validationStrategy,
         validationContext = validationContext + NamePathElement(property.name),
@@ -55,29 +55,29 @@ public fun <V, S : ValidationStrategy> verifyProperty(property: KProperty0<V>): 
 
 @JvmName("verifyPropertyExtension")
 context(validationStrategy: S)
-public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property: KProperty0<V>): ValueVerification<V, S> =
-    ValueVerification(
+public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property: KProperty0<V>): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = property.get(),
         validationStrategy = validationStrategy,
         validationContext = this + NamePathElement(property.name),
     )
 
-public fun <V : Any, S : ValidationStrategy> ValueVerification<V?, S>.takeIfNotNull(): ValueVerification<V, S>? =
+public fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.takeIfNotNull(): ValueVerificationScope<V, S>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")
-        this as ValueVerification<V, S>
+        this as ValueVerificationScope<V, S>
     } else {
         null
     }
 
-public inline fun <V, I : Iterable<V>, S : ValidationStrategy> ValueVerification<I, S>.each(
-    block: context(S, ValidationContext) ValueVerification<V, S>.() -> Unit,
+public inline fun <V, I : Iterable<V>, S : ValidationStrategy> ValueVerificationScope<I, S>.each(
+    block: context(S, ValidationContext) ValueVerificationScope<V, S>.() -> Unit,
 ) {
     value.forEachIndexed { index, element ->
         val newContext = validationContext + IndexPathElement(index)
 
         val verification =
-            ValueVerification(
+            ValueVerificationScope(
                 value = element,
                 validationStrategy = validationStrategy,
                 validationContext = newContext,
