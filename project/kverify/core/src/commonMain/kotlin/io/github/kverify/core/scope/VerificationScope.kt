@@ -3,8 +3,6 @@ package io.github.kverify.core.scope
 import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
-import kotlin.contracts.InvocationKind
-import kotlin.contracts.contract
 
 @KverifyDsl
 public interface VerificationScope<out S : ValidationStrategy> : ValidationScope {
@@ -25,10 +23,9 @@ public fun <S : ValidationStrategy> VerificationScope(
         validationContext = validationContext,
     )
 
-public inline fun <S : ValidationStrategy, T : VerificationScope<S>> T.using(block: context(S, ValidationContext) T.() -> Unit) {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    context(validationStrategy, validationContext) { block() }
-}
+context(parentVerificationScope: VerificationScope<S>)
+public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> =
+    VerificationScope(
+        validationStrategy = parentVerificationScope.validationStrategy,
+        validationContext = parentVerificationScope.validationContext + this,
+    ).apply(block)

@@ -4,7 +4,6 @@ import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
-import kotlin.jvm.JvmName
 import kotlin.reflect.KProperty0
 
 public interface ValueVerificationScope<out V, out S : ValidationStrategy> : VerificationScope<S> {
@@ -28,39 +27,25 @@ public fun <V, S : ValidationStrategy> ValueVerificationScope(
         validationContext = validationContext,
     )
 
-context(validationStrategy: S, validationContext: ValidationContext)
-public fun <V, S : ValidationStrategy> verifyValue(value: V): ValueVerificationScope<V, S> =
+public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyValue(
+    value: V,
+    block: ValueVerificationScope<V, S>.() -> Unit = {},
+): ValueVerificationScope<V, S> =
     ValueVerificationScope(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = validationContext,
-    )
+    ).apply(block)
 
-@JvmName("verifyValueExtension")
-context(validationStrategy: S)
-public fun <V, S : ValidationStrategy> ValidationContext.verifyValue(value: V): ValueVerificationScope<V, S> =
-    ValueVerificationScope(
-        value = value,
-        validationStrategy = validationStrategy,
-        validationContext = this,
-    )
-
-context(validationStrategy: S, validationContext: ValidationContext)
-public fun <V, S : ValidationStrategy> verifyProperty(property: KProperty0<V>): ValueVerificationScope<V, S> =
+public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyProperty(
+    property: KProperty0<V>,
+    block: ValueVerificationScope<V, S>.() -> Unit = {},
+): ValueVerificationScope<V, S> =
     ValueVerificationScope(
         value = property.get(),
         validationStrategy = validationStrategy,
         validationContext = validationContext + NamePathElement(property.name),
-    )
-
-@JvmName("verifyPropertyExtension")
-context(validationStrategy: S)
-public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property: KProperty0<V>): ValueVerificationScope<V, S> =
-    ValueVerificationScope(
-        value = property.get(),
-        validationStrategy = validationStrategy,
-        validationContext = this + NamePathElement(property.name),
-    )
+    ).apply(block)
 
 public fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.takeIfNotNull(): ValueVerificationScope<V, S>? =
     if (value != null) {
