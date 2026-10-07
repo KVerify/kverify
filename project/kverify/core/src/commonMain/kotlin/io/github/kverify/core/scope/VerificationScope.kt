@@ -3,6 +3,8 @@ package io.github.kverify.core.scope
 import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
+import io.github.kverify.core.strategy.failIf
+import io.github.kverify.core.violation.Violation
 
 @KverifyDsl
 public interface VerificationScope<out S : ValidationStrategy> : ValidationScope {
@@ -29,3 +31,10 @@ public inline fun <S : ValidationStrategy> ValidationContext.verify(block: Verif
         validationStrategy = parentVerificationScope.validationStrategy,
         validationContext = parentVerificationScope.validationContext + this,
     ).apply(block)
+
+public fun <S : ValidationStrategy> VerificationScope<S>.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
+
+public inline fun <S : ValidationStrategy> VerificationScope<S>.failIf(
+    condition: Boolean,
+    lazyViolation: () -> Violation,
+): Unit = validationStrategy.failIf(condition, lazyViolation)
