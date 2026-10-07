@@ -2,14 +2,14 @@ package io.github.kverify.rule.set.collection
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueVerificationScope
-import io.github.kverify.core.strategy.failIf
+import io.github.kverify.core.scope.failIf
 
 public fun <C : Collection<*>> ValueVerificationScope<C, *>.minSize(
     minSizeAllowed: Int,
     reason: String? = null,
 ) {
     val actualSize = value.size
-    validationStrategy.failIf(actualSize < minSizeAllowed) {
+    failIf(actualSize < minSizeAllowed) {
         MinSizeViolation(
             minSizeAllowed = minSizeAllowed,
             actualSize = actualSize,
@@ -24,7 +24,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.maxSize(
     reason: String? = null,
 ) {
     val actualSize = value.size
-    validationStrategy.failIf(actualSize > maxSizeAllowed) {
+    failIf(actualSize > maxSizeAllowed) {
         MaxSizeViolation(
             maxSizeAllowed = maxSizeAllowed,
             actualSize = actualSize,
@@ -39,7 +39,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.exactSize(
     reason: String? = null,
 ) {
     val actualSize = value.size
-    validationStrategy.failIf(actualSize != expectedSize) {
+    failIf(actualSize != expectedSize) {
         ExactSizeViolation(
             expectedSize = expectedSize,
             actualSize = actualSize,
@@ -55,7 +55,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.sizeRange(
     reason: String? = null,
 ) {
     val actualSize = value.size
-    validationStrategy.failIf(actualSize !in minSizeAllowed..maxSizeAllowed) {
+    failIf(actualSize !in minSizeAllowed..maxSizeAllowed) {
         SizeRangeViolation(
             minSizeAllowed = minSizeAllowed,
             maxSizeAllowed = maxSizeAllowed,
@@ -76,7 +76,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.distinct(reason: Str
     val distinctSize = value.toSet().size
     val duplicatesCount = actualSize - distinctSize
 
-    validationStrategy.failIf(actualSize != distinctSize) {
+    failIf(actualSize != distinctSize) {
         DistinctViolation(
             actualSize = actualSize,
             distinctSize = distinctSize,

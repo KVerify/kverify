@@ -2,13 +2,13 @@ package io.github.kverify.rule.set.comparable
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueVerificationScope
-import io.github.kverify.core.strategy.failIf
+import io.github.kverify.core.scope.failIf
 
 public fun <T : Comparable<T>> ValueVerificationScope<T, *>.atLeast(
     min: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value < min) {
+    failIf(value < min) {
         AtLeastViolation(
             minAllowed = min,
             actual = value,
@@ -22,7 +22,7 @@ public fun <T : Comparable<T>> ValueVerificationScope<T, *>.atMost(
     max: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value > max) {
+    failIf(value > max) {
         AtMostViolation(
             maxAllowed = max,
             actual = value,
@@ -37,7 +37,7 @@ public fun <T : Comparable<T>> ValueVerificationScope<T, *>.between(
     max: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value !in min..max) {
+    failIf(value !in min..max) {
         BetweenViolation(
             min = min,
             max = max,
@@ -52,7 +52,7 @@ public fun <T : Comparable<T>> ValueVerificationScope<T, *>.greaterThan(
     min: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value <= min) {
+    failIf(value <= min) {
         GreaterThanViolation(
             minExclusive = min,
             actual = value,
@@ -66,7 +66,7 @@ public fun <T : Comparable<T>> ValueVerificationScope<T, *>.lessThan(
     max: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value >= max) {
+    failIf(value >= max) {
         LessThanViolation(
             maxExclusive = max,
             actual = value,

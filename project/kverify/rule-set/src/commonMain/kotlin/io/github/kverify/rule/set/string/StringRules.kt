@@ -2,10 +2,10 @@ package io.github.kverify.rule.set.string
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueVerificationScope
-import io.github.kverify.core.strategy.failIf
+import io.github.kverify.core.scope.failIf
 
 public fun ValueVerificationScope<String, *>.notBlank(reason: String? = null) {
-    validationStrategy.failIf(value.isBlank()) {
+    failIf(value.isBlank()) {
         NotBlankViolation(
             validationPath = validationContext.validationPath(),
             reason = reason ?: "Value must not be blank",
@@ -18,7 +18,7 @@ public fun ValueVerificationScope<String, *>.minLength(
     reason: String? = null,
 ) {
     val actualLength = value.length
-    validationStrategy.failIf(actualLength < min) {
+    failIf(actualLength < min) {
         MinLengthViolation(
             minLengthAllowed = min,
             actualLength = actualLength,
@@ -33,7 +33,7 @@ public fun ValueVerificationScope<String, *>.maxLength(
     reason: String? = null,
 ) {
     val actualLength = value.length
-    validationStrategy.failIf(actualLength > max) {
+    failIf(actualLength > max) {
         MaxLengthViolation(
             maxLengthAllowed = max,
             actualLength = actualLength,
@@ -48,7 +48,7 @@ public fun ValueVerificationScope<String, *>.exactLength(
     reason: String? = null,
 ) {
     val actualLength = value.length
-    validationStrategy.failIf(actualLength != length) {
+    failIf(actualLength != length) {
         ExactLengthViolation(
             expectedLength = length,
             actualLength = actualLength,
@@ -63,7 +63,7 @@ public fun ValueVerificationScope<String, *>.matches(
     reason: String? = null,
 ) {
     val actualValue = value
-    validationStrategy.failIf(!pattern.matches(actualValue)) {
+    failIf(!pattern.matches(actualValue)) {
         PatternViolation(
             pattern = pattern.pattern,
             actualValue = actualValue,
@@ -79,7 +79,7 @@ public fun ValueVerificationScope<String, *>.lengthRange(
     reason: String? = null,
 ) {
     val actualLength = value.length
-    validationStrategy.failIf(actualLength !in min..max) {
+    failIf(actualLength !in min..max) {
         LengthRangeViolation(
             minLengthAllowed = min,
             maxLengthAllowed = max,

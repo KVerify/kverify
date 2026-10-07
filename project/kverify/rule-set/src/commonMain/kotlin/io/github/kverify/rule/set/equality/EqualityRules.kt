@@ -2,10 +2,10 @@ package io.github.kverify.rule.set.equality
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueVerificationScope
-import io.github.kverify.core.strategy.failIf
+import io.github.kverify.core.scope.failIf
 
 public fun <T> ValueVerificationScope<T, *>.notNull(reason: String? = null) {
-    validationStrategy.failIf(value == null) {
+    failIf(value == null) {
         NotNullViolation(
             validationPath = validationContext.validationPath(),
             reason = reason ?: "Value must not be null",
@@ -17,7 +17,7 @@ public fun <T> ValueVerificationScope<T, *>.equalTo(
     expected: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value != expected) {
+    failIf(value != expected) {
         EqualToViolation(
             expected = expected,
             actual = value,
@@ -31,7 +31,7 @@ public fun <T> ValueVerificationScope<T, *>.notEqualTo(
     forbidden: T,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value == forbidden) {
+    failIf(value == forbidden) {
         NotEqualToViolation(
             forbidden = forbidden,
             validationPath = validationContext.validationPath(),
@@ -44,7 +44,7 @@ public fun <T> ValueVerificationScope<T, *>.oneOf(
     allowed: Set<T>,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value !in allowed) {
+    failIf(value !in allowed) {
         OneOfViolation(
             allowed = allowed,
             actual = value,
@@ -58,7 +58,7 @@ public fun <T> ValueVerificationScope<T, *>.noneOf(
     forbidden: Set<T>,
     reason: String? = null,
 ) {
-    validationStrategy.failIf(value in forbidden) {
+    failIf(value in forbidden) {
         NoneOfViolation(
             forbidden = forbidden,
             actual = value,
