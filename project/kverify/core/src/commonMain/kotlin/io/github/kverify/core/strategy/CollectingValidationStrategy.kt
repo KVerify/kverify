@@ -4,7 +4,6 @@ import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.scope.VerificationScope
-import io.github.kverify.core.scope.using
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -19,7 +18,7 @@ public class CollectingValidationStrategy(
 
 public inline fun validateCollecting(
     validationContext: ValidationContext = EmptyValidationContext,
-    block: context(CollectingValidationStrategy, ValidationContext) VerificationScope<CollectingValidationStrategy>.() -> Unit,
+    block: VerificationScope<CollectingValidationStrategy>.() -> Unit,
 ): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
@@ -30,7 +29,7 @@ public inline fun validateCollecting(
             VerificationScope(
                 validationStrategy = CollectingValidationStrategy(this),
                 validationContext = validationContext,
-            ).using(block)
+            ).apply(block)
         }
 
     return ValidationResult(violations)

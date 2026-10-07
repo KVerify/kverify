@@ -4,7 +4,6 @@ import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.exception.ViolationException
 import io.github.kverify.core.scope.VerificationScope
-import io.github.kverify.core.scope.using
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -15,7 +14,7 @@ public class ThrowingValidationStrategy : ValidationStrategy {
 
 public inline fun validateThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
-    block: context(ThrowingValidationStrategy, ValidationContext) VerificationScope<ThrowingValidationStrategy>.() -> Unit,
+    block: VerificationScope<ThrowingValidationStrategy>.() -> Unit,
 ) {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
@@ -24,5 +23,5 @@ public inline fun validateThrowing(
     VerificationScope(
         validationStrategy = ThrowingValidationStrategy(),
         validationContext = validationContext,
-    ).using(block)
+    ).apply(block)
 }
