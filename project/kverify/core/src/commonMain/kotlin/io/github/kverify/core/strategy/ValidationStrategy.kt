@@ -7,10 +7,6 @@ public interface ValidationStrategy {
     public fun failWith(violation: Violation)
 }
 
-context(validationStrategy: ValidationStrategy)
-public fun failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
-
-@JvmName("failIfExtension")
 public inline fun ValidationStrategy.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
@@ -21,9 +17,3 @@ public inline fun ValidationStrategy.failIf(
         failWith(violation)
     }
 }
-
-context(validationStrategy: ValidationStrategy)
-public inline fun failIf(
-    condition: Boolean,
-    lazyViolation: () -> Violation,
-): Unit = validationStrategy.failIf(condition, lazyViolation)
