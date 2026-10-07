@@ -7,9 +7,8 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @KverifyDsl
-public interface VerificationScope<out S : ValidationStrategy> {
+public interface VerificationScope<out S : ValidationStrategy> : ValidationScope {
     public val validationStrategy: S
-    public val validationContext: ValidationContext
 }
 
 private class VerificationScopeImpl<out S : ValidationStrategy>(
