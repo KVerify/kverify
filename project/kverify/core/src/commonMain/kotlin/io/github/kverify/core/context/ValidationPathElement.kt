@@ -55,38 +55,6 @@ public class IndexPathElement(
     override fun toString(): String = "IndexPathElement(index=$index)"
 }
 
-@JvmName("pathNameExtension")
-public inline fun ValidationContext.pathName(
-    name: String,
-    block: context(ValidationContext) () -> Unit = {},
-): ValidationContext {
-    val newContext = this + NamePathElement(name)
+public fun ValidationContext.pathName(name: String): ValidationContext = this + NamePathElement(name)
 
-    context(newContext, block = block)
-
-    return newContext
-}
-
-context(validationContext: ValidationContext)
-public inline fun pathName(
-    name: String,
-    block: context(ValidationContext) () -> Unit = {},
-): ValidationContext = validationContext.pathName(name, block)
-
-@JvmName("pathIndexExtension")
-public inline fun ValidationContext.pathIndex(
-    index: Int,
-    block: context(ValidationContext) () -> Unit = {},
-): ValidationContext {
-    val newContext = this + IndexPathElement(index)
-
-    context(newContext, block = block)
-
-    return newContext
-}
-
-context(validationContext: ValidationContext)
-public inline fun pathIndex(
-    index: Int,
-    block: context(ValidationContext) () -> Unit = {},
-): ValidationContext = validationContext.pathIndex(index, block)
+public fun ValidationContext.pathIndex(index: Int): ValidationContext = this + IndexPathElement(index)
