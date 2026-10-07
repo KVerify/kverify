@@ -1,7 +1,5 @@
 package io.github.kverify.core.context
 
-import kotlin.jvm.JvmName
-
 /**
  * A [ValidationContext.Element] that contributes one segment to the validation path.
  *

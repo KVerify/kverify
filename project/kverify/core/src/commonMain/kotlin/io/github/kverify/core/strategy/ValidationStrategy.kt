@@ -1,7 +1,6 @@
 package io.github.kverify.core.strategy
 
 import io.github.kverify.core.violation.Violation
-import kotlin.jvm.JvmName
 
 public interface ValidationStrategy {
     public fun failWith(violation: Violation)
