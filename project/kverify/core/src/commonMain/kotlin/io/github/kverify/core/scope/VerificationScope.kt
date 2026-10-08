@@ -29,7 +29,7 @@ context(parentVerificationScope: VerificationScope<S>)
 public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> =
     VerificationScope(
         validationStrategy = parentVerificationScope.validationStrategy,
-        validationContext = parentVerificationScope.validationContext + this,
+        validationContext = this,
     ).apply(block)
 
 public fun <S : ValidationStrategy> VerificationScope<S>.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
