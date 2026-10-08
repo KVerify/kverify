@@ -25,10 +25,10 @@ public fun <S : ValidationStrategy> VerificationScope(
         validationContext = validationContext,
     )
 
-context(parentVerificationScope: VerificationScope<S>)
+context(verificationScope: VerificationScope<S>)
 public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> =
     VerificationScope(
-        validationStrategy = parentVerificationScope.validationStrategy,
+        validationStrategy = verificationScope.validationStrategy,
         validationContext = this,
     ).apply(block)
 
