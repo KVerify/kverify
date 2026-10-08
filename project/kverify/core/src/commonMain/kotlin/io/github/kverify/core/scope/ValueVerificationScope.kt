@@ -47,6 +47,28 @@ public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyPropert
         validationContext = validationContext + NamePathElement(property.name),
     ).apply(block)
 
+context(verificationScope: VerificationScope<S>)
+public inline fun <V, S : ValidationStrategy> ValidationContext.verifyValue(
+    value: V,
+    block: ValueVerificationScope<V, S>.() -> Unit = {},
+): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
+        value = value,
+        validationStrategy = verificationScope.validationStrategy,
+        validationContext = this,
+    ).apply(block)
+
+context(verificationScope: VerificationScope<S>)
+public inline fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(
+    property: KProperty0<V>,
+    block: ValueVerificationScope<V, S>.() -> Unit = {},
+): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
+        value = property.get(),
+        validationStrategy = verificationScope.validationStrategy,
+        validationContext = this + NamePathElement(property.name),
+    ).apply(block)
+
 public fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.takeIfNotNull(): ValueVerificationScope<V, S>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")
