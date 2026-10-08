@@ -56,18 +56,13 @@ public fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.takeI
     }
 
 public inline fun <V, I : Iterable<V>, S : ValidationStrategy> ValueVerificationScope<I, S>.each(
-    block: context(S, ValidationContext) ValueVerificationScope<V, S>.() -> Unit,
+    block: ValueVerificationScope<V, S>.() -> Unit,
 ) {
     value.forEachIndexed { index, element ->
-        val newContext = validationContext + IndexPathElement(index)
-
-        val verification =
-            ValueVerificationScope(
-                value = element,
-                validationStrategy = validationStrategy,
-                validationContext = newContext,
-            )
-
-        context(validationStrategy, newContext) { verification.block() }
+        ValueVerificationScope(
+            value = element,
+            validationStrategy = validationStrategy,
+            validationContext = validationContext + IndexPathElement(index),
+        ).block()
     }
 }
