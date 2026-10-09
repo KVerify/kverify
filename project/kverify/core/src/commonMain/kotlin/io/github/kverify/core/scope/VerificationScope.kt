@@ -7,6 +7,8 @@ import io.github.kverify.core.context.pathName
 import io.github.kverify.core.strategy.ValidationStrategy
 import io.github.kverify.core.strategy.failIf
 import io.github.kverify.core.violation.Violation
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 
 @KverifyDsl
 public interface VerificationScope<out S : ValidationStrategy> {
@@ -29,18 +31,29 @@ public fun <S : ValidationStrategy> VerificationScope(
     )
 
 context(verificationScope: VerificationScope<S>)
-public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> =
-    VerificationScope(
+public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return VerificationScope(
         validationStrategy = verificationScope.validationStrategy,
         validationContext = this,
     ).apply(block)
+}
 
 public fun <S : ValidationStrategy> VerificationScope<S>.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
 
 public inline fun <S : ValidationStrategy> VerificationScope<S>.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
-): Unit = validationStrategy.failIf(condition, lazyViolation)
+) {
+    contract {
+        callsInPlace(lazyViolation, InvocationKind.AT_MOST_ONCE)
+    }
+
+    validationStrategy.failIf(condition, lazyViolation)
+}
 
 public fun <S : ValidationStrategy> VerificationScope<S>.pathName(name: String): ValidationContext = validationContext.pathName(name)
 

@@ -4,6 +4,8 @@ import io.github.kverify.core.context.IndexPathElement
 import io.github.kverify.core.context.NamePathElement
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
+import kotlin.contracts.InvocationKind
+import kotlin.contracts.contract
 import kotlin.reflect.KProperty0
 
 public interface ValueVerificationScope<out V, out S : ValidationStrategy> : VerificationScope<S> {
@@ -30,48 +32,72 @@ public fun <V, S : ValidationStrategy> ValueVerificationScope(
 public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyValue(
     value: V,
     block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> =
-    ValueVerificationScope(
+): ValueVerificationScope<V, S> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return ValueVerificationScope(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = validationContext,
     ).apply(block)
+}
 
 public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyProperty(
     property: KProperty0<V>,
     block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> =
-    ValueVerificationScope(
+): ValueVerificationScope<V, S> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return ValueVerificationScope(
         value = property.get(),
         validationStrategy = validationStrategy,
         validationContext = validationContext + NamePathElement(property.name),
     ).apply(block)
+}
 
 context(verificationScope: VerificationScope<S>)
 public inline fun <V, S : ValidationStrategy> ValidationContext.verifyValue(
     value: V,
     block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> =
-    ValueVerificationScope(
+): ValueVerificationScope<V, S> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return ValueVerificationScope(
         value = value,
         validationStrategy = verificationScope.validationStrategy,
         validationContext = this,
     ).apply(block)
+}
 
 context(verificationScope: VerificationScope<S>)
 public inline fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(
     property: KProperty0<V>,
     block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> =
-    ValueVerificationScope(
+): ValueVerificationScope<V, S> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return ValueVerificationScope(
         value = property.get(),
         validationStrategy = verificationScope.validationStrategy,
         validationContext = this + NamePathElement(property.name),
     ).apply(block)
+}
 
 public inline fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.ifNotNull(
     block: ValueVerificationScope<V, S>.() -> Unit,
 ): ValueVerificationScope<V?, S> {
+    contract {
+        callsInPlace(block, InvocationKind.AT_MOST_ONCE)
+    }
+
     if (value == null) return this
 
     @Suppress("UNCHECKED_CAST")
