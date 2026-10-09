@@ -69,6 +69,17 @@ public inline fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(
         validationContext = this + NamePathElement(property.name),
     ).apply(block)
 
+public inline fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.ifNotNull(
+    block: ValueVerificationScope<V, S>.() -> Unit,
+): ValueVerificationScope<V?, S> {
+    if (value == null) return this
+
+    @Suppress("UNCHECKED_CAST")
+    (this as ValueVerificationScope<V, S>).block()
+
+    return this
+}
+
 public fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.takeIfNotNull(): ValueVerificationScope<V, S>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")
