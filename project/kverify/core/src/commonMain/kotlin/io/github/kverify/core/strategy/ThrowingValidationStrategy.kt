@@ -12,16 +12,16 @@ public class ThrowingValidationStrategy : ValidationStrategy {
     override fun failWith(violation: Violation): Nothing = throw ViolationException(violation)
 }
 
-public inline fun validateThrowing(
+public inline fun <R> validateThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
-    block: VerificationScope<ThrowingValidationStrategy>.() -> Unit,
-) {
+    block: VerificationScope<ThrowingValidationStrategy>.() -> R,
+): R {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    VerificationScope(
+    return VerificationScope(
         validationStrategy = ThrowingValidationStrategy(),
         validationContext = validationContext,
-    ).apply(block)
+    ).run(block)
 }
