@@ -9,6 +9,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.minSize(
     reason: String? = null,
 ) {
     val actualSize = value.size
+
     failIf(actualSize < minSizeAllowed) {
         MinSizeViolation(
             minSizeAllowed = minSizeAllowed,
@@ -24,6 +25,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.maxSize(
     reason: String? = null,
 ) {
     val actualSize = value.size
+
     failIf(actualSize > maxSizeAllowed) {
         MaxSizeViolation(
             maxSizeAllowed = maxSizeAllowed,
@@ -39,6 +41,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.exactSize(
     reason: String? = null,
 ) {
     val actualSize = value.size
+
     failIf(actualSize != expectedSize) {
         ExactSizeViolation(
             expectedSize = expectedSize,
@@ -55,6 +58,7 @@ public fun <C : Collection<*>> ValueVerificationScope<C, *>.sizeRange(
     reason: String? = null,
 ) {
     val actualSize = value.size
+
     failIf(actualSize !in minSizeAllowed..maxSizeAllowed) {
         SizeRangeViolation(
             minSizeAllowed = minSizeAllowed,

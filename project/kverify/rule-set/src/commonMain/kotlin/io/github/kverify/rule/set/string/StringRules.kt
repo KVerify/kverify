@@ -18,6 +18,7 @@ public fun ValueVerificationScope<String, *>.minLength(
     reason: String? = null,
 ) {
     val actualLength = value.length
+
     failIf(actualLength < min) {
         MinLengthViolation(
             minLengthAllowed = min,
@@ -33,6 +34,7 @@ public fun ValueVerificationScope<String, *>.maxLength(
     reason: String? = null,
 ) {
     val actualLength = value.length
+
     failIf(actualLength > max) {
         MaxLengthViolation(
             maxLengthAllowed = max,
@@ -48,6 +50,7 @@ public fun ValueVerificationScope<String, *>.exactLength(
     reason: String? = null,
 ) {
     val actualLength = value.length
+
     failIf(actualLength != length) {
         ExactLengthViolation(
             expectedLength = length,
@@ -62,13 +65,12 @@ public fun ValueVerificationScope<String, *>.matches(
     pattern: Regex,
     reason: String? = null,
 ) {
-    val actualValue = value
-    failIf(!pattern.matches(actualValue)) {
+    failIf(!pattern.matches(value)) {
         PatternViolation(
             pattern = pattern.pattern,
-            actualValue = actualValue,
+            actualValue = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must match pattern \"${pattern.pattern}\". Actual value: \"$actualValue\"",
+            reason = reason ?: "Value must match pattern \"${pattern.pattern}\". Actual value: \"$value\"",
         )
     }
 }
@@ -79,6 +81,7 @@ public fun ValueVerificationScope<String, *>.lengthRange(
     reason: String? = null,
 ) {
     val actualLength = value.length
+
     failIf(actualLength !in min..max) {
         LengthRangeViolation(
             minLengthAllowed = min,
