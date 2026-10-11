@@ -17,17 +17,3 @@ public interface Violation {
      */
     public val reason: String
 }
-
-/**
- * Creates a [Violation] with the given [reason].
- */
-public fun violation(reason: String): Violation = ViolationImpl(reason)
-
-/**
- * Default implementation of [Violation].
- */
-private data class ViolationImpl(
-    override val reason: String,
-) : Violation {
-    override fun toString(): String = "Violation(reason=$reason)"
-}
