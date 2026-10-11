@@ -2,15 +2,19 @@
 kotlin = "2.4.10"
 publish = "0.37.0"
 dokka = "2.2.0"
+test-balloon = "1.1.0"
 
 [libraries]
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 vanniktech-maven-publish = { module = "com.vanniktech:gradle-maven-publish-plugin", version.ref = "publish" }
 dokka-gradle-plugin = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version.ref = "dokka" }
+test-balloon-gradle-plugin = { module = "de.infix.testBalloon:testBalloon-gradle-plugin", version.ref = "test-balloon" }
+test-balloon-framework-core = { module = "de.infix.testBalloon:testBalloon-framework-core", version.ref = "test-balloon" }
 
 [bundles]
 pluginsForBuildSrc = [
     "kotlin-gradle-plugin",
     "vanniktech-maven-publish",
     "dokka-gradle-plugin",
+    "test-balloon-gradle-plugin",
 ]
