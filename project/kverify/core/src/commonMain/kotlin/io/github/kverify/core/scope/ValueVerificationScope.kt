@@ -44,21 +44,6 @@ public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyValue(
     ).apply(block)
 }
 
-public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyProperty(
-    property: KProperty0<V>,
-    block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return ValueVerificationScope(
-        value = property.get(),
-        validationStrategy = validationStrategy,
-        validationContext = validationContext + NamePathElement(property.name),
-    ).apply(block)
-}
-
 context(verificationScope: VerificationScope<S>)
 public inline fun <V, S : ValidationStrategy> ValidationContext.verifyValue(
     value: V,
@@ -72,6 +57,21 @@ public inline fun <V, S : ValidationStrategy> ValidationContext.verifyValue(
         value = value,
         validationStrategy = verificationScope.validationStrategy,
         validationContext = this,
+    ).apply(block)
+}
+
+public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyProperty(
+    property: KProperty0<V>,
+    block: ValueVerificationScope<V, S>.() -> Unit = {},
+): ValueVerificationScope<V, S> {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return ValueVerificationScope(
+        value = property.get(),
+        validationStrategy = validationStrategy,
+        validationContext = validationContext + NamePathElement(property.name),
     ).apply(block)
 }
 
