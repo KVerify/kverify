@@ -10,11 +10,12 @@ public class ValidationResult(
 
     public inline val isInvalid: Boolean get() = !isValid
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is ValidationResult) return false
-        return violations == other.violations
-    }
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> true
+            other !is ValidationResult -> false
+            else -> violations == other.violations
+        }
 
     override fun hashCode(): Int = violations.hashCode()
 

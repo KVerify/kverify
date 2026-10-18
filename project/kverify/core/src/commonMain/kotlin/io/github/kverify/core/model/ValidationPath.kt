@@ -3,11 +3,12 @@ package io.github.kverify.core.model
 public class ValidationPath(
     public val segments: List<ValidationPathSegment>,
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is ValidationPath) return false
-        return segments == other.segments
-    }
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> true
+            other !is ValidationPath -> false
+            else -> segments == other.segments
+        }
 
     override fun hashCode(): Int = segments.hashCode()
 
