@@ -1,18 +1,13 @@
 package io.github.kverify.core.context
 
-/**
- * A [ValidationContext] with no elements.
- */
 public object EmptyValidationContext : ValidationContext {
-    /**
-     * Returns [other] unchanged, since this context contributes no elements.
-     */
     override fun plus(other: ValidationContext): ValidationContext = other
 
-    /**
-     * Returns [EmptyIterator].
-     */
-    override fun iterator(): Iterator<Nothing> = EmptyIterator
+    override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? = null
+
+    override fun minusKey(key: ValidationContext.Key<*>): ValidationContext = this
+
+    override fun iterator(): Iterator<ValidationContext.Element> = EmptyIterator
 }
 
 /**

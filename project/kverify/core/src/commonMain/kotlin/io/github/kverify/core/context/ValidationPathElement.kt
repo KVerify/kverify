@@ -1,58 +1,79 @@
 package io.github.kverify.core.context
 
-/**
- * A [ValidationContext.Element] that contributes one segment to the validation path.
- *
- * The two concrete subtypes are [NamePathElement] and [IndexPathElement], representing
- * named (field/property) and indexed (collection position) path segments respectively.
- */
-public sealed interface ValidationPathElement : ValidationContext.Element
+import io.github.kverify.core.model.IndexPathSegment
+import io.github.kverify.core.model.NamePathSegment
+import io.github.kverify.core.model.ValidationPath
+import io.github.kverify.core.model.ValidationPathSegment
 
-/**
- * A named segment in a validation path, typically representing a field or property.
- *
- * Example: validating a field `user.address.street` would produce a path of
- * `[NamePathElement("user"), NamePathElement("address"), NamePathElement("street")]`.
- *
- * @param name The name of this path segment, as it should appear in violation reports.
- */
-public class NamePathElement(
-    public val name: String,
-) : ValidationPathElement {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is NamePathElement) return false
+public class ValidationPathElement(
+    public val segment: ValidationPathSegment,
+    public val parent: ValidationPathElement?,
+) : ValidationContext.Element {
+    public val size: Int = (parent?.size ?: 0) + 1
 
-        return name == other.name
+    override val key: ValidationContext.Key<*>
+        get() = Key
+
+    override fun plus(other: ValidationContext): ValidationContext =
+        if (other is ValidationPathElement) {
+            this.addingAllSegments(other)
+        } else {
+            super.plus(other)
+        }
+
+    public companion object Key : ValidationContext.Key<ValidationPathElement> {
+        override fun onCollision(
+            oldElement: ValidationContext.Element,
+            newElement: ValidationContext.Element,
+        ): ValidationContext.Element =
+            when {
+                oldElement !is ValidationPathElement -> newElement
+                newElement !is ValidationPathElement -> oldElement
+                else -> oldElement.addingAllSegments(newElement)
+            }
     }
-
-    override fun hashCode(): Int = name.hashCode()
-
-    override fun toString(): String = "NamePathElement(name=$name)"
 }
 
-/**
- * An indexed segment in a validation path, typically representing a position within a collection.
- *
- * Example: validating the third element of a list would produce an [IndexPathElement] with `index = 2`.
- *
- * @param index The zero-based index of this path segment.
- */
-public class IndexPathElement(
-    public val index: Int,
-) : ValidationPathElement {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is IndexPathElement) return false
+public fun ValidationContext.pathName(name: String): ValidationContext =
+    this +
+        ValidationPathElement(
+            NamePathSegment(name),
+            parent = null,
+        )
 
-        return index == other.index
+public fun ValidationContext.pathIndex(index: Int): ValidationContext =
+    this +
+        ValidationPathElement(
+            segment = IndexPathSegment(index),
+            parent = null,
+        )
+
+public fun ValidationPathElement.toValidationPath(): ValidationPath = ValidationPath(this.toSegmentArray().asList())
+
+private fun ValidationPathElement.toSegmentArray(): Array<ValidationPathSegment> {
+    val segments = Array(size) { segment }
+
+    var node = parent
+    var index = size - 1
+
+    while (node != null) {
+        segments[--index] = node.segment
+        node = node.parent
     }
 
-    override fun hashCode(): Int = index.hashCode()
-
-    override fun toString(): String = "IndexPathElement(index=$index)"
+    return segments
 }
 
-public fun ValidationContext.pathName(name: String): ValidationContext = this + NamePathElement(name)
+private fun ValidationPathElement.addingAllSegments(segmentsSource: ValidationPathElement): ValidationPathElement {
+    if (segmentsSource.parent == null) {
+        return ValidationPathElement(segmentsSource.segment, this)
+    }
 
-public fun ValidationContext.pathIndex(index: Int): ValidationContext = this + IndexPathElement(index)
+    var result = this
+
+    for (incomingSegment in segmentsSource.toSegmentArray()) {
+        result = ValidationPathElement(incomingSegment, result)
+    }
+
+    return result
+}
