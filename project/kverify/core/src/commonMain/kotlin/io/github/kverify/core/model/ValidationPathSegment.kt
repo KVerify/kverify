@@ -20,7 +20,7 @@ public class NamePathSegment(
 public class IndexPathSegment(
     public val index: Int,
 ) : ValidationPathSegment {
-    override fun toString(): String = "IndexPathSegment(name=$index)"
+    override fun toString(): String = "IndexPathSegment(index=$index)"
 
     override fun equals(other: Any?): Boolean =
         when {
