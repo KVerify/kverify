@@ -16,20 +16,6 @@ public interface VerificationScope<out S : ValidationStrategy> {
     public val validationContext: ValidationContext
 }
 
-private class VerificationScopeImpl<out S : ValidationStrategy>(
-    override val validationStrategy: S,
-    override val validationContext: ValidationContext,
-) : VerificationScope<S>
-
-public fun <S : ValidationStrategy> VerificationScope(
-    validationStrategy: S,
-    validationContext: ValidationContext,
-): VerificationScope<S> =
-    VerificationScopeImpl(
-        validationStrategy = validationStrategy,
-        validationContext = validationContext,
-    )
-
 context(verificationScope: VerificationScope<S>)
 public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> {
     contract {
@@ -54,3 +40,17 @@ public inline fun <S : ValidationStrategy> VerificationScope<S>.failIf(
 
     validationStrategy.failIf(condition, lazyViolation)
 }
+
+public fun <S : ValidationStrategy> VerificationScope(
+    validationStrategy: S,
+    validationContext: ValidationContext,
+): VerificationScope<S> =
+    VerificationScopeImpl(
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
+private class VerificationScopeImpl<out S : ValidationStrategy>(
+    override val validationStrategy: S,
+    override val validationContext: ValidationContext,
+) : VerificationScope<S>
