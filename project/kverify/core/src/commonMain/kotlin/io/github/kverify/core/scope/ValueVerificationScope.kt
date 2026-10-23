@@ -12,23 +12,6 @@ public interface ValueVerificationScope<out V, out S : ValidationStrategy> : Ver
     public val value: V
 }
 
-private class ValueVerificationScopeImpl<out V, out S : ValidationStrategy>(
-    override val value: V,
-    override val validationStrategy: S,
-    override val validationContext: ValidationContext,
-) : ValueVerificationScope<V, S>
-
-public fun <V, S : ValidationStrategy> ValueVerificationScope(
-    value: V,
-    validationStrategy: S,
-    validationContext: ValidationContext,
-): ValueVerificationScope<V, S> =
-    ValueVerificationScopeImpl(
-        value = value,
-        validationStrategy = validationStrategy,
-        validationContext = validationContext,
-    )
-
 public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyValue(
     value: V,
     block: ValueVerificationScope<V, S>.() -> Unit = {},
@@ -125,3 +108,20 @@ public inline fun <V, I : Iterable<V>, S : ValidationStrategy> ValueVerification
         ).block()
     }
 }
+
+public fun <V, S : ValidationStrategy> ValueVerificationScope(
+    value: V,
+    validationStrategy: S,
+    validationContext: ValidationContext,
+): ValueVerificationScope<V, S> =
+    ValueVerificationScopeImpl(
+        value = value,
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
+private class ValueVerificationScopeImpl<out V, out S : ValidationStrategy>(
+    override val value: V,
+    override val validationStrategy: S,
+    override val validationContext: ValidationContext,
+) : ValueVerificationScope<V, S>
