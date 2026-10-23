@@ -38,7 +38,7 @@ public inline fun <S : ValidationStrategy> ValidationContext.verify(block: Verif
 
     return VerificationScope(
         validationStrategy = verificationScope.validationStrategy,
-        validationContext = this,
+        validationContext = verificationScope.validationContext + this,
     ).apply(block)
 }
 
@@ -54,7 +54,3 @@ public inline fun <S : ValidationStrategy> VerificationScope<S>.failIf(
 
     validationStrategy.failIf(condition, lazyViolation)
 }
-
-public fun <S : ValidationStrategy> VerificationScope<S>.pathName(name: String): ValidationContext = validationContext.pathName(name)
-
-public fun <S : ValidationStrategy> VerificationScope<S>.pathIndex(index: Int): ValidationContext = validationContext.pathIndex(index)

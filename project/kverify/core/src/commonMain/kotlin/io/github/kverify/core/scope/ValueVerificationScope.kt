@@ -1,8 +1,8 @@
 package io.github.kverify.core.scope
 
+import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.pathIndex
 import io.github.kverify.core.context.pathName
-import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.strategy.ValidationStrategy
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
@@ -56,7 +56,7 @@ public inline fun <V, S : ValidationStrategy> ValidationContext.verifyValue(
     return ValueVerificationScope(
         value = value,
         validationStrategy = verificationScope.validationStrategy,
-        validationContext = this,
+        validationContext = verificationScope.validationContext + this,
     ).apply(block)
 }
 
@@ -87,7 +87,7 @@ public inline fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(
     return ValueVerificationScope(
         value = property.get(),
         validationStrategy = verificationScope.validationStrategy,
-        validationContext = this.pathName(property.name),
+        validationContext = verificationScope.validationContext + this.pathName(property.name),
     ).apply(block)
 }
 

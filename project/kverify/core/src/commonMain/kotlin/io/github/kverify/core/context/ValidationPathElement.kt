@@ -34,12 +34,16 @@ public class ValidationPathElement(
     }
 }
 
+public fun pathName(name: String): ValidationPathElement = ValidationPathElement(NamePathSegment(name), null)
+
 public fun ValidationContext.pathName(name: String): ValidationContext =
     this +
         ValidationPathElement(
             NamePathSegment(name),
             parent = null,
         )
+
+public fun pathIndex(index: Int): ValidationPathElement = ValidationPathElement(IndexPathSegment(index), null)
 
 public fun ValidationContext.pathIndex(index: Int): ValidationContext =
     this +
