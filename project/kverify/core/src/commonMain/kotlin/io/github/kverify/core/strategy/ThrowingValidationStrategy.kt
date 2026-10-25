@@ -21,7 +21,10 @@ public inline fun <R> validateThrowing(
     }
 
     return VerificationScope(
-        validationStrategy = ThrowingValidationStrategy(),
+        validationStrategy = ThrowingValidationStrategyInstance,
         validationContext = validationContext,
     ).run(block)
 }
+
+@PublishedApi
+internal val ThrowingValidationStrategyInstance: ThrowingValidationStrategy = ThrowingValidationStrategy()
