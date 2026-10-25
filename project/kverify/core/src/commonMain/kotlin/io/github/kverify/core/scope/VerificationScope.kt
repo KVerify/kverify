@@ -2,8 +2,6 @@ package io.github.kverify.core.scope
 
 import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.context.pathIndex
-import io.github.kverify.core.context.pathName
 import io.github.kverify.core.strategy.ValidationStrategy
 import io.github.kverify.core.strategy.failIf
 import io.github.kverify.core.violation.Violation
