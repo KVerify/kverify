@@ -15,16 +15,11 @@ public interface VerificationScope<out S : ValidationStrategy> {
 }
 
 context(verificationScope: VerificationScope<S>)
-public inline fun <S : ValidationStrategy> ValidationContext.verify(block: VerificationScope<S>.() -> Unit = {}): VerificationScope<S> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return VerificationScope(
+public fun <S : ValidationStrategy> ValidationContext.verify(): VerificationScope<S> =
+    VerificationScope(
         validationStrategy = verificationScope.validationStrategy,
         validationContext = verificationScope.validationContext + this,
-    ).apply(block)
-}
+    )
 
 public fun <S : ValidationStrategy> VerificationScope<S>.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
 
@@ -37,6 +32,14 @@ public inline fun <S : ValidationStrategy> VerificationScope<S>.failIf(
     }
 
     validationStrategy.failIf(condition, lazyViolation)
+}
+
+public inline fun <T : VerificationScope<*>> T.using(block: T.() -> Unit): T {
+    contract {
+        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
+    }
+
+    return apply(block)
 }
 
 public fun <S : ValidationStrategy> VerificationScope(

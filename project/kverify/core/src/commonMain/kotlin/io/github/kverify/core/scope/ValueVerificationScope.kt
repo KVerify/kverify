@@ -12,67 +12,35 @@ public interface ValueVerificationScope<out V, out S : ValidationStrategy> : Ver
     public val value: V
 }
 
-public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyValue(
-    value: V,
-    block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return ValueVerificationScope(
+public fun <V, S : ValidationStrategy> VerificationScope<S>.verifyValue(value: V): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = value,
         validationStrategy = validationStrategy,
         validationContext = validationContext,
-    ).apply(block)
-}
+    )
 
 context(verificationScope: VerificationScope<S>)
-public inline fun <V, S : ValidationStrategy> ValidationContext.verifyValue(
-    value: V,
-    block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return ValueVerificationScope(
+public fun <V, S : ValidationStrategy> ValidationContext.verifyValue(value: V): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = value,
         validationStrategy = verificationScope.validationStrategy,
         validationContext = verificationScope.validationContext + this,
-    ).apply(block)
-}
+    )
 
-public inline fun <V, S : ValidationStrategy> VerificationScope<S>.verifyProperty(
-    property: KProperty0<V>,
-    block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return ValueVerificationScope(
+public fun <V, S : ValidationStrategy> VerificationScope<S>.verifyProperty(property: KProperty0<V>): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = property.get(),
         validationStrategy = validationStrategy,
         validationContext = validationContext.pathName(property.name),
-    ).apply(block)
-}
+    )
 
 context(verificationScope: VerificationScope<S>)
-public inline fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(
-    property: KProperty0<V>,
-    block: ValueVerificationScope<V, S>.() -> Unit = {},
-): ValueVerificationScope<V, S> {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return ValueVerificationScope(
+public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property: KProperty0<V>): ValueVerificationScope<V, S> =
+    ValueVerificationScope(
         value = property.get(),
         validationStrategy = verificationScope.validationStrategy,
         validationContext = verificationScope.validationContext + this.pathName(property.name),
-    ).apply(block)
-}
+    )
 
 public inline fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.ifNotNull(
     block: ValueVerificationScope<V, S>.() -> Unit,
