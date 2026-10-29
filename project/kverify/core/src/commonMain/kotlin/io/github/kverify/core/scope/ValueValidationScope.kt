@@ -10,7 +10,7 @@ public interface ValueValidationScope<out V, out S : ValidationStrategy> : Valid
     public val value: V
 }
 
-public fun <V, S : ValidationStrategy> ValidationScope<S>.verifyValue(value: V): ValueValidationScope<V, S> =
+public fun <V, S : ValidationStrategy> ValidationScope<S>.forValue(value: V): ValueValidationScope<V, S> =
     ValueValidationScope(
         value = value,
         validationStrategy = validationStrategy,
@@ -18,7 +18,7 @@ public fun <V, S : ValidationStrategy> ValidationScope<S>.verifyValue(value: V):
     )
 
 context(validationScope: ValidationScope<S>)
-public fun <V, S : ValidationStrategy> ValidationContext.verifyValue(value: V): ValueValidationScope<V, S> =
+public fun <V, S : ValidationStrategy> ValidationContext.forValue(value: V): ValueValidationScope<V, S> =
     ValueValidationScope(
         value = value,
         validationStrategy = validationScope.validationStrategy,
