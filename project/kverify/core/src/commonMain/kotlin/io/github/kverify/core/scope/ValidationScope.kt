@@ -14,14 +14,21 @@ public interface ValidationScope {
     public val validationContext: ValidationContext
 }
 
+public fun ValidationScope(
+    validationStrategy: ValidationStrategy,
+    validationContext: ValidationContext,
+): ValidationScope =
+    ValidationScopeImpl(
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
 context(validationScope: ValidationScope)
 public fun ValidationContext.validationScope(): ValidationScope =
-    ValidationScope(
+    ValidationScopeImpl(
         validationStrategy = validationScope.validationStrategy,
         validationContext = validationScope.validationContext + this,
     )
-
-public fun ValidationScope.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
 
 public inline fun ValidationScope.failIf(
     condition: Boolean,
@@ -31,17 +38,10 @@ public inline fun ValidationScope.failIf(
         callsInPlace(lazyViolation, InvocationKind.AT_MOST_ONCE)
     }
 
-    validationStrategy.failIf(condition, lazyViolation)
+    return validationStrategy.failIf(condition, lazyViolation)
 }
 
-public fun ValidationScope(
-    validationStrategy: ValidationStrategy,
-    validationContext: ValidationContext,
-): ValidationScope =
-    ValidationScopeImpl(
-        validationStrategy = validationStrategy,
-        validationContext = validationContext,
-    )
+public fun ValidationScope.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
 
 private class ValidationScopeImpl(
     override val validationStrategy: ValidationStrategy,
