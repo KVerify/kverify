@@ -25,7 +25,7 @@ public fun <V, S : ValidationStrategy> ValidationContext.forValue(value: V): Val
         validationContext = validationScope.validationContext + this,
     )
 
-public fun <V, S : ValidationStrategy> ValidationScope<S>.verifyProperty(property: KProperty0<V>): ValueValidationScope<V, S> =
+public fun <V, S : ValidationStrategy> ValidationScope<S>.forProperty(property: KProperty0<V>): ValueValidationScope<V, S> =
     ValueValidationScope(
         value = property.get(),
         validationStrategy = validationStrategy,
@@ -33,7 +33,7 @@ public fun <V, S : ValidationStrategy> ValidationScope<S>.verifyProperty(propert
     )
 
 context(validationScope: ValidationScope<S>)
-public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property: KProperty0<V>): ValueValidationScope<V, S> =
+public fun <V, S : ValidationStrategy> ValidationContext.forProperty(property: KProperty0<V>): ValueValidationScope<V, S> =
     ValueValidationScope(
         value = property.get(),
         validationStrategy = validationScope.validationStrategy,
