@@ -78,14 +78,15 @@ public fun <C : Collection<*>> ValueValidationScope<C>.distinct(reason: String? 
     if (actualSize < 2) return
 
     val distinctSize = value.toSet().size
-    val duplicatesCount = actualSize - distinctSize
 
     failIf(actualSize != distinctSize) {
         DistinctViolation(
             actualSize = actualSize,
             distinctSize = distinctSize,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Collection must contain distinct elements. Found $duplicatesCount duplicates",
+            reason =
+                reason
+                    ?: "Collection must contain distinct elements. Actual size: $actualSize, distinct: $distinctSize",
         )
     }
 }
