@@ -42,21 +42,6 @@ public fun <V, S : ValidationStrategy> ValidationContext.verifyProperty(property
         validationContext = verificationScope.validationContext + this.pathName(property.name),
     )
 
-public inline fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.ifNotNull(
-    block: ValueVerificationScope<V, S>.() -> Unit,
-): ValueVerificationScope<V?, S> {
-    contract {
-        callsInPlace(block, InvocationKind.AT_MOST_ONCE)
-    }
-
-    if (value == null) return this
-
-    @Suppress("UNCHECKED_CAST")
-    (this as ValueVerificationScope<V, S>).block()
-
-    return this
-}
-
 public fun <V : Any, S : ValidationStrategy> ValueVerificationScope<V?, S>.takeIfNotNull(): ValueVerificationScope<V, S>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")

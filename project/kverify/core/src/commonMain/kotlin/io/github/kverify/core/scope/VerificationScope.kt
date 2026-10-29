@@ -34,14 +34,6 @@ public inline fun <S : ValidationStrategy> VerificationScope<S>.failIf(
     validationStrategy.failIf(condition, lazyViolation)
 }
 
-public inline fun <T : VerificationScope<*>> T.using(block: T.() -> Unit): T {
-    contract {
-        callsInPlace(block, InvocationKind.EXACTLY_ONCE)
-    }
-
-    return apply(block)
-}
-
 public fun <S : ValidationStrategy> VerificationScope(
     validationStrategy: S,
     validationContext: ValidationContext,
