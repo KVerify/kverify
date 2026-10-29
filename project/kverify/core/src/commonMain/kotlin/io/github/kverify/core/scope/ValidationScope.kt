@@ -15,7 +15,7 @@ public interface ValidationScope<out S : ValidationStrategy> {
 }
 
 context(validationScope: ValidationScope<S>)
-public fun <S : ValidationStrategy> ValidationContext.verify(): ValidationScope<S> =
+public fun <S : ValidationStrategy> ValidationContext.validationScope(): ValidationScope<S> =
     ValidationScope(
         validationStrategy = validationScope.validationStrategy,
         validationContext = validationScope.validationContext + this,
