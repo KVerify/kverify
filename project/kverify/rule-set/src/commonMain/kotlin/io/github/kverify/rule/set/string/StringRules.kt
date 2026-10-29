@@ -14,33 +14,33 @@ public fun ValueValidationScope<String>.notBlank(reason: String? = null) {
 }
 
 public fun ValueValidationScope<String>.minLength(
-    min: Int,
+    minLengthAllowed: Int,
     reason: String? = null,
 ) {
     val actualLength = value.length
 
-    failIf(actualLength < min) {
+    failIf(actualLength < minLengthAllowed) {
         MinLengthViolation(
-            minLengthAllowed = min,
+            minLengthAllowed = minLengthAllowed,
             actualLength = actualLength,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be at least $min characters long. Actual length: $actualLength",
+            reason = reason ?: "Value must be at least $minLengthAllowed characters long. Actual length: $actualLength",
         )
     }
 }
 
 public fun ValueValidationScope<String>.maxLength(
-    max: Int,
+    maxLengthAllowed: Int,
     reason: String? = null,
 ) {
     val actualLength = value.length
 
-    failIf(actualLength > max) {
+    failIf(actualLength > maxLengthAllowed) {
         MaxLengthViolation(
-            maxLengthAllowed = max,
+            maxLengthAllowed = maxLengthAllowed,
             actualLength = actualLength,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be at most $max characters long. Actual length: $actualLength",
+            reason = reason ?: "Value must be at most $maxLengthAllowed characters long. Actual length: $actualLength",
         )
     }
 }
@@ -76,19 +76,21 @@ public fun ValueValidationScope<String>.matches(
 }
 
 public fun ValueValidationScope<String>.lengthRange(
-    min: Int,
-    max: Int,
+    minLengthAllowed: Int,
+    maxLengthAllowed: Int,
     reason: String? = null,
 ) {
     val actualLength = value.length
 
-    failIf(actualLength !in min..max) {
+    failIf(actualLength !in minLengthAllowed..maxLengthAllowed) {
         LengthRangeViolation(
-            minLengthAllowed = min,
-            maxLengthAllowed = max,
+            minLengthAllowed = minLengthAllowed,
+            maxLengthAllowed = maxLengthAllowed,
             actualLength = actualLength,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be between $min and $max characters long. Actual length: $actualLength",
+            reason =
+                reason
+                    ?: "Value must be between $minLengthAllowed and $maxLengthAllowed characters long. Actual length: $actualLength",
         )
     }
 }
