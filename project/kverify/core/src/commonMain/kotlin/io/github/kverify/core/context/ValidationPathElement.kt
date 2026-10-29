@@ -21,6 +21,37 @@ public class ValidationPathElement(
             super.plus(other)
         }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ValidationPathElement) return false
+        if (size != other.size) return false
+
+        var left: ValidationPathElement? = this
+        var right: ValidationPathElement? = other
+
+        while (left != null && right != null) {
+            if (left === right) return true
+            if (left.segment != right.segment) return false
+
+            left = left.parent
+            right = right.parent
+        }
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = 1
+        var node: ValidationPathElement? = this
+
+        while (node != null) {
+            result = 31 * result + node.segment.hashCode()
+            node = node.parent
+        }
+
+        return result
+    }
+
     public companion object Key : ValidationContext.Key<ValidationPathElement> {
         override fun onCollision(
             oldElement: ValidationContext.Element,
