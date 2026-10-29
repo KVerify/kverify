@@ -49,29 +49,29 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.between(
 }
 
 public fun <T : Comparable<T>> ValueValidationScope<T>.greaterThan(
-    min: T,
+    minExclusive: T,
     reason: String? = null,
 ) {
-    failIf(value <= min) {
+    failIf(value <= minExclusive) {
         GreaterThanViolation(
-            minExclusive = min,
+            minExclusive = minExclusive,
             actual = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be greater than $min. Actual: $value",
+            reason = reason ?: "Value must be greater than $minExclusive. Actual: $value",
         )
     }
 }
 
 public fun <T : Comparable<T>> ValueValidationScope<T>.lessThan(
-    max: T,
+    maxExclusive: T,
     reason: String? = null,
 ) {
-    failIf(value >= max) {
+    failIf(value >= maxExclusive) {
         LessThanViolation(
-            maxExclusive = max,
+            maxExclusive = maxExclusive,
             actual = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be less than $max. Actual: $value",
+            reason = reason ?: "Value must be less than $maxExclusive. Actual: $value",
         )
     }
 }
