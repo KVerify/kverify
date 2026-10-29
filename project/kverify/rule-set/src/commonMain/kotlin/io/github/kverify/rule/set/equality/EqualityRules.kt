@@ -4,7 +4,7 @@ import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueValidationScope
 import io.github.kverify.core.scope.failIf
 
-public fun <T> ValueValidationScope<T, *>.notNull(reason: String? = null) {
+public fun <T> ValueValidationScope<T>.notNull(reason: String? = null) {
     failIf(value == null) {
         NotNullViolation(
             validationPath = validationContext.validationPath(),
@@ -13,7 +13,7 @@ public fun <T> ValueValidationScope<T, *>.notNull(reason: String? = null) {
     }
 }
 
-public fun <T> ValueValidationScope<T, *>.equalTo(
+public fun <T> ValueValidationScope<T>.equalTo(
     expected: T,
     reason: String? = null,
 ) {
@@ -27,7 +27,7 @@ public fun <T> ValueValidationScope<T, *>.equalTo(
     }
 }
 
-public fun <T> ValueValidationScope<T, *>.notEqualTo(
+public fun <T> ValueValidationScope<T>.notEqualTo(
     forbidden: T,
     reason: String? = null,
 ) {
@@ -40,7 +40,7 @@ public fun <T> ValueValidationScope<T, *>.notEqualTo(
     }
 }
 
-public fun <T> ValueValidationScope<T, *>.oneOf(
+public fun <T> ValueValidationScope<T>.oneOf(
     allowed: Set<T>,
     reason: String? = null,
 ) {
@@ -54,7 +54,7 @@ public fun <T> ValueValidationScope<T, *>.oneOf(
     }
 }
 
-public fun <T> ValueValidationScope<T, *>.noneOf(
+public fun <T> ValueValidationScope<T>.noneOf(
     forbidden: Set<T>,
     reason: String? = null,
 ) {

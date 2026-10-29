@@ -4,7 +4,7 @@ import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueValidationScope
 import io.github.kverify.core.scope.failIf
 
-public fun <T : Comparable<T>> ValueValidationScope<T, *>.atLeast(
+public fun <T : Comparable<T>> ValueValidationScope<T>.atLeast(
     min: T,
     reason: String? = null,
 ) {
@@ -18,7 +18,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T, *>.atLeast(
     }
 }
 
-public fun <T : Comparable<T>> ValueValidationScope<T, *>.atMost(
+public fun <T : Comparable<T>> ValueValidationScope<T>.atMost(
     max: T,
     reason: String? = null,
 ) {
@@ -32,7 +32,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T, *>.atMost(
     }
 }
 
-public fun <T : Comparable<T>> ValueValidationScope<T, *>.between(
+public fun <T : Comparable<T>> ValueValidationScope<T>.between(
     min: T,
     max: T,
     reason: String? = null,
@@ -48,7 +48,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T, *>.between(
     }
 }
 
-public fun <T : Comparable<T>> ValueValidationScope<T, *>.greaterThan(
+public fun <T : Comparable<T>> ValueValidationScope<T>.greaterThan(
     min: T,
     reason: String? = null,
 ) {
@@ -62,7 +62,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T, *>.greaterThan(
     }
 }
 
-public fun <T : Comparable<T>> ValueValidationScope<T, *>.lessThan(
+public fun <T : Comparable<T>> ValueValidationScope<T>.lessThan(
     max: T,
     reason: String? = null,
 ) {

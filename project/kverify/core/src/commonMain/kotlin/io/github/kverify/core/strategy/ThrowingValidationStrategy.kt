@@ -14,7 +14,7 @@ public class ThrowingValidationStrategy : ValidationStrategy {
 
 public inline fun <R> validateThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
-    block: ValidationScope<ThrowingValidationStrategy>.() -> R,
+    block: ValidationScope.() -> R,
 ): R {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)

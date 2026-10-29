@@ -9,21 +9,21 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
 @KverifyDsl
-public interface ValidationScope<out S : ValidationStrategy> {
-    public val validationStrategy: S
+public interface ValidationScope {
+    public val validationStrategy: ValidationStrategy
     public val validationContext: ValidationContext
 }
 
-context(validationScope: ValidationScope<S>)
-public fun <S : ValidationStrategy> ValidationContext.validationScope(): ValidationScope<S> =
+context(validationScope: ValidationScope)
+public fun ValidationContext.validationScope(): ValidationScope =
     ValidationScope(
         validationStrategy = validationScope.validationStrategy,
         validationContext = validationScope.validationContext + this,
     )
 
-public fun <S : ValidationStrategy> ValidationScope<S>.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
+public fun ValidationScope.failWith(violation: Violation): Unit = validationStrategy.failWith(violation)
 
-public inline fun <S : ValidationStrategy> ValidationScope<S>.failIf(
+public inline fun ValidationScope.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
@@ -34,16 +34,16 @@ public inline fun <S : ValidationStrategy> ValidationScope<S>.failIf(
     validationStrategy.failIf(condition, lazyViolation)
 }
 
-public fun <S : ValidationStrategy> ValidationScope(
-    validationStrategy: S,
+public fun ValidationScope(
+    validationStrategy: ValidationStrategy,
     validationContext: ValidationContext,
-): ValidationScope<S> =
+): ValidationScope =
     ValidationScopeImpl(
         validationStrategy = validationStrategy,
         validationContext = validationContext,
     )
 
-private class ValidationScopeImpl<out S : ValidationStrategy>(
-    override val validationStrategy: S,
+private class ValidationScopeImpl(
+    override val validationStrategy: ValidationStrategy,
     override val validationContext: ValidationContext,
-) : ValidationScope<S>
+) : ValidationScope

@@ -18,7 +18,7 @@ public class CollectingValidationStrategy(
 
 public inline fun validateCollecting(
     validationContext: ValidationContext = EmptyValidationContext,
-    block: ValidationScope<CollectingValidationStrategy>.() -> Unit,
+    block: ValidationScope.() -> Unit,
 ): ValidationResult {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
