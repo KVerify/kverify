@@ -55,11 +55,4 @@ private class ValueValidationScopeImpl<V>(
             validationStrategy = validationStrategy,
             validationContext = validationContext,
         )
-
-    override fun <V> forProperty(property: KProperty0<V>): ValueValidationScope<V> =
-        ValueValidationScopeImpl(
-            value = property.get(),
-            validationStrategy = validationStrategy,
-            validationContext = validationContext.pathName(property.name),
-        )
 }

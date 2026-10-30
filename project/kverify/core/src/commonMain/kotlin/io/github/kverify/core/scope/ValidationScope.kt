@@ -19,7 +19,18 @@ public interface ValidationScope {
 
     public fun <V> forValue(value: V): ValueValidationScope<V>
 
-    public fun <V> forProperty(property: KProperty0<V>): ValueValidationScope<V>
+    public fun <V> forProperty(property: KProperty0<V>): ValueValidationScope<V> =
+        pathName(property.name)
+            .validationScope()
+            .forValue(property.get())
+
+    public fun <V> ValidationContext.forValue(value: V): ValueValidationScope<V> = validationScope().forValue(value)
+
+    public fun <V> ValidationContext.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
+        this
+            .pathName(property.name)
+            .validationScope()
+            .forValue(property.get())
 }
 
 public inline fun ValidationScope.failIf(
@@ -59,12 +70,5 @@ private class ValidationScopeImpl(
             value = value,
             validationStrategy = validationStrategy,
             validationContext = validationContext,
-        )
-
-    override fun <V> forProperty(property: KProperty0<V>): ValueValidationScope<V> =
-        ValueValidationScope(
-            value = property.get(),
-            validationStrategy = validationStrategy,
-            validationContext = validationContext.pathName(property.name),
         )
 }
