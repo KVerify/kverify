@@ -9,7 +9,7 @@ import kotlin.reflect.KProperty0
 public interface ValueValidationScope<out V> : ValidationScope {
     public val value: V
 
-    override fun ValidationContext.validationScope(): ValueValidationScope<V>
+    override fun plus(otherValidationContext: ValidationContext): ValueValidationScope<V>
 }
 
 public fun <V : Any> ValueValidationScope<V?>.takeIfValueNotNull(): ValueValidationScope<V>? =
@@ -42,11 +42,11 @@ private class ValueValidationScopeImpl<V>(
     override val validationStrategy: ValidationStrategy,
     override val validationContext: ValidationContext,
 ) : ValueValidationScope<V> {
-    override fun ValidationContext.validationScope(): ValueValidationScopeImpl<V> =
+    override fun plus(otherValidationContext: ValidationContext): ValueValidationScope<V> =
         ValueValidationScopeImpl(
             value = value,
             validationStrategy = validationStrategy,
-            validationContext = validationContext + this,
+            validationContext = validationContext + otherValidationContext,
         )
 
     override fun <V> forValue(value: V): ValueValidationScope<V> =

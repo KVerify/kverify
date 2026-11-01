@@ -15,23 +15,28 @@ public interface ValidationScope {
     public val validationStrategy: ValidationStrategy
     public val validationContext: ValidationContext
 
-    public fun ValidationContext.validationScope(): ValidationScope
+    public operator fun plus(otherValidationContext: ValidationContext): ValidationScope
 
     public fun <V> forValue(value: V): ValueValidationScope<V>
-
-    public fun <V> forProperty(property: KProperty0<V>): ValueValidationScope<V> =
-        pathName(property.name)
-            .validationScope()
-            .forValue(property.get())
-
-    public fun <V> ValidationContext.forValue(value: V): ValueValidationScope<V> = validationScope().forValue(value)
-
-    public fun <V> ValidationContext.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
-        this
-            .pathName(property.name)
-            .validationScope()
-            .forValue(property.get())
 }
+
+context(scope: ValidationScope)
+public fun ValidationContext.validationScope(): ValidationScope = scope + this
+
+public fun <V> ValidationScope.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
+    pathName(property.name)
+        .validationScope()
+        .forValue(property.get())
+
+context(scope: ValidationScope)
+public fun <V> ValidationContext.forValue(value: V): ValueValidationScope<V> = validationScope().forValue(value)
+
+context(scope: ValidationScope)
+public fun <V> ValidationContext.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
+    this
+        .pathName(property.name)
+        .validationScope()
+        .forValue(property.get())
 
 public inline fun ValidationScope.failIf(
     condition: Boolean,
@@ -59,10 +64,10 @@ private class ValidationScopeImpl(
     override val validationStrategy: ValidationStrategy,
     override val validationContext: ValidationContext,
 ) : ValidationScope {
-    override fun ValidationContext.validationScope(): ValidationScopeImpl =
+    override fun plus(otherValidationContext: ValidationContext): ValidationScope =
         ValidationScopeImpl(
             validationStrategy = validationStrategy,
-            validationContext = validationContext + this,
+            validationContext = validationContext + otherValidationContext,
         )
 
     override fun <V> forValue(value: V): ValueValidationScope<V> =
