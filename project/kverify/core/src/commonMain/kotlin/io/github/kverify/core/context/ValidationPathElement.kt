@@ -67,7 +67,7 @@ public class ValidationPathElement(
 
 public fun pathName(name: String): ValidationPathElement = ValidationPathElement(NamePathSegment(name), null)
 
-public fun ValidationContext.pathName(name: String): ValidationContext =
+public fun ValidationContext.plusPathName(name: String): ValidationContext =
     this +
         ValidationPathElement(
             NamePathSegment(name),
@@ -76,7 +76,7 @@ public fun ValidationContext.pathName(name: String): ValidationContext =
 
 public fun pathIndex(index: Int): ValidationPathElement = ValidationPathElement(IndexPathSegment(index), null)
 
-public fun ValidationContext.pathIndex(index: Int): ValidationContext =
+public fun ValidationContext.plusPathIndex(index: Int): ValidationContext =
     this +
         ValidationPathElement(
             segment = IndexPathSegment(index),

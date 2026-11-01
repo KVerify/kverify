@@ -2,9 +2,7 @@ package io.github.kverify.core.scope
 
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.pathIndex
-import io.github.kverify.core.context.pathName
 import io.github.kverify.core.strategy.ValidationStrategy
-import kotlin.reflect.KProperty0
 
 public interface ValueValidationScope<out V> : ValidationScope {
     public val value: V

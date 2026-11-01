@@ -3,6 +3,7 @@ package io.github.kverify.core.scope
 import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.pathName
+import io.github.kverify.core.context.plusPathName
 import io.github.kverify.core.strategy.ValidationStrategy
 import io.github.kverify.core.strategy.failIf
 import io.github.kverify.core.violation.Violation
@@ -34,7 +35,7 @@ public fun <V> ValidationContext.forValue(value: V): ValueValidationScope<V> = v
 context(scope: ValidationScope)
 public fun <V> ValidationContext.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
     this
-        .pathName(property.name)
+        .plusPathName(property.name)
         .validationScope()
         .forValue(property.get())
 
