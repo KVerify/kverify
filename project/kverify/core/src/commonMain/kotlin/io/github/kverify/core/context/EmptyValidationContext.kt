@@ -5,7 +5,7 @@ public object EmptyValidationContext : ValidationContext {
 
     override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? = null
 
-    override fun minusKey(key: ValidationContext.Key<*>): ValidationContext = this
+    override fun minusKey(key: ValidationContext.Key<*>): EmptyValidationContext = this
 
     override fun iterator(): Iterator<ValidationContext.Element> = EmptyIterator
 }
