@@ -7,4 +7,30 @@ public class AtMostViolation<T : Comparable<T>>(
     public val max: T,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation
+) : PathAwareViolation {
+    override fun toString(): String = "AtMostViolation(max=$max, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is AtMostViolation<*> -> {
+                false
+            }
+
+            else -> {
+                max == other.max &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = max.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}

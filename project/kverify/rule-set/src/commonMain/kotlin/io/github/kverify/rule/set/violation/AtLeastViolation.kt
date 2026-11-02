@@ -7,4 +7,30 @@ public class AtLeastViolation<T : Comparable<T>>(
     public val min: T,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation
+) : PathAwareViolation {
+    override fun toString(): String = "AtLeastViolation(min=$min, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is AtLeastViolation<*> -> {
+                false
+            }
+
+            else -> {
+                min == other.min &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = min.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}

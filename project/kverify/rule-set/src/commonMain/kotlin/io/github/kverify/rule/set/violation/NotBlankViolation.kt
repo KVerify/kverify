@@ -6,4 +6,28 @@ import io.github.kverify.core.violation.PathAwareViolation
 public class NotBlankViolation(
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation
+) : PathAwareViolation {
+    override fun toString(): String = "NotBlankViolation(validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is NotBlankViolation -> {
+                false
+            }
+
+            else -> {
+                validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}

@@ -7,4 +7,30 @@ public class MinSizeViolation(
     public val minSize: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation
+) : PathAwareViolation {
+    override fun toString(): String = "MinSizeViolation(minSize=$minSize, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is MinSizeViolation -> {
+                false
+            }
+
+            else -> {
+                minSize == other.minSize &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = minSize.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}

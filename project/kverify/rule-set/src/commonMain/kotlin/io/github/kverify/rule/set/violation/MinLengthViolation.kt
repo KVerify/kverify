@@ -7,4 +7,30 @@ public class MinLengthViolation(
     public val minLength: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation
+) : PathAwareViolation {
+    override fun toString(): String = "MinLengthViolation(minLength=$minLength, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is MinLengthViolation -> {
+                false
+            }
+
+            else -> {
+                minLength == other.minLength &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = minLength.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
