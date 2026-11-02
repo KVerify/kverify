@@ -1,5 +1,8 @@
 package io.github.kverify.core.context
 
+/**
+ * A [ValidationContext] that holds no elements.
+ */
 public object EmptyValidationContext : ValidationContext {
     override fun plus(other: ValidationContext): ValidationContext = other
 
