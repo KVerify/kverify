@@ -1,8 +1,13 @@
-package io.github.kverify.rule.set.comparable
+package io.github.kverify.rule.set
 
 import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueValidationScope
 import io.github.kverify.core.scope.failIf
+import io.github.kverify.rule.set.violation.AtLeastViolation
+import io.github.kverify.rule.set.violation.AtMostViolation
+import io.github.kverify.rule.set.violation.BetweenViolation
+import io.github.kverify.rule.set.violation.GreaterThanViolation
+import io.github.kverify.rule.set.violation.LessThanViolation
 
 public fun <T : Comparable<T>> ValueValidationScope<T>.atLeast(
     min: T,
@@ -10,9 +15,9 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.atLeast(
 ) {
     failIf(value < min) {
         AtLeastViolation(
-            minAllowed = min,
+            min = min,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be at least $min",
+            reason = reason ?: "Must be at least $min",
         )
     }
 }
@@ -23,24 +28,9 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.atMost(
 ) {
     failIf(value > max) {
         AtMostViolation(
-            maxAllowed = max,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be at most $max",
-        )
-    }
-}
-
-public fun <T : Comparable<T>> ValueValidationScope<T>.between(
-    min: T,
-    max: T,
-    reason: String? = null,
-) {
-    failIf(value !in min..max) {
-        BetweenViolation(
-            min = min,
             max = max,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be between $min and $max",
+            reason = reason ?: "Must be at most $max",
         )
     }
 }
@@ -53,7 +43,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.greaterThan(
         GreaterThanViolation(
             minExclusive = minExclusive,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be greater than $minExclusive",
+            reason = reason ?: "Must be greater than $minExclusive",
         )
     }
 }
@@ -66,7 +56,22 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.lessThan(
         LessThanViolation(
             maxExclusive = maxExclusive,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be less than $maxExclusive",
+            reason = reason ?: "Must be less than $maxExclusive",
+        )
+    }
+}
+
+public fun <T : Comparable<T>> ValueValidationScope<T>.between(
+    min: T,
+    max: T,
+    reason: String? = null,
+) {
+    failIf((value < min) || (value > max)) {
+        BetweenViolation(
+            min = min,
+            max = max,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must be between $min and $max",
         )
     }
 }
