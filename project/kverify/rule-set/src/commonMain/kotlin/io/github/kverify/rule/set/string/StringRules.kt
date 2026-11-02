@@ -22,9 +22,8 @@ public fun ValueValidationScope<String>.minLength(
     failIf(actualLength < minLengthAllowed) {
         MinLengthViolation(
             minLengthAllowed = minLengthAllowed,
-            actualLength = actualLength,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be at least $minLengthAllowed characters long. Actual length: $actualLength",
+            reason = reason ?: "Value must be at least $minLengthAllowed characters long",
         )
     }
 }
@@ -38,9 +37,8 @@ public fun ValueValidationScope<String>.maxLength(
     failIf(actualLength > maxLengthAllowed) {
         MaxLengthViolation(
             maxLengthAllowed = maxLengthAllowed,
-            actualLength = actualLength,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be at most $maxLengthAllowed characters long. Actual length: $actualLength",
+            reason = reason ?: "Value must be at most $maxLengthAllowed characters long",
         )
     }
 }
@@ -54,9 +52,8 @@ public fun ValueValidationScope<String>.exactLength(
     failIf(actualLength != length) {
         ExactLengthViolation(
             expectedLength = length,
-            actualLength = actualLength,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be exactly $length characters long. Actual length: $actualLength",
+            reason = reason ?: "Value must be exactly $length characters long",
         )
     }
 }
@@ -68,9 +65,8 @@ public fun ValueValidationScope<String>.matches(
     failIf(!pattern.matches(value)) {
         PatternViolation(
             pattern = pattern.pattern,
-            actualValue = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must match pattern \"${pattern.pattern}\". Actual value: \"$value\"",
+            reason = reason ?: "Value must match pattern \"${pattern.pattern}\"",
         )
     }
 }
@@ -86,11 +82,10 @@ public fun ValueValidationScope<String>.lengthRange(
         LengthRangeViolation(
             minLengthAllowed = minLengthAllowed,
             maxLengthAllowed = maxLengthAllowed,
-            actualLength = actualLength,
             validationPath = validationContext.validationPath(),
             reason =
                 reason
-                    ?: "Value must be between $minLengthAllowed and $maxLengthAllowed characters long. Actual length: $actualLength",
+                    ?: "Value must be between $minLengthAllowed and $maxLengthAllowed characters long",
         )
     }
 }

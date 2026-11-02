@@ -20,9 +20,8 @@ public fun <T> ValueValidationScope<T>.equalTo(
     failIf(value != expected) {
         EqualToViolation(
             expected = expected,
-            actual = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be equal to $expected. Actual: $value",
+            reason = reason ?: "Value must be equal to $expected",
         )
     }
 }
@@ -47,9 +46,8 @@ public fun <T> ValueValidationScope<T>.oneOf(
     failIf(value !in allowed) {
         OneOfViolation(
             allowed = allowed,
-            actual = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must be one of $allowed. Actual: $value",
+            reason = reason ?: "Value must be one of $allowed",
         )
     }
 }
@@ -61,9 +59,8 @@ public fun <T> ValueValidationScope<T>.noneOf(
     failIf(value in forbidden) {
         NoneOfViolation(
             forbidden = forbidden,
-            actual = value,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Value must not be one of $forbidden. Actual: $value",
+            reason = reason ?: "Value must not be one of $forbidden",
         )
     }
 }

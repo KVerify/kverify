@@ -13,9 +13,8 @@ public fun <C : Collection<*>> ValueValidationScope<C>.minSize(
     failIf(actualSize < minSizeAllowed) {
         MinSizeViolation(
             minSizeAllowed = minSizeAllowed,
-            actualSize = actualSize,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Collection must have at least $minSizeAllowed elements. Actual size: $actualSize",
+            reason = reason ?: "Collection must have at least $minSizeAllowed elements",
         )
     }
 }
@@ -29,9 +28,8 @@ public fun <C : Collection<*>> ValueValidationScope<C>.maxSize(
     failIf(actualSize > maxSizeAllowed) {
         MaxSizeViolation(
             maxSizeAllowed = maxSizeAllowed,
-            actualSize = actualSize,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Collection must have at most $maxSizeAllowed elements. Actual size: $actualSize",
+            reason = reason ?: "Collection must have at most $maxSizeAllowed elements",
         )
     }
 }
@@ -45,9 +43,8 @@ public fun <C : Collection<*>> ValueValidationScope<C>.exactSize(
     failIf(actualSize != expectedSize) {
         ExactSizeViolation(
             expectedSize = expectedSize,
-            actualSize = actualSize,
             validationPath = validationContext.validationPath(),
-            reason = reason ?: "Collection must have exactly $expectedSize elements. Actual size: $actualSize",
+            reason = reason ?: "Collection must have exactly $expectedSize elements",
         )
     }
 }
@@ -63,11 +60,10 @@ public fun <C : Collection<*>> ValueValidationScope<C>.sizeRange(
         SizeRangeViolation(
             minSizeAllowed = minSizeAllowed,
             maxSizeAllowed = maxSizeAllowed,
-            actualSize = actualSize,
             validationPath = validationContext.validationPath(),
             reason =
                 reason
-                    ?: "Collection must have between $minSizeAllowed and $maxSizeAllowed elements. Actual size: $actualSize",
+                    ?: "Collection must have between $minSizeAllowed and $maxSizeAllowed elements",
         )
     }
 }
@@ -81,12 +77,8 @@ public fun <C : Collection<*>> ValueValidationScope<C>.distinct(reason: String? 
 
     failIf(actualSize != distinctSize) {
         DistinctViolation(
-            actualSize = actualSize,
-            distinctSize = distinctSize,
             validationPath = validationContext.validationPath(),
-            reason =
-                reason
-                    ?: "Collection must contain distinct elements. Actual size: $actualSize, distinct: $distinctSize",
+            reason = reason ?: "Collection must contain distinct elements",
         )
     }
 }

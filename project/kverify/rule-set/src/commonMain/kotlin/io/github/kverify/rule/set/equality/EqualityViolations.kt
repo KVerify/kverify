@@ -10,7 +10,6 @@ public data class NotNullViolation(
 
 public data class EqualToViolation<T>(
     public val expected: T,
-    public val actual: T,
     override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation
@@ -23,14 +22,12 @@ public data class NotEqualToViolation<T>(
 
 public data class OneOfViolation<T>(
     public val allowed: Set<T>,
-    public val actual: T,
     override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation
 
 public data class NoneOfViolation<T>(
     public val forbidden: Set<T>,
-    public val actual: T,
     override val validationPath: ValidationPath,
     override val reason: String,
 ) : PathAwareViolation
