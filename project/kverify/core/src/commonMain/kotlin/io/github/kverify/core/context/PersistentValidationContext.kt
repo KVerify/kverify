@@ -22,7 +22,6 @@ public class PersistentValidationContext private constructor(
         bit = bitOf(element.key),
     )
 
-    private val elementKey = element.key
     private val size: Int = (parent?.size ?: 0) + 1
     private val mask: Int = (parent?.mask ?: 0) or bit
 
@@ -37,24 +36,13 @@ public class PersistentValidationContext private constructor(
         return result
     }
 
-    override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? {
-        if ((mask and bitOf(key)) == 0) return null
-
-        @Suppress("UNCHECKED_CAST")
-        return nodeFor(key)?.element as E?
-    }
+    @Suppress("UNCHECKED_CAST")
+    override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? = nodeFor(key)?.element as E?
 
     override fun minusKey(key: ValidationContext.Key<*>): ValidationContext {
-        if ((mask and bitOf(key)) == 0) return this
-        val target = nodeFor(key) ?: return this
+        val existingNode = nodeFor(key) ?: return this
 
-        val base = target.parent
-
-        return if (target === this) {
-            base ?: EmptyValidationContext
-        } else {
-            copyNewerOnto(base, target)
-        }
+        return rebuildRemoving(existingNode) ?: EmptyValidationContext
     }
 
     override fun iterator(): Iterator<ValidationContext.Element> {
@@ -62,12 +50,12 @@ public class PersistentValidationContext private constructor(
 
         val elements = arrayOfNulls<ValidationContext.Element>(size)
 
-        var node: PersistentValidationContext? = this
-        var index = size
+        var currentNode: PersistentValidationContext? = this
+        var index = elements.lastIndex
 
-        while (node != null) {
-            elements[--index] = node.element
-            node = node.parent
+        while (currentNode != null) {
+            elements[index--] = currentNode.element
+            currentNode = currentNode.parent
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -76,31 +64,32 @@ public class PersistentValidationContext private constructor(
 
     private fun plusElement(incoming: ValidationContext.Element): PersistentValidationContext {
         val key = incoming.key
-        val bit = bitOf(key)
 
-        if ((mask and bit) != 0) {
-            val target = nodeFor(key)
+        val existingNode =
+            nodeFor(key) ?: return PersistentValidationContext(
+                element = incoming,
+                parent = this,
+            )
 
-            if (target != null) {
-                val merged = key.onCollision(target.element, incoming)
+        val mergedElement =
+            key.onCollision(
+                existingNode.element,
+                incoming,
+            )
 
-                return if (merged === target.element) {
-                    this
-                } else {
-                    replaced(target, merged)
-                }
-            }
-        }
+        if (mergedElement === existingNode.element) return this
 
-        return PersistentValidationContext(incoming, this, bit)
+        return rebuildReplacing(existingNode, mergedElement)
     }
 
     private fun nodeFor(key: ValidationContext.Key<*>): PersistentValidationContext? {
+        if ((mask and bitOf(key)) == 0) return null
+
         var node: PersistentValidationContext? = this
 
         while (node != null) {
-            val candidate = node.elementKey
-            if (candidate === key || candidate == key) return node
+            val candidate = node.element.key
+            if (candidate == key) return node
 
             node = node.parent
         }
@@ -108,40 +97,54 @@ public class PersistentValidationContext private constructor(
         return null
     }
 
-    private fun replaced(
-        target: PersistentValidationContext,
-        merged: ValidationContext.Element,
+    private fun rebuildReplacing(
+        existingNode: PersistentValidationContext,
+        newElement: ValidationContext.Element,
     ): PersistentValidationContext {
-        val replacement = PersistentValidationContext(merged, target.parent)
+        if (existingNode === this) return PersistentValidationContext(newElement, parent)
 
-        return if (target === this) {
-            replacement
-        } else {
-            copyNewerOnto(replacement, target)
+        val elementsToRebuild = elementsBeforeNode(existingNode)
+        var currentNode = PersistentValidationContext(newElement, existingNode.parent)
+
+        for (incomingElement in elementsToRebuild) {
+            currentNode = PersistentValidationContext(incomingElement, currentNode)
         }
+
+        return currentNode
     }
 
-    private fun copyNewerOnto(
-        base: PersistentValidationContext?,
-        target: PersistentValidationContext,
-    ): PersistentValidationContext {
-        val newer = ArrayList<PersistentValidationContext>(size - target.size)
-        var node: PersistentValidationContext? = this
+    private fun rebuildRemoving(existingNode: PersistentValidationContext): PersistentValidationContext? {
+        if (existingNode === this) return parent
 
-        while (node != null && node !== target) {
-            newer.add(node)
-            node = node.parent
+        val elementsToRebuild = elementsBeforeNode(existingNode)
+        var currentNode = existingNode.parent
+
+        for (incomingElement in elementsToRebuild) {
+            currentNode = PersistentValidationContext(incomingElement, currentNode)
         }
 
-        val oldest = newer.last()
-        var head = PersistentValidationContext(oldest.element, base)
+        return currentNode
+    }
 
-        for (i in newer.size - 2 downTo 0) {
-            val above = newer[i]
-            head = PersistentValidationContext(above.element, head)
+    private fun elementsBeforeNode(existingNode: PersistentValidationContext): Array<ValidationContext.Element> {
+        val resultSize = size - existingNode.size
+
+        if (resultSize == 0 && existingNode === this) return arrayOf()
+        if (resultSize <= 0) error("Given node is not part of this context")
+
+        val result = arrayOfNulls<ValidationContext.Element>(resultSize)
+        var currentNode: PersistentValidationContext? = this
+        var index = result.lastIndex
+
+        while (currentNode != null && index >= 0) {
+            result[index--] = currentNode.element
+            currentNode = currentNode.parent
         }
 
-        return head
+        if (currentNode !== existingNode) error("Given node was not found")
+
+        @Suppress("UNCHECKED_CAST")
+        return result as Array<ValidationContext.Element>
     }
 }
 
