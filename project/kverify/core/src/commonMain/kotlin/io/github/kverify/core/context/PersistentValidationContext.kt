@@ -3,27 +3,15 @@ package io.github.kverify.core.context
 public class PersistentValidationContext private constructor(
     private val element: ValidationContext.Element,
     private val parent: PersistentValidationContext?,
-    bit: Int,
 ) : ValidationContext {
-    private constructor(
-        element: ValidationContext.Element,
-        parent: PersistentValidationContext?,
-    ) : this(
-        element = element,
-        parent = parent,
-        bit = bitOf(element.key),
-    )
+    private val size: Int = (parent?.size ?: 0) + 1
 
     public constructor(
         element: ValidationContext.Element,
     ) : this(
         element = element,
         parent = null,
-        bit = bitOf(element.key),
     )
-
-    private val size: Int = (parent?.size ?: 0) + 1
-    private val mask: Int = (parent?.mask ?: 0) or bit
 
     override fun plus(other: ValidationContext): PersistentValidationContext {
         if (other is ValidationContext.Element) return plusElement(other)
@@ -83,8 +71,6 @@ public class PersistentValidationContext private constructor(
     }
 
     private fun nodeFor(key: ValidationContext.Key<*>): PersistentValidationContext? {
-        if ((mask and bitOf(key)) == 0) return null
-
         var node: PersistentValidationContext? = this
 
         while (node != null) {
@@ -147,7 +133,3 @@ public class PersistentValidationContext private constructor(
         return result as Array<ValidationContext.Element>
     }
 }
-
-private const val HASH_MULTIPLIER = -1640531527
-
-private fun bitOf(key: ValidationContext.Key<*>): Int = 1 shl ((key.hashCode() * HASH_MULTIPLIER) ushr 27)
