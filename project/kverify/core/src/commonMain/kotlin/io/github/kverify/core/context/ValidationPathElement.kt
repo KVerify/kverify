@@ -16,7 +16,7 @@ public class ValidationPathElement(
 
     override fun plus(other: ValidationContext): ValidationContext =
         if (other is ValidationPathElement) {
-            this.addingAllSegments(other)
+            this.rebuildAddingSegments(other)
         } else {
             super.plus(other)
         }
@@ -60,7 +60,7 @@ public class ValidationPathElement(
             when {
                 oldElement !is ValidationPathElement -> newElement
                 newElement !is ValidationPathElement -> oldElement
-                else -> oldElement.addingAllSegments(newElement)
+                else -> oldElement.rebuildAddingSegments(newElement)
             }
     }
 }
@@ -99,7 +99,7 @@ private fun ValidationPathElement.toSegmentArray(): Array<ValidationPathSegment>
     return segments
 }
 
-private fun ValidationPathElement.addingAllSegments(segmentsSource: ValidationPathElement): ValidationPathElement {
+private fun ValidationPathElement.rebuildAddingSegments(segmentsSource: ValidationPathElement): ValidationPathElement {
     if (segmentsSource.parent == null) {
         return ValidationPathElement(segmentsSource.segment, this)
     }
