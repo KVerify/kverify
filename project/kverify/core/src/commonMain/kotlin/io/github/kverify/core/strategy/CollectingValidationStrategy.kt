@@ -2,7 +2,6 @@ package io.github.kverify.core.strategy
 
 import io.github.kverify.core.context.EmptyValidationContext
 import io.github.kverify.core.context.ValidationContext
-import io.github.kverify.core.model.ValidationResult
 import io.github.kverify.core.scope.ValidationScope
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
@@ -19,18 +18,17 @@ public class CollectingValidationStrategy(
 public inline fun validateCollecting(
     validationContext: ValidationContext = EmptyValidationContext,
     block: ValidationScope.() -> Unit,
-): ValidationResult {
+): List<Violation> {
     contract {
         callsInPlace(block, InvocationKind.EXACTLY_ONCE)
     }
 
-    val violations =
-        buildList {
-            ValidationScope(
-                validationStrategy = CollectingValidationStrategy(this),
-                validationContext = validationContext,
-            ).apply(block)
-        }
+    return buildList {
+        val strategy = CollectingValidationStrategy(this)
 
-    return ValidationResult(violations)
+        ValidationScope(
+            validationStrategy = strategy,
+            validationContext = validationContext,
+        ).apply(block)
+    }
 }
