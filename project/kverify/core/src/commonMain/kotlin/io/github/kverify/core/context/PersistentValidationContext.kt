@@ -79,13 +79,6 @@ public class PersistentValidationContext private constructor(
         return (elements as Array<ValidationContext.Element>).iterator()
     }
 
-    /**
-     * Returns a context with [incoming] added as the newest element if no stored element has the
-     * same key as [incoming].
-     *
-     * If a stored element has the same key as [incoming], replaces it with the result of
-     * [ValidationContext.Key.onCollision] of the stored element's key, using [rebuildReplacing].
-     */
     private fun plusElement(incoming: ValidationContext.Element): PersistentValidationContext {
         val existingNode =
             nodeFor(incoming.key) ?: return PersistentValidationContext(
@@ -106,10 +99,6 @@ public class PersistentValidationContext private constructor(
         return rebuildReplacing(existingNode, mergedElement)
     }
 
-    /**
-     * Iterates through all nodes of this context, from newest to oldest, and returns the first
-     * node whose element has the given [key], or `null` if there is none.
-     */
     private fun nodeFor(key: ValidationContext.Key<*>): PersistentValidationContext? {
         var node: PersistentValidationContext? = this
 
@@ -123,12 +112,6 @@ public class PersistentValidationContext private constructor(
         return null
     }
 
-    /**
-     * Returns a context in which the element of [existingNode] is replaced by [newElement].
-     * The replacement keeps the position of the element it replaces.
-     *
-     * @throws IllegalStateException if [existingNode] is not part of this context.
-     */
     private fun rebuildReplacing(
         existingNode: PersistentValidationContext,
         newElement: ValidationContext.Element,
@@ -145,11 +128,6 @@ public class PersistentValidationContext private constructor(
         return currentNode
     }
 
-    /**
-     * Returns a context without the element of [existingNode], or `null` if no elements remain.
-     *
-     * @throws IllegalStateException if [existingNode] is not part of this context.
-     */
     private fun rebuildRemoving(existingNode: PersistentValidationContext): PersistentValidationContext? {
         if (existingNode === this) return parent
 
@@ -163,13 +141,6 @@ public class PersistentValidationContext private constructor(
         return currentNode
     }
 
-    /**
-     * Returns the elements of the nodes added after [existingNode], from oldest to newest.
-     * The element of [existingNode] itself is not included. The result is empty if
-     * [existingNode] is this node.
-     *
-     * @throws IllegalStateException if [existingNode] is not part of this context.
-     */
     private fun elementsAddedAfter(existingNode: PersistentValidationContext): Array<ValidationContext.Element> {
         val resultSize = size - existingNode.size
 
