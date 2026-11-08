@@ -1,7 +1,13 @@
 package io.github.kverify.core.model
 
+/**
+ * A single segment of a [ValidationPath]: either a [NamePathSegment] or an [IndexPathSegment].
+ */
 public sealed interface ValidationPathSegment
 
+/**
+ * A [ValidationPathSegment] with a [name].
+ */
 public class NamePathSegment(
     public val name: String,
 ) : ValidationPathSegment {
@@ -17,6 +23,9 @@ public class NamePathSegment(
     override fun hashCode(): Int = name.hashCode()
 }
 
+/**
+ * A [ValidationPathSegment] with an [index].
+ */
 public class IndexPathSegment(
     public val index: Int,
 ) : ValidationPathSegment {
