@@ -9,10 +9,10 @@ import io.github.kverify.core.model.ValidationPathSegment
  * A [ValidationContext.Element] that stores a validation path as a linked list.
  */
 public class ValidationPathElement(
-    public val segment: ValidationPathSegment,
-    public val parent: ValidationPathElement?,
+    internal val segment: ValidationPathSegment,
+    internal val parent: ValidationPathElement?,
 ) : ValidationContext.Element {
-    public val size: Int = (parent?.size ?: 0) + 1
+    internal val size: Int = (parent?.size ?: 0) + 1
 
     override val key: ValidationContext.Key<*>
         get() = Key
