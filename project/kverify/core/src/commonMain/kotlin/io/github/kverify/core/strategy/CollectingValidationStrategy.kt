@@ -7,6 +7,9 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+/**
+ * A [ValidationStrategy] that adds every reported violation to [violationStorage].
+ */
 public class CollectingValidationStrategy(
     private val violationStorage: MutableCollection<Violation>,
 ) : ValidationStrategy {
@@ -15,6 +18,10 @@ public class CollectingValidationStrategy(
     }
 }
 
+/**
+ * Calls [block] in a [ValidationScope] with the given [validationContext] and returns
+ * the violations reported in that scope.
+ */
 public inline fun validateCollecting(
     validationContext: ValidationContext = EmptyValidationContext,
     block: ValidationScope.() -> Unit,
