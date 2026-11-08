@@ -29,8 +29,6 @@ public class PersistentValidationContext private constructor(
      * The replacement is the result of calling [ValidationContext.Key.onCollision] on the stored
      * element's key, with the stored element as `oldElement` and the added element as `newElement`.
      * It takes the position of the stored element.
-     *
-     * Returns `this` if no element was added or replaced.
      */
     override fun plus(other: ValidationContext): PersistentValidationContext {
         if (other is ValidationContext.Element) return plusElement(other)
@@ -53,7 +51,6 @@ public class PersistentValidationContext private constructor(
      * Returns a context containing elements from this context, but without an element with
      * the specified [key].
      *
-     * Returns `this` if no element with a matching key was found.
      * Returns [EmptyValidationContext] if the matching element was the only one in this context.
      */
     override fun minusKey(key: ValidationContext.Key<*>): ValidationContext {
