@@ -1,5 +1,8 @@
 package io.github.kverify.core.violation
 
+/**
+ * A [Violation] that consists only of a [reason].
+ */
 public class ViolationReason(
     override val reason: String,
 ) : Violation {
