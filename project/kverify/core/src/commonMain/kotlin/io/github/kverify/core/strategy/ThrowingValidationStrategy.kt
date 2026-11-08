@@ -8,11 +8,9 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
-public interface ThrowingValidationStrategy : ValidationStrategy {
-    override fun failWith(violation: Violation): Nothing
+public class ThrowingValidationStrategy : ValidationStrategy {
+    override fun failWith(violation: Violation): Nothing = throw ViolationException(violation)
 }
-
-public fun ThrowingValidationStrategy(): ThrowingValidationStrategy = ThrowingValidationStrategyImpl
 
 public inline fun <R> validateThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
@@ -26,8 +24,4 @@ public inline fun <R> validateThrowing(
         validationStrategy = ThrowingValidationStrategy(),
         validationContext = validationContext,
     ).run(block)
-}
-
-private object ThrowingValidationStrategyImpl : ThrowingValidationStrategy {
-    override fun failWith(violation: Violation): Nothing = throw ViolationException(violation)
 }
