@@ -46,7 +46,6 @@ public class PersistentValidationContext private constructor(
     /**
      * Returns the element with the given [key], or `null` if there is none.
      */
-    @Suppress("UNCHECKED_CAST")
     override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? =
         nodeFor(key)?.element?.get(key)
 
