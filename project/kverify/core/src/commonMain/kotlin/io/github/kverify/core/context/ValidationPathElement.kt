@@ -5,6 +5,9 @@ import io.github.kverify.core.model.NamePathSegment
 import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.model.ValidationPathSegment
 
+/**
+ * A [ValidationContext.Element] that stores a validation path as a linked list.
+ */
 public class ValidationPathElement(
     public val segment: ValidationPathSegment,
     public val parent: ValidationPathElement?,
@@ -14,6 +17,13 @@ public class ValidationPathElement(
     override val key: ValidationContext.Key<*>
         get() = Key
 
+    /**
+     * If [other] is a [ValidationPathElement], returns a new [ValidationPathElement] with
+     * the segments of [other] added to the end of this path.
+     *
+     * Otherwise, returns a [PersistentValidationContext] with this element followed by
+     * the elements of [other].
+     */
     override fun plus(other: ValidationContext): ValidationContext =
         if (other is ValidationPathElement) {
             this.rebuildAddingSegments(other)
@@ -67,6 +77,13 @@ public class ValidationPathElement(
     }
 
     public companion object Key : ValidationContext.Key<ValidationPathElement> {
+        /**
+         * If [oldElement] is not a [ValidationPathElement], returns [newElement].
+         * If [newElement] is not a [ValidationPathElement], returns [oldElement].
+         *
+         * Otherwise, returns a new [ValidationPathElement] with the segments of [newElement]
+         * added to the end of the path of [oldElement].
+         */
         override fun onCollision(
             oldElement: ValidationContext.Element,
             newElement: ValidationContext.Element,
@@ -79,14 +96,29 @@ public class ValidationPathElement(
     }
 }
 
+/**
+ * Returns a new [ValidationPathElement] with a single [NamePathSegment] created from [name].
+ */
 public fun pathName(name: String): ValidationPathElement = ValidationPathElement(NamePathSegment(name), null)
 
+/**
+ * Returns a new [ValidationPathElement] with a single [IndexPathSegment] created from [index].
+ */
 public fun pathIndex(index: Int): ValidationPathElement = ValidationPathElement(IndexPathSegment(index), null)
 
+/**
+ * Returns the result of `this + pathName(name)`.
+ */
 public fun ValidationContext.plusPathName(name: String): ValidationContext = this + pathName(name)
 
+/**
+ * Returns the result of `this + pathIndex(index)`.
+ */
 public fun ValidationContext.plusPathIndex(index: Int): ValidationContext = this + pathIndex(index)
 
+/**
+ * Returns a [ValidationPath] representation of this [ValidationPathElement].
+ */
 public fun ValidationPathElement.toValidationPath(): ValidationPath = ValidationPath(this.toSegmentArray().asList())
 
 private fun ValidationPathElement.toSegmentArray(): Array<ValidationPathSegment> {
