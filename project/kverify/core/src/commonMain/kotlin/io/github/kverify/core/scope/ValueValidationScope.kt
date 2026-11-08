@@ -10,6 +10,9 @@ public interface ValueValidationScope<out V> : ValidationScope {
     override fun plus(otherValidationContext: ValidationContext): ValueValidationScope<V>
 }
 
+/**
+ * Returns this scope with a non-null value type if its [value] is not `null`, or `null` otherwise.
+ */
 public fun <V : Any> ValueValidationScope<V?>.takeIfValueNotNull(): ValueValidationScope<V>? =
     if (value != null) {
         @Suppress("UNCHECKED_CAST")
@@ -18,12 +21,20 @@ public fun <V : Any> ValueValidationScope<V?>.takeIfValueNotNull(): ValueValidat
         null
     }
 
+/**
+ * Iterates over the [value] and calls [block] on a new [ValueValidationScope] for each element.
+ * The scope of each element is this scope with the index of the element added as a [pathIndex].
+ */
 public inline fun <V, I : Iterable<V>> ValueValidationScope<I>.each(block: ValueValidationScope<V>.() -> Unit) {
     value.forEachIndexed { index, element ->
         pathIndex(index).validationScope().forValue(element).block()
     }
 }
 
+/**
+ * Returns a [ValueValidationScope] with the given [value], [validationStrategy] and
+ * [validationContext].
+ */
 public fun <V> ValueValidationScope(
     value: V,
     validationStrategy: ValidationStrategy,
