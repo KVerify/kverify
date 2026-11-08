@@ -52,6 +52,20 @@ public class ValidationPathElement(
         return result
     }
 
+    private fun rebuildAddingSegments(segmentsSource: ValidationPathElement): ValidationPathElement {
+        if (segmentsSource.parent == null) {
+            return ValidationPathElement(segmentsSource.segment, this)
+        }
+
+        var result = this
+
+        for (incomingSegment in segmentsSource.toSegmentArray()) {
+            result = ValidationPathElement(incomingSegment, result)
+        }
+
+        return result
+    }
+
     public companion object Key : ValidationContext.Key<ValidationPathElement> {
         override fun onCollision(
             oldElement: ValidationContext.Element,
@@ -97,18 +111,4 @@ private fun ValidationPathElement.toSegmentArray(): Array<ValidationPathSegment>
     }
 
     return segments
-}
-
-private fun ValidationPathElement.rebuildAddingSegments(segmentsSource: ValidationPathElement): ValidationPathElement {
-    if (segmentsSource.parent == null) {
-        return ValidationPathElement(segmentsSource.segment, this)
-    }
-
-    var result = this
-
-    for (incomingSegment in segmentsSource.toSegmentArray()) {
-        result = ValidationPathElement(incomingSegment, result)
-    }
-
-    return result
 }
