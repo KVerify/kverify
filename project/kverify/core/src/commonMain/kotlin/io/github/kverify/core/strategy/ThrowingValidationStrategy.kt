@@ -8,10 +8,18 @@ import io.github.kverify.core.violation.Violation
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+/**
+ * A [ValidationStrategy] that throws a [ViolationException] with the reported violation.
+ */
 public class ThrowingValidationStrategy : ValidationStrategy {
     override fun failWith(violation: Violation): Nothing = throw ViolationException(violation)
 }
 
+/**
+ * Calls [block] in a [ValidationScope] with the given [validationContext] and returns
+ * the result of [block].
+ * A violation reported in that scope is thrown as a [ViolationException].
+ */
 public inline fun <R> validateThrowing(
     validationContext: ValidationContext = EmptyValidationContext,
     block: ValidationScope.() -> R,
