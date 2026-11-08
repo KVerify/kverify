@@ -81,21 +81,11 @@ public class ValidationPathElement(
 
 public fun pathName(name: String): ValidationPathElement = ValidationPathElement(NamePathSegment(name), null)
 
-public fun ValidationContext.plusPathName(name: String): ValidationContext =
-    this +
-        ValidationPathElement(
-            NamePathSegment(name),
-            parent = null,
-        )
-
 public fun pathIndex(index: Int): ValidationPathElement = ValidationPathElement(IndexPathSegment(index), null)
 
-public fun ValidationContext.plusPathIndex(index: Int): ValidationContext =
-    this +
-        ValidationPathElement(
-            segment = IndexPathSegment(index),
-            parent = null,
-        )
+public fun ValidationContext.plusPathName(name: String): ValidationContext = this + pathName(name)
+
+public fun ValidationContext.plusPathIndex(index: Int): ValidationContext = this + pathIndex(index)
 
 public fun ValidationPathElement.toValidationPath(): ValidationPath = ValidationPath(this.toSegmentArray().asList())
 
