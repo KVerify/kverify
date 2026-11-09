@@ -9,6 +9,12 @@ import io.github.kverify.rule.set.violation.MaxSizeViolation
 import io.github.kverify.rule.set.violation.MinSizeViolation
 import io.github.kverify.rule.set.violation.SizeBetweenViolation
 
+/**
+ * Reports a [MinSizeViolation] if the size of the value is less than [minSize].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be at least [minSize]".
+ */
 public fun ValueValidationScope<Collection<*>>.minSize(
     minSize: Int,
     reason: String? = null,
@@ -22,6 +28,12 @@ public fun ValueValidationScope<Collection<*>>.minSize(
     }
 }
 
+/**
+ * Reports a [MaxSizeViolation] if the size of the value is greater than [maxSize].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be at most [maxSize]".
+ */
 public fun ValueValidationScope<Collection<*>>.maxSize(
     maxSize: Int,
     reason: String? = null,
@@ -35,6 +47,13 @@ public fun ValueValidationScope<Collection<*>>.maxSize(
     }
 }
 
+/**
+ * Reports a [SizeBetweenViolation] if the size of the value is not between [minSize]
+ * and [maxSize], inclusive.
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be between [minSize] and [maxSize]".
+ */
 public fun ValueValidationScope<Collection<*>>.sizeBetween(
     minSize: Int,
     maxSize: Int,
@@ -50,6 +69,12 @@ public fun ValueValidationScope<Collection<*>>.sizeBetween(
     }
 }
 
+/**
+ * Reports an [ExactSizeViolation] if the size of the value is not [expectedSize].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be exactly [expectedSize]".
+ */
 public fun ValueValidationScope<Collection<*>>.exactSize(
     expectedSize: Int,
     reason: String? = null,
@@ -63,6 +88,12 @@ public fun ValueValidationScope<Collection<*>>.exactSize(
     }
 }
 
+/**
+ * Reports a [DistinctViolation] if the value contains equal elements.
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Must contain only distinct elements".
+ */
 public fun ValueValidationScope<Collection<*>>.distinct(reason: String? = null) {
     if (value.size < 2) return
 
