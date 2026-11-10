@@ -1,42 +1,60 @@
 package io.github.kverify.core.context
 
 import de.infix.testBalloon.framework.core.testSuite
-import io.github.kverify.core.util.testValidationContexts
-import io.github.kverify.core.util.testValidationElements
-import io.github.kverify.core.util.testValidationKeys
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertSame
 
 val EmptyValidationContextTest by testSuite {
-    test("plus returns 'other'") {
-        (testValidationElements.asList() + testValidationContexts).forEach { other ->
-            assertSame(other, EmptyValidationContext + other)
+    testSuite("plus") {
+        test("returns the other context") {
+            val other = ProbeElement()
+
+            val result = EmptyValidationContext + other
+
+            assertSame(other, result)
         }
     }
 
-    testValidationKeys.forEach { key ->
-        testSuite("get and minusKey for $key") {
-            test("get($key) returns null") {
-                assertNull(EmptyValidationContext[key])
-            }
+    testSuite("get") {
+        test("returns null") {
+            val result = EmptyValidationContext[ProbeKey]
 
-            test("minusKey($key) returns itself") {
-                assertSame(EmptyValidationContext, EmptyValidationContext.minusKey(key))
-            }
+            assertNull(result)
         }
     }
 
-    test("iterator has no next element") {
-        assertFalse {
-            EmptyValidationContext.iterator().hasNext()
+    testSuite("minusKey") {
+        test("returns EmptyValidationContext") {
+            val result = EmptyValidationContext.minusKey(ProbeKey)
+
+            assertSame(EmptyValidationContext, result)
         }
     }
 
-    test("iterator.next throws") {
-        assertFailsWith<NoSuchElementException> {
-            EmptyValidationContext.iterator().next()
+    testSuite("iterator") {
+        test("has no elements") {
+            val iterator = EmptyValidationContext.iterator()
+
+            assertFalse(iterator.hasNext())
+        }
+
+        test("next throws NoSuchElementException") {
+            val iterator = EmptyValidationContext.iterator()
+
+            assertFailsWith<NoSuchElementException> { iterator.next() }
         }
     }
+}
+
+private class ProbeElement : ValidationContext.Element {
+    override val key: ValidationContext.Key<*> = ProbeKey
+}
+
+private object ProbeKey : ValidationContext.Key<ProbeElement> {
+    override fun onCollision(
+        oldElement: ValidationContext.Element,
+        newElement: ValidationContext.Element,
+    ): ValidationContext.Element = newElement
 }
