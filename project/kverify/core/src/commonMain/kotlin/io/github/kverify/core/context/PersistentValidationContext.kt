@@ -44,8 +44,7 @@ public class PersistentValidationContext private constructor(
     /**
      * Returns the element with the given [key], or `null` if there is none.
      */
-    override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? =
-        nodeFor(key)?.element?.get(key)
+    override fun <E : ValidationContext.Element> get(key: ValidationContext.Key<E>): E? = nodeFor(key)?.element?.get(key)
 
     /**
      * Returns a context containing elements from this context, but without an element with
@@ -103,8 +102,9 @@ public class PersistentValidationContext private constructor(
         var node: PersistentValidationContext? = this
 
         while (node != null) {
-            val candidate = node.element.key
-            if (candidate == key) return node
+            node.element[key]?.let {
+                return node
+            }
 
             node = node.parent
         }
