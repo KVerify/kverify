@@ -7,6 +7,7 @@ import io.github.kverify.core.context.plusPathName
 import io.github.kverify.core.strategy.ValidationStrategy
 import io.github.kverify.core.strategy.failIf
 import io.github.kverify.core.violation.Violation
+import kotlin.contracts.ExperimentalExtendedContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.reflect.KProperty0
@@ -57,12 +58,14 @@ public fun <V> ValidationContext.forProperty(property: KProperty0<V>): ValueVali
 /**
  * Reports the violation from [lazyViolation] if [condition] is `true`.
  */
+@OptIn(ExperimentalExtendedContracts::class)
 public inline fun ValidationScope.failIf(
     condition: Boolean,
     lazyViolation: () -> Violation,
 ) {
     contract {
         callsInPlace(lazyViolation, InvocationKind.AT_MOST_ONCE)
+        condition.holdsIn(lazyViolation)
     }
 
     return validationStrategy.failIf(condition, lazyViolation)
