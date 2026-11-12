@@ -1,5 +1,5 @@
 [versions]
-kotlin = "2.4.10"
+kotlin = "2.3.21"
 publish = "0.37.0"
 dokka = "2.2.0"
 test-balloon = "1.1.0"
