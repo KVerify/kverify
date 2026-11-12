@@ -27,7 +27,7 @@ public fun <V : Any> ValueValidationScope<V?>.takeIfValueNotNull(): ValueValidat
  */
 public inline fun <V, I : Iterable<V>> ValueValidationScope<I>.each(block: ValueValidationScope<V>.() -> Unit) {
     value.forEachIndexed { index, element ->
-        pathIndex(index).validationScope().forValue(element).block()
+        plus(pathIndex(index)).forValue(element).block()
     }
 }
 

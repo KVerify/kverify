@@ -3,7 +3,6 @@ package io.github.kverify.core.scope
 import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.pathName
-import io.github.kverify.core.context.plusPathName
 import io.github.kverify.core.strategy.ValidationStrategy
 import io.github.kverify.core.strategy.failIf
 import io.github.kverify.core.violation.Violation
@@ -23,37 +22,15 @@ public interface ValidationScope {
 }
 
 /**
- * Returns the [scope] context parameter with this context added to it.
- */
-context(scope: ValidationScope)
-public fun ValidationContext.validationScope(): ValidationScope = scope + this
-
-/**
  * Returns a [ValueValidationScope] for the value of [property], with the property name
  * added to this scope as a [pathName].
  */
 public fun <V> ValidationScope.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
-    pathName(property.name)
-        .validationScope()
-        .forValue(property.get())
-
-/**
- * Returns a [ValueValidationScope] for [value], with this context added to the [scope]
- * context parameter.
- */
-context(scope: ValidationScope)
-public fun <V> ValidationContext.forValue(value: V): ValueValidationScope<V> = validationScope().forValue(value)
-
-/**
- * Returns a [ValueValidationScope] for the value of [property], with this context and
- * the property name as a [pathName] added to the [scope] context parameter.
- */
-context(scope: ValidationScope)
-public fun <V> ValidationContext.forProperty(property: KProperty0<V>): ValueValidationScope<V> =
-    this
-        .plusPathName(property.name)
-        .validationScope()
-        .forValue(property.get())
+    plus(
+        pathName(property.name),
+    ).forValue(
+        property.get(),
+    )
 
 /**
  * Reports the violation from [lazyViolation] if [condition] is `true`.
