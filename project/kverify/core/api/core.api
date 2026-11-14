@@ -160,10 +160,6 @@ public abstract interface class io/github/kverify/core/strategy/ValidationStrate
 	public abstract fun failWith (Lio/github/kverify/core/violation/Violation;)V
 }
 
-public final class io/github/kverify/core/strategy/ValidationStrategyKt {
-	public static final fun failIf (Lio/github/kverify/core/strategy/ValidationStrategy;ZLkotlin/jvm/functions/Function0;)V
-}
-
 public abstract interface class io/github/kverify/core/violation/PathAwareViolation : io/github/kverify/core/violation/Violation {
 	public abstract fun getValidationPath ()Lio/github/kverify/core/model/ValidationPath;
 }

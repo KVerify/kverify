@@ -4,7 +4,6 @@ import io.github.kverify.core.annotation.KverifyDsl
 import io.github.kverify.core.context.ValidationContext
 import io.github.kverify.core.context.pathName
 import io.github.kverify.core.strategy.ValidationStrategy
-import io.github.kverify.core.strategy.failIf
 import io.github.kverify.core.violation.Violation
 import kotlin.contracts.ExperimentalExtendedContracts
 import kotlin.contracts.InvocationKind
@@ -45,7 +44,11 @@ public inline fun ValidationScope.failIf(
         condition.holdsIn(lazyViolation)
     }
 
-    return validationStrategy.failIf(condition, lazyViolation)
+    if (condition) {
+        val violation = lazyViolation()
+
+        validationStrategy.failWith(violation)
+    }
 }
 
 /**
