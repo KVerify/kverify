@@ -3,6 +3,21 @@ public final class io/github/kverify/rule/set/AnyRulesKt {
 	public static synthetic fun notNull$default (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;ILjava/lang/Object;)V
 }
 
+public final class io/github/kverify/rule/set/CharSequenceRulesKt {
+	public static final fun exactLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
+	public static synthetic fun exactLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
+	public static final fun lengthRange (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;)V
+	public static synthetic fun lengthRange$default (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;ILjava/lang/Object;)V
+	public static final fun matches (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;)V
+	public static synthetic fun matches$default (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;ILjava/lang/Object;)V
+	public static final fun maxLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
+	public static synthetic fun maxLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
+	public static final fun minLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
+	public static synthetic fun minLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
+	public static final fun notBlank (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;)V
+	public static synthetic fun notBlank$default (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;ILjava/lang/Object;)V
+}
+
 public final class io/github/kverify/rule/set/CollectionRulesKt {
 	public static final fun distinct (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;)V
 	public static synthetic fun distinct$default (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;ILjava/lang/Object;)V
@@ -27,21 +42,6 @@ public final class io/github/kverify/rule/set/ComparableRulesKt {
 	public static synthetic fun greaterThan$default (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/Comparable;Ljava/lang/String;ILjava/lang/Object;)V
 	public static final fun lessThan (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/Comparable;Ljava/lang/String;)V
 	public static synthetic fun lessThan$default (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/Comparable;Ljava/lang/String;ILjava/lang/Object;)V
-}
-
-public final class io/github/kverify/rule/set/StringRulesKt {
-	public static final fun exactLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
-	public static synthetic fun exactLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
-	public static final fun lengthRange (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;)V
-	public static synthetic fun lengthRange$default (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;ILjava/lang/Object;)V
-	public static final fun matches (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;)V
-	public static synthetic fun matches$default (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;ILjava/lang/Object;)V
-	public static final fun maxLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
-	public static synthetic fun maxLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
-	public static final fun minLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
-	public static synthetic fun minLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
-	public static final fun notBlank (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;)V
-	public static synthetic fun notBlank$default (Lio/github/kverify/core/scope/ValueValidationScope;Ljava/lang/String;ILjava/lang/Object;)V
 }
 
 public final class io/github/kverify/rule/set/violation/AtLeastViolation : io/github/kverify/core/violation/PathAwareViolation {

@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertIs
 import kotlin.test.assertSame
 
-val StringRulesTest by testSuite {
+val CharSequenceRulesTest by testSuite {
     testSuite("notBlank") {
         test("reports an empty value") {
             val violation = violationFor("") { notBlank() }
