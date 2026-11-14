@@ -1,0 +1,183 @@
+// Klib ABI Dump
+// Targets: [androidNativeArm32, androidNativeArm64, androidNativeX64, androidNativeX86, iosArm64, iosSimulatorArm64, iosX64, js, linuxArm64, linuxX64, macosArm64, macosX64, mingwX64, tvosArm64, tvosSimulatorArm64, tvosX64, wasmJs, wasmWasi, watchosArm64, watchosDeviceArm64, watchosSimulatorArm64, watchosX64]
+// Rendering settings:
+// - Signature version: 2
+// - Show manifest properties: true
+// - Show declarations: true
+
+// Library unique name: <io.github.kverify:core>
+open annotation class io.github.kverify.core.annotation/KverifyDsl : kotlin/Annotation { // io.github.kverify.core.annotation/KverifyDsl|null[0]
+    constructor <init>() // io.github.kverify.core.annotation/KverifyDsl.<init>|<init>(){}[0]
+}
+
+abstract interface <#A: out kotlin/Any?> io.github.kverify.core.scope/ValueValidationScope : io.github.kverify.core.scope/ValidationScope { // io.github.kverify.core.scope/ValueValidationScope|null[0]
+    abstract val value // io.github.kverify.core.scope/ValueValidationScope.value|{}value[0]
+        abstract fun <get-value>(): #A // io.github.kverify.core.scope/ValueValidationScope.value.<get-value>|<get-value>(){}[0]
+
+    abstract fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.scope/ValueValidationScope<#A> // io.github.kverify.core.scope/ValueValidationScope.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+}
+
+abstract interface io.github.kverify.core.context/ValidationContext { // io.github.kverify.core.context/ValidationContext|null[0]
+    abstract fun <#A1: io.github.kverify.core.context/ValidationContext.Element> get(io.github.kverify.core.context/ValidationContext.Key<#A1>): #A1? // io.github.kverify.core.context/ValidationContext.get|get(io.github.kverify.core.context.ValidationContext.Key<0:0>){0§<io.github.kverify.core.context.ValidationContext.Element>}[0]
+    abstract fun iterator(): kotlin.collections/Iterator<io.github.kverify.core.context/ValidationContext.Element> // io.github.kverify.core.context/ValidationContext.iterator|iterator(){}[0]
+    abstract fun minusKey(io.github.kverify.core.context/ValidationContext.Key<*>): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/ValidationContext.minusKey|minusKey(io.github.kverify.core.context.ValidationContext.Key<*>){}[0]
+    abstract fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/ValidationContext.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+
+    abstract interface <#A1: out io.github.kverify.core.context/ValidationContext.Element> Key { // io.github.kverify.core.context/ValidationContext.Key|null[0]
+        abstract fun onCollision(io.github.kverify.core.context/ValidationContext.Element, io.github.kverify.core.context/ValidationContext.Element): io.github.kverify.core.context/ValidationContext.Element // io.github.kverify.core.context/ValidationContext.Key.onCollision|onCollision(io.github.kverify.core.context.ValidationContext.Element;io.github.kverify.core.context.ValidationContext.Element){}[0]
+    }
+
+    abstract interface Element : io.github.kverify.core.context/ValidationContext { // io.github.kverify.core.context/ValidationContext.Element|null[0]
+        abstract val key // io.github.kverify.core.context/ValidationContext.Element.key|{}key[0]
+            abstract fun <get-key>(): io.github.kverify.core.context/ValidationContext.Key<*> // io.github.kverify.core.context/ValidationContext.Element.key.<get-key>|<get-key>(){}[0]
+
+        open fun <#A2: io.github.kverify.core.context/ValidationContext.Element> get(io.github.kverify.core.context/ValidationContext.Key<#A2>): #A2? // io.github.kverify.core.context/ValidationContext.Element.get|get(io.github.kverify.core.context.ValidationContext.Key<0:0>){0§<io.github.kverify.core.context.ValidationContext.Element>}[0]
+        open fun iterator(): kotlin.collections/Iterator<io.github.kverify.core.context/ValidationContext.Element> // io.github.kverify.core.context/ValidationContext.Element.iterator|iterator(){}[0]
+        open fun minusKey(io.github.kverify.core.context/ValidationContext.Key<*>): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/ValidationContext.Element.minusKey|minusKey(io.github.kverify.core.context.ValidationContext.Key<*>){}[0]
+        open fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/ValidationContext.Element.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+    }
+}
+
+abstract interface io.github.kverify.core.scope/ValidationScope { // io.github.kverify.core.scope/ValidationScope|null[0]
+    abstract val validationContext // io.github.kverify.core.scope/ValidationScope.validationContext|{}validationContext[0]
+        abstract fun <get-validationContext>(): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.scope/ValidationScope.validationContext.<get-validationContext>|<get-validationContext>(){}[0]
+    abstract val validationStrategy // io.github.kverify.core.scope/ValidationScope.validationStrategy|{}validationStrategy[0]
+        abstract fun <get-validationStrategy>(): io.github.kverify.core.strategy/ValidationStrategy // io.github.kverify.core.scope/ValidationScope.validationStrategy.<get-validationStrategy>|<get-validationStrategy>(){}[0]
+
+    abstract fun <#A1: kotlin/Any?> forValue(#A1): io.github.kverify.core.scope/ValueValidationScope<#A1> // io.github.kverify.core.scope/ValidationScope.forValue|forValue(0:0){0§<kotlin.Any?>}[0]
+    abstract fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.scope/ValidationScope // io.github.kverify.core.scope/ValidationScope.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+}
+
+abstract interface io.github.kverify.core.strategy/ValidationStrategy { // io.github.kverify.core.strategy/ValidationStrategy|null[0]
+    abstract fun failWith(io.github.kverify.core.violation/Violation) // io.github.kverify.core.strategy/ValidationStrategy.failWith|failWith(io.github.kverify.core.violation.Violation){}[0]
+}
+
+abstract interface io.github.kverify.core.violation/PathAwareViolation : io.github.kverify.core.violation/Violation { // io.github.kverify.core.violation/PathAwareViolation|null[0]
+    abstract val validationPath // io.github.kverify.core.violation/PathAwareViolation.validationPath|{}validationPath[0]
+        abstract fun <get-validationPath>(): io.github.kverify.core.model/ValidationPath // io.github.kverify.core.violation/PathAwareViolation.validationPath.<get-validationPath>|<get-validationPath>(){}[0]
+}
+
+abstract interface io.github.kverify.core.violation/Violation { // io.github.kverify.core.violation/Violation|null[0]
+    abstract val reason // io.github.kverify.core.violation/Violation.reason|{}reason[0]
+        abstract fun <get-reason>(): kotlin/String // io.github.kverify.core.violation/Violation.reason.<get-reason>|<get-reason>(){}[0]
+}
+
+sealed interface io.github.kverify.core.model/ValidationPathSegment // io.github.kverify.core.model/ValidationPathSegment|null[0]
+
+final class io.github.kverify.core.context/PersistentValidationContext : io.github.kverify.core.context/ValidationContext { // io.github.kverify.core.context/PersistentValidationContext|null[0]
+    constructor <init>(io.github.kverify.core.context/ValidationContext.Element) // io.github.kverify.core.context/PersistentValidationContext.<init>|<init>(io.github.kverify.core.context.ValidationContext.Element){}[0]
+
+    final fun <#A1: io.github.kverify.core.context/ValidationContext.Element> get(io.github.kverify.core.context/ValidationContext.Key<#A1>): #A1? // io.github.kverify.core.context/PersistentValidationContext.get|get(io.github.kverify.core.context.ValidationContext.Key<0:0>){0§<io.github.kverify.core.context.ValidationContext.Element>}[0]
+    final fun iterator(): kotlin.collections/Iterator<io.github.kverify.core.context/ValidationContext.Element> // io.github.kverify.core.context/PersistentValidationContext.iterator|iterator(){}[0]
+    final fun minusKey(io.github.kverify.core.context/ValidationContext.Key<*>): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/PersistentValidationContext.minusKey|minusKey(io.github.kverify.core.context.ValidationContext.Key<*>){}[0]
+    final fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.context/PersistentValidationContext // io.github.kverify.core.context/PersistentValidationContext.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+}
+
+final class io.github.kverify.core.context/ValidationPathElement : io.github.kverify.core.context/ValidationContext.Element { // io.github.kverify.core.context/ValidationPathElement|null[0]
+    constructor <init>(io.github.kverify.core.model/ValidationPathSegment, io.github.kverify.core.context/ValidationPathElement?) // io.github.kverify.core.context/ValidationPathElement.<init>|<init>(io.github.kverify.core.model.ValidationPathSegment;io.github.kverify.core.context.ValidationPathElement?){}[0]
+
+    final val key // io.github.kverify.core.context/ValidationPathElement.key|{}key[0]
+        final fun <get-key>(): io.github.kverify.core.context/ValidationContext.Key<*> // io.github.kverify.core.context/ValidationPathElement.key.<get-key>|<get-key>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.core.context/ValidationPathElement.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.kverify.core.context/ValidationPathElement.hashCode|hashCode(){}[0]
+    final fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/ValidationPathElement.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+
+    final object Key : io.github.kverify.core.context/ValidationContext.Key<io.github.kverify.core.context/ValidationPathElement> { // io.github.kverify.core.context/ValidationPathElement.Key|null[0]
+        final fun onCollision(io.github.kverify.core.context/ValidationContext.Element, io.github.kverify.core.context/ValidationContext.Element): io.github.kverify.core.context/ValidationContext.Element // io.github.kverify.core.context/ValidationPathElement.Key.onCollision|onCollision(io.github.kverify.core.context.ValidationContext.Element;io.github.kverify.core.context.ValidationContext.Element){}[0]
+    }
+}
+
+final class io.github.kverify.core.exception/ViolationException : io.github.kverify.core.exception/ValidationException { // io.github.kverify.core.exception/ViolationException|null[0]
+    constructor <init>(io.github.kverify.core.violation/Violation) // io.github.kverify.core.exception/ViolationException.<init>|<init>(io.github.kverify.core.violation.Violation){}[0]
+
+    final val violation // io.github.kverify.core.exception/ViolationException.violation|{}violation[0]
+        final fun <get-violation>(): io.github.kverify.core.violation/Violation // io.github.kverify.core.exception/ViolationException.violation.<get-violation>|<get-violation>(){}[0]
+}
+
+final class io.github.kverify.core.model/IndexPathSegment : io.github.kverify.core.model/ValidationPathSegment { // io.github.kverify.core.model/IndexPathSegment|null[0]
+    constructor <init>(kotlin/Int) // io.github.kverify.core.model/IndexPathSegment.<init>|<init>(kotlin.Int){}[0]
+
+    final val index // io.github.kverify.core.model/IndexPathSegment.index|{}index[0]
+        final fun <get-index>(): kotlin/Int // io.github.kverify.core.model/IndexPathSegment.index.<get-index>|<get-index>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.core.model/IndexPathSegment.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.kverify.core.model/IndexPathSegment.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.github.kverify.core.model/IndexPathSegment.toString|toString(){}[0]
+}
+
+final class io.github.kverify.core.model/NamePathSegment : io.github.kverify.core.model/ValidationPathSegment { // io.github.kverify.core.model/NamePathSegment|null[0]
+    constructor <init>(kotlin/String) // io.github.kverify.core.model/NamePathSegment.<init>|<init>(kotlin.String){}[0]
+
+    final val name // io.github.kverify.core.model/NamePathSegment.name|{}name[0]
+        final fun <get-name>(): kotlin/String // io.github.kverify.core.model/NamePathSegment.name.<get-name>|<get-name>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.core.model/NamePathSegment.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.kverify.core.model/NamePathSegment.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.github.kverify.core.model/NamePathSegment.toString|toString(){}[0]
+}
+
+final class io.github.kverify.core.model/ValidationPath { // io.github.kverify.core.model/ValidationPath|null[0]
+    constructor <init>(kotlin.collections/List<io.github.kverify.core.model/ValidationPathSegment>) // io.github.kverify.core.model/ValidationPath.<init>|<init>(kotlin.collections.List<io.github.kverify.core.model.ValidationPathSegment>){}[0]
+
+    final val segments // io.github.kverify.core.model/ValidationPath.segments|{}segments[0]
+        final fun <get-segments>(): kotlin.collections/List<io.github.kverify.core.model/ValidationPathSegment> // io.github.kverify.core.model/ValidationPath.segments.<get-segments>|<get-segments>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.core.model/ValidationPath.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.kverify.core.model/ValidationPath.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.github.kverify.core.model/ValidationPath.toString|toString(){}[0]
+}
+
+final class io.github.kverify.core.strategy/CollectingValidationStrategy : io.github.kverify.core.strategy/ValidationStrategy { // io.github.kverify.core.strategy/CollectingValidationStrategy|null[0]
+    constructor <init>(kotlin.collections/MutableCollection<io.github.kverify.core.violation/Violation>) // io.github.kverify.core.strategy/CollectingValidationStrategy.<init>|<init>(kotlin.collections.MutableCollection<io.github.kverify.core.violation.Violation>){}[0]
+
+    final fun failWith(io.github.kverify.core.violation/Violation) // io.github.kverify.core.strategy/CollectingValidationStrategy.failWith|failWith(io.github.kverify.core.violation.Violation){}[0]
+}
+
+final class io.github.kverify.core.strategy/ThrowingValidationStrategy : io.github.kverify.core.strategy/ValidationStrategy { // io.github.kverify.core.strategy/ThrowingValidationStrategy|null[0]
+    constructor <init>() // io.github.kverify.core.strategy/ThrowingValidationStrategy.<init>|<init>(){}[0]
+
+    final fun failWith(io.github.kverify.core.violation/Violation): kotlin/Nothing // io.github.kverify.core.strategy/ThrowingValidationStrategy.failWith|failWith(io.github.kverify.core.violation.Violation){}[0]
+}
+
+final class io.github.kverify.core.violation/ViolationReason : io.github.kverify.core.violation/Violation { // io.github.kverify.core.violation/ViolationReason|null[0]
+    constructor <init>(kotlin/String) // io.github.kverify.core.violation/ViolationReason.<init>|<init>(kotlin.String){}[0]
+
+    final val reason // io.github.kverify.core.violation/ViolationReason.reason|{}reason[0]
+        final fun <get-reason>(): kotlin/String // io.github.kverify.core.violation/ViolationReason.reason.<get-reason>|<get-reason>(){}[0]
+
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.core.violation/ViolationReason.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.kverify.core.violation/ViolationReason.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.github.kverify.core.violation/ViolationReason.toString|toString(){}[0]
+}
+
+open class io.github.kverify.core.exception/ValidationException : kotlin/RuntimeException { // io.github.kverify.core.exception/ValidationException|null[0]
+    constructor <init>(kotlin.collections/List<io.github.kverify.core.violation/Violation>) // io.github.kverify.core.exception/ValidationException.<init>|<init>(kotlin.collections.List<io.github.kverify.core.violation.Violation>){}[0]
+
+    final val violations // io.github.kverify.core.exception/ValidationException.violations|{}violations[0]
+        final fun <get-violations>(): kotlin.collections/List<io.github.kverify.core.violation/Violation> // io.github.kverify.core.exception/ValidationException.violations.<get-violations>|<get-violations>(){}[0]
+}
+
+final object io.github.kverify.core.context/EmptyValidationContext : io.github.kverify.core.context/ValidationContext { // io.github.kverify.core.context/EmptyValidationContext|null[0]
+    final fun <#A1: io.github.kverify.core.context/ValidationContext.Element> get(io.github.kverify.core.context/ValidationContext.Key<#A1>): #A1? // io.github.kverify.core.context/EmptyValidationContext.get|get(io.github.kverify.core.context.ValidationContext.Key<0:0>){0§<io.github.kverify.core.context.ValidationContext.Element>}[0]
+    final fun iterator(): kotlin.collections/Iterator<io.github.kverify.core.context/ValidationContext.Element> // io.github.kverify.core.context/EmptyValidationContext.iterator|iterator(){}[0]
+    final fun minusKey(io.github.kverify.core.context/ValidationContext.Key<*>): io.github.kverify.core.context/EmptyValidationContext // io.github.kverify.core.context/EmptyValidationContext.minusKey|minusKey(io.github.kverify.core.context.ValidationContext.Key<*>){}[0]
+    final fun plus(io.github.kverify.core.context/ValidationContext): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/EmptyValidationContext.plus|plus(io.github.kverify.core.context.ValidationContext){}[0]
+}
+
+final fun (io.github.kverify.core.context/ValidationContext).io.github.kverify.core.context/plusPathIndex(kotlin/Int): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/plusPathIndex|plusPathIndex@io.github.kverify.core.context.ValidationContext(kotlin.Int){}[0]
+final fun (io.github.kverify.core.context/ValidationContext).io.github.kverify.core.context/plusPathName(kotlin/String): io.github.kverify.core.context/ValidationContext // io.github.kverify.core.context/plusPathName|plusPathName@io.github.kverify.core.context.ValidationContext(kotlin.String){}[0]
+final fun (io.github.kverify.core.context/ValidationContext).io.github.kverify.core.context/validationPath(): io.github.kverify.core.model/ValidationPath // io.github.kverify.core.context/validationPath|validationPath@io.github.kverify.core.context.ValidationContext(){}[0]
+final fun (io.github.kverify.core.context/ValidationPathElement).io.github.kverify.core.context/toValidationPath(): io.github.kverify.core.model/ValidationPath // io.github.kverify.core.context/toValidationPath|toValidationPath@io.github.kverify.core.context.ValidationPathElement(){}[0]
+final fun (io.github.kverify.core.scope/ValidationScope).io.github.kverify.core.scope/failWith(io.github.kverify.core.violation/Violation) // io.github.kverify.core.scope/failWith|failWith@io.github.kverify.core.scope.ValidationScope(io.github.kverify.core.violation.Violation){}[0]
+final fun <#A: kotlin/Any> (io.github.kverify.core.scope/ValueValidationScope<#A?>).io.github.kverify.core.scope/takeIfValueNotNull(): io.github.kverify.core.scope/ValueValidationScope<#A>? // io.github.kverify.core.scope/takeIfValueNotNull|takeIfValueNotNull@io.github.kverify.core.scope.ValueValidationScope<0:0?>(){0§<kotlin.Any>}[0]
+final fun <#A: kotlin/Any?> (io.github.kverify.core.scope/ValidationScope).io.github.kverify.core.scope/forProperty(kotlin.reflect/KProperty0<#A>): io.github.kverify.core.scope/ValueValidationScope<#A> // io.github.kverify.core.scope/forProperty|forProperty@io.github.kverify.core.scope.ValidationScope(kotlin.reflect.KProperty0<0:0>){0§<kotlin.Any?>}[0]
+final fun <#A: kotlin/Any?> io.github.kverify.core.scope/ValueValidationScope(#A, io.github.kverify.core.strategy/ValidationStrategy, io.github.kverify.core.context/ValidationContext): io.github.kverify.core.scope/ValueValidationScope<#A> // io.github.kverify.core.scope/ValueValidationScope|ValueValidationScope(0:0;io.github.kverify.core.strategy.ValidationStrategy;io.github.kverify.core.context.ValidationContext){0§<kotlin.Any?>}[0]
+final fun io.github.kverify.core.context/pathIndex(kotlin/Int): io.github.kverify.core.context/ValidationPathElement // io.github.kverify.core.context/pathIndex|pathIndex(kotlin.Int){}[0]
+final fun io.github.kverify.core.context/pathName(kotlin/String): io.github.kverify.core.context/ValidationPathElement // io.github.kverify.core.context/pathName|pathName(kotlin.String){}[0]
+final fun io.github.kverify.core.scope/ValidationScope(io.github.kverify.core.strategy/ValidationStrategy, io.github.kverify.core.context/ValidationContext): io.github.kverify.core.scope/ValidationScope // io.github.kverify.core.scope/ValidationScope|ValidationScope(io.github.kverify.core.strategy.ValidationStrategy;io.github.kverify.core.context.ValidationContext){}[0]
+final inline fun (io.github.kverify.core.scope/ValidationScope).io.github.kverify.core.scope/failIf(kotlin/Boolean, kotlin/Function0<io.github.kverify.core.violation/Violation>) // io.github.kverify.core.scope/failIf|failIf@io.github.kverify.core.scope.ValidationScope(kotlin.Boolean;kotlin.Function0<io.github.kverify.core.violation.Violation>){}[0]
+final inline fun (io.github.kverify.core.strategy/ValidationStrategy).io.github.kverify.core.strategy/failIf(kotlin/Boolean, kotlin/Function0<io.github.kverify.core.violation/Violation>) // io.github.kverify.core.strategy/failIf|failIf@io.github.kverify.core.strategy.ValidationStrategy(kotlin.Boolean;kotlin.Function0<io.github.kverify.core.violation.Violation>){}[0]
+final inline fun <#A: kotlin/Any?, #B: kotlin.collections/Iterable<#A>> (io.github.kverify.core.scope/ValueValidationScope<#B>).io.github.kverify.core.scope/each(kotlin/Function1<io.github.kverify.core.scope/ValueValidationScope<#A>, kotlin/Unit>) // io.github.kverify.core.scope/each|each@io.github.kverify.core.scope.ValueValidationScope<0:1>(kotlin.Function1<io.github.kverify.core.scope.ValueValidationScope<0:0>,kotlin.Unit>){0§<kotlin.Any?>;1§<kotlin.collections.Iterable<0:0>>}[0]
+final inline fun <#A: kotlin/Any?> io.github.kverify.core.strategy/validateThrowing(io.github.kverify.core.context/ValidationContext = ..., kotlin/Function1<io.github.kverify.core.scope/ValidationScope, #A>): #A // io.github.kverify.core.strategy/validateThrowing|validateThrowing(io.github.kverify.core.context.ValidationContext;kotlin.Function1<io.github.kverify.core.scope.ValidationScope,0:0>){0§<kotlin.Any?>}[0]
+final inline fun io.github.kverify.core.strategy/validateCollecting(io.github.kverify.core.context/ValidationContext = ..., kotlin/Function1<io.github.kverify.core.scope/ValidationScope, kotlin/Unit>): kotlin.collections/List<io.github.kverify.core.violation/Violation> // io.github.kverify.core.strategy/validateCollecting|validateCollecting(io.github.kverify.core.context.ValidationContext;kotlin.Function1<io.github.kverify.core.scope.ValidationScope,kotlin.Unit>){}[0]

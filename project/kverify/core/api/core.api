@@ -1,0 +1,182 @@
+public abstract interface annotation class io/github/kverify/core/annotation/KverifyDsl : java/lang/annotation/Annotation {
+}
+
+public final class io/github/kverify/core/context/EmptyValidationContext : io/github/kverify/core/context/ValidationContext {
+	public static final field INSTANCE Lio/github/kverify/core/context/EmptyValidationContext;
+	public fun get (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext$Element;
+	public fun iterator ()Ljava/util/Iterator;
+	public fun minusKey (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/EmptyValidationContext;
+	public synthetic fun minusKey (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext;
+	public fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/ValidationContext;
+}
+
+public final class io/github/kverify/core/context/PersistentValidationContext : io/github/kverify/core/context/ValidationContext {
+	public fun <init> (Lio/github/kverify/core/context/ValidationContext$Element;)V
+	public fun get (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext$Element;
+	public fun iterator ()Ljava/util/Iterator;
+	public fun minusKey (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext;
+	public fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/PersistentValidationContext;
+	public synthetic fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/ValidationContext;
+}
+
+public abstract interface class io/github/kverify/core/context/ValidationContext {
+	public abstract fun get (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext$Element;
+	public abstract fun iterator ()Ljava/util/Iterator;
+	public abstract fun minusKey (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext;
+	public abstract fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/ValidationContext;
+}
+
+public abstract interface class io/github/kverify/core/context/ValidationContext$Element : io/github/kverify/core/context/ValidationContext {
+	public fun get (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext$Element;
+	public abstract fun getKey ()Lio/github/kverify/core/context/ValidationContext$Key;
+	public fun iterator ()Ljava/util/Iterator;
+	public fun minusKey (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext;
+	public fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/ValidationContext;
+}
+
+public final class io/github/kverify/core/context/ValidationContext$Element$DefaultImpls {
+	public static fun get (Lio/github/kverify/core/context/ValidationContext$Element;Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext$Element;
+	public static fun iterator (Lio/github/kverify/core/context/ValidationContext$Element;)Ljava/util/Iterator;
+	public static fun minusKey (Lio/github/kverify/core/context/ValidationContext$Element;Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext;
+	public static fun plus (Lio/github/kverify/core/context/ValidationContext$Element;Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/ValidationContext;
+}
+
+public abstract interface class io/github/kverify/core/context/ValidationContext$Key {
+	public abstract fun onCollision (Lio/github/kverify/core/context/ValidationContext$Element;Lio/github/kverify/core/context/ValidationContext$Element;)Lio/github/kverify/core/context/ValidationContext$Element;
+}
+
+public final class io/github/kverify/core/context/ValidationContextKt {
+	public static final fun validationPath (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/model/ValidationPath;
+}
+
+public final class io/github/kverify/core/context/ValidationPathElement : io/github/kverify/core/context/ValidationContext$Element {
+	public static final field Key Lio/github/kverify/core/context/ValidationPathElement$Key;
+	public fun <init> (Lio/github/kverify/core/model/ValidationPathSegment;Lio/github/kverify/core/context/ValidationPathElement;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun get (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext$Element;
+	public fun getKey ()Lio/github/kverify/core/context/ValidationContext$Key;
+	public fun hashCode ()I
+	public fun iterator ()Ljava/util/Iterator;
+	public fun minusKey (Lio/github/kverify/core/context/ValidationContext$Key;)Lio/github/kverify/core/context/ValidationContext;
+	public fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/context/ValidationContext;
+}
+
+public final class io/github/kverify/core/context/ValidationPathElement$Key : io/github/kverify/core/context/ValidationContext$Key {
+	public fun onCollision (Lio/github/kverify/core/context/ValidationContext$Element;Lio/github/kverify/core/context/ValidationContext$Element;)Lio/github/kverify/core/context/ValidationContext$Element;
+}
+
+public final class io/github/kverify/core/context/ValidationPathElementKt {
+	public static final fun pathIndex (I)Lio/github/kverify/core/context/ValidationPathElement;
+	public static final fun pathName (Ljava/lang/String;)Lio/github/kverify/core/context/ValidationPathElement;
+	public static final fun plusPathIndex (Lio/github/kverify/core/context/ValidationContext;I)Lio/github/kverify/core/context/ValidationContext;
+	public static final fun plusPathName (Lio/github/kverify/core/context/ValidationContext;Ljava/lang/String;)Lio/github/kverify/core/context/ValidationContext;
+	public static final fun toValidationPath (Lio/github/kverify/core/context/ValidationPathElement;)Lio/github/kverify/core/model/ValidationPath;
+}
+
+public class io/github/kverify/core/exception/ValidationException : java/lang/RuntimeException {
+	public fun <init> (Ljava/util/List;)V
+	public final fun getViolations ()Ljava/util/List;
+}
+
+public final class io/github/kverify/core/exception/ViolationException : io/github/kverify/core/exception/ValidationException {
+	public fun <init> (Lio/github/kverify/core/violation/Violation;)V
+	public final fun getViolation ()Lio/github/kverify/core/violation/Violation;
+}
+
+public final class io/github/kverify/core/model/IndexPathSegment : io/github/kverify/core/model/ValidationPathSegment {
+	public fun <init> (I)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getIndex ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/kverify/core/model/NamePathSegment : io/github/kverify/core/model/ValidationPathSegment {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getName ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class io/github/kverify/core/model/ValidationPath {
+	public fun <init> (Ljava/util/List;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getSegments ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/kverify/core/model/ValidationPathSegment {
+}
+
+public abstract interface class io/github/kverify/core/scope/ValidationScope {
+	public abstract fun forValue (Ljava/lang/Object;)Lio/github/kverify/core/scope/ValueValidationScope;
+	public abstract fun getValidationContext ()Lio/github/kverify/core/context/ValidationContext;
+	public abstract fun getValidationStrategy ()Lio/github/kverify/core/strategy/ValidationStrategy;
+	public abstract fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/scope/ValidationScope;
+}
+
+public final class io/github/kverify/core/scope/ValidationScopeKt {
+	public static final fun ValidationScope (Lio/github/kverify/core/strategy/ValidationStrategy;Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/scope/ValidationScope;
+	public static final fun failIf (Lio/github/kverify/core/scope/ValidationScope;ZLkotlin/jvm/functions/Function0;)V
+	public static final fun failWith (Lio/github/kverify/core/scope/ValidationScope;Lio/github/kverify/core/violation/Violation;)V
+	public static final fun forProperty (Lio/github/kverify/core/scope/ValidationScope;Lkotlin/reflect/KProperty0;)Lio/github/kverify/core/scope/ValueValidationScope;
+}
+
+public abstract interface class io/github/kverify/core/scope/ValueValidationScope : io/github/kverify/core/scope/ValidationScope {
+	public abstract fun getValue ()Ljava/lang/Object;
+	public abstract fun plus (Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/scope/ValueValidationScope;
+}
+
+public final class io/github/kverify/core/scope/ValueValidationScopeKt {
+	public static final fun ValueValidationScope (Ljava/lang/Object;Lio/github/kverify/core/strategy/ValidationStrategy;Lio/github/kverify/core/context/ValidationContext;)Lio/github/kverify/core/scope/ValueValidationScope;
+	public static final fun each (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/jvm/functions/Function1;)V
+	public static final fun takeIfValueNotNull (Lio/github/kverify/core/scope/ValueValidationScope;)Lio/github/kverify/core/scope/ValueValidationScope;
+}
+
+public final class io/github/kverify/core/strategy/CollectingValidationStrategy : io/github/kverify/core/strategy/ValidationStrategy {
+	public fun <init> (Ljava/util/Collection;)V
+	public fun failWith (Lio/github/kverify/core/violation/Violation;)V
+}
+
+public final class io/github/kverify/core/strategy/CollectingValidationStrategyKt {
+	public static final fun validateCollecting (Lio/github/kverify/core/context/ValidationContext;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static synthetic fun validateCollecting$default (Lio/github/kverify/core/context/ValidationContext;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/util/List;
+}
+
+public final class io/github/kverify/core/strategy/ThrowingValidationStrategy : io/github/kverify/core/strategy/ValidationStrategy {
+	public fun <init> ()V
+	public fun failWith (Lio/github/kverify/core/violation/Violation;)Ljava/lang/Void;
+	public synthetic fun failWith (Lio/github/kverify/core/violation/Violation;)V
+}
+
+public final class io/github/kverify/core/strategy/ThrowingValidationStrategyKt {
+	public static final fun validateThrowing (Lio/github/kverify/core/context/ValidationContext;Lkotlin/jvm/functions/Function1;)Ljava/lang/Object;
+	public static synthetic fun validateThrowing$default (Lio/github/kverify/core/context/ValidationContext;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)Ljava/lang/Object;
+}
+
+public abstract interface class io/github/kverify/core/strategy/ValidationStrategy {
+	public abstract fun failWith (Lio/github/kverify/core/violation/Violation;)V
+}
+
+public final class io/github/kverify/core/strategy/ValidationStrategyKt {
+	public static final fun failIf (Lio/github/kverify/core/strategy/ValidationStrategy;ZLkotlin/jvm/functions/Function0;)V
+}
+
+public abstract interface class io/github/kverify/core/violation/PathAwareViolation : io/github/kverify/core/violation/Violation {
+	public abstract fun getValidationPath ()Lio/github/kverify/core/model/ValidationPath;
+}
+
+public abstract interface class io/github/kverify/core/violation/Violation {
+	public abstract fun getReason ()Ljava/lang/String;
+}
+
+public final class io/github/kverify/core/violation/ViolationReason : io/github/kverify/core/violation/Violation {
+	public fun <init> (Ljava/lang/String;)V
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getReason ()Ljava/lang/String;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

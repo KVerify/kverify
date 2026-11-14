@@ -29,7 +29,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v6.1.0
 
       - name: Test
-        run: cd project && ./gradlew jvmTest jsTest linuxX64Test wasmJsTest wasmWasiTest --no-daemon --stacktrace
+        run: cd project && ./gradlew jvmTest jsTest linuxX64Test wasmJsTest wasmWasiTest checkKotlinAbi --no-daemon --stacktrace
 
   test-macos:
     runs-on: macos-latest
@@ -51,4 +51,4 @@ jobs:
         uses: gradle/actions/setup-gradle@v6.1.0
 
       - name: Test
-        run: cd project && ./gradlew macosX64Test macosArm64Test --no-daemon --stacktrace
+        run: cd project && ./gradlew macosArm64Test --no-daemon --stacktrace

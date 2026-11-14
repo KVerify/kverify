@@ -3,6 +3,7 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.dokka.gradle.engine.parameters.VisibilityModifier
+import org.jetbrains.kotlin.gradle.dsl.abi.ExperimentalAbiValidation
 
 plugins {
     org.jetbrains.kotlin.multiplatform
@@ -14,6 +15,11 @@ plugins {
 kotlin {
     explicitApi()
     applyKverifyMultiplatformDefaults()
+
+    @OptIn(ExperimentalAbiValidation::class)
+    abiValidation {
+        enabled = true
+    }
 
     sourceSets {
         commonTest.dependencies {
@@ -59,9 +65,13 @@ dokka {
             includes.from(readmeFile)
         }
 
+        val repositoryRoot = rootProject.projectDir.parentFile
+        val modulePath = projectDir.relativeTo(repositoryRoot).invariantSeparatorsPath
+        val branchUrl = "${LibrarySettings.GITHUB_URL}/tree/${LibrarySettings.GITHUB_BRANCH}"
+
         sourceLink {
             localDirectory.set(projectDir.resolve("src"))
-            remoteUrl("${LibrarySettings.GITHUB_URL}/tree/${LibrarySettings.GITHUB_BRANCH}/${project.path.replace(":", "/")}/src")
+            remoteUrl("$branchUrl/$modulePath/src")
             remoteLineSuffix.set("#L")
         }
     }
