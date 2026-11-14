@@ -6,7 +6,7 @@ infix fun <T : Any> Property<T>.set(value: T): Unit = this.set(value)
 
 fun MavenPom.configureMavenCentralMetadata(project: Project) {
     name set project.name
-    description set "KVerify - Kotlin Validation Library"
+    description set "KVerify - Kotlin Multiplatform validation library with a type-safe DSL"
     inceptionYear set "2024"
     url set LibrarySettings.GITHUB_URL
 
