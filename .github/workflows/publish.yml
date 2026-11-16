@@ -14,7 +14,11 @@ on:
 
 jobs:
 
+  build:
+    uses: ./.github/workflows/build.yml
+
   publish:
+    needs: build
     runs-on: macos-latest
     timeout-minutes: 60
 
