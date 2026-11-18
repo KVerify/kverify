@@ -6,7 +6,7 @@
 // - Show declarations: true
 
 // Library unique name: <io.github.kverify:rule-set>
-final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/AtLeastViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/AtLeastViolation|null[0]
+final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/AtLeastViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/AtLeastViolation|null[0]
     constructor <init>(#A, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/AtLeastViolation.<init>|<init>(1:0;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val min // io.github.kverify.rule.set.violation/AtLeastViolation.min|{}min[0]
@@ -21,7 +21,7 @@ final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/AtL
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/AtLeastViolation.toString|toString(){}[0]
 }
 
-final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/AtMostViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/AtMostViolation|null[0]
+final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/AtMostViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/AtMostViolation|null[0]
     constructor <init>(#A, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/AtMostViolation.<init>|<init>(1:0;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val max // io.github.kverify.rule.set.violation/AtMostViolation.max|{}max[0]
@@ -36,7 +36,7 @@ final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/AtM
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/AtMostViolation.toString|toString(){}[0]
 }
 
-final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/BetweenViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/BetweenViolation|null[0]
+final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/BetweenViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/BetweenViolation|null[0]
     constructor <init>(#A, #A, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/BetweenViolation.<init>|<init>(1:0;1:0;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val max // io.github.kverify.rule.set.violation/BetweenViolation.max|{}max[0]
@@ -53,7 +53,7 @@ final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/Bet
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/BetweenViolation.toString|toString(){}[0]
 }
 
-final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/GreaterThanViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/GreaterThanViolation|null[0]
+final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/GreaterThanViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/GreaterThanViolation|null[0]
     constructor <init>(#A, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/GreaterThanViolation.<init>|<init>(1:0;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val minExclusive // io.github.kverify.rule.set.violation/GreaterThanViolation.minExclusive|{}minExclusive[0]
@@ -68,7 +68,7 @@ final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/Gre
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/GreaterThanViolation.toString|toString(){}[0]
 }
 
-final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/LessThanViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/LessThanViolation|null[0]
+final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/LessThanViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/LessThanViolation|null[0]
     constructor <init>(#A, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/LessThanViolation.<init>|<init>(1:0;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val maxExclusive // io.github.kverify.rule.set.violation/LessThanViolation.maxExclusive|{}maxExclusive[0]
@@ -83,7 +83,7 @@ final class <#A: kotlin/Comparable<#A>> io.github.kverify.rule.set.violation/Les
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/LessThanViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/DistinctViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/DistinctViolation|null[0]
+final class io.github.kverify.rule.set.violation/DistinctViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/DistinctViolation|null[0]
     constructor <init>(io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/DistinctViolation.<init>|<init>(io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val reason // io.github.kverify.rule.set.violation/DistinctViolation.reason|{}reason[0]
@@ -96,7 +96,7 @@ final class io.github.kverify.rule.set.violation/DistinctViolation : io.github.k
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/DistinctViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/ExactLengthViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/ExactLengthViolation|null[0]
+final class io.github.kverify.rule.set.violation/ExactLengthViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/ExactLengthViolation|null[0]
     constructor <init>(kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/ExactLengthViolation.<init>|<init>(kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val expectedLength // io.github.kverify.rule.set.violation/ExactLengthViolation.expectedLength|{}expectedLength[0]
@@ -111,7 +111,7 @@ final class io.github.kverify.rule.set.violation/ExactLengthViolation : io.githu
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/ExactLengthViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/ExactSizeViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/ExactSizeViolation|null[0]
+final class io.github.kverify.rule.set.violation/ExactSizeViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/ExactSizeViolation|null[0]
     constructor <init>(kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/ExactSizeViolation.<init>|<init>(kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val expectedSize // io.github.kverify.rule.set.violation/ExactSizeViolation.expectedSize|{}expectedSize[0]
@@ -126,7 +126,7 @@ final class io.github.kverify.rule.set.violation/ExactSizeViolation : io.github.
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/ExactSizeViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/LengthRangeViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/LengthRangeViolation|null[0]
+final class io.github.kverify.rule.set.violation/LengthRangeViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/LengthRangeViolation|null[0]
     constructor <init>(kotlin/Int, kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/LengthRangeViolation.<init>|<init>(kotlin.Int;kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val maxLength // io.github.kverify.rule.set.violation/LengthRangeViolation.maxLength|{}maxLength[0]
@@ -143,7 +143,7 @@ final class io.github.kverify.rule.set.violation/LengthRangeViolation : io.githu
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/LengthRangeViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/MaxLengthViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/MaxLengthViolation|null[0]
+final class io.github.kverify.rule.set.violation/MaxLengthViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/MaxLengthViolation|null[0]
     constructor <init>(kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/MaxLengthViolation.<init>|<init>(kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val maxLength // io.github.kverify.rule.set.violation/MaxLengthViolation.maxLength|{}maxLength[0]
@@ -158,7 +158,7 @@ final class io.github.kverify.rule.set.violation/MaxLengthViolation : io.github.
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/MaxLengthViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/MaxSizeViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/MaxSizeViolation|null[0]
+final class io.github.kverify.rule.set.violation/MaxSizeViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/MaxSizeViolation|null[0]
     constructor <init>(kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/MaxSizeViolation.<init>|<init>(kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val maxSize // io.github.kverify.rule.set.violation/MaxSizeViolation.maxSize|{}maxSize[0]
@@ -173,7 +173,7 @@ final class io.github.kverify.rule.set.violation/MaxSizeViolation : io.github.kv
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/MaxSizeViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/MinLengthViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/MinLengthViolation|null[0]
+final class io.github.kverify.rule.set.violation/MinLengthViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/MinLengthViolation|null[0]
     constructor <init>(kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/MinLengthViolation.<init>|<init>(kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val minLength // io.github.kverify.rule.set.violation/MinLengthViolation.minLength|{}minLength[0]
@@ -188,7 +188,7 @@ final class io.github.kverify.rule.set.violation/MinLengthViolation : io.github.
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/MinLengthViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/MinSizeViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/MinSizeViolation|null[0]
+final class io.github.kverify.rule.set.violation/MinSizeViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/MinSizeViolation|null[0]
     constructor <init>(kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/MinSizeViolation.<init>|<init>(kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val minSize // io.github.kverify.rule.set.violation/MinSizeViolation.minSize|{}minSize[0]
@@ -203,7 +203,7 @@ final class io.github.kverify.rule.set.violation/MinSizeViolation : io.github.kv
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/MinSizeViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/NotBlankViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/NotBlankViolation|null[0]
+final class io.github.kverify.rule.set.violation/NotBlankViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/NotBlankViolation|null[0]
     constructor <init>(io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/NotBlankViolation.<init>|<init>(io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val reason // io.github.kverify.rule.set.violation/NotBlankViolation.reason|{}reason[0]
@@ -216,7 +216,7 @@ final class io.github.kverify.rule.set.violation/NotBlankViolation : io.github.k
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/NotBlankViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/NotNullViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/NotNullViolation|null[0]
+final class io.github.kverify.rule.set.violation/NotNullViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/NotNullViolation|null[0]
     constructor <init>(io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/NotNullViolation.<init>|<init>(io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val reason // io.github.kverify.rule.set.violation/NotNullViolation.reason|{}reason[0]
@@ -229,7 +229,7 @@ final class io.github.kverify.rule.set.violation/NotNullViolation : io.github.kv
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/NotNullViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/PatternViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/PatternViolation|null[0]
+final class io.github.kverify.rule.set.violation/PatternViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/PatternViolation|null[0]
     constructor <init>(kotlin.text/Regex, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/PatternViolation.<init>|<init>(kotlin.text.Regex;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val reason // io.github.kverify.rule.set.violation/PatternViolation.reason|{}reason[0]
@@ -244,7 +244,7 @@ final class io.github.kverify.rule.set.violation/PatternViolation : io.github.kv
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/PatternViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/SizeBetweenViolation : io.github.kverify.core.violation/PathAwareViolation { // io.github.kverify.rule.set.violation/SizeBetweenViolation|null[0]
+final class io.github.kverify.rule.set.violation/SizeBetweenViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/SizeBetweenViolation|null[0]
     constructor <init>(kotlin/Int, kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/SizeBetweenViolation.<init>|<init>(kotlin.Int;kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
     final val maxSize // io.github.kverify.rule.set.violation/SizeBetweenViolation.maxSize|{}maxSize[0]

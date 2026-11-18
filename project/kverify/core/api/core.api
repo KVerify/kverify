@@ -160,10 +160,6 @@ public abstract interface class io/github/kverify/core/strategy/ValidationStrate
 	public abstract fun failWith (Lio/github/kverify/core/violation/Violation;)V
 }
 
-public abstract interface class io/github/kverify/core/violation/PathAwareViolation : io/github/kverify/core/violation/Violation {
-	public abstract fun getValidationPath ()Lio/github/kverify/core/model/ValidationPath;
-}
-
 public abstract interface class io/github/kverify/core/violation/Violation {
 	public abstract fun getReason ()Ljava/lang/String;
 }
@@ -174,5 +170,9 @@ public final class io/github/kverify/core/violation/ViolationReason : io/github/
 	public fun getReason ()Ljava/lang/String;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class io/github/kverify/core/violation/ViolationWithPath : io/github/kverify/core/violation/Violation {
+	public abstract fun getValidationPath ()Lio/github/kverify/core/model/ValidationPath;
 }
 

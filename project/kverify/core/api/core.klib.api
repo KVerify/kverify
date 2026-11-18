@@ -52,14 +52,14 @@ abstract interface io.github.kverify.core.strategy/ValidationStrategy { // io.gi
     abstract fun failWith(io.github.kverify.core.violation/Violation) // io.github.kverify.core.strategy/ValidationStrategy.failWith|failWith(io.github.kverify.core.violation.Violation){}[0]
 }
 
-abstract interface io.github.kverify.core.violation/PathAwareViolation : io.github.kverify.core.violation/Violation { // io.github.kverify.core.violation/PathAwareViolation|null[0]
-    abstract val validationPath // io.github.kverify.core.violation/PathAwareViolation.validationPath|{}validationPath[0]
-        abstract fun <get-validationPath>(): io.github.kverify.core.model/ValidationPath // io.github.kverify.core.violation/PathAwareViolation.validationPath.<get-validationPath>|<get-validationPath>(){}[0]
-}
-
 abstract interface io.github.kverify.core.violation/Violation { // io.github.kverify.core.violation/Violation|null[0]
     abstract val reason // io.github.kverify.core.violation/Violation.reason|{}reason[0]
         abstract fun <get-reason>(): kotlin/String // io.github.kverify.core.violation/Violation.reason.<get-reason>|<get-reason>(){}[0]
+}
+
+abstract interface io.github.kverify.core.violation/ViolationWithPath : io.github.kverify.core.violation/Violation { // io.github.kverify.core.violation/ViolationWithPath|null[0]
+    abstract val validationPath // io.github.kverify.core.violation/ViolationWithPath.validationPath|{}validationPath[0]
+        abstract fun <get-validationPath>(): io.github.kverify.core.model/ValidationPath // io.github.kverify.core.violation/ViolationWithPath.validationPath.<get-validationPath>|<get-validationPath>(){}[0]
 }
 
 sealed interface io.github.kverify.core.model/ValidationPathSegment // io.github.kverify.core.model/ValidationPathSegment|null[0]

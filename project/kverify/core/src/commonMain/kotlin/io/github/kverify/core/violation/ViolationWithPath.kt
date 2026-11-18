@@ -5,6 +5,6 @@ import io.github.kverify.core.model.ValidationPath
 /**
  * A [Violation] with a [validationPath].
  */
-public interface PathAwareViolation : Violation {
+public interface ViolationWithPath : Violation {
     public val validationPath: ValidationPath
 }

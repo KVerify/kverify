@@ -6,8 +6,8 @@ import io.github.kverify.core.model.NamePathSegment
 import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.scope.ValueValidationScope
 import io.github.kverify.core.strategy.validateCollecting
-import io.github.kverify.core.violation.PathAwareViolation
 import io.github.kverify.core.violation.Violation
+import io.github.kverify.core.violation.ViolationWithPath
 import io.github.kverify.rule.set.violation.AtLeastViolation
 import io.github.kverify.rule.set.violation.AtMostViolation
 import io.github.kverify.rule.set.violation.BetweenViolation
@@ -64,9 +64,9 @@ internal fun assertViolationPath(
     expectedPath: ValidationPath,
     violation: Violation,
 ) {
-    val pathAwareViolation = assertIs<PathAwareViolation>(violation)
+    val violationWithPath = assertIs<ViolationWithPath>(violation)
 
-    assertEquals(expectedPath, pathAwareViolation.validationPath)
+    assertEquals(expectedPath, violationWithPath.validationPath)
 }
 
 internal fun namePath(name: String): ValidationPath {

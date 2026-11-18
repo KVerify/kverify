@@ -1,12 +1,12 @@
 package io.github.kverify.rule.set.violation
 
 import io.github.kverify.core.model.ValidationPath
-import io.github.kverify.core.violation.PathAwareViolation
+import io.github.kverify.core.violation.ViolationWithPath
 
 public class DistinctViolation(
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
+) : ViolationWithPath {
     override fun toString(): String = "DistinctViolation(validationPath=$validationPath, reason=$reason)"
 
     override fun equals(other: Any?): Boolean =

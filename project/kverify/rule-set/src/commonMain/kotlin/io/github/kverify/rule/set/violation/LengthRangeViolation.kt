@@ -1,14 +1,14 @@
 package io.github.kverify.rule.set.violation
 
 import io.github.kverify.core.model.ValidationPath
-import io.github.kverify.core.violation.PathAwareViolation
+import io.github.kverify.core.violation.ViolationWithPath
 
 public class LengthRangeViolation(
     public val minLength: Int,
     public val maxLength: Int,
     override val validationPath: ValidationPath,
     override val reason: String,
-) : PathAwareViolation {
+) : ViolationWithPath {
     override fun toString(): String =
         "LengthRangeViolation(minLength=$minLength, maxLength=$maxLength, validationPath=$validationPath, reason=$reason)"
 
