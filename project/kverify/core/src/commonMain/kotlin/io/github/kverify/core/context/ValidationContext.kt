@@ -3,7 +3,7 @@ package io.github.kverify.core.context
 import io.github.kverify.core.model.ValidationPath
 
 /**
- * A collection of [Element]s, where each element is identified by a unique [Key].
+ * Defines how [Element]s are combined, accessed and removed.
  */
 public interface ValidationContext {
     public operator fun plus(other: ValidationContext): ValidationContext
