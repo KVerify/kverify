@@ -3,7 +3,7 @@ package io.github.kverify.rule.set.violation
 import io.github.kverify.core.model.ValidationPath
 import io.github.kverify.core.violation.ViolationWithPath
 
-public class LengthRangeViolation(
+public class LengthBetweenViolation(
     public val minLength: Int,
     public val maxLength: Int,
     override val validationPath: ValidationPath,
@@ -18,7 +18,7 @@ public class LengthRangeViolation(
                 true
             }
 
-            other !is LengthRangeViolation -> {
+            other !is LengthBetweenViolation -> {
                 false
             }
 

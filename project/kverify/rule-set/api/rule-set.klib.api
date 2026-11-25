@@ -126,21 +126,21 @@ final class io.github.kverify.rule.set.violation/ExactSizeViolation : io.github.
     final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/ExactSizeViolation.toString|toString(){}[0]
 }
 
-final class io.github.kverify.rule.set.violation/LengthRangeViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/LengthRangeViolation|null[0]
-    constructor <init>(kotlin/Int, kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/LengthRangeViolation.<init>|<init>(kotlin.Int;kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
+final class io.github.kverify.rule.set.violation/LengthBetweenViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/LengthBetweenViolation|null[0]
+    constructor <init>(kotlin/Int, kotlin/Int, io.github.kverify.core.model/ValidationPath, kotlin/String) // io.github.kverify.rule.set.violation/LengthBetweenViolation.<init>|<init>(kotlin.Int;kotlin.Int;io.github.kverify.core.model.ValidationPath;kotlin.String){}[0]
 
-    final val maxLength // io.github.kverify.rule.set.violation/LengthRangeViolation.maxLength|{}maxLength[0]
-        final fun <get-maxLength>(): kotlin/Int // io.github.kverify.rule.set.violation/LengthRangeViolation.maxLength.<get-maxLength>|<get-maxLength>(){}[0]
-    final val minLength // io.github.kverify.rule.set.violation/LengthRangeViolation.minLength|{}minLength[0]
-        final fun <get-minLength>(): kotlin/Int // io.github.kverify.rule.set.violation/LengthRangeViolation.minLength.<get-minLength>|<get-minLength>(){}[0]
-    final val reason // io.github.kverify.rule.set.violation/LengthRangeViolation.reason|{}reason[0]
-        final fun <get-reason>(): kotlin/String // io.github.kverify.rule.set.violation/LengthRangeViolation.reason.<get-reason>|<get-reason>(){}[0]
-    final val validationPath // io.github.kverify.rule.set.violation/LengthRangeViolation.validationPath|{}validationPath[0]
-        final fun <get-validationPath>(): io.github.kverify.core.model/ValidationPath // io.github.kverify.rule.set.violation/LengthRangeViolation.validationPath.<get-validationPath>|<get-validationPath>(){}[0]
+    final val maxLength // io.github.kverify.rule.set.violation/LengthBetweenViolation.maxLength|{}maxLength[0]
+        final fun <get-maxLength>(): kotlin/Int // io.github.kverify.rule.set.violation/LengthBetweenViolation.maxLength.<get-maxLength>|<get-maxLength>(){}[0]
+    final val minLength // io.github.kverify.rule.set.violation/LengthBetweenViolation.minLength|{}minLength[0]
+        final fun <get-minLength>(): kotlin/Int // io.github.kverify.rule.set.violation/LengthBetweenViolation.minLength.<get-minLength>|<get-minLength>(){}[0]
+    final val reason // io.github.kverify.rule.set.violation/LengthBetweenViolation.reason|{}reason[0]
+        final fun <get-reason>(): kotlin/String // io.github.kverify.rule.set.violation/LengthBetweenViolation.reason.<get-reason>|<get-reason>(){}[0]
+    final val validationPath // io.github.kverify.rule.set.violation/LengthBetweenViolation.validationPath|{}validationPath[0]
+        final fun <get-validationPath>(): io.github.kverify.core.model/ValidationPath // io.github.kverify.rule.set.violation/LengthBetweenViolation.validationPath.<get-validationPath>|<get-validationPath>(){}[0]
 
-    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.rule.set.violation/LengthRangeViolation.equals|equals(kotlin.Any?){}[0]
-    final fun hashCode(): kotlin/Int // io.github.kverify.rule.set.violation/LengthRangeViolation.hashCode|hashCode(){}[0]
-    final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/LengthRangeViolation.toString|toString(){}[0]
+    final fun equals(kotlin/Any?): kotlin/Boolean // io.github.kverify.rule.set.violation/LengthBetweenViolation.equals|equals(kotlin.Any?){}[0]
+    final fun hashCode(): kotlin/Int // io.github.kverify.rule.set.violation/LengthBetweenViolation.hashCode|hashCode(){}[0]
+    final fun toString(): kotlin/String // io.github.kverify.rule.set.violation/LengthBetweenViolation.toString|toString(){}[0]
 }
 
 final class io.github.kverify.rule.set.violation/MaxLengthViolation : io.github.kverify.core.violation/ViolationWithPath { // io.github.kverify.rule.set.violation/MaxLengthViolation|null[0]
@@ -268,7 +268,7 @@ final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin.collections/
 final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin.collections/Collection<*>>).io.github.kverify.rule.set/sizeBetween(kotlin/Int, kotlin/Int, kotlin/String? = ...) // io.github.kverify.rule.set/sizeBetween|sizeBetween@io.github.kverify.core.scope.ValueValidationScope<kotlin.collections.Collection<*>>(kotlin.Int;kotlin.Int;kotlin.String?){}[0]
 final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/Any?>).io.github.kverify.rule.set/notNull(kotlin/String? = ...) // io.github.kverify.rule.set/notNull|notNull@io.github.kverify.core.scope.ValueValidationScope<kotlin.Any?>(kotlin.String?){}[0]
 final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/CharSequence>).io.github.kverify.rule.set/exactLength(kotlin/Int, kotlin/String? = ...) // io.github.kverify.rule.set/exactLength|exactLength@io.github.kverify.core.scope.ValueValidationScope<kotlin.CharSequence>(kotlin.Int;kotlin.String?){}[0]
-final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/CharSequence>).io.github.kverify.rule.set/lengthRange(kotlin/Int, kotlin/Int, kotlin/String? = ...) // io.github.kverify.rule.set/lengthRange|lengthRange@io.github.kverify.core.scope.ValueValidationScope<kotlin.CharSequence>(kotlin.Int;kotlin.Int;kotlin.String?){}[0]
+final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/CharSequence>).io.github.kverify.rule.set/lengthBetween(kotlin/Int, kotlin/Int, kotlin/String? = ...) // io.github.kverify.rule.set/lengthBetween|lengthBetween@io.github.kverify.core.scope.ValueValidationScope<kotlin.CharSequence>(kotlin.Int;kotlin.Int;kotlin.String?){}[0]
 final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/CharSequence>).io.github.kverify.rule.set/matches(kotlin.text/Regex, kotlin/String? = ...) // io.github.kverify.rule.set/matches|matches@io.github.kverify.core.scope.ValueValidationScope<kotlin.CharSequence>(kotlin.text.Regex;kotlin.String?){}[0]
 final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/CharSequence>).io.github.kverify.rule.set/maxLength(kotlin/Int, kotlin/String? = ...) // io.github.kverify.rule.set/maxLength|maxLength@io.github.kverify.core.scope.ValueValidationScope<kotlin.CharSequence>(kotlin.Int;kotlin.String?){}[0]
 final fun (io.github.kverify.core.scope/ValueValidationScope<kotlin/CharSequence>).io.github.kverify.rule.set/minLength(kotlin/Int, kotlin/String? = ...) // io.github.kverify.rule.set/minLength|minLength@io.github.kverify.core.scope.ValueValidationScope<kotlin.CharSequence>(kotlin.Int;kotlin.String?){}[0]

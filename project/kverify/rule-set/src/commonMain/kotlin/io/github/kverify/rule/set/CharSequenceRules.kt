@@ -4,7 +4,7 @@ import io.github.kverify.core.context.validationPath
 import io.github.kverify.core.scope.ValueValidationScope
 import io.github.kverify.core.scope.failIf
 import io.github.kverify.rule.set.violation.ExactLengthViolation
-import io.github.kverify.rule.set.violation.LengthRangeViolation
+import io.github.kverify.rule.set.violation.LengthBetweenViolation
 import io.github.kverify.rule.set.violation.MaxLengthViolation
 import io.github.kverify.rule.set.violation.MinLengthViolation
 import io.github.kverify.rule.set.violation.NotBlankViolation
@@ -63,19 +63,19 @@ public fun ValueValidationScope<CharSequence>.maxLength(
 }
 
 /**
- * Reports a [LengthRangeViolation] if the length of the value is not between [minLength]
+ * Reports a [LengthBetweenViolation] if the length of the value is not between [minLength]
  * and [maxLength], inclusive.
  *
  * @param reason the reason of the reported violation, or `null` to use
  * "Length must be between [minLength] and [maxLength]".
  */
-public fun ValueValidationScope<CharSequence>.lengthRange(
+public fun ValueValidationScope<CharSequence>.lengthBetween(
     minLength: Int,
     maxLength: Int,
     reason: String? = null,
 ) {
     failIf(value.length !in minLength..maxLength) {
-        LengthRangeViolation(
+        LengthBetweenViolation(
             minLength = minLength,
             maxLength = maxLength,
             validationPath = validationContext.validationPath(),

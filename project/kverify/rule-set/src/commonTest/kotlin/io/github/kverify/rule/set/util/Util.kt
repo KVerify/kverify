@@ -15,7 +15,7 @@ import io.github.kverify.rule.set.violation.DistinctViolation
 import io.github.kverify.rule.set.violation.ExactLengthViolation
 import io.github.kverify.rule.set.violation.ExactSizeViolation
 import io.github.kverify.rule.set.violation.GreaterThanViolation
-import io.github.kverify.rule.set.violation.LengthRangeViolation
+import io.github.kverify.rule.set.violation.LengthBetweenViolation
 import io.github.kverify.rule.set.violation.LessThanViolation
 import io.github.kverify.rule.set.violation.MaxLengthViolation
 import io.github.kverify.rule.set.violation.MaxSizeViolation
@@ -126,7 +126,7 @@ fun lengthRangeViolation(
     maxLength: Int = 5,
     path: ValidationPath = somePath,
     reason: String = "reason",
-): LengthRangeViolation = LengthRangeViolation(minLength = minLength, maxLength = maxLength, validationPath = path, reason = reason)
+): LengthBetweenViolation = LengthBetweenViolation(minLength = minLength, maxLength = maxLength, validationPath = path, reason = reason)
 
 fun lessThanViolation(
     maxExclusive: Int = 1,

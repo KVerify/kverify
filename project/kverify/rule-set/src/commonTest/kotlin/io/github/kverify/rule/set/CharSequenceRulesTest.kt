@@ -8,7 +8,7 @@ import io.github.kverify.rule.set.util.namePath
 import io.github.kverify.rule.set.util.violationFor
 import io.github.kverify.rule.set.util.violationsFor
 import io.github.kverify.rule.set.violation.ExactLengthViolation
-import io.github.kverify.rule.set.violation.LengthRangeViolation
+import io.github.kverify.rule.set.violation.LengthBetweenViolation
 import io.github.kverify.rule.set.violation.MaxLengthViolation
 import io.github.kverify.rule.set.violation.MinLengthViolation
 import io.github.kverify.rule.set.violation.NotBlankViolation
@@ -145,45 +145,45 @@ val CharSequenceRulesTest by testSuite {
 
     testSuite("lengthRange") {
         test("reports a value shorter than the minimum") {
-            val violation = violationFor("a") { lengthRange(2, 4) }
+            val violation = violationFor("a") { lengthBetween(2, 4) }
 
-            val lengthRangeViolation = assertIs<LengthRangeViolation>(violation)
-            assertEquals(2, lengthRangeViolation.minLength)
-            assertEquals(4, lengthRangeViolation.maxLength)
+            val lengthBetweenViolation = assertIs<LengthBetweenViolation>(violation)
+            assertEquals(2, lengthBetweenViolation.minLength)
+            assertEquals(4, lengthBetweenViolation.maxLength)
         }
 
         test("reports a value longer than the maximum") {
-            val violation = violationFor("abcde") { lengthRange(2, 4) }
+            val violation = violationFor("abcde") { lengthBetween(2, 4) }
 
-            assertIs<LengthRangeViolation>(violation)
+            assertIs<LengthBetweenViolation>(violation)
         }
 
         test("does not report a value of exactly the minimum length") {
-            val violations = violationsFor("ab") { lengthRange(2, 4) }
+            val violations = violationsFor("ab") { lengthBetween(2, 4) }
 
             assertNoViolations(violations)
         }
 
         test("does not report a value of exactly the maximum length") {
-            val violations = violationsFor("abcd") { lengthRange(2, 4) }
+            val violations = violationsFor("abcd") { lengthBetween(2, 4) }
 
             assertNoViolations(violations)
         }
 
         test("does not report a value inside the range") {
-            val violations = violationsFor("abc") { lengthRange(2, 4) }
+            val violations = violationsFor("abc") { lengthBetween(2, 4) }
 
             assertNoViolations(violations)
         }
 
         test("uses the default reason") {
-            val violation = violationFor("a") { lengthRange(2, 4) }
+            val violation = violationFor("a") { lengthBetween(2, 4) }
 
             assertEquals("Length must be between 2 and 4", violation.reason)
         }
 
         test("uses the given reason") {
-            val violation = violationFor("a") { lengthRange(2, 4, "custom") }
+            val violation = violationFor("a") { lengthBetween(2, 4, "custom") }
 
             assertEquals("custom", violation.reason)
         }
@@ -191,7 +191,7 @@ val CharSequenceRulesTest by testSuite {
         test("reports the path of the context") {
             val context = pathName("field")
 
-            val violation = violationFor("a", context) { lengthRange(2, 4) }
+            val violation = violationFor("a", context) { lengthBetween(2, 4) }
 
             val expectedPath = namePath("field")
             assertViolationPath(expectedPath, violation)

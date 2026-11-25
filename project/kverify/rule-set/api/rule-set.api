@@ -6,8 +6,8 @@ public final class io/github/kverify/rule/set/AnyRulesKt {
 public final class io/github/kverify/rule/set/CharSequenceRulesKt {
 	public static final fun exactLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
 	public static synthetic fun exactLength$default (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
-	public static final fun lengthRange (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;)V
-	public static synthetic fun lengthRange$default (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;ILjava/lang/Object;)V
+	public static final fun lengthBetween (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;)V
+	public static synthetic fun lengthBetween$default (Lio/github/kverify/core/scope/ValueValidationScope;IILjava/lang/String;ILjava/lang/Object;)V
 	public static final fun matches (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;)V
 	public static synthetic fun matches$default (Lio/github/kverify/core/scope/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;ILjava/lang/Object;)V
 	public static final fun maxLength (Lio/github/kverify/core/scope/ValueValidationScope;ILjava/lang/String;)V
@@ -114,7 +114,7 @@ public final class io/github/kverify/rule/set/violation/GreaterThanViolation : i
 	public fun toString ()Ljava/lang/String;
 }
 
-public final class io/github/kverify/rule/set/violation/LengthRangeViolation : io/github/kverify/core/violation/ViolationWithPath {
+public final class io/github/kverify/rule/set/violation/LengthBetweenViolation : io/github/kverify/core/violation/ViolationWithPath {
 	public fun <init> (IILio/github/kverify/core/model/ValidationPath;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxLength ()I
