@@ -8,7 +8,7 @@ public class PatternViolation(
     override val validationPath: ValidationPath,
     override val reason: String,
 ) : ViolationWithPath {
-    override fun toString(): String = "PatternViolation(regex=$regex, validationPath=$validationPath, reason=$reason)"
+    override fun toString(): String = "PatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"
 
     override fun equals(other: Any?): Boolean =
         when {
