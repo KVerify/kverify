@@ -13,10 +13,10 @@
 KVerify is a Kotlin Multiplatform library with a DSL for validating data.
 
 ```kotlin
-import io.github.kverify.core.scope.forProperty
-import io.github.kverify.core.strategy.validateCollecting
-import io.github.kverify.rule.set.atLeast
-import io.github.kverify.rule.set.notBlank
+import io.github.kverify.core.forProperty
+import io.github.kverify.core.validateCollecting
+import io.github.kverify.ruleset.atLeast
+import io.github.kverify.ruleset.notBlank
 
 data class User(
     val name: String,
@@ -113,12 +113,12 @@ arm64) and Windows (mingwX64).
 violation created by a rule reports the path where it was found.
 
 ```kotlin
-import io.github.kverify.core.scope.each
-import io.github.kverify.core.scope.forProperty
-import io.github.kverify.core.strategy.validateCollecting
-import io.github.kverify.core.violation.ViolationWithPath
-import io.github.kverify.rule.set.greaterThan
-import io.github.kverify.rule.set.notBlank
+import io.github.kverify.core.ViolationWithPath
+import io.github.kverify.core.each
+import io.github.kverify.core.forProperty
+import io.github.kverify.core.validateCollecting
+import io.github.kverify.ruleset.greaterThan
+import io.github.kverify.ruleset.notBlank
 
 data class OrderItem(
     val name: String,
@@ -167,14 +167,14 @@ A validation is written once, as an extension function on `ValidationScope`. `va
 `ThrowingValidationStrategy`, which throws a `ViolationException` with the first violation.
 
 ```kotlin
-import io.github.kverify.core.exception.ViolationException
-import io.github.kverify.core.scope.ValidationScope
-import io.github.kverify.core.scope.forProperty
-import io.github.kverify.core.strategy.validateCollecting
-import io.github.kverify.core.strategy.validateThrowing
-import io.github.kverify.rule.set.atLeast
-import io.github.kverify.rule.set.lengthRange
-import io.github.kverify.rule.set.notBlank
+import io.github.kverify.core.ValidationScope
+import io.github.kverify.core.ViolationException
+import io.github.kverify.core.forProperty
+import io.github.kverify.core.validateCollecting
+import io.github.kverify.core.validateThrowing
+import io.github.kverify.ruleset.atLeast
+import io.github.kverify.ruleset.lengthRange
+import io.github.kverify.ruleset.notBlank
 
 data class User(
     val name: String,
@@ -215,11 +215,11 @@ Must not be blank
 A custom rule is an extension function that calls `failIf`/`failWith`. It is used like a built-in rule.
 
 ```kotlin
-import io.github.kverify.core.scope.ValueValidationScope
-import io.github.kverify.core.scope.failIf
-import io.github.kverify.core.scope.forProperty
-import io.github.kverify.core.strategy.validateCollecting
-import io.github.kverify.core.violation.ViolationReason
+import io.github.kverify.core.ValueValidationScope
+import io.github.kverify.core.ViolationReason
+import io.github.kverify.core.failIf
+import io.github.kverify.core.forProperty
+import io.github.kverify.core.validateCollecting
 
 fun ValueValidationScope<String>.noSpaces() {
     failIf(value.contains(' ')) {
@@ -252,11 +252,11 @@ Must not contain spaces
 `ViolationReason` holds only a message, with no path. To report the path, write a violation class of your own:
 
 ```kotlin
-import io.github.kverify.core.scope.ValueValidationScope
-import io.github.kverify.core.scope.failIf
-import io.github.kverify.core.model.ValidationPath
-import io.github.kverify.core.violation.ViolationWithPath
-import io.github.kverify.core.context.validationPath
+import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValueValidationScope
+import io.github.kverify.core.ViolationWithPath
+import io.github.kverify.core.failIf
+import io.github.kverify.core.validationPath
 
 data class NoSpacesViolation(
     override val reason: String,
