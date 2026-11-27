@@ -63,7 +63,7 @@ val ExactSizeViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "ExactSizeViolation(expectedSize=3, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "ExactSizeViolation(expectedSize=3, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

@@ -63,7 +63,7 @@ val ExactLengthViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "ExactLengthViolation(expectedLength=3, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "ExactLengthViolation(expectedLength=3, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

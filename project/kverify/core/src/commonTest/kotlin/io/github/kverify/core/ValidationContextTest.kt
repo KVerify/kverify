@@ -14,7 +14,7 @@ val ValidationContextTest by testSuite {
         test("returns an empty path when the context has no path element") {
             val result = EmptyValidationContext.validationPath()
 
-            assertEquals(ValidationPath.Empty, result)
+            assertEquals(emptyList(), result)
         }
 
         test("returns an empty path when the context has other elements only") {
@@ -22,7 +22,7 @@ val ValidationContextTest by testSuite {
 
             val result = context.validationPath()
 
-            assertEquals(ValidationPath.Empty, result)
+            assertEquals(emptyList(), result)
         }
 
         test("returns the path of the path element") {
@@ -33,7 +33,7 @@ val ValidationContextTest by testSuite {
 
             val result = context.validationPath()
 
-            val expectedPath = ValidationPath(listOf(NamePathSegment("a")))
+            val expectedPath = listOf(NamePathSegment("a"))
             assertEquals(expectedPath, result)
         }
     }

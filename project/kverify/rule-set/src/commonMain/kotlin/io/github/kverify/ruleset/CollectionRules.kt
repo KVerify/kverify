@@ -1,6 +1,6 @@
 package io.github.kverify.ruleset
 
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
@@ -8,7 +8,7 @@ import io.github.kverify.core.validationPath
 
 public class MinSizeViolation(
     public val minSize: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "MinSizeViolation(minSize=$minSize, validationPath=$validationPath, reason=$reason)"
@@ -40,7 +40,7 @@ public class MinSizeViolation(
 
 public class MaxSizeViolation(
     public val maxSize: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "MaxSizeViolation(maxSize=$maxSize, validationPath=$validationPath, reason=$reason)"
@@ -73,7 +73,7 @@ public class MaxSizeViolation(
 public class SizeBetweenViolation(
     public val minSize: Int,
     public val maxSize: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String =
@@ -108,7 +108,7 @@ public class SizeBetweenViolation(
 
 public class ExactSizeViolation(
     public val expectedSize: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "ExactSizeViolation(expectedSize=$expectedSize, validationPath=$validationPath, reason=$reason)"
@@ -139,7 +139,7 @@ public class ExactSizeViolation(
 }
 
 public class DistinctViolation(
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "DistinctViolation(validationPath=$validationPath, reason=$reason)"

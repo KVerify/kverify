@@ -70,7 +70,7 @@ val BetweenViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "BetweenViolation(min=1, max=5, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "BetweenViolation(min=1, max=5, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

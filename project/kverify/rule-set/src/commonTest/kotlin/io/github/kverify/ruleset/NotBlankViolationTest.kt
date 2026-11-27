@@ -56,7 +56,7 @@ val NotBlankViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "NotBlankViolation(validationPath=ValidationPath(\"field\"), reason=reason)"
+                "NotBlankViolation(validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

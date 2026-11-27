@@ -1,13 +1,13 @@
 package io.github.kverify.ruleset
 
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
 import io.github.kverify.core.validationPath
 
 public class NotBlankViolation(
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "NotBlankViolation(validationPath=$validationPath, reason=$reason)"
@@ -37,7 +37,7 @@ public class NotBlankViolation(
 
 public class MinLengthViolation(
     public val minLength: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "MinLengthViolation(minLength=$minLength, validationPath=$validationPath, reason=$reason)"
@@ -69,7 +69,7 @@ public class MinLengthViolation(
 
 public class MaxLengthViolation(
     public val maxLength: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "MaxLengthViolation(maxLength=$maxLength, validationPath=$validationPath, reason=$reason)"
@@ -102,7 +102,7 @@ public class MaxLengthViolation(
 public class LengthBetweenViolation(
     public val minLength: Int,
     public val maxLength: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String =
@@ -137,7 +137,7 @@ public class LengthBetweenViolation(
 
 public class ExactLengthViolation(
     public val expectedLength: Int,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "ExactLengthViolation(expectedLength=$expectedLength, validationPath=$validationPath, reason=$reason)"
@@ -169,7 +169,7 @@ public class ExactLengthViolation(
 
 public class MatchesPatternViolation(
     public val regex: Regex,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "MatchesPatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"

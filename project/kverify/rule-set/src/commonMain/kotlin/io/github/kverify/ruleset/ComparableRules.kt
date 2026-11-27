@@ -1,6 +1,6 @@
 package io.github.kverify.ruleset
 
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
@@ -8,7 +8,7 @@ import io.github.kverify.core.validationPath
 
 public class AtLeastViolation<T : Comparable<T>>(
     public val min: T,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "AtLeastViolation(min=$min, validationPath=$validationPath, reason=$reason)"
@@ -40,7 +40,7 @@ public class AtLeastViolation<T : Comparable<T>>(
 
 public class AtMostViolation<T : Comparable<T>>(
     public val max: T,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "AtMostViolation(max=$max, validationPath=$validationPath, reason=$reason)"
@@ -72,7 +72,7 @@ public class AtMostViolation<T : Comparable<T>>(
 
 public class GreaterThanViolation<T : Comparable<T>>(
     public val minExclusive: T,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "GreaterThanViolation(minExclusive=$minExclusive, validationPath=$validationPath, reason=$reason)"
@@ -104,7 +104,7 @@ public class GreaterThanViolation<T : Comparable<T>>(
 
 public class LessThanViolation<T : Comparable<T>>(
     public val maxExclusive: T,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "LessThanViolation(maxExclusive=$maxExclusive, validationPath=$validationPath, reason=$reason)"
@@ -137,7 +137,7 @@ public class LessThanViolation<T : Comparable<T>>(
 public class BetweenViolation<T : Comparable<T>>(
     public val min: T,
     public val max: T,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "BetweenViolation(min=$min, max=$max, validationPath=$validationPath, reason=$reason)"

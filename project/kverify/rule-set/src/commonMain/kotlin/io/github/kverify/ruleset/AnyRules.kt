@@ -1,13 +1,13 @@
 package io.github.kverify.ruleset
 
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
 import io.github.kverify.core.validationPath
 
 public class NotNullViolation(
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
     override val reason: String,
 ) : ViolationWithPath {
     override fun toString(): String = "NotNullViolation(validationPath=$validationPath, reason=$reason)"

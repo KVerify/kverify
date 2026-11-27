@@ -56,7 +56,7 @@ val DistinctViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "DistinctViolation(validationPath=ValidationPath(\"field\"), reason=reason)"
+                "DistinctViolation(validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

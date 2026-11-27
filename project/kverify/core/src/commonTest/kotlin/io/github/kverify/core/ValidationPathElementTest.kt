@@ -353,7 +353,7 @@ private object UnrelatedKey : ValidationContext.Key<UnrelatedElement> {
     ): ValidationContext.Element = newElement
 }
 
-private fun path(vararg segments: ValidationPathSegment): ValidationPath = ValidationPath(segments.asList())
+private fun path(vararg segments: ValidationPathSegment): List<ValidationPathSegment> = segments.asList()
 
 private fun elementsOf(context: ValidationContext): List<ValidationContext.Element> {
     val result = mutableListOf<ValidationContext.Element>()

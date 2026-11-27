@@ -63,7 +63,7 @@ val MaxLengthViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "MaxLengthViolation(maxLength=3, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "MaxLengthViolation(maxLength=3, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

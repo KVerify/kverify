@@ -63,7 +63,7 @@ val AtLeastViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "AtLeastViolation(min=1, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "AtLeastViolation(min=1, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

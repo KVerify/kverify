@@ -56,7 +56,7 @@ val NotNullViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "NotNullViolation(validationPath=ValidationPath(\"field\"), reason=reason)"
+                "NotNullViolation(validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

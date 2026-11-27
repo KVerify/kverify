@@ -39,8 +39,8 @@ fun main() {
 The code prints:
 
 ```text
-NotBlankViolation(validationPath=ValidationPath("name"), reason=Must not be blank)
-AtLeastViolation(min=18, validationPath=ValidationPath("age"), reason=Must be at least 18)
+NotBlankViolation(validationPath=[NamePathSegment(name)], reason=Must not be blank)
+AtLeastViolation(min=18, validationPath=[NamePathSegment(age)], reason=Must be at least 18)
 ```
 
 ## Highlights
@@ -155,9 +155,9 @@ fun main() {
 The code prints:
 
 ```text
-ValidationPath("customer")
-ValidationPath("items", 1, "name")
-ValidationPath("items", 1, "price")
+[NamePathSegment(customer)]
+[NamePathSegment(items), IndexPathSegment(1), NamePathSegment(name)]
+[NamePathSegment(items), IndexPathSegment(1), NamePathSegment(price)]
 ```
 
 ### Collecting and throwing
@@ -252,7 +252,7 @@ Must not contain spaces
 `ViolationReason` holds only a message, with no path. To report the path, write a violation class of your own:
 
 ```kotlin
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
@@ -260,7 +260,7 @@ import io.github.kverify.core.validationPath
 
 data class NoSpacesViolation(
     override val reason: String,
-    override val validationPath: ValidationPath,
+    override val validationPath: List<ValidationPathSegment>,
 ) : ViolationWithPath
 
 fun ValueValidationScope<String>.noSpaces() {

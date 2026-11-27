@@ -136,7 +136,7 @@ val ValueValidationScopeTest by testSuite {
 
         test("adds the index of the element to the path") {
             val scope = ValueValidationScope(listOf("a", "b"), RecordingStrategy(), EmptyValidationContext)
-            val paths = mutableListOf<ValidationPath>()
+            val paths = mutableListOf<List<ValidationPathSegment>>()
 
             scope.each { paths.add(validationContext.validationPath()) }
 
@@ -148,7 +148,7 @@ val ValueValidationScopeTest by testSuite {
         test("adds the index of the element to the end of the existing path") {
             val context = pathName("items")
             val scope = ValueValidationScope(listOf(10, 20), RecordingStrategy(), context)
-            val paths = mutableListOf<ValidationPath>()
+            val paths = mutableListOf<List<ValidationPathSegment>>()
 
             scope.each { paths.add(validationContext.validationPath()) }
 
@@ -169,4 +169,4 @@ val ValueValidationScopeTest by testSuite {
     }
 }
 
-private fun path(vararg segments: ValidationPathSegment): ValidationPath = ValidationPath(segments.asList())
+private fun path(vararg segments: ValidationPathSegment): List<ValidationPathSegment> = segments.asList()

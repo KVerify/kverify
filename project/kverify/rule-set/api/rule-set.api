@@ -4,32 +4,32 @@ public final class io/github/kverify/ruleset/AnyRulesKt {
 }
 
 public final class io/github/kverify/ruleset/AtLeastViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Ljava/lang/Comparable;Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/Comparable;Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMin ()Ljava/lang/Comparable;
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/AtMostViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Ljava/lang/Comparable;Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/Comparable;Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMax ()Ljava/lang/Comparable;
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/BetweenViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Ljava/lang/Comparable;Ljava/lang/Comparable;Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/Comparable;Ljava/lang/Comparable;Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMax ()Ljava/lang/Comparable;
 	public final fun getMin ()Ljava/lang/Comparable;
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
@@ -76,140 +76,140 @@ public final class io/github/kverify/ruleset/ComparableRulesKt {
 }
 
 public final class io/github/kverify/ruleset/DistinctViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/ExactLengthViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (ILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (ILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getExpectedLength ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/ExactSizeViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (ILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (ILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getExpectedSize ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/GreaterThanViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Ljava/lang/Comparable;Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/Comparable;Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMinExclusive ()Ljava/lang/Comparable;
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/LengthBetweenViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (IILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (IILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxLength ()I
 	public final fun getMinLength ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/LessThanViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Ljava/lang/Comparable;Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/Comparable;Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxExclusive ()Ljava/lang/Comparable;
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/MatchesPatternViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Lkotlin/text/Regex;Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Lkotlin/text/Regex;Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getReason ()Ljava/lang/String;
 	public final fun getRegex ()Lkotlin/text/Regex;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/MaxLengthViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (ILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (ILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxLength ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/MaxSizeViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (ILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (ILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxSize ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/MinLengthViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (ILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (ILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMinLength ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/MinSizeViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (ILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (ILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMinSize ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/NotBlankViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/NotNullViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Lio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (Ljava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }
 
 public final class io/github/kverify/ruleset/SizeBetweenViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (IILio/github/kverify/core/ValidationPath;Ljava/lang/String;)V
+	public fun <init> (IILjava/util/List;Ljava/lang/String;)V
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxSize ()I
 	public final fun getMinSize ()I
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Lio/github/kverify/core/ValidationPath;
+	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;
 }

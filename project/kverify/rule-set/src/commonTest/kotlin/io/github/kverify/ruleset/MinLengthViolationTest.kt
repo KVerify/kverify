@@ -63,7 +63,7 @@ val MinLengthViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "MinLengthViolation(minLength=3, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "MinLengthViolation(minLength=3, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

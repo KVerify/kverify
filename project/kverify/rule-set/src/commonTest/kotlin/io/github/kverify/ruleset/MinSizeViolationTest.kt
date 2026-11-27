@@ -63,7 +63,7 @@ val MinSizeViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "MinSizeViolation(minSize=3, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "MinSizeViolation(minSize=3, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

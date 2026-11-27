@@ -3,7 +3,7 @@ package io.github.kverify.ruleset
 import io.github.kverify.core.EmptyValidationContext
 import io.github.kverify.core.NamePathSegment
 import io.github.kverify.core.ValidationContext
-import io.github.kverify.core.ValidationPath
+import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.Violation
 import io.github.kverify.core.ViolationWithPath
@@ -44,7 +44,7 @@ internal fun assertNoViolations(violations: List<Violation>) {
 }
 
 internal fun assertViolationPath(
-    expectedPath: ValidationPath,
+    expectedPath: List<ValidationPathSegment>,
     violation: Violation,
 ) {
     val violationWithPath = assertIs<ViolationWithPath>(violation)
@@ -52,114 +52,114 @@ internal fun assertViolationPath(
     assertEquals(expectedPath, violationWithPath.validationPath)
 }
 
-internal fun namePath(name: String): ValidationPath {
+internal fun namePath(name: String): List<ValidationPathSegment> {
     val segment = NamePathSegment(name)
 
-    return ValidationPath(listOf(segment))
+    return listOf(segment)
 }
 
-val somePath = ValidationPath(listOf(NamePathSegment("field")))
+val somePath = listOf(NamePathSegment("field"))
 
-val otherPath = ValidationPath(listOf(NamePathSegment("other")))
+val otherPath = listOf(NamePathSegment("other"))
 
 fun atLeastViolation(
     min: Int = 1,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): AtLeastViolation<Int> = AtLeastViolation(min = min, validationPath = path, reason = reason)
 
 fun atMostViolation(
     max: Int = 1,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): AtMostViolation<Int> = AtMostViolation(max = max, validationPath = path, reason = reason)
 
 fun betweenViolation(
     min: Int = 1,
     max: Int = 5,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): BetweenViolation<Int> = BetweenViolation(min = min, max = max, validationPath = path, reason = reason)
 
 fun distinctViolation(
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): DistinctViolation = DistinctViolation(validationPath = path, reason = reason)
 
 fun exactLengthViolation(
     expectedLength: Int = 3,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): ExactLengthViolation = ExactLengthViolation(expectedLength = expectedLength, validationPath = path, reason = reason)
 
 fun exactSizeViolation(
     expectedSize: Int = 3,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): ExactSizeViolation = ExactSizeViolation(expectedSize = expectedSize, validationPath = path, reason = reason)
 
 fun greaterThanViolation(
     minExclusive: Int = 1,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): GreaterThanViolation<Int> = GreaterThanViolation(minExclusive = minExclusive, validationPath = path, reason = reason)
 
 fun lengthBetweenViolation(
     minLength: Int = 1,
     maxLength: Int = 5,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): LengthBetweenViolation = LengthBetweenViolation(minLength = minLength, maxLength = maxLength, validationPath = path, reason = reason)
 
 fun lessThanViolation(
     maxExclusive: Int = 1,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): LessThanViolation<Int> = LessThanViolation(maxExclusive = maxExclusive, validationPath = path, reason = reason)
 
 fun matchesPatternViolation(
     regex: Regex = Regex("a"),
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): MatchesPatternViolation = MatchesPatternViolation(regex = regex, validationPath = path, reason = reason)
 
 fun maxLengthViolation(
     maxLength: Int = 3,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): MaxLengthViolation = MaxLengthViolation(maxLength = maxLength, validationPath = path, reason = reason)
 
 fun maxSizeViolation(
     maxSize: Int = 3,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): MaxSizeViolation = MaxSizeViolation(maxSize = maxSize, validationPath = path, reason = reason)
 
 fun minLengthViolation(
     minLength: Int = 3,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): MinLengthViolation = MinLengthViolation(minLength = minLength, validationPath = path, reason = reason)
 
 fun minSizeViolation(
     minSize: Int = 3,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): MinSizeViolation = MinSizeViolation(minSize = minSize, validationPath = path, reason = reason)
 
 fun notBlankViolation(
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): NotBlankViolation = NotBlankViolation(validationPath = path, reason = reason)
 
 fun notNullViolation(
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): NotNullViolation = NotNullViolation(validationPath = path, reason = reason)
 
 fun sizeBetweenViolation(
     minSize: Int = 1,
     maxSize: Int = 5,
-    path: ValidationPath = somePath,
+    path: List<ValidationPathSegment> = somePath,
     reason: String = "reason",
 ): SizeBetweenViolation = SizeBetweenViolation(minSize = minSize, maxSize = maxSize, validationPath = path, reason = reason)

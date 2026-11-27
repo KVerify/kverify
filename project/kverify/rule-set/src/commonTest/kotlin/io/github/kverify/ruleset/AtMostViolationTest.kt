@@ -63,7 +63,7 @@ val AtMostViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "AtMostViolation(max=1, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "AtMostViolation(max=1, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

@@ -1,36 +1,7 @@
 package io.github.kverify.core
 
-public class ValidationPath(
-    public val segments: List<ValidationPathSegment>,
-) {
-    override fun toString(): String =
-        segments.joinToString(
-            separator = ", ",
-            prefix = "ValidationPath(",
-            postfix = ")",
-        ) { segment ->
-            when (segment) {
-                is NamePathSegment -> "\"${segment.name}\""
-                is IndexPathSegment -> segment.index.toString()
-            }
-        }
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> true
-            other !is ValidationPath -> false
-            else -> segments == other.segments
-        }
-
-    override fun hashCode(): Int = segments.hashCode()
-
-    internal companion object {
-        val Empty: ValidationPath = ValidationPath(listOf())
-    }
-}
-
 /**
- * A single segment of a [ValidationPath]: either a [NamePathSegment] or an [IndexPathSegment].
+ * A single segment of a validation path: either a [NamePathSegment] or an [IndexPathSegment].
  */
 public sealed interface ValidationPathSegment
 
@@ -40,7 +11,7 @@ public sealed interface ValidationPathSegment
 public class NamePathSegment(
     public val name: String,
 ) : ValidationPathSegment {
-    override fun toString(): String = "NamePathSegment(name=$name)"
+    override fun toString(): String = "NamePathSegment($name)"
 
     override fun equals(other: Any?): Boolean =
         when {
@@ -58,7 +29,7 @@ public class NamePathSegment(
 public class IndexPathSegment(
     public val index: Int,
 ) : ValidationPathSegment {
-    override fun toString(): String = "IndexPathSegment(index=$index)"
+    override fun toString(): String = "IndexPathSegment($index)"
 
     override fun equals(other: Any?): Boolean =
         when {
@@ -182,17 +153,17 @@ public fun ValidationContext.plusPathName(name: String): ValidationContext = thi
 public fun ValidationContext.plusPathIndex(index: Int): ValidationContext = this + pathIndex(index)
 
 /**
- * Returns the [ValidationPath] stored in this context, or [ValidationPath.Empty]
+ * Returns the segments of the [ValidationPathElement] stored in this context, or an empty list
  * if the context has no [ValidationPathElement].
  */
-public fun ValidationContext.validationPath(): ValidationPath =
+public fun ValidationContext.validationPath(): List<ValidationPathSegment> =
     this[ValidationPathElement]?.toValidationPath()
-        ?: ValidationPath.Empty
+        ?: emptyList()
 
 /**
- * Returns a [ValidationPath] representation of this [ValidationPathElement].
+ * Returns a list of the segments of this path, in the order they were added.
  */
-public fun ValidationPathElement.toValidationPath(): ValidationPath = ValidationPath(this.toSegmentArray().asList())
+public fun ValidationPathElement.toValidationPath(): List<ValidationPathSegment> = this.toSegmentArray().asList()
 
 private fun ValidationPathElement.toSegmentArray(): Array<ValidationPathSegment> {
     val segments = Array(size) { segment }

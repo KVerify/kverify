@@ -55,7 +55,7 @@ val NamePathSegmentTest by testSuite {
 
             val result = segment.toString()
 
-            assertEquals("NamePathSegment(name=a)", result)
+            assertEquals("NamePathSegment(a)", result)
         }
     }
 }
@@ -111,7 +111,7 @@ val IndexPathSegmentTest by testSuite {
 
             val result = segment.toString()
 
-            assertEquals("IndexPathSegment(index=1)", result)
+            assertEquals("IndexPathSegment(1)", result)
         }
     }
 }

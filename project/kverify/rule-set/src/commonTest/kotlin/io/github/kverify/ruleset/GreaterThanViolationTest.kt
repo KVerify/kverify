@@ -63,7 +63,7 @@ val GreaterThanViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "GreaterThanViolation(minExclusive=1, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "GreaterThanViolation(minExclusive=1, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }

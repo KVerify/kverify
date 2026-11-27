@@ -177,4 +177,4 @@ private class Person(
     val name: String,
 )
 
-private fun path(vararg segments: ValidationPathSegment): ValidationPath = ValidationPath(segments.asList())
+private fun path(vararg segments: ValidationPathSegment): List<ValidationPathSegment> = segments.asList()

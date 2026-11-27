@@ -14,7 +14,7 @@ public interface Violation {
  * A [Violation] with a [validationPath].
  */
 public interface ViolationWithPath : Violation {
-    public val validationPath: ValidationPath
+    public val validationPath: List<ValidationPathSegment>
 }
 
 /**

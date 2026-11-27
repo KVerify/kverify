@@ -70,7 +70,7 @@ val MatchesPatternViolationTest by testSuite {
             val result = violation.toString()
 
             val expectedText =
-                "MatchesPatternViolation(regex=a, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "MatchesPatternViolation(regex=a, validationPath=[NamePathSegment(field)], reason=reason)"
             assertEquals(expectedText, result)
         }
     }
