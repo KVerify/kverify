@@ -64,6 +64,33 @@ private class ValueValidationScopeImpl<V>(
 }
 
 /**
+ * Returns a [ValidationScope] with the given [validationStrategy] and [validationContext].
+ */
+public fun ValidationScope(
+    validationStrategy: ValidationStrategy,
+    validationContext: ValidationContext,
+): ValidationScope =
+    ValidationScopeImpl(
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
+/**
+ * Returns a [ValueValidationScope] with the given [value], [validationStrategy] and
+ * [validationContext].
+ */
+public fun <V> ValueValidationScope(
+    value: V,
+    validationStrategy: ValidationStrategy,
+    validationContext: ValidationContext,
+): ValueValidationScope<V> =
+    ValueValidationScopeImpl(
+        value = value,
+        validationStrategy = validationStrategy,
+        validationContext = validationContext,
+    )
+
+/**
  * Returns a [ValueValidationScope] for the value of [property], with the property name
  * added to this scope as a [pathName].
  */
@@ -119,30 +146,3 @@ public inline fun <V> ValueValidationScope<Iterable<V>>.each(block: ValueValidat
         plus(pathIndex(index)).forValue(element).block()
     }
 }
-
-/**
- * Returns a [ValidationScope] with the given [validationStrategy] and [validationContext].
- */
-public fun ValidationScope(
-    validationStrategy: ValidationStrategy,
-    validationContext: ValidationContext,
-): ValidationScope =
-    ValidationScopeImpl(
-        validationStrategy = validationStrategy,
-        validationContext = validationContext,
-    )
-
-/**
- * Returns a [ValueValidationScope] with the given [value], [validationStrategy] and
- * [validationContext].
- */
-public fun <V> ValueValidationScope(
-    value: V,
-    validationStrategy: ValidationStrategy,
-    validationContext: ValidationContext,
-): ValueValidationScope<V> =
-    ValueValidationScopeImpl(
-        value = value,
-        validationStrategy = validationStrategy,
-        validationContext = validationContext,
-    )
