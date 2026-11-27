@@ -4,7 +4,7 @@ import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
-import io.github.kverify.core.validationPath
+import io.github.kverify.core.toValidationPath
 
 public class NotBlankViolation(
     override val validationPath: List<ValidationPathSegment>,
@@ -209,7 +209,7 @@ public class MatchesPatternViolation(
 public fun ValueValidationScope<CharSequence>.notBlank(reason: String? = null) {
     failIf(value.isBlank()) {
         NotBlankViolation(
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must not be blank",
         )
     }
@@ -228,7 +228,7 @@ public fun ValueValidationScope<CharSequence>.minLength(
     failIf(value.length < minLength) {
         MinLengthViolation(
             minLength = minLength,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Length must be at least $minLength",
         )
     }
@@ -247,7 +247,7 @@ public fun ValueValidationScope<CharSequence>.maxLength(
     failIf(value.length > maxLength) {
         MaxLengthViolation(
             maxLength = maxLength,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Length must be at most $maxLength",
         )
     }
@@ -269,7 +269,7 @@ public fun ValueValidationScope<CharSequence>.lengthBetween(
         LengthBetweenViolation(
             minLength = minLength,
             maxLength = maxLength,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Length must be between $minLength and $maxLength",
         )
     }
@@ -288,7 +288,7 @@ public fun ValueValidationScope<CharSequence>.exactLength(
     failIf(value.length != expectedLength) {
         ExactLengthViolation(
             expectedLength = expectedLength,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Length must be exactly $expectedLength",
         )
     }
@@ -307,7 +307,7 @@ public fun ValueValidationScope<CharSequence>.matchesPattern(
     failIf(!regex.matches(value)) {
         MatchesPatternViolation(
             regex = regex,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must match pattern ${regex.pattern}",
         )
     }

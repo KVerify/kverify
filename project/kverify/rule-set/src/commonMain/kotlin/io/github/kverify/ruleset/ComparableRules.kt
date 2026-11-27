@@ -4,7 +4,7 @@ import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
-import io.github.kverify.core.validationPath
+import io.github.kverify.core.toValidationPath
 
 public class AtLeastViolation<T : Comparable<T>>(
     public val min: T,
@@ -255,7 +255,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.atLeast(
     failIf(!isAtLeast(value, min)) {
         AtLeastViolation(
             min = min,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must be at least $min",
         )
     }
@@ -273,7 +273,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.atMost(
     failIf(!isAtMost(value, max)) {
         AtMostViolation(
             max = max,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must be at most $max",
         )
     }
@@ -292,7 +292,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.greaterThan(
     failIf(!isGreaterThan(value, minExclusive)) {
         GreaterThanViolation(
             minExclusive = minExclusive,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must be greater than $minExclusive",
         )
     }
@@ -311,7 +311,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.lessThan(
     failIf(!isLessThan(value, maxExclusive)) {
         LessThanViolation(
             maxExclusive = maxExclusive,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must be less than $maxExclusive",
         )
     }
@@ -332,7 +332,7 @@ public fun <T : Comparable<T>> ValueValidationScope<T>.between(
         BetweenViolation(
             min = min,
             max = max,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must be between $min and $max",
         )
     }

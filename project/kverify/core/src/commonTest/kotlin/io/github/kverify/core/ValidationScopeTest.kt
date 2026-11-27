@@ -41,7 +41,7 @@ val ValidationScopeTest by testSuite {
             val result = scope + pathName("b")
 
             val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"))
-            assertEquals(expectedPath, result.validationContext.validationPath())
+            assertEquals(expectedPath, result.validationContext.toValidationPath())
         }
 
         test("does not modify the original scope") {
@@ -51,7 +51,7 @@ val ValidationScopeTest by testSuite {
             scope + pathName("b")
 
             val expectedPath = path(NamePathSegment("a"))
-            assertEquals(expectedPath, scope.validationContext.validationPath())
+            assertEquals(expectedPath, scope.validationContext.toValidationPath())
         }
     }
 
@@ -100,7 +100,7 @@ val ValidationScopeTest by testSuite {
             val result = scope.forProperty(person::name)
 
             val expectedPath = path(NamePathSegment("name"))
-            assertEquals(expectedPath, result.validationContext.validationPath())
+            assertEquals(expectedPath, result.validationContext.toValidationPath())
         }
 
         test("adds the name of the property to the end of the existing path") {
@@ -111,7 +111,7 @@ val ValidationScopeTest by testSuite {
             val result = scope.forProperty(person::name)
 
             val expectedPath = path(NamePathSegment("user"), NamePathSegment("name"))
-            assertEquals(expectedPath, result.validationContext.validationPath())
+            assertEquals(expectedPath, result.validationContext.toValidationPath())
         }
     }
 

@@ -4,7 +4,7 @@ import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
-import io.github.kverify.core.validationPath
+import io.github.kverify.core.toValidationPath
 
 public class NotNullViolation(
     override val validationPath: List<ValidationPathSegment>,
@@ -43,7 +43,7 @@ public class NotNullViolation(
 public fun ValueValidationScope<Any?>.notNull(reason: String? = null) {
     failIf(value == null) {
         NotNullViolation(
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must not be null",
         )
     }

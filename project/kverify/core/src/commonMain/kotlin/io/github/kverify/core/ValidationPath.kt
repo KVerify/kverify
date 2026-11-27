@@ -143,17 +143,14 @@ public fun pathName(name: String): ValidationPathElement = ValidationPathElement
 public fun pathIndex(index: Int): ValidationPathElement = ValidationPathElement(IndexPathSegment(index), null)
 
 /**
- * Returns the segments of the [ValidationPathElement] stored in this context, or an empty list
- * if the context has no [ValidationPathElement].
+ * Returns a list of the segments of the [ValidationPathElement] stored in this context,
+ * in the order they were added, or an empty list if the context has no [ValidationPathElement].
  */
-public fun ValidationContext.validationPath(): List<ValidationPathSegment> =
-    this[ValidationPathElement]?.toValidationPath()
-        ?: emptyList()
+public fun ValidationContext.toValidationPath(): List<ValidationPathSegment> {
+    val pathElement = this[ValidationPathElement] ?: return emptyList()
 
-/**
- * Returns a list of the segments of this path, in the order they were added.
- */
-public fun ValidationPathElement.toValidationPath(): List<ValidationPathSegment> = this.toSegmentArray().asList()
+    return pathElement.toSegmentArray().asList()
+}
 
 private fun ValidationPathElement.toSegmentArray(): Array<ValidationPathSegment> {
     val segments = Array(size) { segment }

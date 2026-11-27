@@ -55,7 +55,7 @@ val ValueValidationScopeTest by testSuite {
             val result = scope + pathName("b")
 
             val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"))
-            assertEquals(expectedPath, result.validationContext.validationPath())
+            assertEquals(expectedPath, result.validationContext.toValidationPath())
         }
 
         test("does not modify the original scope") {
@@ -65,7 +65,7 @@ val ValueValidationScopeTest by testSuite {
             scope + pathName("b")
 
             val expectedPath = path(NamePathSegment("a"))
-            assertEquals(expectedPath, scope.validationContext.validationPath())
+            assertEquals(expectedPath, scope.validationContext.toValidationPath())
         }
     }
 
@@ -138,7 +138,7 @@ val ValueValidationScopeTest by testSuite {
             val scope = ValueValidationScope(listOf("a", "b"), RecordingStrategy(), EmptyValidationContext)
             val paths = mutableListOf<List<ValidationPathSegment>>()
 
-            scope.each { paths.add(validationContext.validationPath()) }
+            scope.each { paths.add(validationContext.toValidationPath()) }
 
             val firstPath = path(IndexPathSegment(0))
             val secondPath = path(IndexPathSegment(1))
@@ -150,7 +150,7 @@ val ValueValidationScopeTest by testSuite {
             val scope = ValueValidationScope(listOf(10, 20), RecordingStrategy(), context)
             val paths = mutableListOf<List<ValidationPathSegment>>()
 
-            scope.each { paths.add(validationContext.validationPath()) }
+            scope.each { paths.add(validationContext.toValidationPath()) }
 
             val firstPath = path(NamePathSegment("items"), IndexPathSegment(0))
             val secondPath = path(NamePathSegment("items"), IndexPathSegment(1))

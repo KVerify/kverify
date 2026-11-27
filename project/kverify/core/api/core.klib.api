@@ -152,8 +152,7 @@ final object io.github.kverify.core/ThrowingValidationStrategy : io.github.kveri
     final fun failWith(io.github.kverify.core/Violation): kotlin/Nothing // io.github.kverify.core/ThrowingValidationStrategy.failWith|failWith(io.github.kverify.core.Violation){}[0]
 }
 
-final fun (io.github.kverify.core/ValidationContext).io.github.kverify.core/validationPath(): kotlin.collections/List<io.github.kverify.core/ValidationPathSegment> // io.github.kverify.core/validationPath|validationPath@io.github.kverify.core.ValidationContext(){}[0]
-final fun (io.github.kverify.core/ValidationPathElement).io.github.kverify.core/toValidationPath(): kotlin.collections/List<io.github.kverify.core/ValidationPathSegment> // io.github.kverify.core/toValidationPath|toValidationPath@io.github.kverify.core.ValidationPathElement(){}[0]
+final fun (io.github.kverify.core/ValidationContext).io.github.kverify.core/toValidationPath(): kotlin.collections/List<io.github.kverify.core/ValidationPathSegment> // io.github.kverify.core/toValidationPath|toValidationPath@io.github.kverify.core.ValidationContext(){}[0]
 final fun (io.github.kverify.core/ValidationScope).io.github.kverify.core/failWith(io.github.kverify.core/Violation) // io.github.kverify.core/failWith|failWith@io.github.kverify.core.ValidationScope(io.github.kverify.core.Violation){}[0]
 final fun <#A: kotlin/Any> (io.github.kverify.core/ValueValidationScope<#A?>).io.github.kverify.core/takeIfValueNotNull(): io.github.kverify.core/ValueValidationScope<#A>? // io.github.kverify.core/takeIfValueNotNull|takeIfValueNotNull@io.github.kverify.core.ValueValidationScope<0:0?>(){0§<kotlin.Any>}[0]
 final fun <#A: kotlin/Any?> (io.github.kverify.core/ValidationScope).io.github.kverify.core/forProperty(kotlin.reflect/KProperty0<#A>): io.github.kverify.core/ValueValidationScope<#A> // io.github.kverify.core/forProperty|forProperty@io.github.kverify.core.ValidationScope(kotlin.reflect.KProperty0<0:0>){0§<kotlin.Any?>}[0]

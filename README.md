@@ -256,7 +256,7 @@ import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
-import io.github.kverify.core.validationPath
+import io.github.kverify.core.toValidationPath
 
 data class NoSpacesViolation(
     override val reason: String,
@@ -267,7 +267,7 @@ fun ValueValidationScope<String>.noSpaces() {
     failIf(value.contains(' ')) { 
         NoSpacesViolation(
             reason = "Must not contain spaces", 
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
         )
     }
 }

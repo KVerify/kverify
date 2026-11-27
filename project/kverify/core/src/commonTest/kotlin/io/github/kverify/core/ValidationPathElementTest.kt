@@ -57,7 +57,7 @@ val ValidationPathElementTest by testSuite {
                     pathName("b")
 
             val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"))
-            assertEquals(expectedPath, result.validationPath())
+            assertEquals(expectedPath, result.toValidationPath())
         }
 
         test("keeps the order of the segments of a longer path element") {
@@ -70,7 +70,7 @@ val ValidationPathElementTest by testSuite {
                     longer
 
             val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"), IndexPathSegment(0))
-            assertEquals(expectedPath, result.validationPath())
+            assertEquals(expectedPath, result.toValidationPath())
         }
 
         test("returns a path element when a path element is added") {
@@ -113,7 +113,7 @@ val ValidationPathElementTest by testSuite {
                     otherContext
 
             val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"))
-            assertEquals(expectedPath, result.validationPath())
+            assertEquals(expectedPath, result.toValidationPath())
             assertEquals(2, elementsOf(result).size)
         }
     }
@@ -165,7 +165,7 @@ val ValidationPathElementTest by testSuite {
             val result = stored + pathIndex(0)
 
             val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"), IndexPathSegment(0))
-            assertEquals(expectedPath, result.validationPath())
+            assertEquals(expectedPath, result.toValidationPath())
         }
     }
 

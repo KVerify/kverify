@@ -4,7 +4,7 @@ import io.github.kverify.core.ValidationPathSegment
 import io.github.kverify.core.ValueValidationScope
 import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
-import io.github.kverify.core.validationPath
+import io.github.kverify.core.toValidationPath
 
 public class MinSizeViolation(
     public val minSize: Int,
@@ -180,7 +180,7 @@ public fun ValueValidationScope<Collection<*>>.minSize(
     failIf(value.size < minSize) {
         MinSizeViolation(
             minSize = minSize,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Size must be at least $minSize",
         )
     }
@@ -199,7 +199,7 @@ public fun ValueValidationScope<Collection<*>>.maxSize(
     failIf(value.size > maxSize) {
         MaxSizeViolation(
             maxSize = maxSize,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Size must be at most $maxSize",
         )
     }
@@ -221,7 +221,7 @@ public fun ValueValidationScope<Collection<*>>.sizeBetween(
         SizeBetweenViolation(
             minSize = minSize,
             maxSize = maxSize,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Size must be between $minSize and $maxSize",
         )
     }
@@ -240,7 +240,7 @@ public fun ValueValidationScope<Collection<*>>.exactSize(
     failIf(value.size != expectedSize) {
         ExactSizeViolation(
             expectedSize = expectedSize,
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Size must be exactly $expectedSize",
         )
     }
@@ -262,7 +262,7 @@ public fun ValueValidationScope<Collection<*>>.distinct(reason: String? = null) 
 
     failIf(!allDistinct) {
         DistinctViolation(
-            validationPath = validationContext.validationPath(),
+            validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Must contain only distinct elements",
         )
     }

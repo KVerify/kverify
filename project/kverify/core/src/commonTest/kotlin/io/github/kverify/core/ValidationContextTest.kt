@@ -10,9 +10,9 @@ import kotlin.test.assertSame
 import kotlin.test.assertTrue
 
 val ValidationContextTest by testSuite {
-    testSuite("validationPath") {
+    testSuite("toValidationPath") {
         test("returns an empty path when the context has no path element") {
-            val result = EmptyValidationContext.validationPath()
+            val result = EmptyValidationContext.toValidationPath()
 
             assertEquals(emptyList(), result)
         }
@@ -20,7 +20,7 @@ val ValidationContextTest by testSuite {
         test("returns an empty path when the context has other elements only") {
             val context = FirstElement()
 
-            val result = context.validationPath()
+            val result = context.toValidationPath()
 
             assertEquals(emptyList(), result)
         }
@@ -31,7 +31,7 @@ val ValidationContextTest by testSuite {
                     pathName("a") +
                     SecondElement()
 
-            val result = context.validationPath()
+            val result = context.toValidationPath()
 
             val expectedPath = listOf(NamePathSegment("a"))
             assertEquals(expectedPath, result)
