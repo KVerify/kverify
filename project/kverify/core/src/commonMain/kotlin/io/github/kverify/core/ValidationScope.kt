@@ -114,7 +114,7 @@ public fun <V : Any> ValueValidationScope<V?>.takeIfValueNotNull(): ValueValidat
  * Iterates over the [value] and calls [block] on a new [ValueValidationScope] for each element.
  * The scope of each element is this scope with the index of the element added as a [pathIndex].
  */
-public inline fun <V, I : Iterable<V>> ValueValidationScope<I>.each(block: ValueValidationScope<V>.() -> Unit) {
+public inline fun <V> ValueValidationScope<Iterable<V>>.each(block: ValueValidationScope<V>.() -> Unit) {
     value.forEachIndexed { index, element ->
         plus(pathIndex(index)).forValue(element).block()
     }
