@@ -24,7 +24,7 @@ public class CollectingValidationStrategy(
 /**
  * A [ValidationStrategy] that throws a [ViolationException] with the reported violation.
  */
-public class ThrowingValidationStrategy : ValidationStrategy {
+public object ThrowingValidationStrategy : ValidationStrategy {
     override fun failWith(violation: Violation): Nothing = throw ViolationException(violation)
 }
 
@@ -64,7 +64,7 @@ public inline fun <R> validateThrowing(
     }
 
     return ValidationScope(
-        validationStrategy = ThrowingValidationStrategy(),
+        validationStrategy = ThrowingValidationStrategy,
         validationContext = validationContext,
     ).run(block)
 }

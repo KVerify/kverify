@@ -41,7 +41,7 @@ public final class io/github/kverify/core/PersistentValidationContext : io/githu
 }
 
 public final class io/github/kverify/core/ThrowingValidationStrategy : io/github/kverify/core/ValidationStrategy {
-	public fun <init> ()V
+	public static final field INSTANCE Lio/github/kverify/core/ThrowingValidationStrategy;
 	public fun failWith (Lio/github/kverify/core/Violation;)Ljava/lang/Void;
 	public synthetic fun failWith (Lio/github/kverify/core/Violation;)V
 }

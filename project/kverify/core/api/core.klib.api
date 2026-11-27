@@ -101,12 +101,6 @@ final class io.github.kverify.core/PersistentValidationContext : io.github.kveri
     final fun plus(io.github.kverify.core/ValidationContext): io.github.kverify.core/PersistentValidationContext // io.github.kverify.core/PersistentValidationContext.plus|plus(io.github.kverify.core.ValidationContext){}[0]
 }
 
-final class io.github.kverify.core/ThrowingValidationStrategy : io.github.kverify.core/ValidationStrategy { // io.github.kverify.core/ThrowingValidationStrategy|null[0]
-    constructor <init>() // io.github.kverify.core/ThrowingValidationStrategy.<init>|<init>(){}[0]
-
-    final fun failWith(io.github.kverify.core/Violation): kotlin/Nothing // io.github.kverify.core/ThrowingValidationStrategy.failWith|failWith(io.github.kverify.core.Violation){}[0]
-}
-
 final class io.github.kverify.core/ValidationPath { // io.github.kverify.core/ValidationPath|null[0]
     constructor <init>(kotlin.collections/List<io.github.kverify.core/ValidationPathSegment>) // io.github.kverify.core/ValidationPath.<init>|<init>(kotlin.collections.List<io.github.kverify.core.ValidationPathSegment>){}[0]
 
@@ -163,6 +157,10 @@ final object io.github.kverify.core/EmptyValidationContext : io.github.kverify.c
     final fun iterator(): kotlin.collections/Iterator<io.github.kverify.core/ValidationContext.Element> // io.github.kverify.core/EmptyValidationContext.iterator|iterator(){}[0]
     final fun minusKey(io.github.kverify.core/ValidationContext.Key<*>): io.github.kverify.core/EmptyValidationContext // io.github.kverify.core/EmptyValidationContext.minusKey|minusKey(io.github.kverify.core.ValidationContext.Key<*>){}[0]
     final fun plus(io.github.kverify.core/ValidationContext): io.github.kverify.core/ValidationContext // io.github.kverify.core/EmptyValidationContext.plus|plus(io.github.kverify.core.ValidationContext){}[0]
+}
+
+final object io.github.kverify.core/ThrowingValidationStrategy : io.github.kverify.core/ValidationStrategy { // io.github.kverify.core/ThrowingValidationStrategy|null[0]
+    final fun failWith(io.github.kverify.core/Violation): kotlin/Nothing // io.github.kverify.core/ThrowingValidationStrategy.failWith|failWith(io.github.kverify.core.Violation){}[0]
 }
 
 final fun (io.github.kverify.core/ValidationContext).io.github.kverify.core/plusPathIndex(kotlin/Int): io.github.kverify.core/ValidationContext // io.github.kverify.core/plusPathIndex|plusPathIndex@io.github.kverify.core.ValidationContext(kotlin.Int){}[0]

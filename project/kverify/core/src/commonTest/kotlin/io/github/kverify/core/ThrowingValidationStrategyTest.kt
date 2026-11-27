@@ -10,12 +10,11 @@ import kotlin.test.assertSame
 val ThrowingValidationStrategyTest by testSuite {
     testSuite("failWith") {
         test("throws a ViolationException with the violation") {
-            val strategy = ThrowingValidationStrategy()
             val violation = ViolationReason("a")
 
             val exception =
                 assertFailsWith<ViolationException> {
-                    strategy.failWith(violation)
+                    ThrowingValidationStrategy.failWith(violation)
                 }
 
             assertSame(violation, exception.violation)
