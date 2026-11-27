@@ -143,16 +143,6 @@ public fun pathName(name: String): ValidationPathElement = ValidationPathElement
 public fun pathIndex(index: Int): ValidationPathElement = ValidationPathElement(IndexPathSegment(index), null)
 
 /**
- * Returns the result of `this + pathName(name)`.
- */
-public fun ValidationContext.plusPathName(name: String): ValidationContext = this + pathName(name)
-
-/**
- * Returns the result of `this + pathIndex(index)`.
- */
-public fun ValidationContext.plusPathIndex(index: Int): ValidationContext = this + pathIndex(index)
-
-/**
  * Returns the segments of the [ValidationPathElement] stored in this context, or an empty list
  * if the context has no [ValidationPathElement].
  */

@@ -96,8 +96,6 @@ public final class io/github/kverify/core/ValidationPathElement$Key : io/github/
 public final class io/github/kverify/core/ValidationPathKt {
 	public static final fun pathIndex (I)Lio/github/kverify/core/ValidationPathElement;
 	public static final fun pathName (Ljava/lang/String;)Lio/github/kverify/core/ValidationPathElement;
-	public static final fun plusPathIndex (Lio/github/kverify/core/ValidationContext;I)Lio/github/kverify/core/ValidationContext;
-	public static final fun plusPathName (Lio/github/kverify/core/ValidationContext;Ljava/lang/String;)Lio/github/kverify/core/ValidationContext;
 	public static final fun toValidationPath (Lio/github/kverify/core/ValidationPathElement;)Ljava/util/List;
 	public static final fun validationPath (Lio/github/kverify/core/ValidationContext;)Ljava/util/List;
 }

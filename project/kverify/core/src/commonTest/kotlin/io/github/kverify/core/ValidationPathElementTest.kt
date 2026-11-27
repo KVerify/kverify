@@ -169,62 +169,6 @@ val ValidationPathElementTest by testSuite {
         }
     }
 
-    testSuite("plusPathName") {
-        test("adds a name segment to an empty context") {
-            val result = EmptyValidationContext.plusPathName("a")
-
-            val expectedPath = path(NamePathSegment("a"))
-            assertEquals(expectedPath, result.validationPath())
-        }
-
-        test("adds a name segment to the end of the path") {
-            val context = pathName("a")
-
-            val result = context.plusPathName("b")
-
-            val expectedPath = path(NamePathSegment("a"), NamePathSegment("b"))
-            assertEquals(expectedPath, result.validationPath())
-        }
-
-        test("keeps the other elements of the context") {
-            val element = UnrelatedElement()
-
-            val result = element.plusPathName("a")
-
-            val expectedPath = path(NamePathSegment("a"))
-            assertEquals(expectedPath, result.validationPath())
-            assertSame(element, result[UnrelatedKey])
-        }
-    }
-
-    testSuite("plusPathIndex") {
-        test("adds an index segment to an empty context") {
-            val result = EmptyValidationContext.plusPathIndex(2)
-
-            val expectedPath = path(IndexPathSegment(2))
-            assertEquals(expectedPath, result.validationPath())
-        }
-
-        test("adds an index segment to the end of the path") {
-            val context = pathName("a")
-
-            val result = context.plusPathIndex(2)
-
-            val expectedPath = path(NamePathSegment("a"), IndexPathSegment(2))
-            assertEquals(expectedPath, result.validationPath())
-        }
-
-        test("keeps the other elements of the context") {
-            val element = UnrelatedElement()
-
-            val result = element.plusPathIndex(2)
-
-            val expectedPath = path(IndexPathSegment(2))
-            assertEquals(expectedPath, result.validationPath())
-            assertSame(element, result[UnrelatedKey])
-        }
-    }
-
     testSuite("equals") {
         test("path elements with equal segments are equal") {
             val left =
