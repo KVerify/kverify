@@ -6,101 +6,6 @@ import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
 import io.github.kverify.core.validationPath
 
-/**
- * Reports an [AtLeastViolation] if the value is not at least [min].
- *
- * @param reason the reason of the reported violation, or `null` to use "Must be at least [min]".
- */
-public fun <T : Comparable<T>> ValueValidationScope<T>.atLeast(
-    min: T,
-    reason: String? = null,
-) {
-    failIf(!isAtLeast(value, min)) {
-        AtLeastViolation(
-            min = min,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must be at least $min",
-        )
-    }
-}
-
-/**
- * Reports an [AtMostViolation] if the value is not at most [max].
- *
- * @param reason the reason of the reported violation, or `null` to use "Must be at most [max]".
- */
-public fun <T : Comparable<T>> ValueValidationScope<T>.atMost(
-    max: T,
-    reason: String? = null,
-) {
-    failIf(!isAtMost(value, max)) {
-        AtMostViolation(
-            max = max,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must be at most $max",
-        )
-    }
-}
-
-/**
- * Reports a [GreaterThanViolation] if the value is not greater than [minExclusive].
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Must be greater than [minExclusive]".
- */
-public fun <T : Comparable<T>> ValueValidationScope<T>.greaterThan(
-    minExclusive: T,
-    reason: String? = null,
-) {
-    failIf(!isGreaterThan(value, minExclusive)) {
-        GreaterThanViolation(
-            minExclusive = minExclusive,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must be greater than $minExclusive",
-        )
-    }
-}
-
-/**
- * Reports a [LessThanViolation] if the value is not less than [maxExclusive].
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Must be less than [maxExclusive]".
- */
-public fun <T : Comparable<T>> ValueValidationScope<T>.lessThan(
-    maxExclusive: T,
-    reason: String? = null,
-) {
-    failIf(!isLessThan(value, maxExclusive)) {
-        LessThanViolation(
-            maxExclusive = maxExclusive,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must be less than $maxExclusive",
-        )
-    }
-}
-
-/**
- * Reports a [BetweenViolation] if the value is not between [min] and [max], inclusive.
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Must be between [min] and [max]".
- */
-public fun <T : Comparable<T>> ValueValidationScope<T>.between(
-    min: T,
-    max: T,
-    reason: String? = null,
-) {
-    failIf(!isBetween(value, min, max)) {
-        BetweenViolation(
-            min = min,
-            max = max,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must be between $min and $max",
-        )
-    }
-}
-
 public class AtLeastViolation<T : Comparable<T>>(
     public val min: T,
     override val validationPath: ValidationPath,
@@ -337,3 +242,98 @@ private fun ieeeLessThan(
     value: Double,
     maxExclusive: Double,
 ): Boolean = value < maxExclusive
+
+/**
+ * Reports an [AtLeastViolation] if the value is not at least [min].
+ *
+ * @param reason the reason of the reported violation, or `null` to use "Must be at least [min]".
+ */
+public fun <T : Comparable<T>> ValueValidationScope<T>.atLeast(
+    min: T,
+    reason: String? = null,
+) {
+    failIf(!isAtLeast(value, min)) {
+        AtLeastViolation(
+            min = min,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must be at least $min",
+        )
+    }
+}
+
+/**
+ * Reports an [AtMostViolation] if the value is not at most [max].
+ *
+ * @param reason the reason of the reported violation, or `null` to use "Must be at most [max]".
+ */
+public fun <T : Comparable<T>> ValueValidationScope<T>.atMost(
+    max: T,
+    reason: String? = null,
+) {
+    failIf(!isAtMost(value, max)) {
+        AtMostViolation(
+            max = max,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must be at most $max",
+        )
+    }
+}
+
+/**
+ * Reports a [GreaterThanViolation] if the value is not greater than [minExclusive].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Must be greater than [minExclusive]".
+ */
+public fun <T : Comparable<T>> ValueValidationScope<T>.greaterThan(
+    minExclusive: T,
+    reason: String? = null,
+) {
+    failIf(!isGreaterThan(value, minExclusive)) {
+        GreaterThanViolation(
+            minExclusive = minExclusive,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must be greater than $minExclusive",
+        )
+    }
+}
+
+/**
+ * Reports a [LessThanViolation] if the value is not less than [maxExclusive].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Must be less than [maxExclusive]".
+ */
+public fun <T : Comparable<T>> ValueValidationScope<T>.lessThan(
+    maxExclusive: T,
+    reason: String? = null,
+) {
+    failIf(!isLessThan(value, maxExclusive)) {
+        LessThanViolation(
+            maxExclusive = maxExclusive,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must be less than $maxExclusive",
+        )
+    }
+}
+
+/**
+ * Reports a [BetweenViolation] if the value is not between [min] and [max], inclusive.
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Must be between [min] and [max]".
+ */
+public fun <T : Comparable<T>> ValueValidationScope<T>.between(
+    min: T,
+    max: T,
+    reason: String? = null,
+) {
+    failIf(!isBetween(value, min, max)) {
+        BetweenViolation(
+            min = min,
+            max = max,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must be between $min and $max",
+        )
+    }
+}

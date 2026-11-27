@@ -60,12 +60,12 @@ AtLeastViolation(min=18, validationPath=ValidationPath("age"), reason=Must be at
 
 A rule is an extension function on `ValueValidationScope<V>`.
 
-| Receiver                                  | Rules                                                                         |
-|-------------------------------------------|-------------------------------------------------------------------------------|
-| `ValueValidationScope<Any?>`              | `notNull`                                                                     |
-| `ValueValidationScope<CharSequence>`      | `notBlank`, `minLength`, `maxLength`, `lengthRange`, `exactLength`, `matches` |
-| `ValueValidationScope<Collection<*>>`     | `minSize`, `maxSize`, `sizeBetween`, `exactSize`, `distinct`                  |
-| `ValueValidationScope<T : Comparable<T>>` | `atLeast`, `atMost`, `greaterThan`, `lessThan`, `between`                     |
+| Receiver                                  | Rules                                                                           |
+|-------------------------------------------|---------------------------------------------------------------------------------|
+| `ValueValidationScope<Any?>`              | `notNull`                                                                       |
+| `ValueValidationScope<CharSequence>`      | `notBlank`, `minLength`, `maxLength`, `lengthBetween`, `exactLength`, `matches` |
+| `ValueValidationScope<Collection<*>>`     | `minSize`, `maxSize`, `sizeBetween`, `exactSize`, `distinct`                    |
+| `ValueValidationScope<T : Comparable<T>>` | `atLeast`, `atMost`, `greaterThan`, `lessThan`, `between`                       |
 
 Every rule takes an optional `reason` that replaces the default one.
 
@@ -173,7 +173,7 @@ import io.github.kverify.core.forProperty
 import io.github.kverify.core.validateCollecting
 import io.github.kverify.core.validateThrowing
 import io.github.kverify.ruleset.atLeast
-import io.github.kverify.ruleset.lengthRange
+import io.github.kverify.ruleset.lengthBetween
 import io.github.kverify.ruleset.notBlank
 
 data class User(
@@ -184,7 +184,7 @@ data class User(
 fun ValidationScope.validate(user: User) {
     forProperty(user::name).run {
         notBlank()
-        lengthRange(3, 20)
+        lengthBetween(3, 20)
     }
     forProperty(user::age).atLeast(18)
 }

@@ -132,7 +132,7 @@ val CharSequenceRulesTest by testSuite {
         }
     }
 
-    testSuite("lengthRange") {
+    testSuite("lengthBetween") {
         test("reports a value shorter than the minimum") {
             val violation = violationFor("a") { lengthBetween(2, 4) }
 

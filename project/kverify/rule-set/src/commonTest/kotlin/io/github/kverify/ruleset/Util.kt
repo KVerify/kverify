@@ -104,7 +104,7 @@ fun greaterThanViolation(
     reason: String = "reason",
 ): GreaterThanViolation<Int> = GreaterThanViolation(minExclusive = minExclusive, validationPath = path, reason = reason)
 
-fun lengthRangeViolation(
+fun lengthBetweenViolation(
     minLength: Int = 1,
     maxLength: Int = 5,
     path: ValidationPath = somePath,

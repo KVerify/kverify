@@ -4,51 +4,51 @@ import de.infix.testBalloon.framework.core.testSuite
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
 
-val LengthRangeViolationTest by testSuite {
+val LengthBetweenViolationTest by testSuite {
     testSuite("equals") {
         test("violations with equal fields are equal") {
-            val left = lengthRangeViolation()
-            val right = lengthRangeViolation()
+            val left = lengthBetweenViolation()
+            val right = lengthBetweenViolation()
 
             assertEquals(left, right)
         }
 
         test("a different minLength makes violations not equal") {
-            val left = lengthRangeViolation()
-            val right = lengthRangeViolation(minLength = 2)
+            val left = lengthBetweenViolation()
+            val right = lengthBetweenViolation(minLength = 2)
 
             assertNotEquals(left, right)
         }
 
         test("a different maxLength makes violations not equal") {
-            val left = lengthRangeViolation()
-            val right = lengthRangeViolation(maxLength = 6)
+            val left = lengthBetweenViolation()
+            val right = lengthBetweenViolation(maxLength = 6)
 
             assertNotEquals(left, right)
         }
 
         test("a different path makes violations not equal") {
-            val left = lengthRangeViolation()
-            val right = lengthRangeViolation(path = otherPath)
+            val left = lengthBetweenViolation()
+            val right = lengthBetweenViolation(path = otherPath)
 
             assertNotEquals(left, right)
         }
 
         test("a different reason makes violations not equal") {
-            val left = lengthRangeViolation()
-            val right = lengthRangeViolation(reason = "other")
+            val left = lengthBetweenViolation()
+            val right = lengthBetweenViolation(reason = "other")
 
             assertNotEquals(left, right)
         }
 
         test("a violation is equal to itself") {
-            val violation = lengthRangeViolation()
+            val violation = lengthBetweenViolation()
 
             assertEquals(violation, violation)
         }
 
         test("a violation is not equal to an object of another type") {
-            val violation = lengthRangeViolation()
+            val violation = lengthBetweenViolation()
 
             assertNotEquals<Any>(violation, "a")
         }
@@ -56,8 +56,8 @@ val LengthRangeViolationTest by testSuite {
 
     testSuite("hashCode") {
         test("violations with equal fields have equal hash codes") {
-            val left = lengthRangeViolation()
-            val right = lengthRangeViolation()
+            val left = lengthBetweenViolation()
+            val right = lengthBetweenViolation()
 
             assertEquals(left.hashCode(), right.hashCode())
         }
@@ -65,12 +65,12 @@ val LengthRangeViolationTest by testSuite {
 
     testSuite("toString") {
         test("shows all fields") {
-            val violation = lengthRangeViolation()
+            val violation = lengthBetweenViolation()
 
             val result = violation.toString()
 
             val expectedText =
-                "LengthRangeViolation(minLength=1, maxLength=5, validationPath=ValidationPath(\"field\"), reason=reason)"
+                "LengthBetweenViolation(minLength=1, maxLength=5, validationPath=ValidationPath(\"field\"), reason=reason)"
             assertEquals(expectedText, result)
         }
     }

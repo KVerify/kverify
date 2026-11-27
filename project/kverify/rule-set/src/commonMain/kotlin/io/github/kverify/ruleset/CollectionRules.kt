@@ -6,107 +6,6 @@ import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
 import io.github.kverify.core.validationPath
 
-/**
- * Reports a [MinSizeViolation] if the size of the value is less than [minSize].
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Size must be at least [minSize]".
- */
-public fun ValueValidationScope<Collection<*>>.minSize(
-    minSize: Int,
-    reason: String? = null,
-) {
-    failIf(value.size < minSize) {
-        MinSizeViolation(
-            minSize = minSize,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Size must be at least $minSize",
-        )
-    }
-}
-
-/**
- * Reports a [MaxSizeViolation] if the size of the value is greater than [maxSize].
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Size must be at most [maxSize]".
- */
-public fun ValueValidationScope<Collection<*>>.maxSize(
-    maxSize: Int,
-    reason: String? = null,
-) {
-    failIf(value.size > maxSize) {
-        MaxSizeViolation(
-            maxSize = maxSize,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Size must be at most $maxSize",
-        )
-    }
-}
-
-/**
- * Reports a [SizeBetweenViolation] if the size of the value is not between [minSize]
- * and [maxSize], inclusive.
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Size must be between [minSize] and [maxSize]".
- */
-public fun ValueValidationScope<Collection<*>>.sizeBetween(
-    minSize: Int,
-    maxSize: Int,
-    reason: String? = null,
-) {
-    failIf(value.size !in minSize..maxSize) {
-        SizeBetweenViolation(
-            minSize = minSize,
-            maxSize = maxSize,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Size must be between $minSize and $maxSize",
-        )
-    }
-}
-
-/**
- * Reports an [ExactSizeViolation] if the size of the value is not [expectedSize].
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Size must be exactly [expectedSize]".
- */
-public fun ValueValidationScope<Collection<*>>.exactSize(
-    expectedSize: Int,
-    reason: String? = null,
-) {
-    failIf(value.size != expectedSize) {
-        ExactSizeViolation(
-            expectedSize = expectedSize,
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Size must be exactly $expectedSize",
-        )
-    }
-}
-
-/**
- * Reports a [DistinctViolation] if the value contains equal elements.
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Must contain only distinct elements".
- */
-public fun ValueValidationScope<Collection<*>>.distinct(reason: String? = null) {
-    if (value.size < 2) return
-
-    val initialCapacity = (value.size / 0.75).toInt() + 1
-    val seen = HashSet<Any?>(initialCapacity)
-
-    val allDistinct = value.all { seen.add(it) }
-
-    failIf(!allDistinct) {
-        DistinctViolation(
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must contain only distinct elements",
-        )
-    }
-}
-
 public class MinSizeViolation(
     public val minSize: Int,
     override val validationPath: ValidationPath,
@@ -265,5 +164,106 @@ public class DistinctViolation(
         var result = validationPath.hashCode()
         result = 31 * result + reason.hashCode()
         return result
+    }
+}
+
+/**
+ * Reports a [MinSizeViolation] if the size of the value is less than [minSize].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be at least [minSize]".
+ */
+public fun ValueValidationScope<Collection<*>>.minSize(
+    minSize: Int,
+    reason: String? = null,
+) {
+    failIf(value.size < minSize) {
+        MinSizeViolation(
+            minSize = minSize,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Size must be at least $minSize",
+        )
+    }
+}
+
+/**
+ * Reports a [MaxSizeViolation] if the size of the value is greater than [maxSize].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be at most [maxSize]".
+ */
+public fun ValueValidationScope<Collection<*>>.maxSize(
+    maxSize: Int,
+    reason: String? = null,
+) {
+    failIf(value.size > maxSize) {
+        MaxSizeViolation(
+            maxSize = maxSize,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Size must be at most $maxSize",
+        )
+    }
+}
+
+/**
+ * Reports a [SizeBetweenViolation] if the size of the value is not between [minSize]
+ * and [maxSize], inclusive.
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be between [minSize] and [maxSize]".
+ */
+public fun ValueValidationScope<Collection<*>>.sizeBetween(
+    minSize: Int,
+    maxSize: Int,
+    reason: String? = null,
+) {
+    failIf(value.size !in minSize..maxSize) {
+        SizeBetweenViolation(
+            minSize = minSize,
+            maxSize = maxSize,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Size must be between $minSize and $maxSize",
+        )
+    }
+}
+
+/**
+ * Reports an [ExactSizeViolation] if the size of the value is not [expectedSize].
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Size must be exactly [expectedSize]".
+ */
+public fun ValueValidationScope<Collection<*>>.exactSize(
+    expectedSize: Int,
+    reason: String? = null,
+) {
+    failIf(value.size != expectedSize) {
+        ExactSizeViolation(
+            expectedSize = expectedSize,
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Size must be exactly $expectedSize",
+        )
+    }
+}
+
+/**
+ * Reports a [DistinctViolation] if the value contains equal elements.
+ *
+ * @param reason the reason of the reported violation, or `null` to use
+ * "Must contain only distinct elements".
+ */
+public fun ValueValidationScope<Collection<*>>.distinct(reason: String? = null) {
+    if (value.size < 2) return
+
+    val initialCapacity = (value.size / 0.75).toInt() + 1
+    val seen = HashSet<Any?>(initialCapacity)
+
+    val allDistinct = value.all { seen.add(it) }
+
+    failIf(!allDistinct) {
+        DistinctViolation(
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must contain only distinct elements",
+        )
     }
 }

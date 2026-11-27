@@ -6,20 +6,6 @@ import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
 import io.github.kverify.core.validationPath
 
-/**
- * Reports a [NotNullViolation] if the value is `null`.
- *
- * @param reason the reason of the reported violation, or `null` to use "Must not be null".
- */
-public fun ValueValidationScope<Any?>.notNull(reason: String? = null) {
-    failIf(value == null) {
-        NotNullViolation(
-            validationPath = validationContext.validationPath(),
-            reason = reason ?: "Must not be null",
-        )
-    }
-}
-
 public class NotNullViolation(
     override val validationPath: ValidationPath,
     override val reason: String,
@@ -46,5 +32,19 @@ public class NotNullViolation(
         var result = validationPath.hashCode()
         result = 31 * result + reason.hashCode()
         return result
+    }
+}
+
+/**
+ * Reports a [NotNullViolation] if the value is `null`.
+ *
+ * @param reason the reason of the reported violation, or `null` to use "Must not be null".
+ */
+public fun ValueValidationScope<Any?>.notNull(reason: String? = null) {
+    failIf(value == null) {
+        NotNullViolation(
+            validationPath = validationContext.validationPath(),
+            reason = reason ?: "Must not be null",
+        )
     }
 }

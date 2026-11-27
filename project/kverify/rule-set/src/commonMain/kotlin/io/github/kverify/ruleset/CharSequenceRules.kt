@@ -6,6 +6,201 @@ import io.github.kverify.core.ViolationWithPath
 import io.github.kverify.core.failIf
 import io.github.kverify.core.validationPath
 
+public class NotBlankViolation(
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : ViolationWithPath {
+    override fun toString(): String = "NotBlankViolation(validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is NotBlankViolation -> {
+                false
+            }
+
+            else -> {
+                validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
+
+public class MinLengthViolation(
+    public val minLength: Int,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : ViolationWithPath {
+    override fun toString(): String = "MinLengthViolation(minLength=$minLength, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is MinLengthViolation -> {
+                false
+            }
+
+            else -> {
+                minLength == other.minLength &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = minLength.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
+
+public class MaxLengthViolation(
+    public val maxLength: Int,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : ViolationWithPath {
+    override fun toString(): String = "MaxLengthViolation(maxLength=$maxLength, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is MaxLengthViolation -> {
+                false
+            }
+
+            else -> {
+                maxLength == other.maxLength &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = maxLength.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
+
+public class LengthBetweenViolation(
+    public val minLength: Int,
+    public val maxLength: Int,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : ViolationWithPath {
+    override fun toString(): String =
+        "LengthBetweenViolation(minLength=$minLength, maxLength=$maxLength, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is LengthBetweenViolation -> {
+                false
+            }
+
+            else -> {
+                minLength == other.minLength &&
+                    maxLength == other.maxLength &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = minLength.hashCode()
+        result = 31 * result + maxLength.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
+
+public class ExactLengthViolation(
+    public val expectedLength: Int,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : ViolationWithPath {
+    override fun toString(): String = "ExactLengthViolation(expectedLength=$expectedLength, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is ExactLengthViolation -> {
+                false
+            }
+
+            else -> {
+                expectedLength == other.expectedLength &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = expectedLength.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
+
+public class PatternViolation(
+    public val regex: Regex,
+    override val validationPath: ValidationPath,
+    override val reason: String,
+) : ViolationWithPath {
+    override fun toString(): String = "PatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"
+
+    override fun equals(other: Any?): Boolean =
+        when {
+            this === other -> {
+                true
+            }
+
+            other !is PatternViolation -> {
+                false
+            }
+
+            else -> {
+                regex.pattern == other.regex.pattern &&
+                    regex.options == other.regex.options &&
+                    validationPath == other.validationPath &&
+                    reason == other.reason
+            }
+        }
+
+    override fun hashCode(): Int {
+        var result = regex.pattern.hashCode()
+        result = 31 * result + regex.options.hashCode()
+        result = 31 * result + validationPath.hashCode()
+        result = 31 * result + reason.hashCode()
+        return result
+    }
+}
+
 /**
  * Reports a [NotBlankViolation] if the value is blank.
  *
@@ -115,200 +310,5 @@ public fun ValueValidationScope<CharSequence>.matches(
             validationPath = validationContext.validationPath(),
             reason = reason ?: "Must match pattern ${regex.pattern}",
         )
-    }
-}
-
-public class NotBlankViolation(
-    override val validationPath: ValidationPath,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String = "NotBlankViolation(validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is NotBlankViolation -> {
-                false
-            }
-
-            else -> {
-                validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
-    }
-}
-
-public class MinLengthViolation(
-    public val minLength: Int,
-    override val validationPath: ValidationPath,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String = "MinLengthViolation(minLength=$minLength, validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is MinLengthViolation -> {
-                false
-            }
-
-            else -> {
-                minLength == other.minLength &&
-                    validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = minLength.hashCode()
-        result = 31 * result + validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
-    }
-}
-
-public class MaxLengthViolation(
-    public val maxLength: Int,
-    override val validationPath: ValidationPath,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String = "MaxLengthViolation(maxLength=$maxLength, validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is MaxLengthViolation -> {
-                false
-            }
-
-            else -> {
-                maxLength == other.maxLength &&
-                    validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = maxLength.hashCode()
-        result = 31 * result + validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
-    }
-}
-
-public class LengthBetweenViolation(
-    public val minLength: Int,
-    public val maxLength: Int,
-    override val validationPath: ValidationPath,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String =
-        "LengthRangeViolation(minLength=$minLength, maxLength=$maxLength, validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is LengthBetweenViolation -> {
-                false
-            }
-
-            else -> {
-                minLength == other.minLength &&
-                    maxLength == other.maxLength &&
-                    validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = minLength.hashCode()
-        result = 31 * result + maxLength.hashCode()
-        result = 31 * result + validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
-    }
-}
-
-public class ExactLengthViolation(
-    public val expectedLength: Int,
-    override val validationPath: ValidationPath,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String = "ExactLengthViolation(expectedLength=$expectedLength, validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is ExactLengthViolation -> {
-                false
-            }
-
-            else -> {
-                expectedLength == other.expectedLength &&
-                    validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = expectedLength.hashCode()
-        result = 31 * result + validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
-    }
-}
-
-public class PatternViolation(
-    public val regex: Regex,
-    override val validationPath: ValidationPath,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String = "PatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is PatternViolation -> {
-                false
-            }
-
-            else -> {
-                regex.pattern == other.regex.pattern &&
-                    regex.options == other.regex.options &&
-                    validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = regex.pattern.hashCode()
-        result = 31 * result + regex.options.hashCode()
-        result = 31 * result + validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
     }
 }
