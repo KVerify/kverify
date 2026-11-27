@@ -167,12 +167,12 @@ public class ExactLengthViolation(
     }
 }
 
-public class PatternViolation(
+public class MatchesPatternViolation(
     public val regex: Regex,
     override val validationPath: ValidationPath,
     override val reason: String,
 ) : ViolationWithPath {
-    override fun toString(): String = "PatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"
+    override fun toString(): String = "MatchesPatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"
 
     override fun equals(other: Any?): Boolean =
         when {
@@ -180,7 +180,7 @@ public class PatternViolation(
                 true
             }
 
-            other !is PatternViolation -> {
+            other !is MatchesPatternViolation -> {
                 false
             }
 
@@ -295,17 +295,17 @@ public fun ValueValidationScope<CharSequence>.exactLength(
 }
 
 /**
- * Reports a [PatternViolation] if the value does not match [regex] entirely.
+ * Reports a [MatchesPatternViolation] if the value does not match [regex] entirely.
  *
  * @param reason the reason of the reported violation, or `null` to use
  * "Must match pattern" followed by the pattern of [regex].
  */
-public fun ValueValidationScope<CharSequence>.matches(
+public fun ValueValidationScope<CharSequence>.matchesPattern(
     regex: Regex,
     reason: String? = null,
 ) {
     failIf(!regex.matches(value)) {
-        PatternViolation(
+        MatchesPatternViolation(
             regex = regex,
             validationPath = validationContext.validationPath(),
             reason = reason ?: "Must match pattern ${regex.pattern}",

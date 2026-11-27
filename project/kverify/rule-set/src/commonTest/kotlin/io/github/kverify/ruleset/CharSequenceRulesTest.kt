@@ -229,36 +229,36 @@ val CharSequenceRulesTest by testSuite {
         }
     }
 
-    testSuite("matches") {
+    testSuite("matchesPattern") {
         test("reports a value that does not match") {
             val regex = Regex("[a-z]+")
 
-            val violation = violationFor("123") { matches(regex) }
+            val violation = violationFor("123") { matchesPattern(regex) }
 
-            val patternViolation = assertIs<PatternViolation>(violation)
-            assertSame(regex, patternViolation.regex)
+            val matchesPatternViolation = assertIs<MatchesPatternViolation>(violation)
+            assertSame(regex, matchesPatternViolation.regex)
         }
 
         test("reports a value that matches only partly") {
             val regex = Regex("[a-z]+")
 
-            val violation = violationFor("ab1") { matches(regex) }
+            val violation = violationFor("ab1") { matchesPattern(regex) }
 
-            assertIs<PatternViolation>(violation)
+            assertIs<MatchesPatternViolation>(violation)
         }
 
         test("reports an empty value when the pattern needs at least one character") {
             val regex = Regex("[a-z]+")
 
-            val violation = violationFor("") { matches(regex) }
+            val violation = violationFor("") { matchesPattern(regex) }
 
-            assertIs<PatternViolation>(violation)
+            assertIs<MatchesPatternViolation>(violation)
         }
 
         test("does not report a value that matches entirely") {
             val regex = Regex("[a-z]+")
 
-            val violations = violationsFor("abc") { matches(regex) }
+            val violations = violationsFor("abc") { matchesPattern(regex) }
 
             assertNoViolations(violations)
         }
@@ -266,7 +266,7 @@ val CharSequenceRulesTest by testSuite {
         test("uses the default reason") {
             val regex = Regex("[a-z]+")
 
-            val violation = violationFor("1") { matches(regex) }
+            val violation = violationFor("1") { matchesPattern(regex) }
 
             assertEquals("Must match pattern [a-z]+", violation.reason)
         }
@@ -274,7 +274,7 @@ val CharSequenceRulesTest by testSuite {
         test("uses the given reason") {
             val regex = Regex("[a-z]+")
 
-            val violation = violationFor("1") { matches(regex, "custom") }
+            val violation = violationFor("1") { matchesPattern(regex, "custom") }
 
             assertEquals("custom", violation.reason)
         }
@@ -283,7 +283,7 @@ val CharSequenceRulesTest by testSuite {
             val regex = Regex("[a-z]+")
             val context = pathName("field")
 
-            val violation = violationFor("1", context) { matches(regex) }
+            val violation = violationFor("1", context) { matchesPattern(regex) }
 
             val expectedPath = namePath("field")
             assertViolationPath(expectedPath, violation)
