@@ -117,12 +117,6 @@ fun lessThanViolation(
     reason: String = "reason",
 ): LessThanViolation<Int> = LessThanViolation(maxExclusive = maxExclusive, validationPath = path, reason = reason)
 
-fun matchesPatternViolation(
-    regex: Regex = Regex("a"),
-    path: List<ValidationPathSegment> = somePath,
-    reason: String = "reason",
-): MatchesPatternViolation = MatchesPatternViolation(regex = regex, validationPath = path, reason = reason)
-
 fun maxLengthViolation(
     maxLength: Int = 3,
     path: List<ValidationPathSegment> = somePath,

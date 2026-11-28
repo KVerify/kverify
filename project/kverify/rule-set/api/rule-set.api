@@ -39,8 +39,6 @@ public final class io/github/kverify/ruleset/CharSequenceRulesKt {
 	public static synthetic fun exactLength$default (Lio/github/kverify/core/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
 	public static final fun lengthBetween (Lio/github/kverify/core/ValueValidationScope;IILjava/lang/String;)V
 	public static synthetic fun lengthBetween$default (Lio/github/kverify/core/ValueValidationScope;IILjava/lang/String;ILjava/lang/Object;)V
-	public static final fun matchesPattern (Lio/github/kverify/core/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;)V
-	public static synthetic fun matchesPattern$default (Lio/github/kverify/core/ValueValidationScope;Lkotlin/text/Regex;Ljava/lang/String;ILjava/lang/Object;)V
 	public static final fun maxLength (Lio/github/kverify/core/ValueValidationScope;ILjava/lang/String;)V
 	public static synthetic fun maxLength$default (Lio/github/kverify/core/ValueValidationScope;ILjava/lang/String;ILjava/lang/Object;)V
 	public static final fun minLength (Lio/github/kverify/core/ValueValidationScope;ILjava/lang/String;)V
@@ -130,16 +128,6 @@ public final class io/github/kverify/ruleset/LessThanViolation : io/github/kveri
 	public fun equals (Ljava/lang/Object;)Z
 	public final fun getMaxExclusive ()Ljava/lang/Comparable;
 	public fun getReason ()Ljava/lang/String;
-	public fun getValidationPath ()Ljava/util/List;
-	public fun hashCode ()I
-	public fun toString ()Ljava/lang/String;
-}
-
-public final class io/github/kverify/ruleset/MatchesPatternViolation : io/github/kverify/core/ViolationWithPath {
-	public fun <init> (Lkotlin/text/Regex;Ljava/util/List;Ljava/lang/String;)V
-	public fun equals (Ljava/lang/Object;)Z
-	public fun getReason ()Ljava/lang/String;
-	public final fun getRegex ()Lkotlin/text/Regex;
 	public fun getValidationPath ()Ljava/util/List;
 	public fun hashCode ()I
 	public fun toString ()Ljava/lang/String;

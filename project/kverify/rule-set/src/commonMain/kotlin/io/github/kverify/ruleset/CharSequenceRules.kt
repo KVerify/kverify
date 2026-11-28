@@ -167,40 +167,6 @@ public class ExactLengthViolation(
     }
 }
 
-public class MatchesPatternViolation(
-    public val regex: Regex,
-    override val validationPath: List<ValidationPathSegment>,
-    override val reason: String,
-) : ViolationWithPath {
-    override fun toString(): String = "MatchesPatternViolation(regex=${regex.pattern}, validationPath=$validationPath, reason=$reason)"
-
-    override fun equals(other: Any?): Boolean =
-        when {
-            this === other -> {
-                true
-            }
-
-            other !is MatchesPatternViolation -> {
-                false
-            }
-
-            else -> {
-                regex.pattern == other.regex.pattern &&
-                    regex.options == other.regex.options &&
-                    validationPath == other.validationPath &&
-                    reason == other.reason
-            }
-        }
-
-    override fun hashCode(): Int {
-        var result = regex.pattern.hashCode()
-        result = 31 * result + regex.options.hashCode()
-        result = 31 * result + validationPath.hashCode()
-        result = 31 * result + reason.hashCode()
-        return result
-    }
-}
-
 /**
  * Reports a [NotBlankViolation] if the value is blank.
  *
@@ -290,25 +256,6 @@ public fun ValueValidationScope<CharSequence>.exactLength(
             expectedLength = expectedLength,
             validationPath = validationContext.toValidationPath(),
             reason = reason ?: "Length must be exactly $expectedLength",
-        )
-    }
-}
-
-/**
- * Reports a [MatchesPatternViolation] if the value does not match [regex] entirely.
- *
- * @param reason the reason of the reported violation, or `null` to use
- * "Must match pattern" followed by the pattern of [regex].
- */
-public fun ValueValidationScope<CharSequence>.matchesPattern(
-    regex: Regex,
-    reason: String? = null,
-) {
-    failIf(!regex.matches(value)) {
-        MatchesPatternViolation(
-            regex = regex,
-            validationPath = validationContext.toValidationPath(),
-            reason = reason ?: "Must match pattern ${regex.pattern}",
         )
     }
 }

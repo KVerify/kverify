@@ -60,12 +60,12 @@ AtLeastViolation(min=18, validationPath=[NamePathSegment(age)], reason=Must be a
 
 A rule is an extension function on `ValueValidationScope<V>`.
 
-| Receiver                                  | Rules                                                                                  |
-|-------------------------------------------|----------------------------------------------------------------------------------------|
-| `ValueValidationScope<Any?>`              | `notNull`                                                                              |
-| `ValueValidationScope<CharSequence>`      | `notBlank`, `minLength`, `maxLength`, `lengthBetween`, `exactLength`, `matchesPattern` |
-| `ValueValidationScope<Collection<*>>`     | `minSize`, `maxSize`, `sizeBetween`, `exactSize`, `distinct`                           |
-| `ValueValidationScope<T : Comparable<T>>` | `atLeast`, `atMost`, `greaterThan`, `lessThan`, `between`                              |
+| Receiver                                  | Rules                                                                |
+|-------------------------------------------|----------------------------------------------------------------------|
+| `ValueValidationScope<Any?>`              | `notNull`                                                            |
+| `ValueValidationScope<CharSequence>`      | `notBlank`, `minLength`, `maxLength`, `lengthBetween`, `exactLength` |
+| `ValueValidationScope<Collection<*>>`     | `minSize`, `maxSize`, `sizeBetween`, `exactSize`, `distinct`         |
+| `ValueValidationScope<T : Comparable<T>>` | `atLeast`, `atMost`, `greaterThan`, `lessThan`, `between`            |
 
 Every rule takes an optional `reason` that replaces the default one.
 

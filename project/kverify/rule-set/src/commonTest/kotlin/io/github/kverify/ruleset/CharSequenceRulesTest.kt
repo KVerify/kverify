@@ -4,7 +4,6 @@ import de.infix.testBalloon.framework.core.testSuite
 import io.github.kverify.core.pathName
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
-import kotlin.test.assertSame
 
 val CharSequenceRulesTest by testSuite {
     testSuite("notBlank") {
@@ -223,67 +222,6 @@ val CharSequenceRulesTest by testSuite {
             val context = pathName("field")
 
             val violation = violationFor("ab", context) { exactLength(3) }
-
-            val expectedPath = namePath("field")
-            assertViolationPath(expectedPath, violation)
-        }
-    }
-
-    testSuite("matchesPattern") {
-        test("reports a value that does not match") {
-            val regex = Regex("[a-z]+")
-
-            val violation = violationFor("123") { matchesPattern(regex) }
-
-            val matchesPatternViolation = assertIs<MatchesPatternViolation>(violation)
-            assertSame(regex, matchesPatternViolation.regex)
-        }
-
-        test("reports a value that matches only partly") {
-            val regex = Regex("[a-z]+")
-
-            val violation = violationFor("ab1") { matchesPattern(regex) }
-
-            assertIs<MatchesPatternViolation>(violation)
-        }
-
-        test("reports an empty value when the pattern needs at least one character") {
-            val regex = Regex("[a-z]+")
-
-            val violation = violationFor("") { matchesPattern(regex) }
-
-            assertIs<MatchesPatternViolation>(violation)
-        }
-
-        test("does not report a value that matches entirely") {
-            val regex = Regex("[a-z]+")
-
-            val violations = violationsFor("abc") { matchesPattern(regex) }
-
-            assertNoViolations(violations)
-        }
-
-        test("uses the default reason") {
-            val regex = Regex("[a-z]+")
-
-            val violation = violationFor("1") { matchesPattern(regex) }
-
-            assertEquals("Must match pattern [a-z]+", violation.reason)
-        }
-
-        test("uses the given reason") {
-            val regex = Regex("[a-z]+")
-
-            val violation = violationFor("1") { matchesPattern(regex, "custom") }
-
-            assertEquals("custom", violation.reason)
-        }
-
-        test("reports the path of the context") {
-            val regex = Regex("[a-z]+")
-            val context = pathName("field")
-
-            val violation = violationFor("1", context) { matchesPattern(regex) }
 
             val expectedPath = namePath("field")
             assertViolationPath(expectedPath, violation)
