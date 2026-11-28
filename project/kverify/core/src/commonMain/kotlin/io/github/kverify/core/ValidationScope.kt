@@ -36,7 +36,7 @@ private class ValidationScopeImpl(
         )
 
     override fun <V> forValue(value: V): ValueValidationScope<V> =
-        ValueValidationScope(
+        ValueValidationScopeImpl(
             value = value,
             validationStrategy = validationStrategy,
             validationContext = validationContext,
